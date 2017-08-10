@@ -213,6 +213,14 @@ public class SystemService extends BaseService implements InitializingBean {
 		return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
 	}
 	
+	public static void main(String[] args){
+		String password = entryptPassword("admin");
+		System.out.println(password);
+		if(validatePassword("admin", password)){
+			System.out.println("验证成功");
+		}
+	}
+	
 	/**
 	 * 验证密码
 	 * @param plainPassword 明文密码

@@ -53,6 +53,8 @@ public class User extends DataEntity<User> {
 	private Role role;	// 根据角色查询用户条件
 	
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
+	
+	private String accountNo;
 
 	public User() {
 		super();
@@ -317,6 +319,16 @@ public class User extends DataEntity<User> {
 		return id != null && "1".equals(id);
 	}
 	
+	
+	
+	public String getAccountNo() {
+		return accountNo;
+	}
+
+	public void setAccountNo(String accountNo) {
+		this.accountNo = accountNo;
+	}
+
 	@Override
 	public String toString() {
 		return id;

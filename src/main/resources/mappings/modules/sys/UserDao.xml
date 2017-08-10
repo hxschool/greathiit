@@ -80,6 +80,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date,
 		a.del_flag,
+		a.account_no,
     	c.name AS "company.name",
     	c.parent_id AS "company.parent.id",
     	c.parent_ids AS "company.parentIds",
@@ -244,7 +245,8 @@
 			remarks, 
 			login_flag, 
 			photo, 
-			del_flag
+			del_flag,
+			account_no
 		) VALUES (
 			#{id}, 
 			#{company.id}, 
@@ -264,7 +266,8 @@
 			#{remarks}, 
 			#{loginFlag}, 
 			#{photo}, 
-			#{delFlag}
+			#{delFlag},
+			#{accountNo}
 		)
 	</insert>
 	
@@ -284,6 +287,7 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			account_no = #{accountNo},
 			login_flag = #{loginFlag},
 			photo = #{photo}
 		WHERE id = #{id}
@@ -314,6 +318,7 @@
 			update_by = #{updateBy.id}, 
 			update_date = #{updateDate}, 
 			remarks = #{remarks},
+			account_no = #{accountNo},
 			photo = #{photo}
 		WHERE id = #{id}
 	</update>

@@ -5,8 +5,8 @@
 <head>
 	<title>留言板</title>
 	<meta name="decorator" content="cms_default_${site.theme}"/>
-	<meta name="description" content="JeeSite ${site.description}" />
-	<meta name="keywords" content="JeeSite ${site.keywords}" />
+	<meta name="description" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.description}" />
+	<meta name="keywords" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.keywords}" />
 	<link href="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.css" type="text/css" rel="stylesheet" />
 	<script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.min.js" type="text/javascript"></script>
 	<script src="${ctxStatic}/jquery-validation/1.11.1/jquery.validate.method.min.js" type="text/javascript"></script>

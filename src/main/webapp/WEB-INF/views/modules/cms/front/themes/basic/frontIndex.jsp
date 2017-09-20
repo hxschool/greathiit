@@ -5,8 +5,8 @@
 <head>
 	<title>首页</title>
 	<meta name="decorator" content="cms_default_${site.theme}"/>
-	<meta name="description" content="JeeSite ${site.description}" />
-	<meta name="keywords" content="JeeSite ${site.keywords}" />
+	<meta name="description" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.description}" />
+	<meta name="keywords" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.keywords}" />
 </head>
 <body>
     <div class="hero-unit" style="padding-bottom:35px;margin:10px 0;">

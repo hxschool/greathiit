@@ -143,6 +143,12 @@
 	
 	<!-- 依赖项定义 -->
 	<dependencies>
+	
+	<dependency>
+  <groupId>org.jasig.cas</groupId>
+  <artifactId>cas-server-support-oauth</artifactId>
+  <version>4.2.7</version>
+</dependency>
 	<!-- https://mvnrepository.com/artifact/org.jasig.cas.client/cas-client-core -->
 <dependency>
     <groupId>org.jasig.cas.client</groupId>

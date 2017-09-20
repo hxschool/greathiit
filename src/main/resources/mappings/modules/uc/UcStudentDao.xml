@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.uc.dao.UcStudentDao">
+    
+	<sql id="ucStudentColumns">
+		a.id AS "id",
+		a.exa_number AS "exaNumber",
+		a.number AS "number",
+		a.username AS "username",
+		a.id_card AS "idCard",
+		a.gender AS "gender",
+		a.birthday AS "birthday",
+		a.department AS "department",
+		a.major AS "major",
+		a.class_number AS "classNumber",
+		a.edu AS "edu",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.code AS "code",
+		a.region AS "region"
+	</sql>
+	
+	<sql id="ucStudentJoins">
+	</sql>
+    
+	<select id="get" resultType="UcStudent">
+		SELECT 
+			<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		<include refid="ucStudentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UcStudent">
+		SELECT 
+			<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		<include refid="ucStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+			<if test="number != null and number != ''">
+				AND a.number LIKE 
+					<if test="dbName == 'oracle'">'%'||#{number}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{number}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{number},'%')</if>
+			</if>
+			<if test="username != null and username != ''">
+				AND a.username LIKE 
+					<if test="dbName == 'oracle'">'%'||#{username}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{username}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{username},'%')</if>
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card LIKE 
+					<if test="dbName == 'oracle'">'%'||#{idCard}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{idCard}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{idCard},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<select id="findNumberByUsernameAndIdCard" resultType="String">
+		SELECT
+		a.number
+		FROM uc_student a
+		<include refid="ucStudentJoins" />
+		<where>
+			a.username=#{username} and a.id_card=#{idCard}
+		</where>
+	</select>
+	
+	
+	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="UcStudent">
+		SELECT
+		<include refid="ucStudentColumns" />
+		FROM uc_student a
+		<include refid="ucStudentJoins" />
+		<where>
+			a.username=#{username} and a.id_card=#{idCard} and a.number=#{number}
+		</where>
+	</select>
+	
+	<select id="findAllList" resultType="UcStudent">
+		SELECT 
+			<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		<include refid="ucStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_student(
+			id,
+			exa_number,
+			number,
+			username,
+			id_card,
+			gender,
+			birthday,
+			department,
+			major,
+			class_number,
+			edu,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			code,
+			region
+		) VALUES (
+			#{id},
+			#{exaNumber},
+			#{number},
+			#{username},
+			#{idCard},
+			#{gender},
+			#{birthday},
+			#{department},
+			#{major},
+			#{classNumber},
+			#{edu},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{code},
+			#{region}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_student SET 	
+			exa_number = #{exaNumber},
+			number = #{number},
+			username = #{username},
+			id_card = #{idCard},
+			gender = #{gender},
+			birthday = #{birthday},
+			department = #{department},
+			major = #{major},
+			class_number = #{classNumber},
+			edu = #{edu},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			code = #{code},
+			region = #{region}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+	<select id="studentGroup" resultType="map">
+		select  count(del_flag) as TOTAL,CASE WHEN del_flag=0 then '正常' WHEN gender=1 then '未入学' end as NAME  from uc_student   group by del_flag
+	</select>
+	
+	<select id="studentSex" resultType="map">
+		select  count(gender) as TOTAL,CASE WHEN gender=1 then '男' WHEN gender=2 then '女' end as NAME  from uc_student where del_flag=0 group by gender
+	</select>
+	
+	<select id="studentRegion" resultType="map">
+		select  count(gender) as TOTAL,gender as LABEL,replace(replace(region,'市',''),'省','') as NAME from uc_student where del_flag=0 group by gender,left(code,2),region
+	</select>
+	
+	<select id="studentEdu" resultType="map">
+		select  count(edu) as TOTAL,edu as NAME  from uc_student  where del_flag=0 group by edu
+	</select>
+	
+	<select id="studentDepartment" resultType="map">
+		select  count(department)  as TOTAL,department  as NAME  from uc_student  where del_flag=0 group by department
+	</select>
+	
+	<select id="studentMajor" resultType="map">
+		select  count(major) as TOTAL,major as NAME  from uc_student  where del_flag=0 group by major
+	</select>
+	
+</mapper>

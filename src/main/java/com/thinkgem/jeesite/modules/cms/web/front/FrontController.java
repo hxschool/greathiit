@@ -73,6 +73,16 @@ public class FrontController extends BaseController{
 	/**
 	 * 网站首页
 	 */
+	@RequestMapping(value = "register")
+	public String register() {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		// 子站有独立页面，则显示独立页面
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
+	}
+	
+	/**
+	 * 网站首页
+	 */
 	@RequestMapping(value = "index-{siteId}${urlSuffix}")
 	public String index(@PathVariable String siteId, Model model) {
 		if (siteId.equals("1")){

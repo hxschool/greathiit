@@ -32,7 +32,8 @@
 	href="${ctxStatic}/campus-account/css/bundle-bundle_theme.WbAce_head.css"
 	type="text/css" rel="stylesheet" media="screen, projection" />
 
-
+<script src="${ctxStatic}/campus-account/js/mail.js"
+	type="text/javascript"></script>
 
 
 <!--[if lte IE 8]><link href="${ctxStatic}/campus-account/css/ace-ie.css" type="text/css" rel="stylesheet" media="screen, projection" /><![endif]-->
@@ -91,19 +92,19 @@
 														<span class="step">1</span> <span class="title">核对个人信息</span>
 													</li>
 
-													<li class="" style="min-width: 20%; max-width: 20%;">
+													<li class="active"  class="" style="min-width: 20%; max-width: 20%;">
 														<span class="step">2</span> <span class="title">验证手机号</span>
 													</li>
 
-													<li class="" style="min-width: 20%; max-width: 20%;">
+													<li class="active"  class="" style="min-width: 20%; max-width: 20%;">
 														<span class="step">3</span> <span class="title">验证邮箱</span>
 													</li>
 
-													<li class="" style="min-width: 20%; max-width: 20%;">
+													<li  class="active" style="min-width: 20%; max-width: 20%;">
 														<span class="step">4</span> <span class="title">设置密码</span>
 													</li>
 
-													<li class="" style="min-width: 20%; max-width: 20%;">
+													<li class="active"  style="min-width: 20%; max-width: 20%;">
 														<span class="step">5</span> <span class="title">完成</span>
 													</li>
 												</ul>
@@ -117,6 +118,14 @@
 												<a class="close" data-dismiss="alert" href="#">×</a>
 												${message}
 											</div>
+											
+											<div
+												class="alert alert-block alert-error" id="errorMobile" style="display: none">
+												<a class="close" data-dismiss="alert" href="#">×</a>
+												邮箱格式不正确,请确认
+											</div>
+											
+											
 
 											<div class="step-content row-fluid position-relative"
 												id="step-container">
@@ -131,7 +140,7 @@
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" />
+																<input type="text" name="username" value="" id="name" value="${ sessionScope.student_username}" readonly/>
 
 															</div>
 														</div>
@@ -145,8 +154,8 @@
 															<div class="controls">
 
 
-																<input type="text" name="idCardNumber" value=""
-																	id="idCardNumber" />
+																<input type="text" name="idCardNumber" value="${ sessionScope.student_idCard}"
+																	id="idCardNumber" readonly/>
 
 															</div>
 														</div>
@@ -160,28 +169,68 @@
 															<div class="controls">
 
 
-																<input type="text" name="enrollCode" value=""
-																	id="enrollCode" />
-																<p class="text-info">请填写录取通知书号或学工号。</p>
-
-
+																<input type="text" name="enrollCode" value="${ sessionScope.student_idCard}"
+																	id="enrollCode" readonly/>
+																
 															</div>
 														</div>
+														
+															<div class="control-group ">
 
+															<label for="enrollCode" class="control-label">手机号</label>
 
-														<div class="control-group ">
-
-															<label for="captcha" class="control-label">图文验证码</label>
 
 															<div class="controls">
 
-																<input type="text" name="captcha" size="6" class="span6"
-																	placeholder="右侧图片中的字母" value="" id="captcha" /> <img
-																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
-																	id="captchaImage" style="height: 30px" />
+
+																<input type="text" name="mobile" 
+																	id="mobile" value="${ sessionScope.student_mobile}" readonly/>
+																
 															</div>
 														</div>
+														
+														<div class="control-group ">
 
+															<label for="enrollCode" class="control-label">邮箱</label>
+
+
+															<div class="controls">
+
+
+																<input type="text" name="email" 
+																	id="email"  value="${ sessionScope.student_email}" readonly/>
+																
+															</div>
+														</div>
+														
+														<div class="control-group ">
+
+															<label for="enrollCode" class="control-label">密码</label>
+
+
+															<div class="controls">
+
+
+																<input type="text" name="password" 
+																	id="password"  />
+																
+															</div>
+														</div>
+														
+														<div class="control-group ">
+
+															<label for="enrollCode" class="control-label">确认密码</label>
+
+
+															<div class="controls">
+
+
+																<input type="text" name="confirmPassword" 
+																	id="confirmPassword" />
+																
+															</div>
+														</div>
+														
 													</div>
 
 													<div class="span3"></div>

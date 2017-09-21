@@ -32,7 +32,8 @@
 	href="${ctxStatic}/campus-account/css/bundle-bundle_theme.WbAce_head.css"
 	type="text/css" rel="stylesheet" media="screen, projection" />
 
-
+<script src="${ctxStatic}/campus-account/js/mobile.js"
+	type="text/javascript"></script>
 
 
 <!--[if lte IE 8]><link href="${ctxStatic}/campus-account/css/ace-ie.css" type="text/css" rel="stylesheet" media="screen, projection" /><![endif]-->
@@ -91,7 +92,7 @@
 														<span class="step">1</span> <span class="title">核对个人信息</span>
 													</li>
 
-													<li class="" style="min-width: 20%; max-width: 20%;">
+													<li class="active"  class="" style="min-width: 20%; max-width: 20%;">
 														<span class="step">2</span> <span class="title">验证手机号</span>
 													</li>
 
@@ -117,6 +118,14 @@
 												<a class="close" data-dismiss="alert" href="#">×</a>
 												${message}
 											</div>
+											
+											<div
+												class="alert alert-block alert-error" id="errorMobile" style="display: none">
+												<a class="close" data-dismiss="alert" href="#">×</a>
+												手机号码不正确,请确认
+											</div>
+											
+											
 
 											<div class="step-content row-fluid position-relative"
 												id="step-container">
@@ -131,8 +140,7 @@
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" />
-
+																<input type="text" name="username" id="name" value="${ sessionScope.student_username}" readonly/>
 															</div>
 														</div>
 
@@ -145,8 +153,8 @@
 															<div class="controls">
 
 
-																<input type="text" name="idCardNumber" value=""
-																	id="idCardNumber" />
+																<input type="text" name="idCardNumber" value="${ sessionScope.student_idCard}"
+																	id="idCardNumber" readonly/>
 
 															</div>
 														</div>
@@ -160,28 +168,41 @@
 															<div class="controls">
 
 
-																<input type="text" name="enrollCode" value=""
-																	id="enrollCode" />
-																<p class="text-info">请填写录取通知书号或学工号。</p>
-
-
+																<input type="text" name="enrollCode" value="${ sessionScope.student_number}"
+																	id="enrollCode" readonly/>
+																
 															</div>
 														</div>
+														
+															<div class="control-group ">
 
+															<label for="enrollCode" class="control-label">手机号</label>
 
-														<div class="control-group ">
-
-															<label for="captcha" class="control-label">图文验证码</label>
 
 															<div class="controls">
 
-																<input type="text" name="captcha" size="6" class="span6"
-																	placeholder="右侧图片中的字母" value="" id="captcha" /> <img
-																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
-																	id="captchaImage" style="height: 30px" />
+
+																<input type="text" name="mobile" 
+																	id="mobile" />
+																
 															</div>
 														</div>
+														
+														<div class="control-group ">
 
+															<label for="enrollCode" class="control-label">验证码</label>
+
+
+															<div class="controls">
+
+
+																<input type="text" name="code"
+																	id="phonum" size="6" class="span3"/>
+																 <input class="btn btn-mini btn-primary" style="height:30px;width:136px;" type="button" id="getcode" value="点击获取手机验证码" />
+                <span id="telephonenameTip"></span>
+															</div>
+														</div>
+														
 													</div>
 
 													<div class="span3"></div>
@@ -193,8 +214,8 @@
 
 											<div class="row-fluid wizard-actions">
 												<a href="/"
-													class="btn btn-warning pull-left btn-exit"> <i
-													class="icon-stop"></i> 退出
+													class="btn btn-next btn-success pull-left btn-pre"> <i
+													class="icon-arrow-left icon-on-left"></i> 上一步
 												</a>
 
 
@@ -219,6 +240,10 @@
 							$(function() {
 								$('btn-exit').click(function() {
 									window.close();
+								});
+								
+								$('btn-pre').click(function() {
+									window.history.back(-1); 
 								});
 							});
 							function toNext() {

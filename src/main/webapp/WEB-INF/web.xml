@@ -178,6 +178,24 @@
 		<url-pattern>/servlet/validateCodeServlet</url-pattern>
 	</servlet-mapping>
 	
+	
+		<!-- Validate code -->
+	<servlet>
+		<servlet-name>SMSValidateCodeServlet</servlet-name>
+		<servlet-class>com.thinkgem.jeesite.common.servlet.SMSValidateCodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SMSValidateCodeServlet</servlet-name>
+		<url-pattern>/servlet/smsValidateCodeServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>MailValidateCodeServlet</servlet-name>
+		<servlet-class>com.thinkgem.jeesite.common.servlet.MailValidateCodeServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>MailValidateCodeServlet</servlet-name>
+		<url-pattern>/servlet/mailValidateCodeServlet</url-pattern>
+	</servlet-mapping>
 	<!-- FineReport 
 	<servlet>
 		<servlet-name>ReportServer</servlet-name>

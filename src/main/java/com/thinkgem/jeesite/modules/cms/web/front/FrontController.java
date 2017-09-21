@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.servlet.MailValidateCodeServlet;
+import com.thinkgem.jeesite.common.servlet.SMSValidateCodeServlet;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
+import com.thinkgem.jeesite.common.utils.IdGen;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.api.service.ApiService;
 import com.thinkgem.jeesite.modules.cms.entity.Article;
 import com.thinkgem.jeesite.modules.cms.entity.Category;
 import com.thinkgem.jeesite.modules.cms.entity.Comment;
@@ -36,6 +42,7 @@ import com.thinkgem.jeesite.modules.cms.service.CommentService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.service.SiteService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 
 /**
  * 网站Controller
@@ -58,6 +65,8 @@ public class FrontController extends BaseController{
 	private CategoryService categoryService;
 	@Autowired
 	private SiteService siteService;
+	@Autowired
+	private ApiService apiService;
 	
 	/**
 	 * 网站首页
@@ -79,6 +88,132 @@ public class FrontController extends BaseController{
 		// 子站有独立页面，则显示独立页面
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
 	}
+	
+	
+	@RequestMapping(value = "common", method = RequestMethod.POST)
+	public String common(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		HttpSession session = request.getSession();
+		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+		String username = WebUtils.getCleanParam(request, "username");
+		String idCardNumber = WebUtils.getCleanParam(request, "idCardNumber");
+		String enrollCode = WebUtils.getCleanParam(request, "enrollCode");
+		
+		String captcha = request.getParameter("captcha");
+		
+		if(!ValidateCodeServlet.validate(request,captcha)){
+			message = "图文验证码错误, 请重试.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
+		}
+		
+		String number = apiService.getStudentNumber(username, idCardNumber);
+		if(StringUtils.isBlank(number)){
+			message = " 系统中找不到与您填写的信息匹配的人员, 请重试.";
+		}
+		if(StringUtils.isNotBlank(number)){
+			if(StringUtils.isNotBlank(enrollCode)&&!enrollCode.equals(number)){
+				message = "学号信息不匹配,如果忘记学号请不要填写 请重试.";
+			}
+		}
+		
+		model.addAttribute(FormAuthenticationFilter.DEFAULT_USERNAME_PARAM, username);
+		model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+		
+		session.setAttribute("student_username", username);
+		session.setAttribute("student_idCard", idCardNumber);
+		session.setAttribute("student_number", number);
+		
+		
+		if(!StringUtils.isNotEmpty(message)){
+			return "redirect:"+Global.getFrontPath()+"/skip/Mobile";
+		}
+		
+		// 验证失败清空验证码
+		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGen.uuid());
+		
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
+	}
+	
+	@RequestMapping(value = "skip/{module}")
+	public String frontCheckMobile(@PathVariable("module") String module) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		module = module.substring(0, 1).toUpperCase() + module.substring(1);
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheck".concat(module);
+	}
+	
+	
+	@RequestMapping(value = "checkMobile", method = RequestMethod.POST)
+	public String checkMobile(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		HttpSession session = request.getSession();
+		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+		String mobile = WebUtils.getCleanParam(request, "mobile");
+		
+		
+		String code = request.getParameter("code");
+		
+		if(!SMSValidateCodeServlet.validate(request,code)){
+			message = "短信验证码错误, 请重试.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMobile";
+		}
+		
+		session.setAttribute("student_mobile", mobile);
+		
+		return "redirect:"+Global.getFrontPath()+"/skip/Mobile";
+	}
+	
+	
+	@RequestMapping(value = "checkMail", method = RequestMethod.POST)
+	public String checkMail(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		HttpSession session = request.getSession();
+		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+		String email = WebUtils.getCleanParam(request, "email");
+		String code = request.getParameter("code");
+		
+		if(!MailValidateCodeServlet.validate(request,code)){
+			message = "邮件验证码错误, 请重试.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMail";
+		}
+		
+		session.setAttribute("student_email", email);
+		
+		return "redirect:"+Global.getFrontPath()+"/skip/Pwd";
+	}
+	
+	@RequestMapping(value = "checkOk", method = RequestMethod.POST)
+	public String checkOk(HttpServletRequest request, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		HttpSession session = request.getSession();
+		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
+		String password = WebUtils.getCleanParam(request, "password");
+		String confirmPassword = WebUtils.getCleanParam(request, "confirmPassword");
+		String code = request.getParameter("code");
+		
+		if(StringUtils.isBlank(password)){
+			message = "密码不允许为空.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckPwd";
+		}
+		
+		if(password.equals(confirmPassword)){
+			message = "两次密码不相等,请确认.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckPwd";
+		}
+		
+		//业务逻辑操作,需要创建用户,创建学生相关信息
+		
+		return "redirect:"+Global.getFrontPath()+"/skip/Ok";
+	}
+	
 	
 	/**
 	 * 网站首页

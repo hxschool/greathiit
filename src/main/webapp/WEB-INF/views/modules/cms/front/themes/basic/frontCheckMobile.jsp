@@ -73,7 +73,7 @@
 
 						<h3>统一身份认证账号注册</h3>
 
-						<form action="common"
+						<form action="checkMobile"
 							method="post" class="form-horizontal">
 							
 
@@ -243,7 +243,7 @@
 								});
 								
 								$('btn-pre').click(function() {
-									window.history.back(-1); 
+									window.location.href=document.referrer;
 								});
 							});
 							function toNext() {

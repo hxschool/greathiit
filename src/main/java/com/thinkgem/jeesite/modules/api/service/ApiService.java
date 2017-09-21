@@ -31,6 +31,10 @@ public class ApiService {
 		return apiDao.getDepartment();
 	}
 	
+	public String getOfficeId(String name){
+		return apiDao.getOfficeId(name);
+	}
+	
 	public String getStudentNumber(String username,String idCard){
 		return ucStudentDao.findNumberByUsernameAndIdCard(username, idCard);
 	}

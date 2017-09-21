@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.cms.web.front;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,7 +43,12 @@ import com.thinkgem.jeesite.modules.cms.service.CommentService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.service.SiteService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
 
 /**
  * 网站Controller
@@ -67,6 +73,8 @@ public class FrontController extends BaseController{
 	private SiteService siteService;
 	@Autowired
 	private ApiService apiService;
+	@Autowired
+	private SystemService systemService;
 	
 	/**
 	 * 网站首页
@@ -78,16 +86,7 @@ public class FrontController extends BaseController{
 		model.addAttribute("isIndex", true);
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontIndex";
 	}
-	
-	/**
-	 * 网站首页
-	 */
-	@RequestMapping(value = "register")
-	public String register() {
-		Site site = CmsUtils.getSite(Site.defaultSiteId());
-		// 子站有独立页面，则显示独立页面
-		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
-	}
+
 	
 	
 	@RequestMapping(value = "common", method = RequestMethod.POST)
@@ -127,7 +126,7 @@ public class FrontController extends BaseController{
 		
 		
 		if(!StringUtils.isNotEmpty(message)){
-			return "redirect:"+Global.getFrontPath()+"/skip/Mobile";
+			return "redirect:"+Global.getFrontPath()+"/skip_Mobile";
 		}
 		
 		// 验证失败清空验证码
@@ -136,7 +135,7 @@ public class FrontController extends BaseController{
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
 	}
 	
-	@RequestMapping(value = "skip/{module}")
+	@RequestMapping(value = "skip_{module}")
 	public String frontCheckMobile(@PathVariable("module") String module) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		module = module.substring(0, 1).toUpperCase() + module.substring(1);
@@ -163,7 +162,7 @@ public class FrontController extends BaseController{
 		
 		session.setAttribute("student_mobile", mobile);
 		
-		return "redirect:"+Global.getFrontPath()+"/skip/Mobile";
+		return "redirect:"+Global.getFrontPath()+"/skip_Mail";
 	}
 	
 	
@@ -184,10 +183,10 @@ public class FrontController extends BaseController{
 		
 		session.setAttribute("student_email", email);
 		
-		return "redirect:"+Global.getFrontPath()+"/skip/Pwd";
+		return "redirect:"+Global.getFrontPath()+"/skip_Pwd";
 	}
 	
-	@RequestMapping(value = "checkOk", method = RequestMethod.POST)
+	@RequestMapping(value = "checkPwd", method = RequestMethod.POST)
 	public String checkOk(HttpServletRequest request, HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		
@@ -195,7 +194,7 @@ public class FrontController extends BaseController{
 		String message = (String)request.getAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM);
 		String password = WebUtils.getCleanParam(request, "password");
 		String confirmPassword = WebUtils.getCleanParam(request, "confirmPassword");
-		String code = request.getParameter("code");
+		
 		
 		if(StringUtils.isBlank(password)){
 			message = "密码不允许为空.";
@@ -203,15 +202,50 @@ public class FrontController extends BaseController{
 			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckPwd";
 		}
 		
-		if(password.equals(confirmPassword)){
+		if(!password.equals(confirmPassword)){
 			message = "两次密码不相等,请确认.";
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
 			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckPwd";
 		}
 		
 		//业务逻辑操作,需要创建用户,创建学生相关信息
+		String no = (String)session.getAttribute("student_number");//学号
+		String name = (String)session.getAttribute("student_username");//用户名
+		String loginname = (String)session.getAttribute("student_idCard");//身份证
+		String mobile = (String)session.getAttribute("student_mobile");
+		String email = (String)session.getAttribute("student_email");
+		User user = new User();
+		user.setNo(no);
+		user.setName(name);
+		user.setLoginName(loginname);
+		user.setMobile(mobile);
+		user.setPhone(mobile);
+		user.setEmail(email);
+		user.setPassword(SystemService.entryptPassword(password));
+		Role role = new Role("6");
+		List<Role> rs = new ArrayList<Role>();
+		rs.add(role);
+		user.setRole(role);
+		user.setRoleList(rs);
+		user.setLoginFlag("1");
+		user.setUserType("3");
+		UcStudent student = apiService.getStudentNumber(name, loginname, no);
+		String department = student.getDepartment();
+		String major = student.getMajor();
 		
-		return "redirect:"+Global.getFrontPath()+"/skip/Ok";
+		String companyId = apiService.getOfficeId(department);
+		String officeId = apiService.getOfficeId(major);
+		user.setCompany(new Office(companyId));
+		user.setOffice(new Office(officeId));
+		
+		if(Global.getConfig("virtualAccount").equals("true")){
+			//开通虚拟账户系统
+			String accountNo = "1";
+			user.setAccountNo(accountNo);
+		}
+		systemService.saveUser(user);
+		
+		return "redirect:"+Global.getFrontPath()+"/skip_Ok";
 	}
 	
 	

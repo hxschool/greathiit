@@ -11,4 +11,8 @@
 		select id,name from sys_office where parent_id=1 and del_flag=0 and grade=2
 	</select>
 	
+	<select id="getOfficeId" resultType="String">
+		select id from sys_office where del_flag=0 and trim(name)=trim(${name})
+	</select>
+	
 </mapper>

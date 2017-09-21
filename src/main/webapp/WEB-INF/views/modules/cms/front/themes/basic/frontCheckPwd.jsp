@@ -32,8 +32,7 @@
 	href="${ctxStatic}/campus-account/css/bundle-bundle_theme.WbAce_head.css"
 	type="text/css" rel="stylesheet" media="screen, projection" />
 
-<script src="${ctxStatic}/campus-account/js/mail.js"
-	type="text/javascript"></script>
+
 
 
 <!--[if lte IE 8]><link href="${ctxStatic}/campus-account/css/ace-ie.css" type="text/css" rel="stylesheet" media="screen, projection" /><![endif]-->
@@ -73,7 +72,7 @@
 
 						<h3>统一身份认证账号注册</h3>
 
-						<form action="common"
+						<form action="checkPwd"
 							method="post" class="form-horizontal">
 							
 
@@ -140,8 +139,7 @@
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" value="${ sessionScope.student_username}" readonly/>
-
+																<input type="text" name="username" id="name" value="${ sessionScope.student_username}" readonly/>
 															</div>
 														</div>
 
@@ -169,7 +167,7 @@
 															<div class="controls">
 
 
-																<input type="text" name="enrollCode" value="${ sessionScope.student_idCard}"
+																<input type="text" name="enrollCode" value="${ sessionScope.student_number}"
 																	id="enrollCode" readonly/>
 																
 															</div>
@@ -184,7 +182,7 @@
 
 
 																<input type="text" name="mobile" 
-																	id="mobile" value="${ sessionScope.student_mobile}" readonly/>
+																	id="mobile" value="${ sessionScope.student_mobile}"/>
 																
 															</div>
 														</div>
@@ -211,7 +209,7 @@
 															<div class="controls">
 
 
-																<input type="text" name="password" 
+																<input type="password" name="password" 
 																	id="password"  />
 																
 															</div>
@@ -225,7 +223,7 @@
 															<div class="controls">
 
 
-																<input type="text" name="confirmPassword" 
+																<input type="password" name="confirmPassword" 
 																	id="confirmPassword" />
 																
 															</div>

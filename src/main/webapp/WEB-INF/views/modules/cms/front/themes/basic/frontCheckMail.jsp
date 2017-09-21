@@ -73,7 +73,7 @@
 
 						<h3>统一身份认证账号注册</h3>
 
-						<form action="common"
+						<form action="checkMail"
 							method="post" class="form-horizontal">
 							
 
@@ -140,8 +140,7 @@
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" value="${ sessionScope.student_username}" readonly/>
-
+																<input type="text" name="username" id="name" value="${ sessionScope.student_username}" readonly/>
 															</div>
 														</div>
 
@@ -169,7 +168,7 @@
 															<div class="controls">
 
 
-																<input type="text" name="enrollCode" value="${ sessionScope.student_idCard}"
+																<input type="text" name="enrollCode" value="${ sessionScope.student_number}"
 																	id="enrollCode" readonly/>
 																
 															</div>

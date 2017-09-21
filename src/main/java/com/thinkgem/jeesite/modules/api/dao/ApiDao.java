@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.api.dao;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +27,10 @@ public interface ApiDao{
 	 * @return
 	 */
 	public List<Map<String,Object>> getDepartment();
-
+	/**
+	 * 通过名称获取主键
+	 * @param name
+	 * @return
+	 */
+	public String getOfficeId(@Param("name")String name);
 }

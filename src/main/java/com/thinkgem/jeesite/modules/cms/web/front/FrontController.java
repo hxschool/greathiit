@@ -48,6 +48,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
 
 /**
@@ -237,7 +238,13 @@ public class FrontController extends BaseController{
 		String officeId = apiService.getOfficeId(major);
 		user.setCompany(new Office(companyId));
 		user.setOffice(new Office(officeId));
-		
+		User u = UserUtils.get("1");
+		user.setCreateBy(u);
+		user.setCreateDate(new Date());
+		user.setDelFlag("0");
+		user.setUpdateBy(u);
+		user.setUpdateDate(new Date());
+		user.setRemarks("认证学生信息");
 		if(Global.getConfig("virtualAccount").equals("true")){
 			//开通虚拟账户系统
 			String accountNo = "1";

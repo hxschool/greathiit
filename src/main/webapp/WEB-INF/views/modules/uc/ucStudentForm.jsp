@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>学生基本信息管理</title>
+	<title>学籍信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,9 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/uc/ucStudent/">学生基本信息列表</a></li>
-		<li><a href="${ctx}/uc/ucStudent/group">数据统计</a></li>
-		<li class="active"><a href="${ctx}/uc/ucStudent/form?id=${ucStudent.id}">学生基本信息<shiro:hasPermission name="uc:ucStudent:edit">${not empty ucStudent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:ucStudent:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/uc/ucStudent/">学籍信息列表</a></li>
+		<li class="active"><a href="${ctx}/uc/ucStudent/form?id=${ucStudent.id}">学籍信息<shiro:hasPermission name="uc:ucStudent:edit">${not empty ucStudent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:ucStudent:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -42,9 +41,15 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">生源所在地：</label>
+			<div class="controls">
+				<form:input path="location" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">学号：</label>
 			<div class="controls">
-				<form:input path="number" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -56,37 +61,80 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">身份证号：</label>
+			<label class="control-label">性别：</label>
+			<div class="controls">
+				
+				
+				<form:select path="gender" class="input-medium">
+					<form:options items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">出生日期：</label>
+			<div class="controls">
+				<form:input path="birthday" htmlEscape="false" maxlength="14" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">身份证号码：</label>
 			<div class="controls">
 				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">性别：</label>
+			<label class="control-label">政治面貌：</label>
 			<div class="controls">
-				<form:radiobuttons path="gender" items="${fns:getDictList('sex')}" itemLabel="label" itemValue="value" htmlEscape="false" class="required"/>
+				<form:input path="political" htmlEscape="false" maxlength="18" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">民族：</label>
+			<div class="controls">
+				<form:input path="nation" htmlEscape="false" maxlength="18" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">标注代码：</label>
+			<div class="controls">
+				<form:input path="departmentCode" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">生日：</label>
+			<label class="control-label">学院代码：</label>
 			<div class="controls">
-				<form:input path="birthday" htmlEscape="false" maxlength="11" class="input-xlarge required"/>
+				<form:input path="departmentId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">学院名称：</label>
+			<div class="controls">
+				<form:input path="departmentName" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">院系：</label>
+			<label class="control-label">标注代码：</label>
 			<div class="controls">
-				<form:input path="department" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="majorCode" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">专业：</label>
+			<label class="control-label">专业代码：</label>
 			<div class="controls">
-				<form:input path="major" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="majorId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">专业名称：</label>
+			<div class="controls">
+				<form:input path="majorName" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -104,21 +152,58 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">学制：</label>
+			<div class="controls">
+				<form:input path="schoolSystem" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">学习形式：</label>
+			<div class="controls">
+				<form:input path="learning" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">入学日期：</label>
+			<div class="controls">
+				<form:input path="startDate" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">当前所在年级：</label>
+			<div class="controls">
+				<form:input path="currentLevel" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">结业日期(预计毕业日期)：</label>
+			<div class="controls">
+				<form:input path="overDate" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<form:input path="status" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">身份所在城市代码：</label>
+			<div class="controls">
+				<form:input path="regionCode" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">身份所在城市信息：</label>
+			<div class="controls">
+				<form:input path="regionName" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">备注信息：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">行政区编码：</label>
-			<div class="controls">
-				<form:input path="code" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">行政区：</label>
-			<div class="controls">
-				<form:input path="region" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="form-actions">

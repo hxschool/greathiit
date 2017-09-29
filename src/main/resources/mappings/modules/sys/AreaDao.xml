@@ -31,6 +31,17 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	
+	    
+	<select id="findAreaByParentId" resultType="Area">
+		SELECT
+			<include refid="areaColumns"/>
+		FROM sys_area a
+		<include refid="areaJoins"/>
+		WHERE a.parent_id = #{parentId}
+	</select>
+	
+	
 	<select id="findList" resultType="Area">
 		SELECT
 			<include refid="areaColumns"/>

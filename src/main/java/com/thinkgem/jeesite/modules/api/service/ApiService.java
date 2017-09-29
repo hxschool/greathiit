@@ -6,8 +6,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.modules.api.dao.ApiDao;
+import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
+import com.thinkgem.jeesite.modules.sys.entity.Area;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
 
@@ -23,6 +27,8 @@ public class ApiService {
 	private UcStudentDao ucStudentDao;
 	@Autowired
 	private ApiDao apiDao;
+	@Autowired
+	private AreaDao areaDao;
 	
 	public List<Map<String,Object>> getMajor(){
 		return apiDao.getMajor();
@@ -41,5 +47,12 @@ public class ApiService {
 	
 	public UcStudent getStudentNumber(String username,String idCard,String number){
 		return ucStudentDao.findNumberByUsernameAndIdCardAndNumber(username, idCard, number);
+	}
+	
+	public List<Area> getArea(String parentId){
+		if(StringUtils.isEmpty(parentId)){
+			return UserUtils.getAreaList();
+		}
+		return areaDao.findAreaByParentId(parentId);
 	}
 }

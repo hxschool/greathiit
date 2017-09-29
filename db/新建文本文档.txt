@@ -1,6 +1,0 @@
-CREATE DATABASE IF NOT EXISTS greathiit DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
-grant all privileges on greathiit.* to greathiit@localhost identified by 'f6zx3qc';
-grant all privileges on greathiit.* to greathiit@'%' identified by 'f6zx3qc';
-grant create routine on greathiit.* to greathiit@'%';
-grant alter  routine on greathiit.* to greathiit@'%';
-grant execute on greathiit.* to greathiit@'%';

@@ -5,23 +5,36 @@
 	<sql id="ucStudentColumns">
 		a.id AS "id",
 		a.exa_number AS "exaNumber",
-		a.number AS "number",
+		a.location AS "location",
+		a.student_number AS "studentNumber",
 		a.username AS "username",
-		a.id_card AS "idCard",
 		a.gender AS "gender",
 		a.birthday AS "birthday",
-		a.department AS "department",
-		a.major AS "major",
+		a.id_card AS "idCard",
+		a.political AS "political",
+		a.nation AS "nation",
+		a.department_code AS "departmentCode",
+		a.department_id AS "departmentId",
+		a.department_name AS "departmentName",
+		a.major_code AS "majorCode",
+		a.major_id AS "majorId",
+		a.major_name AS "majorName",
 		a.class_number AS "classNumber",
 		a.edu AS "edu",
+		a.school_system AS "schoolSystem",
+		a.learning AS "learning",
+		a.start_date AS "startDate",
+		a.current_level AS "currentLevel",
+		a.over_date AS "overDate",
+		a.status AS "status",
+		a.region_code AS "regionCode",
+		a.region_name AS "regionName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		a.code AS "code",
-		a.region AS "region"
+		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="ucStudentJoins">
@@ -42,26 +55,14 @@
 		<include refid="ucStudentJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="exaNumber != null and exaNumber != ''">
-				AND a.exa_number = #{exaNumber}
-			</if>
-			<if test="number != null and number != ''">
-				AND a.number LIKE 
-					<if test="dbName == 'oracle'">'%'||#{number}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{number}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{number},'%')</if>
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
 			</if>
 			<if test="username != null and username != ''">
-				AND a.username LIKE 
-					<if test="dbName == 'oracle'">'%'||#{username}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{username}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{username},'%')</if>
+				AND a.username = #{username}
 			</if>
 			<if test="idCard != null and idCard != ''">
-				AND a.id_card LIKE 
-					<if test="dbName == 'oracle'">'%'||#{idCard}||'%'</if>
-					<if test="dbName == 'mssql'">'%'+#{idCard}+'%'</if>
-					<if test="dbName == 'mysql'">concat('%',#{idCard},'%')</if>
+				AND a.id_card = #{idCard}
 			</if>
 		</where>
 		<choose>
@@ -72,27 +73,6 @@
 				ORDER BY a.update_date DESC
 			</otherwise>
 		</choose>
-	</select>
-
-	<select id="findNumberByUsernameAndIdCard" resultType="String">
-		SELECT
-		a.number
-		FROM uc_student a
-		<include refid="ucStudentJoins" />
-		<where>
-			a.username=#{username} and a.id_card=#{idCard}
-		</where>
-	</select>
-	
-	
-	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="UcStudent">
-		SELECT
-		<include refid="ucStudentColumns" />
-		FROM uc_student a
-		<include refid="ucStudentJoins" />
-		<where>
-			a.username=#{username} and a.id_card=#{idCard} and a.number=#{number}
-		</where>
 	</select>
 	
 	<select id="findAllList" resultType="UcStudent">
@@ -117,63 +97,102 @@
 		INSERT INTO uc_student(
 			id,
 			exa_number,
-			number,
+			location,
+			student_number,
 			username,
-			id_card,
 			gender,
 			birthday,
-			department,
-			major,
+			id_card,
+			political,
+			nation,
+			department_code,
+			department_id,
+			department_name,
+			major_code,
+			major_id,
+			major_name,
 			class_number,
 			edu,
+			school_system,
+			learning,
+			start_date,
+			current_level,
+			over_date,
+			status,
+			region_code,
+			region_name,
 			create_by,
 			create_date,
 			update_by,
 			update_date,
 			remarks,
-			del_flag,
-			code,
-			region
+			del_flag
 		) VALUES (
 			#{id},
 			#{exaNumber},
-			#{number},
+			#{location},
+			#{studentNumber},
 			#{username},
-			#{idCard},
 			#{gender},
 			#{birthday},
-			#{department},
-			#{major},
+			#{idCard},
+			#{political},
+			#{nation},
+			#{departmentCode},
+			#{departmentId},
+			#{departmentName},
+			#{majorCode},
+			#{majorId},
+			#{majorName},
 			#{classNumber},
 			#{edu},
+			#{schoolSystem},
+			#{learning},
+			#{startDate},
+			#{currentLevel},
+			#{overDate},
+			#{status},
+			#{regionCode},
+			#{regionName},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag},
-			#{code},
-			#{region}
+			#{delFlag}
 		)
 	</insert>
 	
 	<update id="update">
 		UPDATE uc_student SET 	
 			exa_number = #{exaNumber},
-			number = #{number},
+			location = #{location},
+			student_number = #{studentNumber},
 			username = #{username},
-			id_card = #{idCard},
 			gender = #{gender},
 			birthday = #{birthday},
-			department = #{department},
-			major = #{major},
+			id_card = #{idCard},
+			political = #{political},
+			nation = #{nation},
+			department_code = #{departmentCode},
+			department_id = #{departmentId},
+			department_name = #{departmentName},
+			major_code = #{majorCode},
+			major_id = #{majorId},
+			major_name = #{majorName},
 			class_number = #{classNumber},
 			edu = #{edu},
+			school_system = #{schoolSystem},
+			learning = #{learning},
+			start_date = #{startDate},
+			current_level = #{currentLevel},
+			over_date = #{overDate},
+			status = #{status},
+			region_code = #{regionCode},
+			region_name = #{regionName},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks},
-			code = #{code},
-			region = #{region}
+			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
 	
@@ -183,8 +202,9 @@
 		WHERE id = #{id}
 	</update>
 	
+		
 	<select id="studentGroup" resultType="map">
-		select  count(del_flag) as TOTAL,CASE WHEN del_flag=0 then '正常' WHEN gender=1 then '未入学' end as NAME  from uc_student   group by del_flag
+		select  count(current_level) as TOTAL,current_level as NAME  from uc_student   group by current_level
 	</select>
 	
 	<select id="studentSex" resultType="map">
@@ -192,7 +212,7 @@
 	</select>
 	
 	<select id="studentRegion" resultType="map">
-		select  count(gender) as TOTAL,gender as LABEL,replace(replace(region,'市',''),'省','') as NAME from uc_student where del_flag=0 group by gender,left(code,2),region
+		select  count(gender) as TOTAL,gender as LABEL,replace(replace(region_name,'市',''),'省','') as NAME from uc_student where del_flag=0 group by gender,left(region_code,2),region_name
 	</select>
 	
 	<select id="studentEdu" resultType="map">
@@ -200,11 +220,11 @@
 	</select>
 	
 	<select id="studentDepartment" resultType="map">
-		select  count(department)  as TOTAL,department  as NAME  from uc_student  where del_flag=0 group by department
+		select  count(department_name)  as TOTAL,department_name  as NAME  from uc_student  where del_flag=0 group by department_name
 	</select>
 	
 	<select id="studentMajor" resultType="map">
-		select  count(major) as TOTAL,major as NAME  from uc_student  where del_flag=0 group by major
+		select  count(major_name) as TOTAL,major_name as NAME  from uc_student  where del_flag=0 group by major_name
 	</select>
 	
 </mapper>

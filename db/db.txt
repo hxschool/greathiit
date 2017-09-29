@@ -1,0 +1,83 @@
+CREATE DATABASE IF NOT EXISTS greathiit DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+grant all privileges on greathiit.* to greathiit@localhost identified by 'f6zx3qc';
+grant all privileges on greathiit.* to greathiit@'%' identified by 'f6zx3qc';
+grant create routine on greathiit.* to greathiit@'%';
+grant alter  routine on greathiit.* to greathiit@'%';
+grant execute on greathiit.* to greathiit@'%';
+
+
+
+
+
+CREATE TABLE uc_student  ( 
+	id             	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
+	exa_number     	varchar(64) COMMENT '考试号'  NOT NULL,
+	location       	varchar(64) COMMENT '生源所在地'  NULL,
+	studentid      	varchar(64) COMMENT '学号'  NOT NULL,
+	username       	varchar(64) COMMENT '真实姓名'  NOT NULL,
+	gender          	varchar(64) COMMENT '性别'  NOT NULL,
+	birthday       	varchar(14) COMMENT '出生日期'  NULL,
+	id_card        	varchar(18) COMMENT '身份证号码'  NOT NULL,
+	political      	varchar(18) COMMENT '政治面貌'  NULL,
+	nation         	varchar(18) COMMENT '民族'  NULL,
+    department_code  	varchar(64) COMMENT '所在标注代码'  NOT NULL,
+	department_id  	varchar(64) COMMENT '院校代码'  NOT NULL,
+	department_name	varchar(64) COMMENT '院校名称'  NOT NULL,
+    major_code        	varchar(64) COMMENT '标注代码'  NOT NULL,
+	major_id        	varchar(64) COMMENT '专业代码'  NOT NULL,
+	major_name      	varchar(64) COMMENT '专业名称'  NOT NULL,
+	class_number   	varchar(64) COMMENT '班号'  NOT NULL,
+	edu            	varchar(64) COMMENT '层次(学历)'  NULL,
+	school_system  	varchar(64) COMMENT '学制'  NULL,
+	learning       	varchar(64) COMMENT '学习形式'  NULL,
+	start_date     	varchar(64) COMMENT '入学日期'  NULL,
+	current_level  	varchar(64) COMMENT '当前所在年级'  NOT NULL,
+	over_date      	varchar(64) COMMENT '结业日期(预计毕业日期)'  NULL,
+	status         	varchar(64) COMMENT '状态'  NULL,
+	region_code    	varchar(64) COMMENT '身份所在城市代码'  NULL,
+	region_name    	varchar(64) COMMENT '身份所在城市信息'  NULL,
+	create_by      	varchar(64) COMMENT '创建者'   NULL,
+	create_date    	datetime COMMENT '创建时间'   NULL,
+	update_by      	varchar(64) COMMENT '更新者'   NULL,
+	update_date    	datetime COMMENT '更新时间'   NULL,
+	remarks        	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag       	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;
+
+
+CREATE TABLE uc_emergency_contact  ( 
+	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
+	student_id    	varchar(64) COMMENT '学生信息表编码'  NOT NULL,
+	student_number	varchar(64) COMMENT '学号'  NOT NULL,
+	contact_type  	varchar(2) COMMENT '1:微信,2:QQ,3:手机'  NOT NULL,
+	contact       	varchar(64) COMMENT '联系方式'  NOT NULL,
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;
+
+
+CREATE TABLE uc_contact_person  ( 
+	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
+	student_id    	varchar(64) COMMENT '学生信息表编码'  NOT NULL,
+	student_number	varchar(64) COMMENT '学号'  NOT NULL,
+	contact_type  	varchar(2) COMMENT '0:本人 1:同事 2:配偶 3:父亲 4:母亲 5:其他亲属 6:朋友 7:同学 8:其他 9:子女'  NULL,
+	contact       	varchar(64) COMMENT '联系方式'  NOT NULL,
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;
+
+

@@ -76,8 +76,8 @@
                              // 'horizontal' ¦ 'vertical'
 							  x: 'left',               // 水平安放位置，默认为全图居中，可选为：
 							  y: 'top',                  // 垂直安放位置，默认为全图顶端，可选为：
-							  itemWidth: 20,             // 图例图形宽度
-							  itemHeight: 14,            // 图例图形高度
+							  itemWidth: 12,             // 图例图形宽度
+							  itemHeight:14,            // 图例图形高度
 							  textStyle: {
 							      color: '#333'          // 图例文字颜色
 							  },
@@ -86,7 +86,7 @@
 						series : [ {
 							name : '学院统计',
 							type : 'pie',
-							radius : '75%',
+							radius : '65%',
 							center : [ '50%', '50%' ],
 							data :serData,
 							

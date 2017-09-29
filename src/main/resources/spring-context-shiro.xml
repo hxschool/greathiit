@@ -31,9 +31,9 @@
 	
 	<!-- 安全认证过滤器 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" /><!-- 
-		<property name="loginUrl" value="${cas.server.url}?service=${cas.project.url}${adminPath}/cas" /> -->
-		<property name="loginUrl" value="${adminPath}/login" />
+		<property name="securityManager" ref="securityManager" />
+			<property name="loginUrl" value="${adminPath}/login" /> 
+	<!-- <property name="loginUrl" value="${cas.server.url}?service=${cas.project.url}${adminPath}/cas" />-->
 		<property name="successUrl" value="${adminPath}?login" />
 		<property name="filters">
             <map>
@@ -46,6 +46,13 @@
 		</property>
 	</bean>
 	
+	
+	<bean id="casRealm" class="com.thinkgem.jeesite.modules.sys.security.CasLoginRealm">
+        <property name="casServerUrlPrefix" value="${cas.server.url}"/>
+        <!-- 客户端的回调地址设置，必须和下面的shiro-cas过滤器拦截的地址一致 -->
+        <property name="casService" value="${cas.project.url}${adminPath}/cas"/>
+</bean>
+	
 	<!-- CAS认证过滤器 -->  
 	<bean id="casFilter" class="org.apache.shiro.cas.CasFilter">  
 		<property name="failureUrl" value="${adminPath}/login"/>
@@ -53,7 +60,8 @@
 	
 	<!-- 定义Shiro安全管理配置 -->
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="systemAuthorizingRealm" />
+		<!-- <property name="realm" ref="casRealm" />-->
+		 <property name="realm" ref="systemAuthorizingRealm" /> 
 		<property name="sessionManager" ref="sessionManager" />
 		<property name="cacheManager" ref="shiroCacheManager" />
 	</bean>

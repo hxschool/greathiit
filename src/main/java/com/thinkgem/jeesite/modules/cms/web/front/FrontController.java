@@ -231,8 +231,8 @@ public class FrontController extends BaseController{
 		user.setLoginFlag("1");
 		user.setUserType("3");
 		UcStudent student = apiService.getStudentNumber(name, loginname, no);
-		String department = student.getDepartment();
-		String major = student.getMajor();
+		String department = student.getDepartmentName();
+		String major = student.getMajorName();
 		
 		String companyId = apiService.getOfficeId(department);
 		String officeId = apiService.getOfficeId(major);

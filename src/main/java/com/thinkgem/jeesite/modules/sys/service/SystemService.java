@@ -127,6 +127,18 @@ public class SystemService extends BaseService implements InitializingBean {
 		return list;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<User> findAllList(User user) {
+		List<User> list = (List<User>)CacheUtils.get(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_.concat("ALL"));
+		if (list == null){
+
+			list = userDao.findAllList(user);
+			
+			CacheUtils.put(UserUtils.USER_CACHE, UserUtils.USER_CACHE_LIST_BY_OFFICE_ID_.concat("ALL"), list);
+		}
+		return list;
+	}
+	
 	@Transactional(readOnly = false)
 	public void saveUser(User user) {
 		if (StringUtils.isBlank(user.getId())){

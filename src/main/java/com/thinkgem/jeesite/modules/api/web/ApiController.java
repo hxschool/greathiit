@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.api.service.ApiService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 @Controller
 @RequestMapping(value = "api")

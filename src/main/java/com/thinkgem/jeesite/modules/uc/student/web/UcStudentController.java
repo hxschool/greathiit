@@ -1,9 +1,8 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.uc.web;
+package com.thinkgem.jeesite.modules.uc.student.web;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,8 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
-import com.thinkgem.jeesite.modules.uc.service.UcStudentService;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
 /**
  * 学生基本信息Controller
@@ -33,7 +32,7 @@ import com.thinkgem.jeesite.modules.uc.service.UcStudentService;
  * @version 2017-09-19
  */
 @Controller
-@RequestMapping(value = "${adminPath}/uc/ucStudent")
+@RequestMapping(value = "${adminPath}/uc/student")
 public class UcStudentController extends BaseController {
 
 	@Autowired
@@ -57,7 +56,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentGroup(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentGroup";
+		return "modules/uc/student/studentGroup";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -66,7 +65,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentSex(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentSex";
+		return "modules/uc/student/studentSex";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -75,7 +74,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentRegion(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentRegion";
+		return "modules/uc/student/studentRegion";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -84,7 +83,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentEdu(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentEdu";
+		return "modules/uc/student/studentEdu";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -93,7 +92,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentMajor(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentMajor";
+		return "modules/uc/student/studentMajor";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -102,7 +101,7 @@ public class UcStudentController extends BaseController {
 		List<Map<String,Object>> list = ucStudentService.studentDepartment(beginDate, endDate);
 				
 		model.addAttribute("list", list);
-		return "modules/uc/studentDepartment";
+		return "modules/uc/student/studentDepartment";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -110,14 +109,14 @@ public class UcStudentController extends BaseController {
 	public String list(UcStudent ucStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<UcStudent> page = ucStudentService.findPage(new Page<UcStudent>(request, response), ucStudent); 
 		model.addAttribute("page", page);
-		return "modules/uc/ucStudentList";
+		return "modules/uc/student/ucStudentList";
 	}
 
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping(value = "form")
 	public String form(UcStudent ucStudent, Model model) {
 		model.addAttribute("ucStudent", ucStudent);
-		return "modules/uc/ucStudentForm";
+		return "modules/uc/student/ucStudentForm";
 	}
 
 	@RequiresPermissions("uc:ucStudent:edit")
@@ -128,7 +127,7 @@ public class UcStudentController extends BaseController {
 		}
 		ucStudentService.save(ucStudent);
 		addMessage(redirectAttributes, "保存学生基本信息成功");
-		return "redirect:"+Global.getAdminPath()+"/uc/ucStudent/?repage";
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:edit")
@@ -136,7 +135,7 @@ public class UcStudentController extends BaseController {
 	public String delete(UcStudent ucStudent, RedirectAttributes redirectAttributes) {
 		ucStudentService.delete(ucStudent);
 		addMessage(redirectAttributes, "删除学生基本信息成功");
-		return "redirect:"+Global.getAdminPath()+"/uc/ucStudent/?repage";
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 
 }

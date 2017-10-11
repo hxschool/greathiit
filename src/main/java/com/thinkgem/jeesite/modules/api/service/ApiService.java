@@ -12,8 +12,8 @@ import com.thinkgem.jeesite.modules.api.dao.ApiDao;
 import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
 import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.uc.dao.UcStudentDao;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生基本信息Service

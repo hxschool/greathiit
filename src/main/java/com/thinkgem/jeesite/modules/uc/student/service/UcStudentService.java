@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.uc.service;
+package com.thinkgem.jeesite.modules.uc.student.service;
 
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.uc.dao.UcStudentDao;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生基本信息Service

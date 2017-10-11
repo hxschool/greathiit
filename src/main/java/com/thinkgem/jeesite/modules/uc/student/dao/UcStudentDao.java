@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.uc.dao;
+package com.thinkgem.jeesite.modules.uc.student.dao;
 
 import java.util.Date;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生基本信息DAO接口

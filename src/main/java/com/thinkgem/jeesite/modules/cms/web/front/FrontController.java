@@ -49,7 +49,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.uc.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 网站Controller

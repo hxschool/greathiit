@@ -347,6 +347,23 @@ public class UserController extends BaseController {
 		}
 		return mapList;
 	}
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "allTreeData")
+	public List<Map<String, Object>> treeData( User user,HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<User> list = systemService.findAllList(user);
+		for (int i=0; i<list.size(); i++){
+			User e = list.get(i);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id", "u_"+e.getId());
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
+	
     
 //	@InitBinder
 //	public void initBinder(WebDataBinder b) {

@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.uc.ec.entity;
+package com.thinkgem.jeesite.modules.uc.cp.entity;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -9,23 +9,20 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
- * 社交通讯录Entity
- * @author 社交通讯录
+ * 紧急联系人Entity
+ * 
+ * @author 赵俊飞
  * @version 2017-10-11
  */
-public class UcEmergencyContact extends DataEntity<UcEmergencyContact> {
-	
-	private static final long serialVersionUID = 1L;
-	
-	private String studentNumber;		// 学号
-	private String contactType;		// 类型
-	private String contact;		// 信息
-	private String showFlag;		// 是否显示
-	
-	private UcStudent ucStudent = new UcStudent();
+public class UcContactPerson extends DataEntity<UcContactPerson> {
 
-	
-	
+	private static final long serialVersionUID = 1L;
+	private String studentNumber; // 学号
+	private String contactType; // 联系类型
+	private String contact; // 联系人
+	private String mobile; // 联系电话
+
+	private UcStudent ucStudent = new UcStudent();
 
 	public UcStudent getUcStudent() {
 		return ucStudent;
@@ -35,16 +32,16 @@ public class UcEmergencyContact extends DataEntity<UcEmergencyContact> {
 		this.ucStudent = ucStudent;
 	}
 
-	public UcEmergencyContact() {
+	public UcContactPerson() {
 		super();
 	}
 
-	public UcEmergencyContact(String id){
+	public UcContactPerson(String id) {
 		super(id);
 	}
 
-	
-	@Length(min=1, max=64, message="学号长度必须介于 1 和 64 之间")
+
+	@Length(min = 1, max = 64, message = "学号长度必须介于 1 和 64 之间")
 	public String getStudentNumber() {
 		return studentNumber;
 	}
@@ -52,8 +49,8 @@ public class UcEmergencyContact extends DataEntity<UcEmergencyContact> {
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
-	
-	@Length(min=1, max=2, message="类型长度必须介于 1 和 2 之间")
+
+	@Length(min = 0, max = 2, message = "联系类型长度必须介于 0 和 2 之间")
 	public String getContactType() {
 		return contactType;
 	}
@@ -61,8 +58,8 @@ public class UcEmergencyContact extends DataEntity<UcEmergencyContact> {
 	public void setContactType(String contactType) {
 		this.contactType = contactType;
 	}
-	
-	@Length(min=1, max=64, message="信息长度必须介于 1 和 64 之间")
+
+	@Length(min = 1, max = 64, message = "联系人长度必须介于 1 和 64 之间")
 	public String getContact() {
 		return contact;
 	}
@@ -70,14 +67,14 @@ public class UcEmergencyContact extends DataEntity<UcEmergencyContact> {
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
-	
-	@Length(min=0, max=1, message="是否显示长度必须介于 0 和 1 之间")
-	public String getShowFlag() {
-		return showFlag;
+
+	@Length(min = 0, max = 64, message = "联系电话长度必须介于 0 和 64 之间")
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setShowFlag(String showFlag) {
-		this.showFlag = showFlag;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
-	
+
 }

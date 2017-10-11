@@ -64,7 +64,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>编码</th>
+				
 				<th>学号</th>
 				<th>姓名</th>
 				<th>性别</th>
@@ -80,11 +80,11 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="ucEmergencyContact">
 			<tr>
-				<td><a href="${ctx}/uc/ec/ucEmergencyContact/form?id=${ucEmergencyContact.id}">
-					${ucEmergencyContact.studentId}
-				</a></td>
+	
 				<td>
+				<a href="${ctx}/uc/ec/ucEmergencyContact/form?id=${ucEmergencyContact.id}">
 					${ucEmergencyContact.studentNumber}
+				</a>
 				</td>
 				<td>
 					${ucEmergencyContact.ucStudent.username}

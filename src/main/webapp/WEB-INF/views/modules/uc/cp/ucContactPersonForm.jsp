@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>社交通讯录管理</title>
+	<title>紧急联系人管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/uc/ec/ucEmergencyContact/">社交通讯录列表</a></li>
-		<li class="active"><a href="${ctx}/uc/ec/ucEmergencyContact/form?id=${ucEmergencyContact.id}">社交通讯录<shiro:hasPermission name="uc:ec:ucEmergencyContact:edit">${not empty ucEmergencyContact.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:ec:ucEmergencyContact:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/uc/cp/ucContactPerson/">紧急联系人列表</a></li>
+		<li class="active"><a href="${ctx}/uc/cp/ucContactPerson/form?id=${ucContactPerson.id}">紧急联系人<shiro:hasPermission name="uc:cp:ucContactPerson:edit">${not empty ucContactPerson.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:cp:ucContactPerson:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="ucEmergencyContact" action="${ctx}/uc/ec/ucEmergencyContact/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="ucContactPerson" action="${ctx}/uc/cp/ucContactPerson/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		
@@ -42,20 +42,25 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">类型：</label>
+			<label class="control-label">联系类型：</label>
 			<div class="controls">
-				<form:select path="contactType" class="input-xlarge required">
+				<form:select path="contactType" class="input-xlarge ">
 					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('social_contact')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+					<form:options items="${fns:getDictList('contact_type')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
 				</form:select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">联系人：</label>
+			<div class="controls">
+				<form:input path="contact" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">信息：</label>
+			<label class="control-label">联系电话：</label>
 			<div class="controls">
-				<form:input path="contact" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="mobile" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -64,17 +69,8 @@
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">是否显示：</label>
-			<div class="controls">
-				<form:select path="showFlag" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('show_hide')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
-			</div>
-		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="uc:ec:ucEmergencyContact:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="uc:cp:ucContactPerson:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

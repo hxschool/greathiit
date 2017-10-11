@@ -1,24 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.uc.ec.dao.UcEmergencyContactDao">
+<mapper namespace="com.thinkgem.jeesite.modules.uc.cp.dao.UcContactPersonDao">
     
-	<sql id="ucEmergencyContactColumns">
-		a.id AS "id",
-		
-		a.student_number AS "studentNumber",
-		a.contact_type AS "contactType",
-		a.contact AS "contact",
-		a.create_by AS "createBy.id",
-		a.create_date AS "createDate",
-		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
-		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		a.show_flag AS "showFlag"
-	</sql>
-	
-	
-	<sql id="emergencyContactColumns">
+	<sql id="ucContactPersonColumns">
 		u.username AS "ucStudent.username",
 		u.gender AS "ucStudent.gender",
 		a.id AS "id",
@@ -26,39 +10,38 @@
 		a.student_number AS "studentNumber",
 		a.contact_type AS "contactType",
 		a.contact AS "contact",
+		a.mobile AS "mobile",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		a.show_flag AS "showFlag"
+		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="ucEmergencyContactJoins">
-		 left join uc_student u on a.student_number=u.student_number
+	<sql id="ucContactPersonJoins">
+	 left join uc_student u on a.student_number=u.student_number
 	</sql>
     
-	<select id="get" resultType="UcEmergencyContact">
+	<select id="get" resultType="UcContactPerson">
 		SELECT 
-			<include refid="ucEmergencyContactColumns"/>
-		FROM uc_emergency_contact a
-		<include refid="ucEmergencyContactJoins"/>
+			<include refid="ucContactPersonColumns"/>
+		FROM uc_contact_person a
+		<include refid="ucContactPersonJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="findList" resultType="UcEmergencyContact">
+	<select id="findList" resultType="UcContactPerson">
 		SELECT 
-			<include refid="emergencyContactColumns"/>
-		FROM uc_emergency_contact a
-		<include refid="ucEmergencyContactJoins"/>
+			<include refid="ucContactPersonColumns"/>
+		FROM uc_contact_person a
+		<include refid="ucContactPersonJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			
 			<if test="ucStudent.username != null and ucStudent.username != ''">
 				AND u.username = #{ucStudent.username}
 			</if>
-			
+
 			<if test="studentNumber != null and studentNumber != ''">
 				AND a.student_number = #{studentNumber}
 			</if>
@@ -67,9 +50,6 @@
 			</if>
 			<if test="contact != null and contact != ''">
 				AND a.contact = #{contact}
-			</if>
-			<if test="showFlag != null and showFlag != ''">
-				AND a.show_flag = #{showFlag}
 			</if>
 		</where>
 		<choose>
@@ -82,11 +62,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="UcEmergencyContact">
+	<select id="findAllList" resultType="UcContactPerson">
 		SELECT 
-			<include refid="ucEmergencyContactColumns"/>
-		FROM uc_emergency_contact a
-		<include refid="ucEmergencyContactJoins"/>
+			<include refid="ucContactPersonColumns"/>
+		FROM uc_contact_person a
+		<include refid="ucContactPersonJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -101,50 +81,48 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO uc_emergency_contact(
+		INSERT INTO uc_contact_person(
 			id,
-			
 			student_number,
 			contact_type,
 			contact,
+			mobile,
 			create_by,
 			create_date,
 			update_by,
 			update_date,
 			remarks,
-			del_flag,
-			show_flag
+			del_flag
 		) VALUES (
 			#{id},
-			
 			#{studentNumber},
 			#{contactType},
 			#{contact},
+			#{mobile},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
-			#{delFlag},
-			#{showFlag}
+			#{delFlag}
 		)
 	</insert>
 	
 	<update id="update">
-		UPDATE uc_emergency_contact SET 	
+		UPDATE uc_contact_person SET 	
 			
 			student_number = #{studentNumber},
 			contact_type = #{contactType},
 			contact = #{contact},
+			mobile = #{mobile},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
-			remarks = #{remarks},
-			show_flag = #{showFlag}
+			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
 	
 	<update id="delete">
-		UPDATE uc_emergency_contact SET 
+		UPDATE uc_contact_person SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>

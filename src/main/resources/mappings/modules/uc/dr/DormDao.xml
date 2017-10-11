@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.uc.dr.dao.DormDao">
+    
+	<sql id="dormColumns">
+		u.username AS "ucStudent.username",
+		u.gender AS "ucStudent.gender",
+		a.id AS "id",
+		a.student_number AS "studentNumber",
+		a.height AS "height",
+		a.weight AS "weight",
+		a.dormbuild_id AS "dormbuildId",
+		a.dormbuild_name AS "dormbuildName",
+		a.dorm_number AS "dormNumber",
+		a.location AS "location",
+		a.mobile AS "mobile",
+		a.wechat AS "wechat",
+		a.qq AS "qq",
+		a.health AS "health",
+		a.father_name AS "fatherName",
+		a.father_mobile AS "fatherMobile",
+		a.mother_name AS "motherName",
+		a.mother_mobile AS "motherMobile",
+		a.master AS "master",
+		a.instructor AS "instructor",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="dormJoins">
+	 left join uc_student u on a.student_number=u.student_number
+	</sql>
+    
+	<select id="get" resultType="Dorm">
+		SELECT 
+			<include refid="dormColumns"/>
+		FROM uc_person a
+		<include refid="dormJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Dorm">
+		SELECT 
+			<include refid="dormColumns"/>
+		FROM uc_person a
+		<include refid="dormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
+			</if>
+			<if test="weight != null and weight != ''">
+				AND a.weight = #{weight}
+			</if>
+			<if test="dormNumber != null and dormNumber != ''">
+				AND a.dorm_number = #{dormNumber}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Dorm">
+		SELECT 
+			<include refid="dormColumns"/>
+		FROM uc_person a
+		<include refid="dormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_person(
+			id,
+			student_number,
+			height,
+			weight,
+			dormbuild_id,
+			dormbuild_name,
+			dorm_number,
+			location,
+			mobile,
+			wechat,
+			qq,
+			health,
+			father_name,
+			father_mobile,
+			mother_name,
+			mother_mobile,
+			master,
+			instructor,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{studentNumber},
+			#{height},
+			#{weight},
+			#{dormbuildId},
+			#{dormbuildName},
+			#{dormNumber},
+			#{location},
+			#{mobile},
+			#{wechat},
+			#{qq},
+			#{health},
+			#{fatherName},
+			#{fatherMobile},
+			#{motherName},
+			#{motherMobile},
+			#{master},
+			#{instructor},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_person SET 	
+			height = #{height},
+			weight = #{weight},
+			dormbuild_id = #{dormbuildId},
+			dormbuild_name = #{dormbuildName},
+			dorm_number = #{dormNumber},
+			location = #{location},
+			mobile = #{mobile},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_person SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

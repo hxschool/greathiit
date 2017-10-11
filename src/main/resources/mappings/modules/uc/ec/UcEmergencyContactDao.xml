@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.uc.ec.dao.UcEmergencyContactDao">
+    
+	<sql id="ucEmergencyContactColumns">
+		a.id AS "id",
+		a.student_id AS "studentId",
+		a.student_number AS "studentNumber",
+		a.contact_type AS "contactType",
+		a.contact AS "contact",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.show_flag AS "showFlag"
+	</sql>
+	
+	
+	<sql id="emergencyContactColumns">
+		u.username AS "ucStudent.username",
+		u.gender AS "ucStudent.gender",
+		a.id AS "id",
+		a.student_id AS "studentId",
+		a.student_number AS "studentNumber",
+		a.contact_type AS "contactType",
+		a.contact AS "contact",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.show_flag AS "showFlag"
+	</sql>
+	
+	<sql id="ucEmergencyContactJoins">
+		 left join uc_student u on a.student_id=u.id
+	</sql>
+    
+	<select id="get" resultType="UcEmergencyContact">
+		SELECT 
+			<include refid="ucEmergencyContactColumns"/>
+		FROM uc_emergency_contact a
+		<include refid="ucEmergencyContactJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UcEmergencyContact">
+		SELECT 
+			<include refid="emergencyContactColumns"/>
+		FROM uc_emergency_contact a
+		<include refid="ucEmergencyContactJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentId != null and studentId != ''">
+				AND a.student_id = #{studentId}
+			</if>
+			<if test="ucStudent.username != null and ucStudent.username != ''">
+				AND u.username = #{ucStudent.username}
+			</if>
+			
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
+			</if>
+			<if test="contactType != null and contactType != ''">
+				AND a.contact_type = #{contactType}
+			</if>
+			<if test="contact != null and contact != ''">
+				AND a.contact = #{contact}
+			</if>
+			<if test="showFlag != null and showFlag != ''">
+				AND a.show_flag = #{showFlag}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UcEmergencyContact">
+		SELECT 
+			<include refid="ucEmergencyContactColumns"/>
+		FROM uc_emergency_contact a
+		<include refid="ucEmergencyContactJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_emergency_contact(
+			id,
+			student_id,
+			student_number,
+			contact_type,
+			contact,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			show_flag
+		) VALUES (
+			#{id},
+			#{studentId},
+			#{studentNumber},
+			#{contactType},
+			#{contact},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{showFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_emergency_contact SET 	
+			student_id = #{studentId},
+			student_number = #{studentNumber},
+			contact_type = #{contactType},
+			contact = #{contact},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			show_flag = #{showFlag}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_emergency_contact SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

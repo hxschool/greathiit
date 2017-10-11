@@ -7,14 +7,14 @@
 	
 </head>
 <body>
-	<ul class="nav nav-tabs">
+	<!-- <ul class="nav nav-tabs">
 		<li><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
 		<li class="active"><a href="${ctx}/uc/ucStudent/sex">性别统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/region">全国招生统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
-	</ul>
+	</ul> -->
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
 			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"

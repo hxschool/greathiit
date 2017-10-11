@@ -18,7 +18,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/uc/ucStudent/">学籍信息列表</a></li>
+		<li class="active"><a href="${ctx}/uc/student/">学籍信息列表</a></li>
 		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍信息添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
@@ -68,7 +68,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="ucStudent">
 			<tr>
-				<td><a href="${ctx}/uc/ucStudent/form?id=${ucStudent.id}">
+				<td><a href="${ctx}/uc/student/form?id=${ucStudent.id}">
 					${ucStudent.studentNumber}
 				</a></td>
 				<td>

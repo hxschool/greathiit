@@ -14,7 +14,7 @@
 		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
 			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>

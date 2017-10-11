@@ -8,14 +8,14 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-				<li><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
+		<li  class="active"><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/sex">性别统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/region">全国招生统计</a></li>
-		<li ><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
+		<li><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
-		<li class="active"><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
+		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
 			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
@@ -45,27 +45,10 @@
         // 指定图表的配置项和数据
 					option = {
 						title : {
-							text : '学历统计',
+							text : '招生统计',
 							//subtext : '纯属虚构',
-							x : 'right'
+							x : 'center'
 						},
-						 toolbox: {
-						        show: true,
-						        orient : 'vertical',
-						        x: 'right',
-						        y: 'center',
-						        feature : {
-						            mark : {show: true},
-						            magicType : {
-			                            show: true,
-			                            type: ['pie', 'funnel']
-			                        },
-						            dataView : {show: true, readOnly: false},
-						            restore : {show: true},
-						            saveAsImage : {show: true}
-						        },
-						        
-						    },
 					    toolbox: {
 					        show: true,
 					        orient : 'vertical',
@@ -73,15 +56,25 @@
 					        y: 'center',
 					        feature : {
 					            mark : {show: true},
+					            magicType : {
+		                            show: true,
+		                            type: ['pie', 'funnel']
+		                        },
 					            dataView : {show: true, readOnly: false},
 					            restore : {show: true},
 					            saveAsImage : {show: true}
-					        }
+					        },
+					        
 					    },
 						tooltip : {
 							trigger : 'item',
 							formatter : "{a} <br/>{b} : {c} ({d}%)"
 						},
+						 color: ['#da70d6','#32cd32','#6495ed',
+					            '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0',
+					            '#1e90ff','#ff6347','#7b68ee','#00fa9a','#ffd700',
+					            '#6699FF','#ff6666','#3cb371','#b8860b','#30e0e0'],
+
 						legend : {
 							 orient: 'horizontal',      // 布局方式，默认为水平布局，可选为：
                              // 'horizontal' ¦ 'vertical'
@@ -95,7 +88,7 @@
 							data : xAxData
 						},
 						series : [ {
-							name : '学历统计',
+							name : '招生统计',
 							type : 'pie',
 							radius : '75%',
 							center : [ '50%', '50%' ],

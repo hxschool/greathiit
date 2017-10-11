@@ -19,9 +19,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/uc/ucStudent/">学籍信息列表</a></li>
-		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/ucStudent/form">学籍信息添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍信息添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -128,8 +128,8 @@
 				</td> -->
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
-    				<a href="${ctx}/uc/ucStudent/form?id=${ucStudent.id}">修改</a>
-					<a href="${ctx}/uc/ucStudent/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">删除</a>
+    				<a href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
+					<a href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

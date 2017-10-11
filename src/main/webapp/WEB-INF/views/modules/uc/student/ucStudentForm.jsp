@@ -28,9 +28,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/uc/ucStudent/">学籍信息列表</a></li>
-		<li class="active"><a href="${ctx}/uc/ucStudent/form?id=${ucStudent.id}">学籍信息<shiro:hasPermission name="uc:ucStudent:edit">${not empty ucStudent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:ucStudent:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/uc/student/form?id=${ucStudent.id}">学籍信息<shiro:hasPermission name="uc:ucStudent:edit">${not empty ucStudent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:ucStudent:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="ucStudent" action="${ctx}/uc/student/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">

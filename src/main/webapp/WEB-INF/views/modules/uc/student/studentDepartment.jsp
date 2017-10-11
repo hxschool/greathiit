@@ -8,14 +8,15 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li  class="active"><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
+		<li><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/sex">性别统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/region">全国招生统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
+		<li class="active"><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
 		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
+
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/ucStudent/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
 			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
 				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
@@ -45,11 +46,11 @@
         // 指定图表的配置项和数据
 					option = {
 						title : {
-							text : '招生统计',
+							text : '学院统计',
 							//subtext : '纯属虚构',
-							x : 'center'
+							x : 'right'
 						},
-					    toolbox: {
+						toolbox: {
 					        show: true,
 					        orient : 'vertical',
 					        x: 'right',
@@ -70,27 +71,22 @@
 							trigger : 'item',
 							formatter : "{a} <br/>{b} : {c} ({d}%)"
 						},
-						 color: ['#da70d6','#32cd32','#6495ed',
-					            '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0',
-					            '#1e90ff','#ff6347','#7b68ee','#00fa9a','#ffd700',
-					            '#6699FF','#ff6666','#3cb371','#b8860b','#30e0e0'],
-
 						legend : {
 							 orient: 'horizontal',      // 布局方式，默认为水平布局，可选为：
                              // 'horizontal' ¦ 'vertical'
 							  x: 'left',               // 水平安放位置，默认为全图居中，可选为：
 							  y: 'top',                  // 垂直安放位置，默认为全图顶端，可选为：
-							  itemWidth: 20,             // 图例图形宽度
-							  itemHeight: 14,            // 图例图形高度
+							  itemWidth: 12,             // 图例图形宽度
+							  itemHeight:14,            // 图例图形高度
 							  textStyle: {
 							      color: '#333'          // 图例文字颜色
 							  },
 							data : xAxData
 						},
 						series : [ {
-							name : '招生统计',
+							name : '学院统计',
 							type : 'pie',
-							radius : '75%',
+							radius : '65%',
 							center : [ '50%', '50%' ],
 							data :serData,
 							

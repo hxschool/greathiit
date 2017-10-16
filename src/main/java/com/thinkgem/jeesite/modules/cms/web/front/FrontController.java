@@ -43,6 +43,8 @@ import com.thinkgem.jeesite.modules.cms.service.CommentService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.service.SiteService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
+import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -76,7 +78,8 @@ public class FrontController extends BaseController{
 	private ApiService apiService;
 	@Autowired
 	private SystemService systemService;
-	
+	@Autowired
+	private RsStudentService rsStudentService;
 	/**
 	 * 网站首页
 	 */
@@ -253,6 +256,16 @@ public class FrontController extends BaseController{
 		systemService.saveUser(user);
 		
 		return "redirect:"+Global.getFrontPath()+"/skip_Ok";
+	}
+	
+	
+	@RequestMapping(value = "zhaosheng", method = RequestMethod.POST)
+	public String checkZhaosheng(RsStudent rsStudent, HttpServletResponse response, Model model) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		rsStudentService.save(rsStudent);
+	
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckSuccess";
 	}
 	
 	

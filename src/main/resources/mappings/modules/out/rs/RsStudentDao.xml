@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.out.rs.dao.RsStudentDao">
+    
+	<sql id="rsStudentColumns">
+		a.id AS "id",
+		a.hc_form_xm AS "hc_form_xm",
+		a.hc_form_xb AS "hc_form_xb",
+		a.hc_form_sfzh AS "hc_form_sfzh",
+		a.hc_form_zy1 AS "hc_form_zy1",
+		a.hc_form_zy2 AS "hc_form_zy2",
+		a.hc_form_zy3 AS "hc_form_zy3",
+		a.hc_form_szzx AS "hc_form_szzx",
+		a.hc_form_zxdz AS "hc_form_zxdz",
+		a.hc_form_fzrxm AS "hc_form_fzrxm",
+		a.hc_form_fzrdh AS "hc_form_fzrdh",
+		a.hc_form_add1 AS "hc_form_add1",
+		a.hc_form_add2 AS "hc_form_add2",
+		a.hc_form_kuasheng AS "hc_form_kuasheng",
+		a.hc_form_baojiuye AS "hc_form_baojiuye",
+		a.hc_form_yuexin AS "hc_form_yuexin",
+		a.hc_form_xslx AS "hc_form_xslx",
+		a.hc_form_cj AS "hc_form_cj",
+		a.hc_form_province AS "hc_form_province",
+		a.hc_form_city AS "hc_form_city",
+		a.hc_form_area AS "hc_form_area",
+		a.hc_form_dz AS "hc_form_dz",
+		a.hc_form_sj AS "hc_form_sj",
+		a.hc_form_bysj AS "hc_form_bysj",
+		a.hc_form_qq AS "hc_form_qq",
+		a.hc_form_bz AS "hc_form_bz",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="rsStudentJoins">
+	</sql>
+    
+	<select id="get" resultType="RsStudent">
+		SELECT 
+			<include refid="rsStudentColumns"/>
+		FROM rs_student a
+		<include refid="rsStudentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RsStudent">
+		SELECT 
+			<include refid="rsStudentColumns"/>
+		FROM rs_student a
+		<include refid="rsStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="hc_form_xm != null and hc_form_xm != ''">
+				AND a.hc_form_xm = #{hc_form_xm}
+			</if>
+			<if test="hc_form_xb != null and hc_form_xb != ''">
+				AND a.hc_form_xb = #{hc_form_xb}
+			</if>
+			<if test="hc_form_sfzh != null and hc_form_sfzh != ''">
+				AND a.hc_form_sfzh = #{hc_form_sfzh}
+			</if>
+			<if test="hc_form_zy1 != null and hc_form_zy1 != ''">
+				AND a.hc_form_zy1 = #{hc_form_zy1}
+			</if>
+			<if test="hc_form_zy2 != null and hc_form_zy2 != ''">
+				AND a.hc_form_zy2 = #{hc_form_zy2}
+			</if>
+			<if test="hc_form_zy3 != null and hc_form_zy3 != ''">
+				AND a.hc_form_zy3 = #{hc_form_zy3}
+			</if>
+			<if test="hc_form_fzrdh != null and hc_form_fzrdh != ''">
+				AND a.hc_form_fzrdh = #{hc_form_fzrdh}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RsStudent">
+		SELECT 
+			<include refid="rsStudentColumns"/>
+		FROM rs_student a
+		<include refid="rsStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rs_student(
+			id,
+			hc_form_xm,
+			hc_form_xb,
+			hc_form_sfzh,
+			hc_form_zy1,
+			hc_form_zy2,
+			hc_form_zy3,
+			hc_form_szzx,
+			hc_form_zxdz,
+			hc_form_fzrxm,
+			hc_form_fzrdh,
+			hc_form_add1,
+			hc_form_add2,
+			hc_form_kuasheng,
+			hc_form_baojiuye,
+			hc_form_yuexin,
+			hc_form_xslx,
+			hc_form_cj,
+			hc_form_province,
+			hc_form_city,
+			hc_form_area,
+			hc_form_dz,
+			hc_form_sj,
+			hc_form_bysj,
+			hc_form_qq,
+			hc_form_bz,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{hc_form_xm},
+			#{hc_form_xb},
+			#{hc_form_sfzh},
+			#{hc_form_zy1},
+			#{hc_form_zy2},
+			#{hc_form_zy3},
+			#{hc_form_szzx},
+			#{hc_form_zxdz},
+			#{hc_form_fzrxm},
+			#{hc_form_fzrdh},
+			#{hc_form_add1},
+			#{hc_form_add2},
+			#{hc_form_kuasheng},
+			#{hc_form_baojiuye},
+			#{hc_form_yuexin},
+			#{hc_form_xslx},
+			#{hc_form_cj},
+			#{hc_form_province},
+			#{hc_form_city},
+			#{hc_form_area},
+			#{hc_form_dz},
+			#{hc_form_sj},
+			#{hc_form_bysj},
+			#{hc_form_qq},
+			#{hc_form_bz},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rs_student SET 	
+			hc_form_xm = #{hc_form_xm},
+			hc_form_xb = #{hc_form_xb},
+			hc_form_sfzh = #{hc_form_sfzh},
+			hc_form_zy1 = #{hc_form_zy1},
+			hc_form_zy2 = #{hc_form_zy2},
+			hc_form_zy3 = #{hc_form_zy3},
+			hc_form_szzx = #{hc_form_szzx},
+			hc_form_zxdz = #{hc_form_zxdz},
+			hc_form_fzrxm = #{hc_form_fzrxm},
+			hc_form_fzrdh = #{hc_form_fzrdh},
+			hc_form_add1 = #{hc_form_add1},
+			hc_form_add2 = #{hc_form_add2},
+			hc_form_kuasheng = #{hc_form_kuasheng},
+			hc_form_baojiuye = #{hc_form_baojiuye},
+			hc_form_yuexin = #{hc_form_yuexin},
+			hc_form_xslx = #{hc_form_xslx},
+			hc_form_cj = #{hc_form_cj},
+			hc_form_province = #{hc_form_province},
+			hc_form_city = #{hc_form_city},
+			hc_form_area = #{hc_form_area},
+			hc_form_dz = #{hc_form_dz},
+			hc_form_sj = #{hc_form_sj},
+			hc_form_bysj = #{hc_form_bysj},
+			hc_form_qq = #{hc_form_qq},
+			hc_form_bz = #{hc_form_bz},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE rs_student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -76,7 +76,7 @@
 				</a>
 				</td>
 				
-					<td>
+				<td>
 					${ucContactPerson.ucStudent.username}
 				</td>
 				<td>

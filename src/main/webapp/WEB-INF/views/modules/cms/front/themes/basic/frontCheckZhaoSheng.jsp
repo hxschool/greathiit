@@ -91,7 +91,7 @@
 												(3)填报专业志愿：已报名的考生须在2017年11月15日前登录我院网站http://www.hxci.com.cn，进入2018年单独招生志愿填报系统，阅读单独招生专业志愿填报的有关说明，按提示填报专业志愿。我院根据考生所填报专业志愿安排测试内容，考生信息一定要准确无误。<br>
 
 												(4)考生本人须在考试前（具体时间关注我院招生网站）到我院现场确认所填报专业志愿，凭填报专业志愿时返回的报名顺序号、第二代《居民身份证》领取准考证。<br>
-												<a class="btn btn-info btn-sm ">查看招生简章</a> <a href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
+												<a href="http://www.hxci.com.cn/zy/" class="btn btn-info btn-sm ">查看招生简章</a> <a href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
 											</p>
 										</div>
 										<div class="panel-body">

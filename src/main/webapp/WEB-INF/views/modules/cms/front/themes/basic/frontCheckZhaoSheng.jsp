@@ -50,7 +50,7 @@
 
 <!--下面是对联广告的html代码结构-->
 <div class="duilian duilian_left">
- <div class="duilian_con"><a href="http://www.hxci.com.cn/zy/" target="_blank"><img src="http://www.hxci.com.cn/statics/images/jz.jpg"></a></div>
+ <div class="duilian_con"><a href="http://www.hxci.com.cn/zy/" target="_blank"><img src="http://login.greathiit.com/images/jz.jpg"></a></div>
  <a href="#" class="duilian_close">X关闭</a>
 </div>
 

@@ -40,6 +40,7 @@ public class RsStudent extends DataEntity<RsStudent> {
 	private String hc_form_bysj;		// 备用联系方式
 	private String hc_form_qq;		// qq
 	private String hc_form_bz;		// 备注
+	private String hc_form_zhuangtai;//报考状态
 	
 	public RsStudent() {
 		super();
@@ -273,5 +274,15 @@ public class RsStudent extends DataEntity<RsStudent> {
 	public void setHc_form_bz(String hc_form_bz) {
 		this.hc_form_bz = hc_form_bz;
 	}
+
+	public String getHc_form_zhuangtai() {
+		return hc_form_zhuangtai;
+	}
+	
+	public void setHc_form_zhuangtai(String hc_form_zhuangtai) {
+		this.hc_form_zhuangtai = hc_form_zhuangtai;
+	}
+	
+	
 	
 }

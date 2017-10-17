@@ -29,6 +29,7 @@
 		a.hc_form_bysj AS "hc_form_bysj",
 		a.hc_form_qq AS "hc_form_qq",
 		a.hc_form_bz AS "hc_form_bz",
+		a.hc_form_zhuangtai AS "hc_form_zhuangtai",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -133,6 +134,7 @@
 			hc_form_bysj,
 			hc_form_qq,
 			hc_form_bz,
+			hc_form_zhuangtai,
 			create_by,
 			create_date,
 			update_by,
@@ -166,6 +168,7 @@
 			#{hc_form_bysj},
 			#{hc_form_qq},
 			#{hc_form_bz},
+			#{hc_form_zhuangtai},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -202,6 +205,8 @@
 			hc_form_bysj = #{hc_form_bysj},
 			hc_form_qq = #{hc_form_qq},
 			hc_form_bz = #{hc_form_bz},
+			hc_form_zhuangtai = #{hc_form_zhuangtai},
+			
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

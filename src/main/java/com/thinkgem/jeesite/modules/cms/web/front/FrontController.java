@@ -270,6 +270,63 @@ public class FrontController extends BaseController{
 	}
 	
 	
+	@SameUrlData
+	@RequestMapping(value = "jieguo", method = RequestMethod.POST)
+	public String checkJieguo(String username, String idCardNumber, HttpServletRequest request,HttpServletResponse response, Model model) {
+		
+		String captcha = request.getParameter("captcha");
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		if(!ValidateCodeServlet.validate(request,captcha)){
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "图文验证码错误, 请重试.");
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+		}
+		if(username==null||username.equals("")){
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "姓名不允许为空");
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+		}
+		
+		if(idCardNumber==null||idCardNumber.equals("")){
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "身份证件号不允许为空");
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+		}
+		
+		
+		
+		RsStudent rsStudent = new RsStudent();
+		rsStudent.setHc_form_xm(username);
+		rsStudent.setHc_form_sfzh(idCardNumber);
+		List<RsStudent> list = rsStudentService.findList(rsStudent);
+		
+		if(list==null||list.size()==0){
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+		}
+	
+		String ret = "0";
+		for(RsStudent rs : list){
+			if (rs.getHc_form_zhuangtai() != null && rs.getHc_form_zhuangtai().equals("1")) {
+				ret = "1";
+				break;
+			}
+			
+			if (rs.getHc_form_zhuangtai() != null && rs.getHc_form_zhuangtai().equals("2")) {
+				ret = "2";
+				break;
+			}
+			
+		}
+		
+		if(ret.equals("1")){
+			model.addAttribute("message", "查询登记成功");
+		}else if (ret.equals("2")){
+			model.addAttribute("message", "报考失败,请联系报考教师");
+		}else{
+			model.addAttribute("message", "信息审核中");
+		}
+		
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguoOk";
+	}
+	
 	/**
 	 * 网站首页
 	 */

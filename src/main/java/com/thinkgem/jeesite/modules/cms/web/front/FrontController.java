@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.annotation.SameUrlData;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.servlet.MailValidateCodeServlet;
@@ -258,7 +259,7 @@ public class FrontController extends BaseController{
 		return "redirect:"+Global.getFrontPath()+"/skip_Ok";
 	}
 	
-	
+	@SameUrlData
 	@RequestMapping(value = "zhaosheng", method = RequestMethod.POST)
 	public String checkZhaosheng(RsStudent rsStudent, HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());

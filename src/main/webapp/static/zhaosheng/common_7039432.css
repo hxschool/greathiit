@@ -1,0 +1,161 @@
+.container {width: 1180px;}
+
+.col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {padding-left: 5px;padding-right: 5px;}
+
+body{font-size: 12px;line-height: 1.6;}
+code, kbd, pre, samp{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;}
+.breadcrumb{margin-bottom:5px;padding: 2px 15px;background-color: transparent;}
+.btn{box-shadow: 1px 2px 1px rgba(0,0,0,0.072);}
+.form-group {margin-bottom: 5px;}
+.panel{margin-bottom: 10px;}
+
+.well-lg{border-radius:0;}
+
+.a a,a.a,.post-content a{color:#1155CC;}
+a{color:#000;text-decoration:none;}
+a:hover{color:#ba2636;text-decoration:underline;}
+
+.aligncenter{display: block;margin-left: auto;margin-right: auto;} 
+
+.padding{padding: 10px;}
+.padding-none{padding: 0;}
+.padding-left-none{padding-left: 0;}
+.row-padding{padding-left: 15px;padding-right: 15px;}
+.padding-bottom-10{padding-bottom: 10px;}
+.padding-top-10{padding-top: 10px;}
+.padding-bottom-20{padding-bottom: 20px;}
+.padding-top-20{padding-top: 20px;}
+.padding-top-none{padding-top: 0;}
+.padding-right-10{padding-right: 10px;}
+
+.margin{margin: 10px}
+.margin-none{margin: 0;}
+.margin-top,.margin-top-10{margin-top: 10px;}
+.margin-top-5{margin-top: 5px}
+.margin-top-20{margin-top: 20px}
+.margin-top-none{margin-top: 0;}
+.margin-bottom,.margin-bottom-10{margin-bottom: 10px}
+.margin-bottom-none{margin-bottom: 0}
+.margin-bottom-5{margin-bottom: 5px}
+.margin-bottom-f1{margin-bottom:-1px}
+.margin-right-5,.margin-r-5{margin-right: 5px}
+.margin-right-10,.margin-r-10{margin-right: 10px}
+.margin-right-15,.margin-r-15{margin-right: 15px}
+.margin-left-none{margin-left: 0;}
+.margin-left-10{margin-left: 10px;}
+
+.text-wr{font-family:'微软雅黑';} 
+.text-normal{font-weight: normal;}
+.text-bold{font-weight: bold;}
+.text-sm,.text-s12 {font-size: 12px}
+.text-s14 {font-size: 14px;}
+.text-s16 {font-size: 16px;}
+.text-s18 {font-size: 18px;}
+.text-s20 {font-size: 20px;}
+.text-s22 {font-size: 22px;}
+.text-s24 {font-size: 24px;}
+.text-s26 {font-size: 26px;}
+.text-s28 {font-size: 28px;}
+.text-s30 {font-size: 30px;}
+.text-s35 {font-size: 35px;}
+.text-s40 {font-size: 40px;}
+.text-s45 {font-size: 45px;}
+.text-s50 {font-size: 50px;}
+
+.text-black{color:black;}
+.text-red{color:red;}
+.text-white{color: white;}
+.text-green{color: #4CC111;}
+.text-muted{color: #888;}
+.text-green{color: #35b558;}
+
+.border-radius-0{border-radius:0;}
+.text-shadow-none{text-shadow:none;}
+
+.border-bottom{border-bottom: 1px solid #DDD;}
+.border-bottom-dotted{border-bottom-style: dotted;}
+.border-bottom-dashed{border-bottom-style: dashed;}
+.border-top{border-top: 1px solid #DDD;}
+.border-top-dotted{border-top-style: dotted;}
+.border-top-dashed{border-top-style: dashed;}
+
+.text-ellipsis{text-overflow: ellipsis;overflow:hidden;white-space:nowrap;}
+.pagination a{cursor: pointer;}
+
+#post-content img,.post-content img{max-width:680px;}
+
+/* 移动端样式 */
+@media(max-width:768px) {
+	.text-left-xs{text-align: left;}
+}
+/* 移动端样式 结束 */
+
+.label{padding:0px 2px;font-weight: normal;border-radius: 2px;}
+.form-horizontal .form-group{margin: 0;}
+div.thumbnail{border: 1px solid #B4B4B4;box-shadow: 0 0 5px #C6C6C6;margin-bottom: 10px;;}    
+div.thumbnail:hover{border:1px solid #666;}
+.panel{box-shadow: 0 0 5px #C6C6C6;}
+
+a.fullscreen_btn{margin-bottom:5px;margin-bottom:5px;float:left;padding:5px;color:#FFF;background-color:#464646;border-radius:3px;color:#FFF;}
+
+
+.jj.jjr:after{float:right;margin-top:3px;}
+.jj:after{border-radius:3px;display:inline-block;font-family:宋体;font-size:12px;font-weight:normal;line-height:14px;text-align:center;width:40px;margin-left:5px;}
+.jj.jjz:after{border:1px solid #D3AC12;color:#D3AC12;content:"解决中";}
+.jj.yjj:after{border:1px solid #D80101;color:#D80101;content:"已解决";}
+.jj.xwt:after{border:1px solid #D80101;color:#D80101;content:"新问题";}
+
+/* box */
+.box{border: 1px solid #B4B4B4;width: 100%;box-shadow: 0 0 5px #C6C6C6;padding: 15px;border-radius: 4px;}
+.box:hover{border:1px solid #666;}
+.box-noborder,.box-noborder:hover{border:0; box-shadow:none;}
+.box-heading{font-family:'微软雅黑';border-left:4px solid #3780D3;height:21px;line-height:21px;padding-left:10px;margin-bottom: 10px;}
+.box-title{font-size:14px;font-weight: bold;}
+.box-body ul li a{color: #777;font-size: 12px;}
+.box-body ul{padding-left: 1em;}
+/* box 结束 */
+
+/* auto-top */
+#auto-top{font-family:'微软雅黑';position:fixed;right:50%;display:block;z-index:9999;bottom:5%;margin-right:-640px;}
+/* auto-top 结束 */
+
+/* 广告位 */
+.bdad-noimg{background: url("/wp-content/themes/d/images/static/a/bdad-noimg.png") 50% 50% no-repeat #FEFEFE;border: 3px dotted #AAA;height: 100%;line-height: 100%;}
+@media (min-width: 768px) {
+	#bdad-header-search {width: 320px;height: 22px;float: left;margin-top: 5px;}
+	#bdad-foot {}
+}
+/* 广告位 结束 */
+
+/* box-q */
+#box-q{}
+#box-q .box{}
+#box-q ul li{line-height: 2em;height: 2em;}
+#box-q .box-body .btn{font-family:'微软雅黑';width: 200px;margin:0 auto;display: block;}
+/* box-q 结束 */
+
+/* box-link */
+#box-link .box{border: 1px solid #cdcdcd;border-top: 2px solid #E71;padding: 10px 20px;color: #888;}
+#box-link dl{padding: 14px 0 10px;border-bottom: 1px dotted #eee;line-height: 24px;margin-bottom: 0;}
+#box-link dl:last-child {border-bottom: none;}
+#box-link dt {width: 170px;margin-right: 15px;    float: left;    line-height: 24px;    text-align: right;}
+#box-link dd a{color: #888;line-height: 24px;    float: left;    margin-right: 10px;}
+/* box-link 结束 */
+
+/* box-adlist */
+#box-adlist .thumbnail{max-width: 320px;margin-left: auto;margin-right: auto;padding:0;border: none;box-shadow: none;}
+/* box-adlist 结束 */
+
+/* file-box */
+.file-box{border:1px solid #cedebd;background:#fdfefb;padding: 10px;border-radius:3px;margin-bottom:10px;}
+/* file-box 结束 */
+
+/* sb-tiwen */
+#sb-tiwen textarea{border: 2px solid #40B50E;width: 100%;resize: none;}
+#sb-tiwen i{width: 0;height: 0;border-top: 8px solid #40B50E;border-right: 10px solid transparent;margin-top: -5px;float: left;margin-left: 90%;margin-bottom: 5px}
+/* sb-tiwen 结束 */
+
+/* sb-dxtx */
+#front-sidebar .panel-body{}
+#sb-dxtx{}
+/* sb-dxtx 结束 */

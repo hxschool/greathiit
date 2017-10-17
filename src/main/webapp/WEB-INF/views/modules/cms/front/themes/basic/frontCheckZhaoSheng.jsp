@@ -6,35 +6,35 @@
 <title>2018年哈尔滨信息工程学院单招报名申请表</title>
 
 <link rel="stylesheet"
-	href="http://s.zzzsxx.com/wp-content/themes/d/lib/bootstrap/css/bootstrap.min.css">
+	href="${ctxStatic}/zhaosheng/bootstrap.min.css">
 <link rel="stylesheet"
-	href="http://s.zzzsxx.com/wp-content/themes/d/lib/font-awesome/4.7/css/font-awesome.min.css">
-<link rel="stylesheet" href="//at.alicdn.com/t/font_cbmay4ubfls1yvi.css">
+	href="${ctxStatic}/zhaosheng/font-awesome.min.css">
+<link rel="stylesheet" href="${ctxStatic}/zhaosheng/font_cbmay4ubfls1yvi.css">
 <script
-	src="http://s.zzzsxx.com/wp-content/themes/d/lib/jquery-1.11.3.min.js"></script>
+	src="${ctxStatic}/zhaosheng/jquery-1.11.3.min.js"></script>
 <script
-	src="http://s.zzzsxx.com/wp-content/themes/d/lib/bootstrap/js/bootstrap.min.js"></script>
+	src="${ctxStatic}/zhaosheng/bootstrap.min.js"></script>
 <!-- 加载Scripts -->
 <link
-	href='http://s.zzzsxx.com/wp-content/themes/d/lib/bootstrapValidator.min.css'
+	href='${ctxStatic}/zhaosheng/bootstrapValidator.min.css'
 	rel='stylesheet' type='text/css'>
 <script
-	src='http://s.zzzsxx.com/wp-content/themes/d/lib/bootstrapValidator.min.js'></script>
+	src='${ctxStatic}/zhaosheng/bootstrapValidator.min.js'></script>
 <script src='${ctxStatic}/city/jquery.cityselect.js'></script>
 
 <link rel='stylesheet'
-	href='http://s.zzzsxx.com/wp-content/themes/d/model/page-jihua/style-jihua_0d25696.css'
+	href='${ctxStatic}/zhaosheng/style-jihua_0d25696.css'
 	type='text/css' />
 <script
-	src='http://s.zzzsxx.com/wp-content/themes/d/model/page-jihua/js/jihua_b3d1b39.js'
+	src='${ctxStatic}/zhaosheng/jihua_b3d1b39.js'
 	type='text/javascript'></script>
 <link
-	href='http://s.zzzsxx.com/wp-content/themes/d/css/front_82277c3.css'
+	href='${ctxStatic}/zhaosheng/front_82277c3.css'
 	rel='stylesheet' type='text/css'>
 <link
-	href='http://s.zzzsxx.com/wp-content/themes/d/css/common_7039432.css'
+	href='${ctxStatic}/zhaosheng/common_7039432.css'
 	rel='stylesheet' type='text/css'>
-<script src='http://s.zzzsxx.com/wp-content/themes/d/js/main_2c6fa1b.js'></script>
+<script src='${ctxStatic}/zhaosheng/main_2c6fa1b.js'></script>
 <!-- 加载Scripts结束 -->
 </head>
 <body class=" layout-home">

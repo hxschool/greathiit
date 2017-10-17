@@ -1,0 +1,62 @@
+/*#jihua-header-box{background: url("../../images/jihua_header_bg.png") no-repeat scroll 70% 100% #EEF2F2;}*/
+#jihua-navbar{border-radius:0;box-shadow:none;-webkit-box-shadow:none;background-image: none;background-color: #F6F6F6;margin-bottom:-1px;}
+#jihua-navbar .active a{color: #BE0000;}
+#jihua-navbar a:hover{color: #BE0000;}
+#jihua-navbar a{color:#3f484f;background-image: none;}
+#collapse-subnav{padding:3px 14px;background-color: #F8F8F8;border: 1px solid #e1e1e8;border-top-width:0;border-bottom-width:0;}
+#collapse-subnav a{margin-right:10px;text-decoration: underline;}
+
+#school-info h1{}
+#school-info dl{float:left;border-bottom:1px dashed #999;margin-bottom: 0;padding: 2px 0; height:27px;}
+#school-info dl dt{float:left;font-weight: normal;line-height: 24px;}
+#school-info dl dd{float:left;color:#666;line-height: 24px;}
+#school-info dl dd a{color:#003AB1;}
+#school-info dl dd .dd-phone{overflow:hidden;float: left;}
+.school-logo{width:130px;}
+.school-content{width:1040px;}
+.school-title{padding-bottom: 5px;margin-bottom: 5px;}
+.school-dingyue{width:340px;}
+.school-phone{height:50px;line-height:50px;background-color:#ec6f06;overflow: hidden;}
+.school-phone .fa-phone{width:50px;line-height:50px;text-align:center;margin-right: 0;}
+
+#jihua-header-box .well{background-image: none;margin-bottom: 0;padding-top:20px;padding-bottom:8px;background-color: transparent;border: none;-webkit-box-shadow:none;box-shadow:none;}
+
+#jihua-post{/*border: 1px solid #E2E2E2;*/}
+#jihua-post #jihua-nav{border-radius: 0;margin:0 -5px;text-align: center;-webkit-box-shadow:none;box-shadow:none;font-size: 14px;}
+#jihua-post #jihua-nav .list-group-item{border-right: 3px solid #E5E5E5;border-left: 0;}
+#jihua-post #jihua-nav a{color: #000000;}
+#jihua-post #jihua-nav a.list-group-item-info{color: #31708f;}
+#jihua-post #jihua-nav a:last-child {border-bottom: none;}
+#jihua-post #jihua-nav .list-group-item:last-child{border-radius: 0;}
+
+#jihua-sidebar{margin:0 -5px;padding-top:20px;}
+#jihua-sidebar .panel{box-shadow: none;margin:0 0 10px 0;border: none;border-radius: 0;padding: 20px;overflow: hidden;border: 1px solid #eee;}
+#jihua-sidebar .list-group-item{padding: 0;border: none;margin-bottom: 10px;}
+#jihua-sidebar .list-group-item dt{width:35px;}
+#jihua-sidebar .list-group-item dd{margin-left:40px;padding-left: 10px;}
+#jihua-sidebar .list-group-item dt img{padding: 2px;}
+#jihua-sidebar .img-thumbnail{border-radius: 0;}
+
+#jihua-content{padding:20px 50px 10px 0px;font-size: 14px;margin-left:-5px;}
+#jihua-content #content-text{margin-bottom: 30px;padding-bottom: 20px;border-bottom: 1px solid #E2E2E2;}
+#jihua-content p{color: #000000;}
+#jihua-content p a{color: #0000CC;}
+#jihua-content img{max-width:850px;}
+#jihua-content table{max-width:850px !important;}
+
+#jihua-content h2,#jihua-content h3{background: #f8f8f8;    width: 780px;    padding-right: 20px;    border-left: 4px solid #30c257;    font-size: 16px;    font-weight: bold;    padding-left: 10px;    display: block;    line-height: 40px;   white-space: normal;    margin: 0 0 14px 0;}
+
+
+#jihua-content .table{table-layout: fixed;}
+
+#jihua-liuyan>dl {border: 1px solid #3780D3;border-left: 5px solid #3780D3;margin-bottom: 5px;padding: 10px;border-radius: 3px;}
+#jihua-liuyan>dl:hover{box-shadow:0 0 5px #666;}
+#jihua-liuyan>dl dd blockquote{border: 1px solid #C32127;border-left: 4px solid #C32127;padding: 10px;background-color: #FFFEEE;}
+#jihua-liuyan>dl:hover dt a.hidden{display: block!important;}
+/* 移动端样式 */
+@media(max-width:768px) {
+#jihua-post #jihua-nav .list-group-item{border-right: 1px solid #ddd;}
+#jihua-post #jihua-nav a:last-child{border-bottom: 1px solid #ddd;}
+#jihua-content{padding: 5px;}
+}
+/* 移动端样式 结束 */

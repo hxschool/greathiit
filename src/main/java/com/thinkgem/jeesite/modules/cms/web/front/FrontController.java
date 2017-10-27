@@ -105,11 +105,17 @@ public class FrontController extends BaseController{
 		String enrollCode = WebUtils.getCleanParam(request, "enrollCode");
 		
 		String captcha = request.getParameter("captcha");
-		
+		User user = new User();
+		user.setLoginName(idCardNumber);
+		if(systemService.exist(user)>0){
+			message = "注册账户已存在,请不要重复注册.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckRegister";
+		}
 		if(!ValidateCodeServlet.validate(request,captcha)){
 			message = "图文验证码错误, 请重试.";
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
-			return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckRegister";
 		}
 		
 		String number = apiService.getStudentNumber(username, idCardNumber);
@@ -137,7 +143,7 @@ public class FrontController extends BaseController{
 		// 验证失败清空验证码
 		request.getSession().setAttribute(ValidateCodeServlet.VALIDATE_CODE, IdGen.uuid());
 		
-		return "modules/cms/front/themes/"+site.getTheme()+"/frontRegister";
+		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckRegister";
 	}
 	
 	@RequestMapping(value = "skip_{module}")
@@ -170,6 +176,15 @@ public class FrontController extends BaseController{
 			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMobile";
 		}
 		
+		User user = new User();
+		user.setPhone(mobile);
+		if(systemService.exist(user)>0){
+			message = "注册手机号已存在,请不要重复注册.如果有问题请联系管理员";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMobile";
+		}
+		
+		
 		session.setAttribute("student_mobile", mobile);
 		
 		return "redirect:"+Global.getFrontPath()+"/skip_Mail";
@@ -187,6 +202,13 @@ public class FrontController extends BaseController{
 		
 		if(!MailValidateCodeServlet.validate(request,code)){
 			message = "邮件验证码错误, 请重试.";
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
+			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMail";
+		}
+		User user = new User();
+		user.setEmail(email);
+		if(systemService.exist(user)>0){
+			message = "注册邮箱号已存在,请不要重复注册.如果有问题请联系管理员";
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
 			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckMail";
 		}

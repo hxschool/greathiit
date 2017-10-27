@@ -119,11 +119,7 @@
 												${message}
 											</div>
 											
-											<div
-												class="alert alert-block alert-error" id="errorMobile" style="display: none">
-												<a class="close" data-dismiss="alert" href="#">×</a>
-												邮箱格式不正确,请确认
-											</div>
+									
 											
 											
 
@@ -133,106 +129,11 @@
 
 													<div class="span3">&nbsp;</div>
 
-													<div class="span6">
+													
 
-														<div class="control-group ">
-
-															<label for="name" class="control-label">姓名</label>
-															<div class="controls">
-
-																<input type="text" name="username" value="" id="name" value="${ sessionScope.student_username}" readonly/>
-
-															</div>
-														</div>
-
-
-														<div class="control-group ">
-
-															<label for="idCardNumber" class="control-label">身份证件号</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="idCardNumber" value="${ sessionScope.student_idCard}"
-																	id="idCardNumber" readonly/>
-
-															</div>
-														</div>
-
-
-														<div class="control-group ">
-
-															<label for="enrollCode" class="control-label">录取通知书号/学工号</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="enrollCode" value="${ sessionScope.student_idCard}"
-																	id="enrollCode" readonly/>
-																
-															</div>
-														</div>
 														
-															<div class="control-group ">
-
-															<label for="enrollCode" class="control-label">手机号</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="mobile" 
-																	id="mobile" value="${ sessionScope.student_mobile}" readonly/>
-																
-															</div>
-														</div>
+														注册成功 <a href="http://www.greathiit.com">点击登录</a>
 														
-														<div class="control-group ">
-
-															<label for="enrollCode" class="control-label">邮箱</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="email" 
-																	id="email"  value="${ sessionScope.student_email}" readonly/>
-																
-															</div>
-														</div>
-														
-														<div class="control-group ">
-
-															<label for="enrollCode" class="control-label">密码</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="password" 
-																	id="password"  />
-																
-															</div>
-														</div>
-														
-														<div class="control-group ">
-
-															<label for="enrollCode" class="control-label">确认密码</label>
-
-
-															<div class="controls">
-
-
-																<input type="text" name="confirmPassword" 
-																	id="confirmPassword" />
-																
-															</div>
-														</div>
-														
-													</div>
-
 													<div class="span3"></div>
 
 												</div>

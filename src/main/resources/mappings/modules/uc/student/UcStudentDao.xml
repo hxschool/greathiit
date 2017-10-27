@@ -40,14 +40,14 @@
 	<sql id="ucStudentJoins">
 	</sql>
 	
-	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="string">
+	<select id="findNumberByUsernameAndIdCard" resultType="string">
 		SELECT
-		student_number
+		a.student_number AS "studentNumber"
 		FROM uc_student a
 		WHERE a.username=#{username} and a.id_card=#{idCard}
 	</select>
 	
-	<select id="findNumberByUsernameAndIdCard" resultType="UcStudent">
+	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="UcStudent">
 		SELECT
 		<include refid="ucStudentColumns"/>
 		FROM uc_student a

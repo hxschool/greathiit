@@ -36,7 +36,12 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public long findAllCount(User user);
-	
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
+	public long exist(User user);
 	/**
 	 * 更新用户密码
 	 * @param user

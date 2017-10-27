@@ -39,6 +39,22 @@
 	
 	<sql id="ucStudentJoins">
 	</sql>
+	
+	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="string">
+		SELECT
+		student_number
+		FROM uc_student a
+		WHERE a.username=#{username} and a.id_card=#{idCard}
+	</select>
+	
+	<select id="findNumberByUsernameAndIdCard" resultType="UcStudent">
+		SELECT
+		<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		WHERE a.username=#{username} and a.id_card=#{idCard} and a.student_number=#{number}
+	</select>
+	
+	
     
 	<select id="get" resultType="UcStudent">
 		SELECT 

@@ -40,6 +40,7 @@ $(document).ready(function(){
 					}
 				}
 			},
+			
 			hc_form_sfzh: {
 				container: '#error-hc_form_sfzh',
 				trigger: 'blur',

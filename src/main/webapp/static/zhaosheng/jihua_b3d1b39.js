@@ -41,6 +41,82 @@ $(document).ready(function(){
 				}
 			},
 			
+			hc_form_byxx: {
+				container: '#error-hc_form_byxx',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '毕业学校及班级不能为空！' + zx
+					}
+				}
+			},
+			
+
+			hc_form_hkszd: {
+				container: '#error-hc_form_hkszd',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '户口所在地不能为空！' + zx
+					}
+				}
+			},
+			
+			hc_form_age: {
+				container: '#error-hc_form_age',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '年龄不能为空！' + zx
+					}
+				}
+			},
+			hc_form_birth: {
+				container: '#error-hc_form_birth',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '出生日期不能为空！' + zx
+					}
+				}
+			},
+			
+			hc_form_bylb: {
+				container: '#error-hc_form_bylb',
+				validators: {
+					notEmpty: {
+						message: '尚未选择毕业类别！' + zx
+					}
+				}
+			},
+			hc_form_zytj: {
+				container: '#error-hc_form_zytj',
+				validators: {
+					notEmpty: {
+						message: '尚未选择专业调剂！' + zx
+					}
+				}
+			},
+			
+			hc_form_mingzu: {
+				container: '#error-hc_form_mingzu',
+				validators: {
+					notEmpty: {
+						message: '尚未选择民族！' + zx
+					}
+				}
+			},
+			hc_form_zhengzhimianmao: {
+				container: '#error-hc_form_zhengzhimianmao',
+				validators: {
+					notEmpty: {
+						message: '尚未选择政治面貌！' + zx
+					}
+				}
+			},
+			
+			
+			
 			hc_form_sfzh: {
 				container: '#error-hc_form_sfzh',
 				trigger: 'blur',
@@ -55,7 +131,6 @@ $(document).ready(function(){
 			},
 			hc_form_zy1: {
 				container: '#error-hc_form_zy1',
-				trigger: 'blur',
 				validators: {
 					notEmpty: {
 						message: '意向专业不能为空！' + zx

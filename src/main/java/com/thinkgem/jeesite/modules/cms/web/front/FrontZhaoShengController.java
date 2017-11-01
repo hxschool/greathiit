@@ -97,7 +97,7 @@ public class FrontZhaoShengController extends BaseController{
 	public String frontCheckMobile(@PathVariable("module") String module) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		module = module.substring(0, 1).toUpperCase() + module.substring(1);
-		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheck".concat(module);
+		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheck".concat(module);
 	}
 	
 	

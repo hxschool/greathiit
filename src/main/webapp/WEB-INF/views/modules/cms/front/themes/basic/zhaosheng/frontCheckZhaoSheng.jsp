@@ -16,7 +16,6 @@
 <link href='${ctxStatic}/zhaosheng/bootstrapValidator.min.css'
 	rel='stylesheet' type='text/css'>
 <script src='${ctxStatic}/zhaosheng/bootstrapValidator.min.js'></script>
-<script src='${ctxStatic}/city/jquery.cityselect.js'></script>
 
 <link rel='stylesheet'
 	href='${ctxStatic}/zhaosheng/style-jihua_0d25696.css' type='text/css' />
@@ -26,10 +25,12 @@
 	type='text/css'>
 <link href='${ctxStatic}/zhaosheng/common_7039432.css' rel='stylesheet'
 	type='text/css'>
-	<link href='${ctxStatic}/datetimepicker/css/bootstrap-datetimepicker.min.css' rel='stylesheet'
-	type='text/css'>
+<link
+	href='${ctxStatic}/datetimepicker/css/bootstrap-datetimepicker.min.css'
+	rel='stylesheet' type='text/css'>
 <script src='${ctxStatic}/zhaosheng/main_2c6fa1b.js'></script>
-<script src='${ctxStatic}/datetimepicker/js/bootstrap-datetimepicker.min.js'></script>
+<script
+	src='${ctxStatic}/datetimepicker/js/bootstrap-datetimepicker.min.js'></script>
 
 <!-- 加载Scripts结束 -->
 <style type="text/css">
@@ -130,7 +131,100 @@
 												<fieldset>
 
 
-<button class="btn btn-default btn-sm">考生基本信息</button>
+													<button class="btn btn-default btn-sm">考生基本信息</button>
+													
+													
+													<div class="form-group text-s12">
+														<label
+															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
+															for="hc_form_kl"> <b class="text-red">*</b>
+															城市:
+														</label>
+														<div class="input-group input-group-sm col-sm-7 col-xs-12">
+															<SELECT name="hc_form_province" id="to_cn" style="width: 30%;"
+																onchange="set_city(this, document.getElementById('city')); WYL();"
+																class="form-control margin-r-5 hc_form_bylb">
+																<option value="">请选择</option>
+
+																<option value=哈尔滨市>哈尔滨市</option>
+
+																<option value=齐齐哈尔市>齐齐哈尔市</option>
+
+																<option value=鸡西市>鸡西市</option>
+
+																<option value=鹤岗市>鹤岗市</option>
+
+																<option value=双鸭山市>双鸭山市</option>
+
+																<option value=大庆市>大庆市</option>
+
+																<option value=伊春市>伊春市</option>
+
+																<option value=佳木斯市>佳木斯市</option>
+
+																<option value=七台河市>七台河市</option>
+
+																<option value=牡丹江市>牡丹江市</option>
+
+																<option value=绥化市>绥化市</option>
+
+																<option value=黑河市>黑河市</option>
+
+																<option value=大兴安岭>大兴安岭</option>
+
+																<option value=省农垦总局>省农垦总局</option>
+
+																<option value=省森工总局>省森工总局</option>
+
+															</SELECT> <select id="city" name="hc_form_city"
+																class="form-control margin-r-5 hc_form_bylb"
+																style="width: 30%;">
+
+																<option value="">请选择</option>
+															</select>
+														</div>
+
+														<p class="col-sm-offset-3 col-xs-offset-3"
+															id="error-hc_form_to_cn"></p>
+															
+													</div>
+													
+													<div class="form-group text-s12">
+														<label
+															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
+															for="hc_form_kl"> <b class="text-red">*</b>
+															课类:
+														</label>
+														<div class="input-group input-group-sm col-sm-7 col-xs-12">
+															<span class="input-group-addon"><i
+																class="fa fa-mortar-board"></i></span> <select
+																class="form-control margin-r-5 hc_form_bylb"
+																id="hc_form_kl" name="hc_form_kl">
+																<option value='' selected='selected'>== 请选择 ==</option>
+															      <option value="文史类">文史类</option>
+															      <option value="理工类">理工类</option>
+															      <option value="中职">中职</option>
+															</select>
+														</div>
+														<p class="col-sm-offset-3 col-xs-offset-3"
+															id="error-hc_form_kl"></p>
+													</div>
+													
+													<div class="form-group text-s12 " id="fg_hc_form_xm">
+														<label
+															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
+															for="hc_form_bkh">  报考号:
+														</label>
+														<div class="input-group input-group-sm col-sm-7 col-xs-12">
+															<span class="input-group-addon"><i
+																class="fa fa-user"></i></span> <input type="text"
+																class="form-control hc_form_bkh" name="hc_form_bkh"
+																id="hc_form_bkh" placeholder=" (可不填写)按考生报名地县（市、区）招考办（或中学）报名时所给报名号填写" value="">
+														</div>
+														<p class="col-sm-offset-3 col-xs-offset-3"
+															id="error-hc_form_bkh"></p>
+													</div>
+													
 													<div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
@@ -146,10 +240,10 @@
 															id="error-hc_form_xm"></p>
 													</div>
 
-													<div class="form-group text-s12 " id="fg_hc_form_xm">
+													<div class="form-group text-s12 " id="fg_hc_form_age">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_xm"> <b class="text-red">*</b> 年龄:
+															for="hc_form_age"> <b class="text-red">*</b> 年龄:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<span class="input-group-addon"><i
@@ -162,10 +256,10 @@
 													</div>
 
 
-													<div class="form-group text-s12 " id="fg_hc_form_xm">
+													<div class="form-group text-s12 " id="fa_hc_form_birth">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_xm"> <b class="text-red">*</b> 出生日期:
+															for="hc_form_birth"> <b class="text-red">*</b> 出生日期:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<span class="input-group-addon"><i
@@ -668,13 +762,13 @@
 															<input type="text" class="form-control hc_form_szzx"
 																name="hc_form_szzx" id="hc_form_szzx"
 																placeholder="你所读的高中名称" value="">
-																
+
 														</div>
-														
+
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_szzx"></p>
 													</div>
-													
+
 													<div class="form-group text-s12 " id="fg_hc_form_zxdz">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
@@ -711,35 +805,40 @@
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_fzrdh"></p>
 													</div>
-													
-													<div class="form-group text-s12 " id="fg_hc_form_jdstarttime">
+
+													<div class="form-group text-s12 "
+														id="fg_hc_form_jdstarttime">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_jdstarttime"> 就读开始时间: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<input type="text" class="form-control hc_form_jdstarttime"
+															<input type="text"
+																class="form-control hc_form_jdstarttime"
 																name="hc_form_jdstarttime" id="hc_form_jdstarttime"
-																placeholder="就读开始时间"  data-date-format="yyyy-mm-dd" readonly="readonly">
+																placeholder="就读开始时间" data-date-format="yyyy-mm-dd"
+																readonly="readonly">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_jdstarttime"></p>
 													</div>
-													
+
 													<div class="form-group text-s12 " id="fg_hc_form_jdendtime">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_jdendtime"> 就读结束时间: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<input type="text" class="form-control hc_form_jdstarttime"
+															<input type="text"
+																class="form-control hc_form_jdstarttime"
 																name="hc_form_jdendtime" id="hc_form_jdendtime"
-																placeholder="就读结束时间 " data-date-format="yyyy-mm-dd" readonly="readonly">
+																placeholder="就读结束时间 " data-date-format="yyyy-mm-dd"
+																readonly="readonly">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_jdendtime"></p>
 													</div>
-													
-													
-														<div class="form-group text-s12 " id="fg_hc_form_yhtc">
+
+
+													<div class="form-group text-s12 " id="fg_hc_form_yhtc">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_yhtc"> 有何特长: </label>
@@ -751,136 +850,108 @@
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_yhtc"></p>
 													</div>
-													
-													
-													
+
+
+
 													<hr>
-													
+
 													<button class="btn btn-default btn-sm">紧急联系人</button>
-													
-													
-													<div class="form-group text-s12">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs">
-															<b class="text-red">*</b> 希望就读地区:
-														</label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12"
-															id="jddq">
-															<select class="form-control prov hc_form_add1"
-																id="hc_form_add1" name="hc_form_add1"
-																style="width: 30%;"></select> <select
-																class="form-control city hc_form_add2" id="hc_form_add2"
-																name="hc_form_add2" style="width: 30%;"></select>
-														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3" id="error-jddq"></p>
-														<script>
-															$("#jddq").citySelect();
-														</script>
-													</div>
-													<div class="form-group text-s12">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_kuasheng"> 外地就读: </label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<label class="radio-inline"> <input type="radio"
-																id="hc_form_kuasheng_0" name="hc_form_kuasheng"
-																value="不考虑" checked='checked'> 不考虑
-															</label> <label class="radio-inline"> <input type="radio"
-																id="hc_form_kuasheng_1" name="hc_form_kuasheng"
-																value="本省其他城市"> 本省其他城市
-															</label> <label class="radio-inline"> <input type="radio"
-																id="hc_form_kuasheng_2" name="hc_form_kuasheng"
-																value="外省"> 外省
-															</label> <label class="radio-inline"> <input type="radio"
-																id="hc_form_kuasheng_3" name="hc_form_kuasheng"
-																value="都可以"> 都可以
-															</label>
-														</div>
+
+													<div class="form-group text-s12 " id="fg_hc_form_jxlxr">
+														<br>
+														<table style="width: 100%;"
+															class="table table-striped table-hover table-bordered">
+															<thead>
+																<tr>
+																	<th>关系</th>
+																	<th>姓名</th>
+																	<th>联系电话</th>
+																	<th>现在何单位工作</th>
+																	<th>任何职务</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_fa_gx" name="hc_form_jjlxr_fa_gx"
+																		id="hc_form_jjlxr_fa_gx" placeholder="与本人关系 " value="">
+																		</div>
+																		</td>
+																	<td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_fa_name" name="hc_form_jjlxr_fa_name"
+																		id="hc_form_jjlxr_fa_name" placeholder="联系人姓名 " value="">
+																		
+																		</div>
+																		
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_fa_tel" name="hc_form_jjlxr_fa_tel"
+																		id="hc_form_jjlxr_fa_tel" placeholder="联系人电话 " value="">
+																		</div>
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_fa_work" name="hc_form_jjlxr_fa_work"
+																		id="hc_form_jjlxr_fa_work" placeholder="工作单位" value="">
+																		</div>
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_fa_zw" name="hc_form_jjlxr_fa_zw"
+																		id="hc_form_jjlxr_fa_zw" placeholder="任何职务" value="">
+																		</div>
+																		</td>
+																</tr>
+																
+																<tr>
+																	<td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_ma_gx" name="hc_form_jjlxr_ma_gx"
+																		id="hc_form_jjlxr_ma_gx" placeholder="与本人关系 " value="">
+																		</div>
+																		</td>
+																	<td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_ma_name" name="hc_form_jjlxr_ma_name"
+																		id="hc_form_jjlxr_ma_name" placeholder="联系人姓名 " value="">
+																		</div>
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_ma_tel" name="hc_form_jjlxr_ma_tel"
+																		id="hc_form_jjlxr_ma_tel" placeholder="联系人电话 " value="">
+																		</div>
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_ma_work" name="hc_form_jjlxr_ma_work"
+																		id="hc_form_jjlxr_ma_work" placeholder="工作单位" value="">
+																		</div>
+																		</td><td>
+																	<div class="input-group input-group-sm">
+																	<input type="text"
+																		class="form-control hc_form_jjlxr_ma_zw" name="hc_form_jjlxr_ma_zw"
+																		id="hc_form_jjlxr_ma_zw" placeholder="任何职务" value="">
+																		</div>
+																		</td>
+																</tr>
+
+															</tbody>
+														</table>
 														<p class="col-sm-offset-3 col-xs-offset-3"
-															id="error-hc_form_kuasheng"></p>
-													</div>
-													<div class="form-group text-s12">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_baojiuye"> 包就业分配: </label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<label class="radio-inline"> <input type="radio"
-																id="hc_form_baojiuye_0" name="hc_form_baojiuye"
-																value="希望包分配" checked='checked'> 希望包分配
-															</label> <label class="radio-inline"> <input type="radio"
-																id="hc_form_baojiuye_1" name="hc_form_baojiuye"
-																value="不希望"> 不希望
-															</label>
-														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3"
-															id="error-hc_form_baojiuye"></p>
-													</div>
-													<div class="form-group text-s12">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_yuexin"> 期待月薪: </label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<span class="input-group-addon"><i
-																class="fa fa-money"></i></span> <select
-																class="form-control margin-r-5 hc_form_yuexin"
-																id="hc_form_yuexin" name="hc_form_yuexin">
-																<option value='' selected='selected'>= 期待月薪 =</option>
-																<option value='2000~3000元'>2000~3000元</option>
-																<option value='3000~4000元'>3000~4000元</option>
-																<option value='4000~5000元'>4000~5000元</option>
-																<option value='5000~6000元'>5000~6000元</option>
-																<option value='6000~8000元'>6000~8000元</option>
-																<option value='8000元以上'>8000元以上</option>
-															</select>
-														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3"
-															id="error-hc_form_yuexin"></p>
+															id="error-hc_form_jjlxr_fa_tel"></p>
+															<p class="col-sm-offset-3 col-xs-offset-3"
+															id="error-hc_form_jjlxr_fa_name"></p>
 													</div>
 													<hr>
-
-													<div class="form-group text-s12">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_cj"> <b class="text-red">*</b> 成绩:
-														</label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<span class="input-group-addon"><i
-																class="fa fa-bar-chart"></i></span> <select
-																class="form-control margin-r-5 hc_form_cj"
-																id="hc_form_cj" name="hc_form_cj">
-																<option value='' selected='selected'>=预计高考成绩=</option>
-																<option value='200分以下'>200分以下</option>
-																<option value='200~300分'>200~300分</option>
-																<option value='300~400分'>300~400分</option>
-																<option value='400~500分'>400~500分</option>
-																<option value='500~600分'>500~600分</option>
-																<option value='600分以上'>600分以上</option>
-															</select>
-														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3"
-															id="error-hc_form_cj"></p>
-													</div>
-													<div class="form-group text-s12">
-
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs">
-															<b class="text-red">*</b> 所在地区:
-														</label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12"
-															id="sfdq">
-															<select class="form-control prov hc_form_province"
-																id="hc_form_province" name="hc_form_province"
-																style="width: 30%;"></select> <select
-																class="form-control city hc_form_city" id="hc_form_city"
-																name="hc_form_city" style="width: 30%;"></select> <select
-																class="form-control dist hc_form_area" id="hc_form_area"
-																name="hc_form_area" style="width: 30%;"></select>
-														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3" id="error-sfdq"></p>
-														<script>
-															$("#sfdq").citySelect();
-														</script>
-													</div>
+													<button class="btn btn-default btn-sm">社交联系方式</button>
 
 
 													<div class="form-group text-s12 " id="fg_hc_form_bysj">
@@ -979,5 +1050,69 @@ $(document).ready(function(){
  });
 });
 </script>
+
+<script language=javascript> 
+
+cities = new Object(); 
+cities['哈尔滨市']=new Array('道里区','南岗区','道外区','松北区', '香坊区', '平房区', '呼兰区', '阿城区', '依兰县', '宾县', '方正县', '双城市', '五常市', '巴彦县', '木兰县', '通河县', '尚志市', '延寿县'); 
+
+cities['齐齐哈尔市']=new Array('龙沙区', '建华区', '铁锋区', '昂昂溪区', '富拉尔基区', '碾子山区', '梅里斯区', '龙江县', '讷河市', '依安县', '泰来县','甘南县', '富裕县', '克山县', '克东县', '拜泉县'); 
+cities['鸡西市']=new Array('鸡西市','鸡东县', '密山市', '虎林市'); 
+cities['鹤岗市']=new Array('鹤岗市','绥滨县', '萝北县'); 
+cities['双鸭山市']=new Array('双鸭山市','集贤县', '宝清县', '友谊县', '饶河县'); 
+
+cities['大庆市']=new Array('萨尔图区', '龙凤区', '红岗区', '大同区', '让胡路区', '杜蒙自治县', '林甸县', '肇源县', '肇州县'); 
+cities['伊春市']=new Array('伊春区', '友好区', '五营区', '新青区', '南岔区', '带岭区', '铁力市', '嘉荫县'); 
+cities['佳木斯市']=new Array('佳木斯市','富锦市', '桦南县', '桦川县', '汤原县', '同江市', '抚远县'); 
+
+cities['七台河市']=new Array('七台河市','勃利县'); 
+
+cities['牡丹江市']=new Array('牡丹江市','绥芬河市', '宁安市', '海林市', '穆棱县', '东宁县', '林口县'); 
+
+cities['绥化市']=new Array('北林区', '安达市', '海伦市', '肇东市', '望奎县', '兰西县', '青冈县', '庆安县', '明水县', '绥棱县'); 
+
+cities['黑河市']=new Array('黑河市', '北安市', '五大连池市', '嫩江县', '五大连池名胜风景区', '逊克县', '孙吴县'); 
+
+cities['大兴安岭']=new Array('松岭区', '新林区', '呼中区', '呼玛县', '塔河县', '漠河县', '加格达奇区'); 
+
+cities['省农垦总局']=new Array('省农垦总局','哈尔滨农垦分局局直', '红兴隆农垦分局局直', '宝泉岭农垦分局局直', '建三江农垦分局局直', '北安农垦分局第一高中', '北安农垦分局第二高中', '九三农垦分局局直', '齐齐哈尔农垦分局查哈阳', '牡丹江农垦分局局直', '绥化农垦分局局直'); 
+
+cities['省森工总局']=new Array('省森工总局','沾河林业局', '绥棱林业局', '方正林业局', '亚布力(苇河)林业局', '东方红林业局', '清河林业局', '大海林林业局', '柴河林业局', '穆棱林业局', '东京城林业局', '绥阳林业局', '海林林业局'); 
+
+function set_city(province, city) 
+
+{ 
+
+var pv, cv; 
+
+var i, ii; 
+
+pv=province.value; 
+
+cv=city.value; 
+
+city.length=1; 
+
+if(pv=='0') return; 
+
+if(typeof(cities[pv])=='undefined') return; 
+
+for(i=0; i<cities[pv].length; i++) 
+
+{ 
+
+ii = i+1; 
+
+city.options[ii] = new Option(); 
+
+city.options[ii].text = cities[pv][i]; 
+
+city.options[ii].value = cities[pv][i]; 
+
+} 
+
+} 
+
+</script> 
 </body>
 </html>

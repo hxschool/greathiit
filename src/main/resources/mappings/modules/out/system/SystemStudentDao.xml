@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.out.system.dao.SystemStudentDao">
+    
+	<sql id="systemStudentColumns">
+		a.id AS "id",
+		a.hc_form_add1 AS "hcFormAdd1",
+		a.hc_form_add2 AS "hcFormAdd2",
+		a.hc_form_kuasheng AS "hcFormKuasheng",
+		a.hc_form_baojiuye AS "hcFormBaojiuye",
+		a.hc_form_yuexin AS "hcFormYuexin",
+		a.hc_form_cj AS "hcFormCj",
+		a.hc_form_area AS "hcFormArea",
+		a.hc_form_province AS "hcFormProvince",
+		a.hc_form_city AS "hcFormCity",
+		a.hc_form_kl AS "hcFormKl",
+		a.hc_form_bkh AS "hcFormBkh",
+		a.hc_form_xm AS "hcFormXm",
+		a.hc_form_age AS "hcFormAge",
+		a.hc_form_birth AS "hcFormBirth",
+		a.hc_form_xb AS "hcFormXb",
+		a.hc_form_sfzh AS "hcFormSfzh",
+		a.hc_form_bylb AS "hcFormBylb",
+		a.hc_form_xslx AS "hcFormXslx",
+		a.hc_form_mingzu AS "hcFormMingzu",
+		a.hc_form_zhengzhimianmao AS "hcFormZhengzhimianmao",
+		a.hc_form_byxx AS "hcFormByxx",
+		a.hc_form_hkszd AS "hcFormHkszd",
+		a.hc_form_sj AS "hcFormSj",
+		a.hc_form_dz AS "hcFormDz",
+		a.hc_form_zy1 AS "hcFormZy1",
+		a.hc_form_zy2 AS "hcFormZy2",
+		a.hc_form_zy3 AS "hcFormZy3",
+		a.hc_form_zy4 AS "hcFormZy4",
+		a.hc_form_zy5 AS "hcFormZy5",
+		a.hc_form_zytj AS "hcFormZytj",
+		a.hc_form_szzx AS "hcFormSzzx",
+		a.hc_form_zxdz AS "hcFormZxdz",
+		a.hc_form_fzrxm AS "hcFormFzrxm",
+		a.hc_form_fzrdh AS "hcFormFzrdh",
+		a.hc_form_jdstarttime AS "hcFormJdstarttime",
+		a.hc_form_jdendtime AS "hcFormJdendtime",
+		a.hc_form_yhtc AS "hcFormYhtc",
+		a.hc_form_jjlxr_fa_gx AS "hcFormJjlxrFaGx",
+		a.hc_form_jjlxr_fa_name AS "hcFormJjlxrFaName",
+		a.hc_form_jjlxr_fa_tel AS "hcFormJjlxrFaTel",
+		a.hc_form_jjlxr_fa_work AS "hcFormJjlxrFaWork",
+		a.hc_form_jjlxr_fa_zw AS "hcFormJjlxrFaZw",
+		a.hc_form_jjlxr_ma_gx AS "hcFormJjlxrMaGx",
+		a.hc_form_jjlxr_ma_name AS "hcFormJjlxrMaName",
+		a.hc_form_jjlxr_ma_tel AS "hcFormJjlxrMaTel",
+		a.hc_form_jjlxr_ma_work AS "hcFormJjlxrMaWork",
+		a.hc_form_jjlxr_ma_zw AS "hcFormJjlxrMaZw",
+		a.hc_form_bysj AS "hcFormBysj",
+		a.hc_form_qq AS "hcFormQq",
+		a.hc_form_bz AS "hcFormBz",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.hc_form_zhuangtai AS "hcFormZhuangtai"
+	</sql>
+	
+	<sql id="systemStudentJoins">
+	</sql>
+    
+	<select id="get" resultType="SystemStudent">
+		SELECT 
+			<include refid="systemStudentColumns"/>
+		FROM rs_student a
+		<include refid="systemStudentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="SystemStudent">
+		SELECT 
+			<include refid="systemStudentColumns"/>
+		FROM rs_student a
+		<include refid="systemStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="hcFormProvince != null and hcFormProvince != ''">
+				AND a.hc_form_province = #{hcFormProvince}
+			</if>
+			<if test="hcFormCity != null and hcFormCity != ''">
+				AND a.hc_form_city = #{hcFormCity}
+			</if>
+			<if test="hcFormKl != null and hcFormKl != ''">
+				AND a.hc_form_kl = #{hcFormKl}
+			</if>
+			<if test="hcFormBkh != null and hcFormBkh != ''">
+				AND a.hc_form_bkh = #{hcFormBkh}
+			</if>
+			<if test="hcFormXm != null and hcFormXm != ''">
+				AND a.hc_form_xm = #{hcFormXm}
+			</if>
+			<if test="hcFormXb != null and hcFormXb != ''">
+				AND a.hc_form_xb = #{hcFormXb}
+			</if>
+			<if test="hcFormSfzh != null and hcFormSfzh != ''">
+				AND a.hc_form_sfzh = #{hcFormSfzh}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="SystemStudent">
+		SELECT 
+			<include refid="systemStudentColumns"/>
+		FROM rs_student a
+		<include refid="systemStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rs_student(
+			id,
+			hc_form_add1,
+			hc_form_add2,
+			hc_form_kuasheng,
+			hc_form_baojiuye,
+			hc_form_yuexin,
+			hc_form_cj,
+			hc_form_area,
+			hc_form_province,
+			hc_form_city,
+			hc_form_kl,
+			hc_form_bkh,
+			hc_form_xm,
+			hc_form_age,
+			hc_form_birth,
+			hc_form_xb,
+			hc_form_sfzh,
+			hc_form_bylb,
+			hc_form_xslx,
+			hc_form_mingzu,
+			hc_form_zhengzhimianmao,
+			hc_form_byxx,
+			hc_form_hkszd,
+			hc_form_sj,
+			hc_form_dz,
+			hc_form_zy1,
+			hc_form_zy2,
+			hc_form_zy3,
+			hc_form_zy4,
+			hc_form_zy5,
+			hc_form_zytj,
+			hc_form_szzx,
+			hc_form_zxdz,
+			hc_form_fzrxm,
+			hc_form_fzrdh,
+			hc_form_jdstarttime,
+			hc_form_jdendtime,
+			hc_form_yhtc,
+			hc_form_jjlxr_fa_gx,
+			hc_form_jjlxr_fa_name,
+			hc_form_jjlxr_fa_tel,
+			hc_form_jjlxr_fa_work,
+			hc_form_jjlxr_fa_zw,
+			hc_form_jjlxr_ma_gx,
+			hc_form_jjlxr_ma_name,
+			hc_form_jjlxr_ma_tel,
+			hc_form_jjlxr_ma_work,
+			hc_form_jjlxr_ma_zw,
+			hc_form_bysj,
+			hc_form_qq,
+			hc_form_bz,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			hc_form_zhuangtai
+		) VALUES (
+			#{id},
+			#{hcFormAdd1},
+			#{hcFormAdd2},
+			#{hcFormKuasheng},
+			#{hcFormBaojiuye},
+			#{hcFormYuexin},
+			#{hcFormCj},
+			#{hcFormArea},
+			#{hcFormProvince},
+			#{hcFormCity},
+			#{hcFormKl},
+			#{hcFormBkh},
+			#{hcFormXm},
+			#{hcFormAge},
+			#{hcFormBirth},
+			#{hcFormXb},
+			#{hcFormSfzh},
+			#{hcFormBylb},
+			#{hcFormXslx},
+			#{hcFormMingzu},
+			#{hcFormZhengzhimianmao},
+			#{hcFormByxx},
+			#{hcFormHkszd},
+			#{hcFormSj},
+			#{hcFormDz},
+			#{hcFormZy1},
+			#{hcFormZy2},
+			#{hcFormZy3},
+			#{hcFormZy4},
+			#{hcFormZy5},
+			#{hcFormZytj},
+			#{hcFormSzzx},
+			#{hcFormZxdz},
+			#{hcFormFzrxm},
+			#{hcFormFzrdh},
+			#{hcFormJdstarttime},
+			#{hcFormJdendtime},
+			#{hcFormYhtc},
+			#{hcFormJjlxrFaGx},
+			#{hcFormJjlxrFaName},
+			#{hcFormJjlxrFaTel},
+			#{hcFormJjlxrFaWork},
+			#{hcFormJjlxrFaZw},
+			#{hcFormJjlxrMaGx},
+			#{hcFormJjlxrMaName},
+			#{hcFormJjlxrMaTel},
+			#{hcFormJjlxrMaWork},
+			#{hcFormJjlxrMaZw},
+			#{hcFormBysj},
+			#{hcFormQq},
+			#{hcFormBz},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{hcFormZhuangtai}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rs_student SET 	
+			hc_form_add1 = #{hcFormAdd1},
+			hc_form_add2 = #{hcFormAdd2},
+			hc_form_kuasheng = #{hcFormKuasheng},
+			hc_form_baojiuye = #{hcFormBaojiuye},
+			hc_form_yuexin = #{hcFormYuexin},
+			hc_form_cj = #{hcFormCj},
+			hc_form_area = #{hcFormArea},
+			hc_form_province = #{hcFormProvince},
+			hc_form_city = #{hcFormCity},
+			hc_form_kl = #{hcFormKl},
+			hc_form_bkh = #{hcFormBkh},
+			hc_form_xm = #{hcFormXm},
+			hc_form_age = #{hcFormAge},
+			hc_form_birth = #{hcFormBirth},
+			hc_form_xb = #{hcFormXb},
+			hc_form_sfzh = #{hcFormSfzh},
+			hc_form_bylb = #{hcFormBylb},
+			hc_form_xslx = #{hcFormXslx},
+			hc_form_mingzu = #{hcFormMingzu},
+			hc_form_zhengzhimianmao = #{hcFormZhengzhimianmao},
+			hc_form_byxx = #{hcFormByxx},
+			hc_form_hkszd = #{hcFormHkszd},
+			hc_form_sj = #{hcFormSj},
+			hc_form_dz = #{hcFormDz},
+			hc_form_zy1 = #{hcFormZy1},
+			hc_form_zy2 = #{hcFormZy2},
+			hc_form_zy3 = #{hcFormZy3},
+			hc_form_zy4 = #{hcFormZy4},
+			hc_form_zy5 = #{hcFormZy5},
+			hc_form_zytj = #{hcFormZytj},
+			hc_form_szzx = #{hcFormSzzx},
+			hc_form_zxdz = #{hcFormZxdz},
+			hc_form_fzrxm = #{hcFormFzrxm},
+			hc_form_fzrdh = #{hcFormFzrdh},
+			hc_form_jdstarttime = #{hcFormJdstarttime},
+			hc_form_jdendtime = #{hcFormJdendtime},
+			hc_form_yhtc = #{hcFormYhtc},
+			hc_form_jjlxr_fa_gx = #{hcFormJjlxrFaGx},
+			hc_form_jjlxr_fa_name = #{hcFormJjlxrFaName},
+			hc_form_jjlxr_fa_tel = #{hcFormJjlxrFaTel},
+			hc_form_jjlxr_fa_work = #{hcFormJjlxrFaWork},
+			hc_form_jjlxr_fa_zw = #{hcFormJjlxrFaZw},
+			hc_form_jjlxr_ma_gx = #{hcFormJjlxrMaGx},
+			hc_form_jjlxr_ma_name = #{hcFormJjlxrMaName},
+			hc_form_jjlxr_ma_tel = #{hcFormJjlxrMaTel},
+			hc_form_jjlxr_ma_work = #{hcFormJjlxrMaWork},
+			hc_form_jjlxr_ma_zw = #{hcFormJjlxrMaZw},
+			hc_form_bysj = #{hcFormBysj},
+			hc_form_qq = #{hcFormQq},
+			hc_form_bz = #{hcFormBz},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			hc_form_zhuangtai = #{hcFormZhuangtai}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE rs_student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

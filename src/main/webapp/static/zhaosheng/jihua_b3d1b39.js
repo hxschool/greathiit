@@ -97,6 +97,33 @@ $(document).ready(function(){
 					}
 				}
 			},
+			hc_form_kl: {
+				container: '#error-hc_form_kl',
+				validators: {
+					notEmpty: {
+						message: '尚未选择课类！' + zx
+					}
+				}
+			},
+			to_cn: {
+				container: '#error-hc_form_to_cn',
+				validators: {
+					notEmpty: {
+						message: '尚未选择省份！' + zx
+					}
+				}
+			},
+			city: {
+				container: '#error-hc_form_to_cn',
+				validators: {
+					notEmpty: {
+						message: '尚未选择城市！' + zx
+					}
+				}
+			},
+			
+			
+			
 			
 			hc_form_mingzu: {
 				container: '#error-hc_form_mingzu',
@@ -129,6 +156,9 @@ $(document).ready(function(){
 					}
 				}
 			},
+			
+	
+			
 			hc_form_zy1: {
 				container: '#error-hc_form_zy1',
 				validators: {
@@ -161,6 +191,8 @@ $(document).ready(function(){
 					}
 				}
 			},
+		
+			
 			hc_form_cj: {
 				container: '#error-hc_form_cj',
 				validators: {
@@ -185,6 +217,7 @@ $(document).ready(function(){
 					}
 				}
 			},
+			
 			hc_form_dz: {
 				container: '#error-hc_form_dz',
 				trigger: 'blur',
@@ -212,6 +245,31 @@ $(document).ready(function(){
                     }
 				}
 			},
+			
+			hc_form_jjlxr_fa_name: {
+				container: '#error-hc_form_jjlxr_fa_name',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '尚未填写紧急联系人姓名！' + zx
+					}
+				}
+			},
+			hc_form_jjlxr_fa_tel: {
+				container: '#error-hc_form_jjlxr_fa_tel',
+				trigger: 'blur',
+				validators: {
+					notEmpty: {
+						message: '填写紧急联系人电话不能为空！' + zx
+					},
+					stringLength: {
+						min: 11,
+                        max: 11,
+                        message: '手机号码长度应为11位！' + zx
+                    }
+				}
+			},
+			
 			hc_form_qq: {
 				container: '#error-hc_form_qq',
 				trigger: 'blur',

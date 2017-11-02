@@ -24,8 +24,8 @@ import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
 
 /**
  * 单招报名申请表Controller
- * @author 赵俊飞
- * @version 2017-10-16
+ * @author qq773152
+ * @version 2017-11-02
  */
 @Controller
 @RequestMapping(value = "${adminPath}/out/rs/rsStudent")
@@ -68,7 +68,7 @@ public class RsStudentController extends BaseController {
 			return form(rsStudent, model);
 		}
 		rsStudentService.save(rsStudent);
-		addMessage(redirectAttributes, "保存单招报名申请表成功");
+		addMessage(redirectAttributes, "保存单招报名成功");
 		return "redirect:"+Global.getAdminPath()+"/out/rs/rsStudent/?repage";
 	}
 	
@@ -76,7 +76,7 @@ public class RsStudentController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(RsStudent rsStudent, RedirectAttributes redirectAttributes) {
 		rsStudentService.delete(rsStudent);
-		addMessage(redirectAttributes, "删除单招报名申请表成功");
+		addMessage(redirectAttributes, "删除单招报名成功");
 		return "redirect:"+Global.getAdminPath()+"/out/rs/rsStudent/?repage";
 	}
 

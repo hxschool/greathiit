@@ -15,8 +15,8 @@ import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 
 /**
  * 单招报名申请表Service
- * @author 赵俊飞
- * @version 2017-10-16
+ * @author qq773152
+ * @version 2017-11-02
  */
 @Service
 @Transactional(readOnly = true)

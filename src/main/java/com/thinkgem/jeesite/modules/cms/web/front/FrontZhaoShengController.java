@@ -3,56 +3,26 @@
  */
 package com.thinkgem.jeesite.modules.cms.web.front;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.annotation.SameUrlData;
-import com.thinkgem.jeesite.common.config.Global;
-import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.servlet.MailValidateCodeServlet;
-import com.thinkgem.jeesite.common.servlet.SMSValidateCodeServlet;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
-import com.thinkgem.jeesite.common.utils.IdGen;
-import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.api.service.ApiService;
-import com.thinkgem.jeesite.modules.cms.entity.Article;
-import com.thinkgem.jeesite.modules.cms.entity.Category;
-import com.thinkgem.jeesite.modules.cms.entity.Comment;
-import com.thinkgem.jeesite.modules.cms.entity.Link;
 import com.thinkgem.jeesite.modules.cms.entity.Site;
-import com.thinkgem.jeesite.modules.cms.service.ArticleDataService;
-import com.thinkgem.jeesite.modules.cms.service.ArticleService;
-import com.thinkgem.jeesite.modules.cms.service.CategoryService;
-import com.thinkgem.jeesite.modules.cms.service.CommentService;
-import com.thinkgem.jeesite.modules.cms.service.LinkService;
-import com.thinkgem.jeesite.modules.cms.service.SiteService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 网站Controller
@@ -63,22 +33,6 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 @RequestMapping(value = "${frontPath}/zs")
 public class FrontZhaoShengController extends BaseController{
 	
-	@Autowired
-	private ArticleService articleService;
-	@Autowired
-	private ArticleDataService articleDataService;
-	@Autowired
-	private LinkService linkService;
-	@Autowired
-	private CommentService commentService;
-	@Autowired
-	private CategoryService categoryService;
-	@Autowired
-	private SiteService siteService;
-	@Autowired
-	private ApiService apiService;
-	@Autowired
-	private SystemService systemService;
 	@Autowired
 	private RsStudentService rsStudentService;
 	/**

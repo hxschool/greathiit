@@ -4,7 +4,6 @@
 package com.thinkgem.jeesite.common.servlet;
 
 import java.io.IOException;
-import java.util.Properties;
 import java.util.Random;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.aliyuncs.exceptions.ClientException;
+import com.thinkgem.jeesite.common.utils.SMSUtils;
 
 /**
  * 生成随机验证码
@@ -54,7 +54,12 @@ public class SMSValidateCodeServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String mobile = request.getParameter("mobile");
 		String code = autoRandomCode(4);
-		sendMessage(mobile,code);
+		try {
+			SMSUtils.sendSms(mobile,code);
+		} catch (ClientException e) {
+			System.out.println("连接短信通道异常");
+			e.printStackTrace();
+		}
 		request.getSession().setAttribute(VALIDATE_CODE, code);
 		response.getOutputStream().print("true");
 	}
@@ -69,18 +74,7 @@ public class SMSValidateCodeServlet extends HttpServlet {
 		return str;
 	}
 	
-	public static boolean sendMessage(String mobile,String code)
-    {
-		
-		Properties p = SpringContextHolder.getBean("APP_PROP");
-		String from = p.get("mobile.username").toString();
-		String password = p.get("mobile.password").toString();
-		String title = p.get("mobile.title").toString();
-		String body = p.get("mobile.body").toString();
-		body = body.replace("{code}", code);
-        
-        System.out.println(body);
-		return true;
-    }
+
+	
 
 }

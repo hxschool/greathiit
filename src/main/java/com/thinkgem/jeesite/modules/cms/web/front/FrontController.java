@@ -108,7 +108,7 @@ public class FrontController extends BaseController{
 		User user = new User();
 		user.setLoginName(idCardNumber);
 		if(systemService.exist(user)>0){
-			message = "注册账户已存在,请不要重复注册.";
+			message = "该身份信息已存在,请核实身份信息.";
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, message);
 			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckRegister";
 		}

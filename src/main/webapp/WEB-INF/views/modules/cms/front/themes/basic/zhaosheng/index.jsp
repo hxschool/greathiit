@@ -401,7 +401,7 @@
 										<div class="panel-body">
 											<div class="clearfix"></div>
 											<form id="form" method="post" class="form-horizontal"
-												action="zhaosheng"  onSubmit="return check()">
+												action="skip_ZhaoSheng"  onSubmit="return check()">
 												<fieldset>
 													<input type="hidden" class="hc_form_cat" id="hc_form_cat"
 														name="hc_form_cat" value="补录申请">

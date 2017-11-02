@@ -31,6 +31,7 @@
 <script src='${ctxStatic}/zhaosheng/main_2c6fa1b.js'></script>
 <script
 	src='${ctxStatic}/datetimepicker/js/bootstrap-datetimepicker.min.js'></script>
+	<script type="text/javascript" src="${ctxStatic}/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
 
 <!-- 加载Scripts结束 -->
 <style type="text/css">
@@ -71,6 +72,13 @@
 </head>
 
 <body class=" layout-home">
+<c:if test="${empty param.hc_form_sfzh}">  
+<script>
+alert("参数异常即将关闭当前窗口");
+window.close();
+</script>
+
+</c:if>
 
 
 	<!--下面是对联广告的html代码结构-->
@@ -216,8 +224,7 @@
 															for="hc_form_bkh">  报考号:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<span class="input-group-addon"><i
-																class="fa fa-user"></i></span> <input type="text"
+															<input type="text"
 																class="form-control hc_form_bkh" name="hc_form_bkh"
 																id="hc_form_bkh" placeholder=" (可不填写)按考生报名地县（市、区）招考办（或中学）报名时所给报名号填写" value="">
 														</div>
@@ -265,7 +272,7 @@
 															<span class="input-group-addon"><i
 																class="fa fa-birthday-cake"></i></span> <input type="text"
 																class="form-control hc_form_birth" name="hc_form_birth"
-																id="hc_form_birth" placeholder="年龄" value="">
+																id="hc_form_birth" placeholder="出生日期"  readonly="readonly">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_birth"></p>
@@ -1022,15 +1029,44 @@
 	</div>
 	<script type="text/javascript">
 $(document).ready(function(){
+	 var idCard = "${param.hc_form_sfzh}"
+		 $("#hc_form_sfzh").val(idCard);
+	 if(idCard != null && idCard != ""){  
+         if(idCard.length == 15){  
+             birthday = "19"+idCard.substr(6,6);  
+         } else if(idCard.length == 18){  
+             birthday = idCard.substr(6,8);  
+         }  
+       
+         birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");  
+     } 
+	 $("#hc_form_birth").val(birthday);
+	 
+	 if (parseInt(idCard.substr(16, 1)) % 2 == 1) {
+		 $("#hc_form_xb_0").attr('checked','true');
+	 }else{
+		 $("#hc_form_xb_1").attr('checked','true');
+	 }
+	
+	 var myDate = new Date();
+     var month = myDate.getMonth() + 1;
+     var day = myDate.getDate();
+     var age = myDate.getFullYear() - idCard.substring(6, 10) - 1;
+     if (idCard.substring(10, 12) < month || idCard.substring(10, 12) == month && idCard.substring(12, 14) <= day) {
+         age++;
+     }
+     $("#hc_form_age").val(age);
 	
     $('#hc_form_jdstarttime').datetimepicker({
+    	language:  'zh-CN',
     	 minView: "month",//设置只显示到月份
     	  format : "yyyy-mm-dd",//日期格式
     	  autoclose:true,//选中关闭
     	  todayBtn: true//今日按钮
     });
     $('#hc_form_jdendtime').datetimepicker({
-    	 minView: "month",//设置只显示到月份
+    	language:  'zh-CN',
+    	minView: "month",//设置只显示到月份
     	  format : "yyyy-mm-dd",//日期格式
     	  autoclose:true,//选中关闭
     	  todayBtn: true//今日按钮

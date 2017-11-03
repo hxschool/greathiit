@@ -301,10 +301,11 @@ public class MailUtil
     public static void send(String email,String code) {
 		Properties p = SpringContextHolder.getBean("APP_PROP");
 		String[] to = { email };
-		String from = p.get("mail.username").toString();
-		String password = p.get("mail.password").toString();
-		String title = p.get("mail.title").toString();
-		String body = p.get("mail.body").toString();
+		
+		String from = p.getProperty("mail.username");
+		String password = p.getProperty("mail.password");
+		String title = p.getProperty("mail.title");
+		String body = p.getProperty("mail.body");
 		body = body.replace("{code}", code);
 		MailUtil mail = new MailUtil(from, password, to, RecipientType.TO, title, body);
 		mail.setMailBody(body);

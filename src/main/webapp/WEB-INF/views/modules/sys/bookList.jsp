@@ -1,49 +1,103 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>图书查询</title>
-	<meta name="decorator" content="default"/>
-	
+<title>图书查询</title>
+<meta name="decorator" content="default" />
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 </head>
 <body>
-<!-- 	<ul class="nav nav-tabs"> -->
-<%-- 		<li class="active"><a href="${ctx}/sys/log/">日志列表</a></li> --%>
-<!-- 	</ul> -->
-	<form:form id="searchForm" action="${ctx}/sys/book/" method="post" class="breadcrumb form-search">
-		
+	<!-- 	<ul class="nav nav-tabs"> -->
+	<%-- 		<li class="active"><a href="${ctx}/sys/log/">日志列表</a></li> --%>
+	<!-- 	</ul> -->
+	<form:form id="searchForm" action="${ctx}/sys/book/" method="post"
+		class="breadcrumb form-search">
+
 		<div>
-			<label>输入书名：</label><input id="bookname" name="bookname" type="text" maxlength="50" class="input-mini" value=""/>
-			<label>用户ID：</label><input id="booksortname" name="booksortname" type="text" maxlength="50" class="input-mini" value=""/>
-			
-			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+			<ul class="ul-form">
+				<li><label>输入书名：</label><input id="bookname" name="bookname"
+					type="text" maxlength="50" class="input-small" value="${bookname }" /></li>
+				
+				<li><label>拼音查找：</label> <input id="sortbookname"
+					name="sortbookname" type="text" maxlength="50" class="input-small"
+					value="${sortbookname }" /></ &nbsp;&nbsp;&nbsp;</li>
+				
+				<li>&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit"
+					value="查询" /></li>
+			</ul>
 		</div>
 	</form:form>
-	<sys:message content="${message}"/>
-	<table id="contentTable" class="table table-striped table-bordered table-condensed">
-		<thead><tr><th>操作菜单</th><th>操作用户</th><th>所在专业</th><th>所在专业</th><th>URI</th><th>提交方式</th><th>操作者IP</th><th>操作时间</th></thead>
-		<tbody><%request.setAttribute("strEnter", "\n");request.setAttribute("strTab", "\t");%>
-		<c:forEach items="${page.list}" var="log">
+	<sys:message content="${message}" />
+
+	<table id="contentTable"
+		class="table table-striped table-bordered table-condensed">
+		<thead>
 			<tr>
-				<td>${log.title}</td>
-				<td>${log.createBy.name}</td>
-				<td>${log.createBy.company.name}</td>
-				<td>${log.createBy.office.name}</td>
-				<td><strong>${log.requestUri}</strong></td>
-				<td>${log.method}</td>
-				<td>${log.remoteAddr}</td>
-				<td><fmt:formatDate value="${log.createDate}" type="both"/></td>
-			</tr>
-			<c:if test="${not empty log.exception}"><tr>
-				<td colspan="8" style="word-wrap:break-word;word-break:break-all;">
-<%-- 					用户代理: ${log.userAgent}<br/> --%>
-<%-- 					提交参数: ${fns:escapeHtml(log.params)} <br/> --%>
-					异常信息: <br/>
-					${fn:replace(fn:replace(fns:escapeHtml(log.exception), strEnter, '<br/>'), strTab, '&nbsp; &nbsp; ')}</td>
-			</tr></c:if>
-		</c:forEach>
+				<th>书名</th>
+				<th>册数</th>
+				<th>可外借数</th>
+				<th>已外借数</th>
+				<th>预约数</th>
+				<th>图象页数</th>
+				<th>卷标</th>
+				<th>上月外借册数</th>
+				<th>本月外借册数</th>
+				<th>去年外借册数</th>
+				<th>今年外借册数</th>
+				<th>累计外借册数</th>
+		</thead>
+		<tbody>
+			<%
+				request.setAttribute("strEnter", "\n");
+				request.setAttribute("strTab", "\t");
+			%>
+			<c:forEach items="${booklist}" var="bookMap">
+				<tr>
+					<td>${bookMap['题名']}</td>
+					<td>${bookMap['册数']}</td>
+					<td>${bookMap['可外借数']}</td>
+					<td>${bookMap['已外借数']}</td>
+					<td>${bookMap['预约数']}</td>
+					<td>${bookMap['图象页数']}</td>
+					<td>${bookMap['卷标']}</td>
+
+					<td>${bookMap['上月外借册数']}</td>
+					<td>${bookMap['本月外借册数']}</td>
+					<td>${bookMap['去年外借册数']}</td>
+					<td>${bookMap['今年外借册数']}</td>
+					<td>${bookMap['累计外借册数']}</td>
+
+				</tr>
+
+			</c:forEach>
 		</tbody>
 	</table>
-	<div class="pagination">${page}</div>
+	<script>
+		$(function() {
+			
+			
+			 $( "#sortbookname" ).autocomplete({
+			      source: function( request, response ) {
+			        $.ajax({
+			          url: "book/sortname",
+			          data: {
+			        	  sortbookname: $("#sortbookname").val()
+			          },
+			          success: function( data ) {
+			            response( $.map( data, function( item ) {
+			              return {
+			                label: item,
+			                value: item
+			              }
+			            }));
+			          }
+			        });
+			      }});
+		});
+	</script>
+	
+	
 </body>
 </html>

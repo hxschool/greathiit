@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.thinkgem.jeesite.modules.sys.dao.SystemDao" >
+  
+  <select id="getRsStudentId" resultType="String" >
+    select concat('2018',RIGHT(getSequence('serialNo6'),5))
+  </select>
+  
+    <select id="getSequence" resultType="String" parameterType="string" >
+    select getSequence(${serialNo}) 
+  </select>
+
+  
+</mapper>

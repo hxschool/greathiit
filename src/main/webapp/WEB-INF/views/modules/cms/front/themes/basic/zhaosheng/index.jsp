@@ -95,9 +95,46 @@
 								<div class="col-sm-10 col-xs-12">
 									<div class="panel panel-primary text-wr">
 										<div class="panel-heading text-center text-s28 text-bold"
-											id="bmform">2018年高职（专科）单独招生专业志愿填报系统</div>
+											id="bmform">2018年高职(专科)单独招生专业志愿填报系统说明</div>
 
+				<div class="panel-body"
+											style="border-bottom: 1px solid #337AB7;">
 
+		<font color="red">
+		<p>
+			<strong >特别提示：</strong>
+		</p>
+		<p>
+			<strong>考生必须在当地招考办报名后，方能在我院网站填报专业志愿，否则报考无效。</strong>
+		</p>
+		<p>
+			<strong>
+				由于我省教育主管部门高职（专科）专业审批结果未公布，目前填报专业为我校拟开设专业，具体招生专业以黑龙江省教育厅、招考办公布为准。如我省教育主管部门审批专业没有变化，则以本次填报为准；如招生专业有变化，考生需重新填报。
+			</strong>
+		</p>
+		<p>
+			<strong>专业志愿填报截止时间2017</strong> <strong>年11</strong> <strong>月30日。</strong>
+			
+		</p>
+		</font >
+		<p>为方便考生填写《专业志愿表》，现将填写办法按表中需填内容顺序说明如下：</p>
+		<p>1、姓名：用汉字填写，与身份证一致。</p>
+		<p>2、性别：1-男 2-女。</p>
+		<p>3、身份证号码：从左到右逐格填写，身份证号码为18位，与身份证一致。</p>
+		<p>4、毕业中学：用汉字准确填写毕业中学名称。应届毕业生须填写考生学籍所在中学名称，往届毕业生须填写发放毕业证书的中学名称。</p>
+		<p>5、毕业类别：</p>
+		<p>0-普通高中毕业 1-中等师范毕业 2-其它中等专业学校毕业</p>
+		<p>3-职业高中毕业 4-技工学校毕业 5-其它</p>
+		<p>6、随时能找到考生的联系电话：准确写明本人联系电话，以能找到本人为准。</p>
+		<p>7、报考专业：按顺序选择报考专业，可选择5个报考专业。</p>
+		<p>8、专业是否服从调剂：所报考专业录取额满，是否服从调剂到其他未录满专业。</p>
+		<p class="text-s16">
+		<a href="http://www.hxci.com.cn/zy/"
+												class="btn btn-info btn-sm ">查看招生简章</a> <a
+												href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
+											</p>
+		</div>
+<!-- 
 										<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
 
@@ -391,11 +428,8 @@
 											<p align="left">3、本章程由哈尔滨信息工程学院招生办公室负责解释。</p>
 											<p align="right">哈尔滨信息工程学院</p>
 											<p align="right">2018年10月9日</p>
-
-											<a href="http://www.hxci.com.cn/zy/"
-												class="btn btn-info btn-sm ">查看招生简章</a> <a
-												href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
-											</p>
+-->
+											
 
 										</div>
 										<div class="panel-body">
@@ -428,8 +462,8 @@
 
 															<input type="checkbox" class="pc" name="agreebbrule" id="agreebbrule" >
 																
-															<label for="agreebbrule">同意 <a
-																href="javascript:;" style="color:red" onclick="showBBRule()"> 特别提示 </a></label> <input
+															<label for="agreebbrule">同意<!--  <a
+																href="javascript:;" style="color:red" onclick="showBBRule()"> 特别提示 </a> --></label> <input
 																type="submit" class="btn btn-primary btn-sm"
 																name='bm_submit' value="提交申请表"><p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-agreebbrule"></p>

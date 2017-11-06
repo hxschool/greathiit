@@ -110,23 +110,37 @@ window.close();
 											id="bmform">2018年哈尔滨信息工程学院单招报名申请表</div>
 										<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
+											
+											
+		<font color="red">
+		<p>
+			<strong >特别提示：</strong>
+		</p>
+		<p>
+			<strong>考生必须在当地招考办报名后，方能在我院网站填报专业志愿，否则报考无效。</strong>
+		</p>
+		<p>
+			<strong>
+				由于我省教育主管部门高职（专科）专业审批结果未公布，目前填报专业为我校拟开设专业，具体招生专业以黑龙江省教育厅、招考办公布为准。如我省教育主管部门审批专业没有变化，则以本次填报为准；如招生专业有变化，考生需重新填报。
+			</strong>
+		</p>
+		<p>
+			<strong>专业志愿填报截止时间2017</strong> <strong>年11</strong> <strong>月30日。</strong>
+			
+		</p>
+		</font >
+		<p>为方便考生填写《专业志愿表》，现将填写办法按表中需填内容顺序说明如下：</p>
+		<p>1、姓名：用汉字填写，与身份证一致。</p>
+		<p>2、性别：1-男 2-女。</p>
+		<p>3、身份证号码：从左到右逐格填写，身份证号码为18位，与身份证一致。</p>
+		<p>4、毕业中学：用汉字准确填写毕业中学名称。应届毕业生须填写考生学籍所在中学名称，往届毕业生须填写发放毕业证书的中学名称。</p>
+		<p>5、毕业类别：</p>
+		<p>0-普通高中毕业 1-中等师范毕业 2-其它中等专业学校毕业</p>
+		<p>3-职业高中毕业 4-技工学校毕业 5-其它</p>
+		<p>6、随时能找到考生的联系电话：准确写明本人联系电话，以能找到本人为准。</p>
+		<p>7、报考专业：按顺序选择报考专业，可选择5个报考专业。</p>
+		<p>8、专业是否服从调剂：所报考专业录取额满，是否服从调剂到其他未录满专业。</p>
 											<p class="text-s16" style="line-height: 26px;">
-												<strong>报名条件</strong> <br>
-
-												符合《关于做好2018年普通高等学校招生报名工作的通知》文件中有关条件的考生，可参加我院高职（专科）单独招生报名。<br>
-
-												<strong>报名时间、报名方式</strong> <br>
-												1、报名时间：预计报名时间2017年10月28日-11月15日（具体时间以省招考办公布时间为准）。<br>
-
-												2、报名及填报专业志愿方式：<br>
-
-												(1)报名方法：考生须持《户口簿》和第二代《居民身份证》到户籍或学籍所在地的县（市、区）招考办报名。如考生已参加了高考报名，现需兼报我院高职单独招生，只需在考生标记处选择院校代码。我院考生标记代码：兼报高考为18，只报单招为58。<br>
-
-												(2)报名费：按照有关规定收取150元/人，由考生报名所在地招考办收取。<br>
-
-												(3)填报专业志愿：已报名的考生须在2017年11月15日前登录我院网站http://www.hxci.com.cn，进入2018年单独招生志愿填报系统，阅读单独招生专业志愿填报的有关说明，按提示填报专业志愿。我院根据考生所填报专业志愿安排测试内容，考生信息一定要准确无误。<br>
-
-												(4)考生本人须在考试前（具体时间关注我院招生网站）到我院现场确认所填报专业志愿，凭填报专业志愿时返回的报名顺序号、第二代《居民身份证》领取准考证。<br>
 												<a href="http://www.hxci.com.cn/zy/"
 													class="btn btn-info btn-sm ">查看招生简章</a> <a
 													href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
@@ -146,7 +160,7 @@ window.close();
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_kl"> <b class="text-red">*</b>
-															城市:
+															市（行署）:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<SELECT name="hc_form_province" id="to_cn" style="width: 30%;"
@@ -184,7 +198,11 @@ window.close();
 
 																<option value=省森工总局>省森工总局</option>
 
-															</SELECT> <select id="city" name="hc_form_city"
+															</SELECT> <label
+															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
+															for="hc_form_kl"> <b class="text-red">*</b>
+															县（市、区）:
+														</label><select id="city" name="hc_form_city"
 																class="form-control margin-r-5 hc_form_bylb"
 																style="width: 30%;">
 
@@ -201,7 +219,7 @@ window.close();
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_kl"> <b class="text-red">*</b>
-															课类:
+															科类:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<span class="input-group-addon"><i
@@ -218,7 +236,7 @@ window.close();
 															id="error-hc_form_kl"></p>
 													</div>
 													
-													<div class="form-group text-s12 " id="fg_hc_form_xm">
+													<!-- <div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_bkh">  报考号:
@@ -230,7 +248,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_bkh"></p>
-													</div>
+													</div> -->
 													
 													<div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
@@ -247,7 +265,7 @@ window.close();
 															id="error-hc_form_xm"></p>
 													</div>
 
-													<div class="form-group text-s12 " id="fg_hc_form_age">
+													<!-- <div class="form-group text-s12 " id="fg_hc_form_age">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_age"> <b class="text-red">*</b> 年龄:
@@ -260,7 +278,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_age"></p>
-													</div>
+													</div> -->
 
 
 													<div class="form-group text-s12 " id="fa_hc_form_birth">
@@ -335,7 +353,7 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12">
+													<!-- <div class="form-group text-s12">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_xslx"> <b class="text-red">*</b>
@@ -354,8 +372,8 @@ window.close();
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_xslx"></p>
 													</div>
-
-
+													
+													
 													<div class="form-group text-s12">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
@@ -485,7 +503,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_mingzu"></p>
-													</div>
+													</div> 
 
 
 													<div class="form-group text-s12">
@@ -532,12 +550,12 @@ window.close();
 															id="error-hc_form_zhengzhimianmao"></p>
 													</div>
 
-
+-->
 													<div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_byxx"> <b class="text-red">*</b>
-															毕业学校及班级:
+															毕业学校:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<input type="text" class="form-control hc_form_byxx"
@@ -549,7 +567,7 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12 " id="fg_hc_form_xm">
+												<!-- 	<div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_hkszd"> <b class="text-red">*</b>
@@ -562,7 +580,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_hkszd"></p>
-													</div>
+													</div> -->
 
 
 													<div class="form-group text-s12 " id="fg_hc_form_sj">
@@ -580,7 +598,7 @@ window.close();
 															id="error-hc_form_sj"></p>
 													</div>
 
-													<div class="form-group text-s12 " id="fg_hc_form_dz">
+													<!-- <div class="form-group text-s12 " id="fg_hc_form_dz">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_dz"> <b class="text-red">*</b> 通讯地址:
@@ -594,13 +612,13 @@ window.close();
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_dz"></p>
 													</div>
-
+													 -->
 
 													<div class="form-group text-s12 " id="fg_hc_form_zy1">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy1"> <b class="text-red">*</b>
-															意向专业1:
+															报考专业1:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zy1"
@@ -629,7 +647,7 @@ window.close();
 													<div class="form-group text-s12 " id="fg_hc_form_zy2">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_zy2"> 意向专业2: </label>
+															for="hc_form_zy2"> 报考专业2: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zy2"
 																id="hc_form_zy2" name="hc_form_zy2">
@@ -657,7 +675,7 @@ window.close();
 													<div class="form-group text-s12 " id="fg_hc_form_zy3">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_zy3"> 意向专业3: </label>
+															for="hc_form_zy3"> 报考专业3: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zy3"
 																id="hc_form_zy3" name="hc_form_zy3">
@@ -685,7 +703,7 @@ window.close();
 													<div class="form-group text-s12 " id="fg_hc_form_zy4">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_zy4"> 意向专业4: </label>
+															for="hc_form_zy4"> 报考专业4: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zy4"
 																id="hc_form_zy4" name="hc_form_zy4">
@@ -712,7 +730,7 @@ window.close();
 													<div class="form-group text-s12 " id="fg_hc_form_zy5">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_zy5"> 意向专业5: </label>
+															for="hc_form_zy5"> 报考专业5: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zy5"
 																id="hc_form_zy5" name="hc_form_zy5">
@@ -739,12 +757,11 @@ window.close();
 													<div class="form-group text-s12 " id="fg_hc_form_zytj">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_zytj"> 是否服从专业调剂: </label>
+															for="hc_form_zytj"> <b class="text-red">*</b>是否服从专业调剂: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<select class="form-control margin-r-5 hc_form_zytj"
 																id="hc_form_zytj" name="hc_form_zytj">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
 
 																<option value="是">是</option>
 
@@ -757,7 +774,7 @@ window.close();
 
 													<hr>
 
-													<button class="btn btn-default btn-sm">本人简历信息</button>
+													<!-- <button class="btn btn-default btn-sm">本人简历信息</button>
 
 
 
@@ -856,7 +873,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_yhtc"></p>
-													</div>
+													</div> -->
 
 
 

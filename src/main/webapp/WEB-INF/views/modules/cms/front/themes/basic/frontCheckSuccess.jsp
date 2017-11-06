@@ -94,6 +94,7 @@
 						                    <td width="100%" height="130" valign="bottom">
 						                    <p align="center" style="margin-bottom: 20"><b><font color="#FF0000" style="font-size: 18px">恭喜您，提交成功！请等待审核！严禁重复提交！</font></b>
 						                   <a href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
+						                   <br>${no}
 						                    </p>
 						                    <p align="center" style="margin-bottom: 20"><b><font style="font-size: 18px">&nbsp;</font></b></p>
 						                    <p align="center" style="margin-bottom: 10">

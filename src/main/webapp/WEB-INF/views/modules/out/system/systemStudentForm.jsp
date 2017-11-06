@@ -34,45 +34,10 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">希望就读地区：</label>
+			<label class="control-label">顺序号：</label>
 			<div class="controls">
-				<form:input path="hcFormAdd1" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">就读地市：</label>
-			<div class="controls">
-				<form:input path="hcFormAdd2" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">外地就读：</label>
-			<div class="controls">
-				<form:input path="hcFormKuasheng" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">包就业分配：</label>
-			<div class="controls">
-				<form:input path="hcFormBaojiuye" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">期待月薪：</label>
-			<div class="controls">
-				<form:input path="hcFormYuexin" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">成绩：</label>
-			<div class="controls">
-				<form:input path="hcFormCj" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">地区：</label>
-			<div class="controls">
-				<form:input path="hcFormArea" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<input name="hcFormArea" type="text" readonly="readonly" maxlength="64" class="input-xlarge "
+					value="${systemStudent.hcFormArea}"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -88,7 +53,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">报考科类：</label>
+			<label class="control-label">科类：</label>
 			<div class="controls">
 				<form:input path="hcFormKl" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
@@ -106,18 +71,13 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">年龄：</label>
-			<div class="controls">
-				<form:input path="hcFormAge" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">出生日期：</label>
 			<div class="controls">
 				<input name="hcFormBirth" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${systemStudent.hcFormBirth}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+					value="${systemStudent.hcFormBirth}"
+					onclick="WdatePicker({dateFmt:'yyyy-MM-dd ',isShowClear:false});"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -140,48 +100,22 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+	
+		
 		<div class="control-group">
-			<label class="control-label">考试类别(学生类型)：</label>
-			<div class="controls">
-				<form:input path="hcFormXslx" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">民族：</label>
-			<div class="controls">
-				<form:input path="hcFormMingzu" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">政治面貌：</label>
-			<div class="controls">
-				<form:input path="hcFormZhengzhimianmao" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">毕业学校及班级：</label>
+			<label class="control-label">毕业学校：</label>
 			<div class="controls">
 				<form:input path="hcFormByxx" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">户口所在地：</label>
-			<div class="controls">
-				<form:input path="hcFormHkszd" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">联系方式：</label>
 			<div class="controls">
 				<form:input path="hcFormSj" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">通讯地址：</label>
-			<div class="controls">
-				<form:input path="hcFormDz" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">意向专业1：</label>
 			<div class="controls">
@@ -218,53 +152,7 @@
 				<form:input path="hcFormZytj" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">所在中学：</label>
-			<div class="controls">
-				<form:input path="hcFormSzzx" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">中学地址：</label>
-			<div class="controls">
-				<form:input path="hcFormZxdz" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">班主任或学校负责人姓名：</label>
-			<div class="controls">
-				<form:input path="hcFormFzrxm" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">负责人电话：</label>
-			<div class="controls">
-				<form:input path="hcFormFzrdh" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">就读开始时间：</label>
-			<div class="controls">
-				<input name="hcFormJdstarttime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${systemStudent.hcFormJdstarttime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">就读结束时间：</label>
-			<div class="controls">
-				<input name="hcFormJdendtime" type="text" readonly="readonly" maxlength="20" class="input-medium Wdate "
-					value="<fmt:formatDate value="${systemStudent.hcFormJdendtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"
-					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">有何特长：</label>
-			<div class="controls">
-				<form:input path="hcFormYhtc" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">与本人关系：</label>
 			<div class="controls">
@@ -343,12 +231,7 @@
 				<form:input path="hcFormBz" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">备注信息：</label>
-			<div class="controls">
-				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">状态：</label>
 			<div class="controls">

@@ -25,13 +25,8 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>所在省份：</label>
-				<form:input path="hcFormProvince" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
-			<li><label>所在城市：</label>
-				<form:input path="hcFormCity" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
-			<li><label>报考科类：</label>
+			
+			<li><label>科类：</label>
 				<form:input path="hcFormKl" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>报考号：</label>
@@ -56,46 +51,29 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>顺序号</th>
 				<th>所在省份</th>
 				<th>所在城市</th>
-				<th>报考科类</th>
+				<th>科类</th>
 				<th>报考号</th>
 				<th>姓名</th>
-				<th>年龄</th>
+				
 				<th>出生日期</th>
 				<th>性别</th>
 				<th>身份证号</th>
 				<th>毕业类别</th>
-				<th>考试类别(学生类型)</th>
-				<th>民族</th>
-				<th>政治面貌</th>
-				<th>毕业学校及班级</th>
-				<th>户口所在地</th>
+				<th>毕业学校</th>
 				<th>联系方式</th>
-				<th>通讯地址</th>
-				<th>意向专业1</th>
-				<th>意向专业2</th>
-				<th>意向专业3</th>
-				<th>意向专业4</th>
-				<th>意向专业5</th>
+				
+				<th>报考专业1</th>
+				
 				<th>是否服从专业调剂</th>
-				<th>所在中学</th>
-				<th>中学地址</th>
-				<th>班主任或学校负责人姓名</th>
-				<th>负责人电话</th>
-				<th>就读开始时间</th>
-				<th>就读结束时间</th>
-				<th>有何特长</th>
 				<th>与本人关系</th>
 				<th>联系人姓名</th>
 				<th>联系电话</th>
 				<th>工作单位</th>
 				<th>任何职务</th>
-				<th>与本人关系</th>
-				<th>联系人姓名</th>
-				<th>联系电话</th>
-				<th>工作单位</th>
-				<th>任何职务</th>
+				
 				<th>备用联系方式</th>
 				<th>qq</th>
 				<th>备注</th>
@@ -107,6 +85,10 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="systemStudent">
 			<tr>
+				
+				<td>
+					${systemStudent.hcFormArea}
+				</td>
 				<td>
 					${systemStudent.hcFormProvince}
 			</td>
@@ -122,9 +104,7 @@
 				<td>
 					${systemStudent.hcFormXm}
 				</td>
-				<td>
-					${systemStudent.hcFormAge}
-				</td>
+			
 				<td>
 					${systemStudent.hcFormBirth}
 				</td>
@@ -137,66 +117,23 @@
 				<td>
 					${systemStudent.hcFormBylb}
 				</td>
-				<td>
-					${systemStudent.hcFormXslx}
-				</td>
-				<td>
-					${systemStudent.hcFormMingzu}
-				</td>
-				<td>
-					${systemStudent.hcFormZhengzhimianmao}
-				</td>
+	
 				<td>
 					${systemStudent.hcFormByxx}
 				</td>
-				<td>
-					${systemStudent.hcFormHkszd}
-				</td>
+
 				<td>
 					${systemStudent.hcFormSj}
 				</td>
-				<td>
-					${systemStudent.hcFormDz}
-				</td>
+
 				<td>
 					${systemStudent.hcFormZy1}
 				</td>
-				<td>
-					${systemStudent.hcFormZy2}
-				</td>
-				<td>
-					${systemStudent.hcFormZy3}
-				</td>
-				<td>
-					${systemStudent.hcFormZy4}
-				</td>
-				<td>
-					${systemStudent.hcFormZy5}
-				</td>
+				
 				<td>
 					${systemStudent.hcFormZytj}
 				</td>
-				<td>
-					${systemStudent.hcFormSzzx}
-				</td>
-				<td>
-					${systemStudent.hcFormZxdz}
-				</td>
-				<td>
-					${systemStudent.hcFormFzrxm}
-				</td>
-				<td>
-					${systemStudent.hcFormFzrdh}
-				</td>
-				<td>
-					${systemStudent.hcFormJdstarttime}
-				</td>
-				<td>
-					${systemStudent.hcFormJdendtime}
-				</td>
-				<td>
-					${systemStudent.hcFormYhtc}
-				</td>
+				
 				<td>
 					${systemStudent.hcFormJjlxrFaGx}
 				</td>
@@ -212,21 +149,7 @@
 				<td>
 					${systemStudent.hcFormJjlxrFaZw}
 				</td>
-				<td>
-					${systemStudent.hcFormJjlxrMaGx}
-				</td>
-				<td>
-					${systemStudent.hcFormJjlxrMaName}
-				</td>
-				<td>
-					${systemStudent.hcFormJjlxrMaTel}
-				</td>
-				<td>
-					${systemStudent.hcFormJjlxrMaWork}
-				</td>
-				<td>
-					${systemStudent.hcFormJjlxrMaZw}
-				</td>
+				
 				<td>
 					${systemStudent.hcFormBysj}
 				</td>

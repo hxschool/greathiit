@@ -37,7 +37,12 @@ $(document).ready(function(){
 				validators: {
 					notEmpty: {
 						message: '姓名不能为空！' + zx
-					}
+					},
+					stringLength: {
+						min: 2,
+                        max: 8,
+                        message: '姓名长度最小为两位,最大为八位！' + zx
+                    }
 				}
 			},
 			
@@ -172,7 +177,7 @@ $(document).ready(function(){
 				container: '#error-hc_form_zy1',
 				validators: {
 					notEmpty: {
-						message: '意向专业不能为空！' + zx
+						message: '报考专业不能为空！' + zx
 					}
 				}
 			},

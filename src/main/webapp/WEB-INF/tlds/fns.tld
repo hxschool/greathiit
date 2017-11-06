@@ -129,6 +129,15 @@
     <example>${fns:getDictValue(label, type, defaultValue)}</example>  
   </function>
   
+    <function>
+    <description>获取字典描述信息</description>
+    <name>getDictDescription</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.DictUtils</function-class>
+    <function-signature>java.lang.String getDictDescription(java.lang.String, java.lang.String, java.lang.String)</function-signature>
+    <example>${fns:getDictDescription(label, type, defaultValue)}</example>  
+  </function>
+  
+  
   <function>
     <description>获取字典对象列表</description>
     <name>getDictList</name>

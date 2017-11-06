@@ -51,12 +51,7 @@
 				<form:input path="type" htmlEscape="false" maxlength="50" class="required abc"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">描述:</label>
-			<div class="controls">
-				<form:input path="description" htmlEscape="false" maxlength="50" class="required"/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">排序:</label>
 			<div class="controls">
@@ -67,6 +62,14 @@
 			<label class="control-label">备注:</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="3" maxlength="200" class="input-xlarge"/>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">描述:</label>
+			<div class="controls">
+				<form:textarea id="description" htmlEscape="true" path="description" rows="4" class="input-xxlarge"/>
+				<sys:ckeditor replace="description" />
 			</div>
 		</div>
 		<div class="form-actions">

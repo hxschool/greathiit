@@ -41,6 +41,15 @@ $(document).ready(function(){
 				}
 			},
 			
+			agreebbrule: {
+				container: '#error-agreebbrule',
+				validators: {
+					notEmpty: {
+						message: '请选择同意！' + zx
+					}
+				}
+			},
+			
 			hc_form_byxx: {
 				container: '#error-hc_form_byxx',
 				trigger: 'blur',

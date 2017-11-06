@@ -41,11 +41,11 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	private String hcFormHkszd;		// 户口所在地
 	private String hcFormSj;		// 联系方式
 	private String hcFormDz;		// 通讯地址
-	private String hcFormZy1;		// 意向专业1
-	private String hcFormZy2;		// 意向专业2
-	private String hcFormZy3;		// 意向专业3
-	private String hcFormZy4;		// 意向专业4
-	private String hcFormZy5;		// 意向专业5
+	private String hcFormZy1;		// 报考专业1
+	private String hcFormZy2;		// 报考专业2
+	private String hcFormZy3;		// 报考专业3
+	private String hcFormZy4;		// 报考专业4
+	private String hcFormZy5;		// 报考专业5
 	private String hcFormZytj;		// 是否服从专业调剂
 	private String hcFormSzzx;		// 所在中学
 	private String hcFormZxdz;		// 中学地址
@@ -132,6 +132,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	}
 	
 	@Length(min=0, max=64, message="地区长度必须介于 0 和 64 之间")
+	@ExcelField(title="顺序号", align=2, sort=0)
 	public String getHcFormArea() {
 		return hcFormArea;
 	}
@@ -186,7 +187,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormXm(String hcFormXm) {
 		this.hcFormXm = hcFormXm;
 	}
-	@ExcelField(title="年龄", align=2, sort=3)
+	
 	@Length(min=0, max=64, message="年龄长度必须介于 0 和 64 之间")
 	public String getHcFormAge() {
 		return hcFormAge;
@@ -231,7 +232,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormBylb(String hcFormBylb) {
 		this.hcFormBylb = hcFormBylb;
 	}
-	@ExcelField(title="考试类别", align=2, sort=10)
+	
 	@Length(min=0, max=64, message="考试类别(学生类型)长度必须介于 0 和 64 之间")
 	public String getHcFormXslx() {
 		return hcFormXslx;
@@ -240,7 +241,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormXslx(String hcFormXslx) {
 		this.hcFormXslx = hcFormXslx;
 	}
-	@ExcelField(title="民族", align=2, sort=11)
+
 	@Length(min=0, max=64, message="民族长度必须介于 0 和 64 之间")
 	public String getHcFormMingzu() {
 		return hcFormMingzu;
@@ -249,7 +250,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormMingzu(String hcFormMingzu) {
 		this.hcFormMingzu = hcFormMingzu;
 	}
-	@ExcelField(title="政治面貌", align=2, sort=12)
+	
 	@Length(min=0, max=64, message="政治面貌长度必须介于 0 和 64 之间")
 	public String getHcFormZhengzhimianmao() {
 		return hcFormZhengzhimianmao;
@@ -258,8 +259,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZhengzhimianmao(String hcFormZhengzhimianmao) {
 		this.hcFormZhengzhimianmao = hcFormZhengzhimianmao;
 	}
-	@ExcelField(title="毕业学校及班级", align=2, sort=13)
-	@Length(min=0, max=64, message="毕业学校及班级长度必须介于 0 和 64 之间")
+	@ExcelField(title="毕业学校", align=2, sort=13)
+	@Length(min=0, max=64, message="毕业学校长度必须介于 0 和 64 之间")
 	public String getHcFormByxx() {
 		return hcFormByxx;
 	}
@@ -267,7 +268,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormByxx(String hcFormByxx) {
 		this.hcFormByxx = hcFormByxx;
 	}
-	@ExcelField(title="户口所在地", align=2, sort=13)
+	
 	@Length(min=0, max=64, message="户口所在地长度必须介于 0 和 64 之间")
 	public String getHcFormHkszd() {
 		return hcFormHkszd;
@@ -285,7 +286,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormSj(String hcFormSj) {
 		this.hcFormSj = hcFormSj;
 	}
-	@ExcelField(title="通讯地址", align=2, sort=15)
+	
 	@Length(min=0, max=64, message="通讯地址长度必须介于 0 和 64 之间")
 	public String getHcFormDz() {
 		return hcFormDz;
@@ -294,8 +295,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormDz(String hcFormDz) {
 		this.hcFormDz = hcFormDz;
 	}
-	@ExcelField(title="意向专业1", align=2, sort=16)
-	@Length(min=0, max=64, message="意向专业1长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业1", align=2, sort=16)
+	@Length(min=0, max=64, message="报考专业1长度必须介于 0 和 64 之间")
 	public String getHcFormZy1() {
 		return hcFormZy1;
 	}
@@ -303,8 +304,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy1(String hcFormZy1) {
 		this.hcFormZy1 = hcFormZy1;
 	}
-	@ExcelField(title="意向专业2", align=2, sort=16)
-	@Length(min=0, max=64, message="意向专业2长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业2", align=2, sort=16)
+	@Length(min=0, max=64, message="报考专业2长度必须介于 0 和 64 之间")
 	public String getHcFormZy2() {
 		return hcFormZy2;
 	}
@@ -312,8 +313,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy2(String hcFormZy2) {
 		this.hcFormZy2 = hcFormZy2;
 	}
-	@ExcelField(title="意向专业3", align=2, sort=16)
-	@Length(min=0, max=64, message="意向专业3长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业3", align=2, sort=16)
+	@Length(min=0, max=64, message="报考专业3长度必须介于 0 和 64 之间")
 	public String getHcFormZy3() {
 		return hcFormZy3;
 	}
@@ -321,8 +322,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy3(String hcFormZy3) {
 		this.hcFormZy3 = hcFormZy3;
 	}
-	@ExcelField(title="意向专业4", align=2, sort=16)
-	@Length(min=0, max=64, message="意向专业4长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业4", align=2, sort=16)
+	@Length(min=0, max=64, message="报考专业4长度必须介于 0 和 64 之间")
 	public String getHcFormZy4() {
 		return hcFormZy4;
 	}
@@ -330,8 +331,8 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy4(String hcFormZy4) {
 		this.hcFormZy4 = hcFormZy4;
 	}
-	@ExcelField(title="意向专业5", align=2, sort=16)
-	@Length(min=0, max=64, message="意向专业5长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业5", align=2, sort=16)
+	@Length(min=0, max=64, message="报考专业5长度必须介于 0 和 64 之间")
 	public String getHcFormZy5() {
 		return hcFormZy5;
 	}
@@ -348,7 +349,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZytj(String hcFormZytj) {
 		this.hcFormZytj = hcFormZytj;
 	}
-	@ExcelField(title="所在高中", align=2, sort=30)
+	
 	@Length(min=0, max=64, message="所在中学长度必须介于 0 和 64 之间")
 	public String getHcFormSzzx() {
 		return hcFormSzzx;
@@ -357,7 +358,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormSzzx(String hcFormSzzx) {
 		this.hcFormSzzx = hcFormSzzx;
 	}
-	@ExcelField(title="高中学校地址", align=2, sort=31)
+	
 	@Length(min=0, max=64, message="中学地址长度必须介于 0 和 64 之间")
 	public String getHcFormZxdz() {
 		return hcFormZxdz;
@@ -366,7 +367,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZxdz(String hcFormZxdz) {
 		this.hcFormZxdz = hcFormZxdz;
 	}
-	@ExcelField(title="班主任或学校负责人姓名", align=2, sort=32)
+	
 	@Length(min=0, max=64, message="班主任或学校负责人姓名长度必须介于 0 和 64 之间")
 	public String getHcFormFzrxm() {
 		return hcFormFzrxm;
@@ -375,7 +376,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormFzrxm(String hcFormFzrxm) {
 		this.hcFormFzrxm = hcFormFzrxm;
 	}
-	@ExcelField(title="负责人电话", align=2, sort=33)
+	
 	@Length(min=1, max=64, message="负责人电话长度必须介于 1 和 64 之间")
 	public String getHcFormFzrdh() {
 		return hcFormFzrdh;
@@ -384,7 +385,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormFzrdh(String hcFormFzrdh) {
 		this.hcFormFzrdh = hcFormFzrdh;
 	}
-	@ExcelField(title="就读开始时间", align=2, sort=34)
+	
 	@Length(min=0, max=64, message="就读开始时间长度必须介于 0 和 64 之间")
 	public String getHcFormJdstarttime() {
 		return hcFormJdstarttime;
@@ -393,7 +394,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormJdstarttime(String hcFormJdstarttime) {
 		this.hcFormJdstarttime = hcFormJdstarttime;
 	}
-	@ExcelField(title="就读结束时间", align=2, sort=35)
+	
 	@Length(min=0, max=64, message="就读结束时间长度必须介于 0 和 64 之间")
 	public String getHcFormJdendtime() {
 		return hcFormJdendtime;
@@ -402,7 +403,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormJdendtime(String hcFormJdendtime) {
 		this.hcFormJdendtime = hcFormJdendtime;
 	}
-	@ExcelField(title="有何特长", align=2, sort=36)
+	
 	@Length(min=0, max=64, message="有何特长长度必须介于 0 和 64 之间")
 	public String getHcFormYhtc() {
 		return hcFormYhtc;

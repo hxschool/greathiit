@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
+import com.thinkgem.jeesite.modules.sys.dao.SystemDao;
 import com.thinkgem.jeesite.modules.sys.dao.UserDao;
 import com.thinkgem.jeesite.modules.sys.entity.Menu;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -49,7 +50,8 @@ public class SystemService extends BaseService implements InitializingBean {
 	public static final String HASH_ALGORITHM = "SHA-1";
 	public static final int HASH_INTERATIONS = 1024;
 	public static final int SALT_SIZE = 8;
-	
+	@Autowired
+	private SystemDao systemDao;
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -560,6 +562,11 @@ public class SystemService extends BaseService implements InitializingBean {
 			String userId = user.getLoginName();//ObjectUtils.toString(user.getId());
 			identityService.deleteUser(userId);
 		}
+	}
+	
+	
+	public String getRsStudentId(){
+		return systemDao.getRsStudentId();
 	}
 	
 	///////////////// Synchronized to the Activiti end //////////////////

@@ -23,6 +23,7 @@ import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 /**
  * 网站Controller
@@ -30,15 +31,17 @@ import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
  * @version 2013-5-29
  */
 @Controller
-@RequestMapping(value = "${frontPath}/zs")
+@RequestMapping(value = "${frontPath}/2018")
 public class FrontZhaoShengController extends BaseController{
 	
 	@Autowired
 	private RsStudentService rsStudentService;
+	@Autowired
+	private SystemService systemService;
 	/**
 	 * 网站首页
 	 */
-	@RequestMapping
+	@RequestMapping(value = {"index", ""})
 	public String index(Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("site", site);
@@ -61,9 +64,16 @@ public class FrontZhaoShengController extends BaseController{
 	@RequestMapping(value = "zhaosheng", method = RequestMethod.POST)
 	public String checkZhaosheng(RsStudent rsStudent, HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		String no = systemService.getRsStudentId();
+		//报考顺序号
+		rsStudent.setHc_form_area(no);
+		model.addAttribute("no", "报专业顺序号"+no+"，考生需牢记。");
+		try{
+			rsStudentService.save(rsStudent);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
-		rsStudentService.save(rsStudent);
-	
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckSuccess";
 	}
 	

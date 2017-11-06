@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.sys.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ public class DictService extends CrudService<DictDao, Dict> {
 
 	@Transactional(readOnly = false)
 	public void save(Dict dict) {
+		dict.setDescription(StringEscapeUtils.unescapeHtml4(dict.getDescription()));
 		super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}

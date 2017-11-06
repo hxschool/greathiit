@@ -48,6 +48,18 @@ public class DictUtils {
 		}
 		return defaultValue;
 	}
+	
+
+	public static String getDictDescription(String label, String type, String defaultLabel){
+		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(label)){
+			for (Dict dict : getDictList(type)){
+				if (type.equals(dict.getType()) && label.equals(dict.getLabel())){
+					return dict.getDescription();
+				}
+			}
+		}
+		return defaultLabel;
+	}
 
 	public static String getDictValue(String label, String type, String defaultLabel){
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(label)){

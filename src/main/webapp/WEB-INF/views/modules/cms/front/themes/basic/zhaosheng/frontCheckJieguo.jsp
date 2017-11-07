@@ -73,7 +73,7 @@
 						<h3>2018年哈尔滨信息工程学院单招报名申请表</h3>
 
 						<form action="jieguo"
-							method="post" class="form-horizontal">
+							method="post" class="form-horizontal" onsubmit="return chechForm();">
 							
 
 							<div class="widget-box">
@@ -120,7 +120,7 @@
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" />
+																<input type="text" name="username" value="" id="name" placeholder="输入姓名"/>
 
 															</div>
 														</div>
@@ -128,16 +128,17 @@
 
 														<div class="control-group ">
 
-															<label for="idCardNumber" class="control-label">身份证件号</label>
+															<label class="control-label">身份证件号</label>
 
 
 															<div class="controls">
 
 
 																<input type="text" name="idCardNumber" value=""
-																	id="idCardNumber" />
+																	id="idCardNumber" class="form-control"  placeholder="输入18位身份证号"/>
 
 															</div>
+															
 														</div>
 
 
@@ -149,9 +150,9 @@
 															<div class="controls">
 
 																<input type="text" name="captcha" size="6" class="span6"
-																	placeholder="右侧图片中的字母" value="" id="captcha"  onclick="this.src='${pageContext.request.contextPath}/servlet/validateCodeServlet?d='+Math.random();"/> <img
+																	placeholder="右侧图片中的字母" value="" id="captcha"  /> <img
 																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
-																	id="captchaImage" style="height: 30px" />
+																	id="captchaImage" style="height: 30px" onclick="this.src='${pageContext.request.contextPath}/servlet/validateCodeServlet?d='+Math.random();" />
 															</div>
 														</div>
 
@@ -238,5 +239,50 @@
 
 	<script src="${ctxStatic}/campus-account/js/application.js"
 		type="text/javascript"></script>
+		<script type="text/javascript">
+		function chechForm(){
+			var name = $("#name").val();
+			var idCardNumber = $("#idCardNumber").val();
+			var captchaImage = $("#captchaImage").val();
+			var ret = "";
+			if(name==""){
+				ret ="姓名不能为空\r\n";
+			}
+			if(name.length<2||name>10){
+				ret = ret + "姓名长度最小为两位,最大为八位！\r\n";
+			}
+			if(!check_sfzh(idCardNumber)){
+				ret = ret + "身份证信息不合法\r\n";
+			}
+			if(captchaImage==""){
+				ret = ret+ "验证码信息不合法\r\n";
+			}
+			if(ret!=""){
+				alert(ret);
+				return false;
+			}
+			return true;
+		}
+		
+		function check_sfzh(value) {
+
+			var arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]; //加权因子  
+			var arrValid = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2]; //校验码  
+			if (/^\d{17}\d|x$/i.test(value)) {
+				var sum = 0,
+					idx;
+				for (var i = 0; i < value.length - 1; i++) {
+					// 对前17位数字与权值乘积求和  
+					sum += parseInt(value.substr(i, 1), 10) * arrExp[i];
+				}
+				// 计算模（固定算法）  
+				idx = sum % 11;
+				// 检验第18为是否与校验码相等  
+				return arrValid[idx] == value.substr(17, 1).toUpperCase();
+			} else {
+				return false;
+			}
+		}
+		</script>
 </body>
 </html>

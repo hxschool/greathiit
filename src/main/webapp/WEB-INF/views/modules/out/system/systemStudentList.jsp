@@ -127,7 +127,8 @@
 				</td>
 
 				<td>
-					${systemStudent.hcFormZy1}
+					
+					${fns:getDictLabel(systemStudent.hcFormZy1,'greathiit_zhaosheng_major','') }
 				</td>
 				
 				<td>

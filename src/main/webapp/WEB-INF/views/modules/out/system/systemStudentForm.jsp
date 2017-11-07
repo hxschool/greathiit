@@ -55,7 +55,17 @@
 		<div class="control-group">
 			<label class="control-label">科类：</label>
 			<div class="controls">
-				<form:input path="hcFormKl" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				
+				
+				 <select
+																class="input-xlarge "
+																 name="hcFormKl">
+																<option value='' selected='selected'>== 请选择 ==</option>
+															      <option value="文史类" <c:if test="${systemStudent.hcFormKl=='文史类'}"> selected </c:if> >文史类</option>
+															      <option value="理工类" <c:if test="${systemStudent.hcFormKl=='理工类'}"> selected </c:if> >理工类</option>
+															      <option value="中职"  <c:if test="${systemStudent.hcFormKl=='中职'}"> selected </c:if> >中职</option>
+															</select>
+				
 			</div>
 		</div>
 		<div class="control-group">
@@ -96,7 +106,21 @@
 		<div class="control-group">
 			<label class="control-label">毕业类别：</label>
 			<div class="controls">
-				<form:input path="hcFormBylb" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				
+				
+				
+				<select
+																class="input-xlarge required"
+																name="hcFormBylb">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																<option value="高中毕业" <c:if test="${systemStudent.hcFormBylb=='高中毕业'}"> selected </c:if> >高中毕业</option>
+																<option value="中等师范毕业" <c:if test="${systemStudent.hcFormBylb=='中等师范毕业'}"> selected </c:if> >中等师范毕业</option>
+																<option value="其它中等专业学校毕业" <c:if test="${systemStudent.hcFormBylb=='其它中等专业学校毕业'}"> selected </c:if> >其它中等专业学校毕业</option>
+																<option value="职业高中毕业" <c:if test="${systemStudent.hcFormBylb=='职业高中毕业'}"> selected </c:if> >职业高中毕业</option>
+																<option value="技工学校毕业" <c:if test="${systemStudent.hcFormBylb=='技工学校毕业'}"> selected </c:if> >技工学校毕业</option>
+																<option value="其它" <c:if test="${systemStudent.hcFormBylb=='其它'}"> checked='checked' </c:if> >其它</option>
+															</select>
+				
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -119,31 +143,79 @@
 		<div class="control-group">
 			<label class="control-label">意向专业1：</label>
 			<div class="controls">
-				<form:input path="hcFormZy1" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				
+															<select class="input-xlarge"
+																name="hcFormZy1">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy1}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
+															</select>
+				
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">意向专业2：</label>
 			<div class="controls">
-				<form:input path="hcFormZy2" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<select class="input-xlarge"
+																name="hcFormZy2">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy2}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
+															</select>
+				
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">意向专业3：</label>
 			<div class="controls">
-				<form:input path="hcFormZy3" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<select class="input-xlarge"
+																name="hcFormZy3">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy3}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
+															</select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">意向专业4：</label>
 			<div class="controls">
-				<form:input path="hcFormZy4" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<select class="input-xlarge"
+																name="hcFormZy4">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy4}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
+															</select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">意向专业5：</label>
 			<div class="controls">
-				<form:input path="hcFormZy5" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+															<select class="input-xlarge"
+																name="hcFormZy5">
+																<option value='' selected='selected'>== 请选择 ==</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy5}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
+															</select>
 			</div>
 		</div>
 		<div class="control-group">

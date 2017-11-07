@@ -118,7 +118,7 @@ public class ValidateCodeServlet extends HttpServlet {
 		g.setColor(getRandColor(220,250)); 
 		g.fillRect(0, 0, w, h);
 		// 加入干扰线条
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 4; i++) {
 			g.setColor(getRandColor(40,150));
 			Random random = new Random();
 			int x = random.nextInt(w);

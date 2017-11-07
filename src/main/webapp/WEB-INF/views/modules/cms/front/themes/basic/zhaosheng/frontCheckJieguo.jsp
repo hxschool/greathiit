@@ -149,7 +149,7 @@
 															<div class="controls">
 
 																<input type="text" name="captcha" size="6" class="span6"
-																	placeholder="右侧图片中的字母" value="" id="captcha" /> <img
+																	placeholder="右侧图片中的字母" value="" id="captcha"  onclick="this.src='${pageContext.request.contextPath}/servlet/validateCodeServlet?d='+Math.random();"/> <img
 																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
 																	id="captchaImage" style="height: 30px" />
 															</div>

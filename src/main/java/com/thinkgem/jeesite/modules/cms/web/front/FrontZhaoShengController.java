@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,8 @@ import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
+import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
+import com.thinkgem.jeesite.modules.out.system.service.SystemStudentService;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
@@ -38,6 +41,8 @@ public class FrontZhaoShengController extends BaseController{
 	private RsStudentService rsStudentService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private SystemStudentService systemStudentService;
 	/**
 	 * 网站首页
 	 */
@@ -51,9 +56,16 @@ public class FrontZhaoShengController extends BaseController{
 
 	
 	@RequestMapping(value = "skip_{module}")
-	public String frontCheckMobile(@PathVariable("module") String module) {
+	public String frontCheckMobile(@PathVariable("module") String module,String hc_form_sfzh,Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		module = module.substring(0, 1).toUpperCase() + module.substring(1);
+		
+		SystemStudent systemStudent = systemStudentService.getByIdCard(hc_form_sfzh);
+		if(!StringUtils.isEmpty(systemStudent)){
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "该用户已注册,请输入身份证号码进行相关数据操作.");
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
+		}
+		
 		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheck".concat(module);
 	}
 	
@@ -64,17 +76,19 @@ public class FrontZhaoShengController extends BaseController{
 	@RequestMapping(value = "zhaosheng", method = RequestMethod.POST)
 	public String checkZhaosheng(RsStudent rsStudent, HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
-		String no = systemService.getRsStudentId();
-		//报考顺序号
-		rsStudent.setHc_form_area(no);
-		model.addAttribute("no", "报专业顺序号"+no+"，考生需牢记。");
+		if(StringUtils.isEmpty(rsStudent.getId())){
+			String no = systemService.getRsStudentId();
+			//报考顺序号
+			rsStudent.setHc_form_area(no);
+			model.addAttribute("no", "报专业顺序号"+no+"，考生需牢记。");
+		}
 		try{
 			rsStudentService.save(rsStudent);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		
-		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckSuccess";
+		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckSuccess";
 	}
 	
 	
@@ -86,42 +100,32 @@ public class FrontZhaoShengController extends BaseController{
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		if(!ValidateCodeServlet.validate(request,captcha)){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "图文验证码错误, 请重试.");
-			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
 		}
 		if(username==null||username.equals("")){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "姓名不允许为空");
-			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
 		}
 		
 		if(idCardNumber==null||idCardNumber.equals("")){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "身份证件号不允许为空");
-			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
 		}
 		
 		
 		
-		RsStudent rsStudent = new RsStudent();
-		rsStudent.setHc_form_xm(username);
-		rsStudent.setHc_form_sfzh(idCardNumber);
-		List<RsStudent> list = rsStudentService.findList(rsStudent);
 		
-		if(list==null||list.size()==0){
+		SystemStudent systemStudent = systemStudentService.getByUsernameAndIdCard(username, idCardNumber);
+		
+		if(StringUtils.isEmpty(systemStudent)){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");
-			return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguo";
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
 		}
 	
 		String ret = "0";
-		for(RsStudent rs : list){
-			if (rs.getHc_form_zhuangtai() != null && rs.getHc_form_zhuangtai().equals("1")) {
-				ret = "1";
-				break;
-			}
-			
-			if (rs.getHc_form_zhuangtai() != null && rs.getHc_form_zhuangtai().equals("2")) {
-				ret = "2";
-				break;
-			}
-			
+		
+		if(!StringUtils.isEmpty(systemStudent.getHcFormZhuangtai())){
+			ret = systemStudent.getHcFormZhuangtai().equals("1")?"1":"2";
 		}
 		
 		if(ret.equals("1")){
@@ -129,10 +133,12 @@ public class FrontZhaoShengController extends BaseController{
 		}else if (ret.equals("2")){
 			model.addAttribute("message", "报考失败,请联系报考教师");
 		}else{
+			model.addAttribute("systemStudent", systemStudent);
 			model.addAttribute("message", "信息审核中");
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckZhaoSheng";
 		}
 		
-		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheckJieguoOk";
+		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguoOk";
 	}
 	
 }

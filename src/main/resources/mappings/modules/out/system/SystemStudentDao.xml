@@ -74,6 +74,22 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="getByIdCard" resultType="SystemStudent">
+		SELECT 
+			<include refid="systemStudentColumns"/>
+		FROM rs_student a
+		<include refid="systemStudentJoins"/>
+		WHERE a.hc_form_sfzh = #{idCard}
+	</select>
+	
+		<select id="getByUsernameAndIdCard" resultType="SystemStudent">
+		SELECT 
+			<include refid="systemStudentColumns"/>
+		FROM rs_student a
+		<include refid="systemStudentJoins"/>
+		WHERE a.hc_form_sfzh = #{idCard} and  a.hc_form_xm = #{username}
+	</select>
+	
 	<select id="findList" resultType="SystemStudent">
 		SELECT 
 			<include refid="systemStudentColumns"/>

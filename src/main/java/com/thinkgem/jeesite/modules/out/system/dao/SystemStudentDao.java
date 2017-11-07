@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.out.system.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
@@ -14,5 +16,7 @@ import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
  */
 @MyBatisDao
 public interface SystemStudentDao extends CrudDao<SystemStudent> {
+	public SystemStudent getByIdCard(@Param("idCard")String idCard) ;
+	public SystemStudent getByUsernameAndIdCard(@Param("username")String username,@Param("idCard")String idCard) ;
 	
 }

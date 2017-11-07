@@ -80,7 +80,7 @@ window.close();
 </script>
 </c:if>
 
-<c:if test="${empty param.hc_form_sfzh}">  
+<c:if test="${empty param.hc_form_sfzh}&&${empty systemStudent}">  
 <script>
 alert("参数异常即将关闭当前窗口");
 window.close();
@@ -118,8 +118,6 @@ window.close();
 											id="bmform">2018年哈尔滨信息工程学院单招报名申请表</div>
 										<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
-											
-											
 		${fns:getDictDescription('2018', 'greathiit_zhaosheng', '暂无')}
 											<p class="text-s16" style="line-height: 26px;">
 												<a href="http://www.hxci.com.cn/zy/"
@@ -131,6 +129,7 @@ window.close();
 											<div class="clearfix"></div>
 											<form id="form" method="post" class="form-horizontal"
 												action="zhaosheng">
+												<input type="hidden" name="id" value="${systemStudent.id }">
 												<fieldset>
 
 
@@ -145,39 +144,39 @@ window.close();
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<SELECT name="hc_form_province" id="to_cn" style="width: 30%;"
-																onchange="set_city(this, document.getElementById('city')); WYL();"
+																onchange="set_city(this, document.getElementById('city')); "
 																class="form-control margin-r-5 hc_form_bylb">
 																<option value="">请选择</option>
 
-																<option value=哈尔滨市>哈尔滨市</option>
+																<option value=哈尔滨市 <c:if test="${systemStudent.hcFormProvince=='哈尔滨市'}"> selected </c:if> >哈尔滨市</option>
 
-																<option value=齐齐哈尔市>齐齐哈尔市</option>
+																<option value=齐齐哈尔市 <c:if test="${systemStudent.hcFormProvince=='齐齐哈尔市'}"> selected </c:if> >齐齐哈尔市</option>
 
-																<option value=鸡西市>鸡西市</option>
+																<option value=鸡西市 <c:if test="${systemStudent.hcFormProvince=='鸡西市'}"> selected </c:if> >鸡西市</option>
 
-																<option value=鹤岗市>鹤岗市</option>
+																<option value=鹤岗市 <c:if test="${systemStudent.hcFormProvince=='鹤岗市'}"> selected </c:if> >鹤岗市</option>
 
-																<option value=双鸭山市>双鸭山市</option>
+																<option value=双鸭山市 <c:if test="${systemStudent.hcFormProvince=='双鸭山市'}"> selected </c:if> >双鸭山市</option>
 
-																<option value=大庆市>大庆市</option>
+																<option value=大庆市 <c:if test="${systemStudent.hcFormProvince=='大庆市'}"> selected </c:if> >大庆市</option>
 
-																<option value=伊春市>伊春市</option>
+																<option value=伊春市 <c:if test="${systemStudent.hcFormProvince=='伊春市'}"> selected </c:if> >伊春市</option>
 
-																<option value=佳木斯市>佳木斯市</option>
+																<option value=佳木斯市 <c:if test="${systemStudent.hcFormProvince=='佳木斯市'}"> selected </c:if> >佳木斯市</option>
 
-																<option value=七台河市>七台河市</option>
+																<option value=七台河市 <c:if test="${systemStudent.hcFormProvince=='七台河市'}"> selected </c:if> >七台河市</option>
 
-																<option value=牡丹江市>牡丹江市</option>
+																<option value=牡丹江市 <c:if test="${systemStudent.hcFormProvince=='牡丹江市'}"> selected </c:if> >牡丹江市</option>
 
-																<option value=绥化市>绥化市</option>
+																<option value=绥化市 <c:if test="${systemStudent.hcFormProvince=='绥化市'}"> selected </c:if> >绥化市</option>
 
-																<option value=黑河市>黑河市</option>
+																<option value=黑河市 <c:if test="${systemStudent.hcFormProvince=='黑河市'}"> selected </c:if> >黑河市</option>
 
-																<option value=大兴安岭>大兴安岭</option>
+																<option value=大兴安岭 <c:if test="${systemStudent.hcFormProvince=='大兴安岭'}"> selected </c:if> >大兴安岭</option>
 
-																<option value=省农垦总局>省农垦总局</option>
+																<option value=省农垦总局 <c:if test="${systemStudent.hcFormProvince=='省农垦总局'}"> selected </c:if> >省农垦总局</option>
 
-																<option value=省森工总局>省森工总局</option>
+																<option value=省森工总局 <c:if test="${systemStudent.hcFormProvince=='省森工总局'}"> selected </c:if> >省森工总局</option>
 
 															</SELECT> <label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
@@ -208,9 +207,9 @@ window.close();
 																class="form-control margin-r-5 hc_form_bylb"
 																id="hc_form_kl" name="hc_form_kl">
 																<option value='' selected='selected'>== 请选择 ==</option>
-															      <option value="文史类">文史类</option>
-															      <option value="理工类">理工类</option>
-															      <option value="中职">中职</option>
+															      <option value="文史类" <c:if test="${systemStudent.hcFormKl=='文史类'}"> selected </c:if> >文史类</option>
+															      <option value="理工类" <c:if test="${systemStudent.hcFormKl=='理工类'}"> selected </c:if> >理工类</option>
+															      <option value="中职"  <c:if test="${systemStudent.hcFormKl=='中职'}"> selected </c:if> >中职</option>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -240,7 +239,7 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-user"></i></span> <input type="text"
 																class="form-control hc_form_xm" name="hc_form_xm"
-																id="hc_form_xm" placeholder="填写你的姓名" value="">
+																id="hc_form_xm" placeholder="填写你的姓名" value="${systemStudent.hcFormXm}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_xm"></p>
@@ -271,7 +270,7 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-birthday-cake"></i></span> <input type="text"
 																class="form-control hc_form_birth" name="hc_form_birth"
-																id="hc_form_birth" placeholder="出生日期"  readonly="readonly">
+																id="hc_form_birth" placeholder="出生日期"  readonly="readonly" value="${systemStudent.hcFormBirth}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_birth"></p>
@@ -286,9 +285,9 @@ window.close();
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<label class="radio-inline"> <input type="radio"
 																id="hc_form_xb_0" name="hc_form_xb" value="男"
-																checked='checked'> 男
+																 <c:if test="${systemStudent.hcFormXb=='男'}"> checked='checked' </c:if> <c:if test="${empty systemStudent}">checked='checked'</c:if>  > 男
 															</label> <label class="radio-inline"> <input type="radio"
-																id="hc_form_xb_1" name="hc_form_xb" value="女"> 女
+																id="hc_form_xb_1" name="hc_form_xb" value="女" <c:if test="${systemStudent.hcFormXb=='女'}"> checked='checked' </c:if> > 女
 															</label>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -304,7 +303,8 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-credit-card"></i></span> <input type="text"
 																class="form-control hc_form_sfzh" name="hc_form_sfzh"
-																id="hc_form_sfzh" placeholder="输入18位身份证号" value="">
+																id="hc_form_sfzh" placeholder="输入18位身份证号" value="<c:if test="${not empty systemStudent.hcFormSfzh}">${systemStudent.hcFormSfzh}</c:if><c:if test="${not empty param.hc_form_sfzh}">${param.hc_form_sfzh}</c:if>">
+																
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_sfzh"></p>
@@ -321,12 +321,12 @@ window.close();
 																class="form-control margin-r-5 hc_form_bylb"
 																id="hc_form_bylb" name="hc_form_bylb">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="高中毕业">高中毕业</option>
-																<option value="中等师范毕业">中等师范毕业</option>
-																<option value="其它中等专业学校毕业">其它中等专业学校毕业</option>
-																<option value="职业高中毕业">职业高中毕业</option>
-																<option value="技工学校毕业">技工学校毕业</option>
-																<option value="其它">其它</option>
+																<option value="高中毕业" <c:if test="${systemStudent.hcFormBylb=='高中毕业'}"> selected </c:if> >高中毕业</option>
+																<option value="中等师范毕业" <c:if test="${systemStudent.hcFormBylb=='中等师范毕业'}"> selected </c:if> >中等师范毕业</option>
+																<option value="其它中等专业学校毕业" <c:if test="${systemStudent.hcFormBylb=='其它中等专业学校毕业'}"> selected </c:if> >其它中等专业学校毕业</option>
+																<option value="职业高中毕业" <c:if test="${systemStudent.hcFormBylb=='职业高中毕业'}"> selected </c:if> >职业高中毕业</option>
+																<option value="技工学校毕业" <c:if test="${systemStudent.hcFormBylb=='技工学校毕业'}"> selected </c:if> >技工学校毕业</option>
+																<option value="其它" <c:if test="${systemStudent.hcFormBylb=='其它'}"> checked='checked' </c:if> >其它</option>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -541,7 +541,7 @@ window.close();
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
 															<input type="text" class="form-control hc_form_byxx"
 																name="hc_form_byxx" id="hc_form_byxx"
-																placeholder="毕业学校及班级" value="">
+																placeholder="毕业学校" value="${systemStudent.hcFormByxx}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_byxx"></p>
@@ -573,7 +573,7 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-phone"></i></span> <input type="text"
 																class="form-control hc_form_sj" name="hc_form_sj"
-																id="hc_form_sj" placeholder="随时能找到考生的联系电话" value="">
+																id="hc_form_sj" placeholder="随时能找到考生的联系电话" value="${systemStudent.hcFormSj}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_sj"></p>
@@ -605,19 +605,12 @@ window.close();
 															<select class="form-control margin-r-5 hc_form_zy1"
 																id="hc_form_zy1" name="hc_form_zy1">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
-
-																<option value="计算机应用技术">计算机应用技术</option>
-
-																<option value="广告设计与制作">广告设计与制作</option>
-
-																<option value="建筑室内设计">建筑室内设计</option>
-
-																<option value="会计">会计</option>
-
-																<option value="市场营销">市场营销</option>
-
-																<option value="电子商务">电子商务</option>
+																
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy1}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
+																
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -633,19 +626,9 @@ window.close();
 															<select class="form-control margin-r-5 hc_form_zy2"
 																id="hc_form_zy2" name="hc_form_zy2">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
-
-																<option value="计算机应用技术">计算机应用技术</option>
-
-																<option value="广告设计与制作">广告设计与制作</option>
-
-																<option value="建筑室内设计">建筑室内设计</option>
-
-																<option value="会计">会计</option>
-
-																<option value="市场营销">市场营销</option>
-
-																<option value="电子商务">电子商务</option>
+																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy2}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -661,19 +644,9 @@ window.close();
 															<select class="form-control margin-r-5 hc_form_zy3"
 																id="hc_form_zy3" name="hc_form_zy3">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
-
-																<option value="计算机应用技术">计算机应用技术</option>
-
-																<option value="广告设计与制作">广告设计与制作</option>
-
-																<option value="建筑室内设计">建筑室内设计</option>
-
-																<option value="会计">会计</option>
-
-																<option value="市场营销">市场营销</option>
-
-																<option value="电子商务">电子商务</option>
+																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy3}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -689,19 +662,9 @@ window.close();
 															<select class="form-control margin-r-5 hc_form_zy4"
 																id="hc_form_zy4" name="hc_form_zy4">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
-
-																<option value="计算机应用技术">计算机应用技术</option>
-
-																<option value="广告设计与制作">广告设计与制作</option>
-
-																<option value="建筑室内设计">建筑室内设计</option>
-
-																<option value="会计">会计</option>
-
-																<option value="市场营销">市场营销</option>
-
-																<option value="电子商务">电子商务</option>
+																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy4}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -716,19 +679,10 @@ window.close();
 															<select class="form-control margin-r-5 hc_form_zy5"
 																id="hc_form_zy5" name="hc_form_zy5">
 																<option value='' selected='selected'>== 请选择 ==</option>
-																<option value="软件技术">软件技术</option>
-
-																<option value="计算机应用技术">计算机应用技术</option>
-
-																<option value="广告设计与制作">广告设计与制作</option>
-
-																<option value="建筑室内设计">建筑室内设计</option>
-
-																<option value="会计">会计</option>
-
-																<option value="市场营销">市场营销</option>
-
-																<option value="电子商务">电子商务</option>
+																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
+																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy5}"> selected </c:if> >${dict.label }</option> 
+																 </c:forEach>
+																
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -744,9 +698,9 @@ window.close();
 																id="hc_form_zytj" name="hc_form_zytj">
 																<option value='' selected='selected'>== 请选择 ==</option>
 
-																<option value="是">是</option>
+																<option value="是" <c:if test="${systemStudent.hcFormZytj=='是'}"> selected </c:if> >是</option>
 
-																<option value="否">否</option>
+																<option value="否" <c:if test="${systemStudent.hcFormZytj=='否'}"> selected </c:if>>否</option>
 															</select>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
@@ -881,14 +835,14 @@ window.close();
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_fa_gx" name="hc_form_jjlxr_fa_gx"
-																		id="hc_form_jjlxr_fa_gx" placeholder="与本人关系 " value="">
+																		id="hc_form_jjlxr_fa_gx" placeholder="与本人关系 " value="${systemStudent.hcFormJjlxrFaGx}">
 																		</div>
 																		</td>
 																	<td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_fa_name" name="hc_form_jjlxr_fa_name"
-																		id="hc_form_jjlxr_fa_name" placeholder="联系人姓名 " value="">
+																		id="hc_form_jjlxr_fa_name" placeholder="联系人姓名 " value="${systemStudent.hcFormJjlxrFaName}">
 																		
 																		</div>
 																		
@@ -896,19 +850,19 @@ window.close();
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_fa_tel" name="hc_form_jjlxr_fa_tel"
-																		id="hc_form_jjlxr_fa_tel" placeholder="联系人电话 " value="">
+																		id="hc_form_jjlxr_fa_tel" placeholder="联系人电话 " value="${systemStudent.hcFormJjlxrFaTel}">
 																		</div>
 																		</td><td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_fa_work" name="hc_form_jjlxr_fa_work"
-																		id="hc_form_jjlxr_fa_work" placeholder="工作单位" value="">
+																		id="hc_form_jjlxr_fa_work" placeholder="工作单位" value="${systemStudent.hcFormJjlxrFaWork}">
 																		</div>
 																		</td><td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_fa_zw" name="hc_form_jjlxr_fa_zw"
-																		id="hc_form_jjlxr_fa_zw" placeholder="任何职务" value="">
+																		id="hc_form_jjlxr_fa_zw" placeholder="任何职务" value="${systemStudent.hcFormJjlxrFaZw}">
 																		</div>
 																		</td>
 																</tr>
@@ -918,32 +872,32 @@ window.close();
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_ma_gx" name="hc_form_jjlxr_ma_gx"
-																		id="hc_form_jjlxr_ma_gx" placeholder="与本人关系 " value="">
+																		id="hc_form_jjlxr_ma_gx" placeholder="与本人关系 " value="${systemStudent.hcFormJjlxrMaGx}">
 																		</div>
 																		</td>
 																	<td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_ma_name" name="hc_form_jjlxr_ma_name"
-																		id="hc_form_jjlxr_ma_name" placeholder="联系人姓名 " value="">
+																		id="hc_form_jjlxr_ma_name" placeholder="联系人姓名 " value="${systemStudent.hcFormJjlxrMaName}">
 																		</div>
 																		</td><td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_ma_tel" name="hc_form_jjlxr_ma_tel"
-																		id="hc_form_jjlxr_ma_tel" placeholder="联系人电话 " value="">
+																		id="hc_form_jjlxr_ma_tel" placeholder="联系人电话 " value="${systemStudent.hcFormJjlxrMaTel}">
 																		</div>
 																		</td><td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_ma_work" name="hc_form_jjlxr_ma_work"
-																		id="hc_form_jjlxr_ma_work" placeholder="工作单位" value="">
+																		id="hc_form_jjlxr_ma_work" placeholder="工作单位" value="${systemStudent.hcFormJjlxrMaWork}">
 																		</div>
 																		</td><td>
 																	<div class="input-group input-group-sm">
 																	<input type="text"
 																		class="form-control hc_form_jjlxr_ma_zw" name="hc_form_jjlxr_ma_zw"
-																		id="hc_form_jjlxr_ma_zw" placeholder="任何职务" value="">
+																		id="hc_form_jjlxr_ma_zw" placeholder="任何职务" value="${systemStudent.hcFormJjlxrMaZw}">
 																		</div>
 																		</td>
 																</tr>
@@ -967,7 +921,7 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-phone"></i></span> <input type="text"
 																class="form-control hc_form_bysj" name="hc_form_bysj"
-																id="hc_form_bysj" placeholder="输入你的备用联系方式" value="">
+																id="hc_form_bysj" placeholder="输入你的备用联系方式" value="${systemStudent.hcFormBysj}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_bysj"></p>
@@ -980,7 +934,7 @@ window.close();
 															<span class="input-group-addon"><i
 																class="fa fa-qq"></i></span> <input type="text"
 																class="form-control hc_form_qq" name="hc_form_qq"
-																id="hc_form_qq" placeholder="输入你的QQ号码" value="">
+																id="hc_form_qq" placeholder="输入你的QQ号码" value="${systemStudent.hcFormQq}">
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_qq"></p>
@@ -993,7 +947,7 @@ window.close();
 															<textarea class="form-control hc_form_bz" rows="5"
 																name="hc_form_bz" id="hc_form_bz"
 																placeholder="详细介绍你的情况，更有利于我们为你提供帮助。"
-																style="height: auto;"></textarea>
+																style="height: auto;">${systemStudent.hcFormBz}</textarea>
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_bz"></p>
@@ -1028,33 +982,27 @@ window.close();
 	<script type="text/javascript">
 $(document).ready(function(){
 	 var idCard = "${param.hc_form_sfzh}"
+	 if(idCard!=''&&idCard!='undefined'){
 		 $("#hc_form_sfzh").val(idCard);
-	 if(idCard != null && idCard != ""){  
-         if(idCard.length == 15){  
-             birthday = "19"+idCard.substr(6,6);  
-         } else if(idCard.length == 18){  
-             birthday = idCard.substr(6,8);  
-         }  
-       
-         birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");  
-     } 
-	 $("#hc_form_birth").val(birthday);
-	 
-	 if (parseInt(idCard.substr(16, 1)) % 2 == 1) {
-		 $("#hc_form_xb_0").attr('checked','true');
-	 }else{
-		 $("#hc_form_xb_1").attr('checked','true');
+		 if(idCard != null && idCard != ""){  
+	         if(idCard.length == 15){  
+	             birthday = "19"+idCard.substr(6,6);  
+	         } else if(idCard.length == 18){  
+	             birthday = idCard.substr(6,8);  
+	         }  
+	       
+	         birthday = birthday.replace(/(.{4})(.{2})/,"$1-$2-");  
+	     } 
+		 $("#hc_form_birth").val(birthday);
+		 
+		 if (parseInt(idCard.substr(16, 1)) % 2 == 1) {
+			 $("#hc_form_xb_0").attr('checked','true');
+		 }else{
+			 $("#hc_form_xb_1").attr('checked','true');
+		 }
 	 }
 	
-	 var myDate = new Date();
-     var month = myDate.getMonth() + 1;
-     var day = myDate.getDate();
-     var age = myDate.getFullYear() - idCard.substring(6, 10) - 1;
-     if (idCard.substring(10, 12) < month || idCard.substring(10, 12) == month && idCard.substring(12, 14) <= day) {
-         age++;
-     }
-     $("#hc_form_age").val(age);
-	
+
     $('#hc_form_jdstarttime').datetimepicker({
     	language:  'zh-CN',
     	 minView: "month",//设置只显示到月份
@@ -1143,10 +1091,31 @@ city.options[ii].text = cities[pv][i];
 
 city.options[ii].value = cities[pv][i]; 
 
-} 
+city.options[ii].selected = true;
 
 } 
-
+} 
+function setValueCity(p,v){
+	var city = document.getElementById('city');
+	city.length=1; 
+	var i, ii; 
+	for(i=0; i<cities[p].length; i++) 
+	{ 
+		ii = i+1; 
+		city.options[ii] = new Option(); 
+	
+		city.options[ii].text = cities[p][i]; 
+	
+		city.options[ii].value = cities[p][i]; 
+		debugger;
+		if(city.options[ii].value==v){
+			city.options[ii].selected = true;
+			
+		}
+	} 
+}
+<c:if test="${not empty systemStudent}">setValueCity('${systemStudent.hcFormProvince}','${systemStudent.hcFormCity}');</c:if>
 </script> 
+
 </body>
 </html>

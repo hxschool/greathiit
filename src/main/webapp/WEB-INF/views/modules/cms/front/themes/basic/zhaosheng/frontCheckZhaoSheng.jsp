@@ -215,21 +215,21 @@ window.close();
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_kl"></p>
 													</div>
-													
-													<!-- <div class="form-group text-s12 " id="fg_hc_form_xm">
-														<label
-															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
-															for="hc_form_bkh">  报考号:
-														</label>
-														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<input type="text"
-																class="form-control hc_form_bkh" name="hc_form_bkh"
-																id="hc_form_bkh" placeholder=" (可不填写)按考生报名地县（市、区）招考办（或中学）报名时所给报名号填写" value="">
+													<c:if test="${not empty systemStudent}">
+														<div class="form-group text-s12 " id="fg_hc_form_xm">
+															<label
+																class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
+																for="hc_form_bkh">  志愿填报顺序号:
+															</label>
+															<div class="input-group input-group-sm col-sm-7 col-xs-12">
+																 <input type="text"
+																	class="form-control hc_form_area" name="hc_form_area"
+																	id="hc_form_area" placeholder="填写你的姓名" value="${systemStudent.hcFormArea}" readonly="readonly">
+															</div>
+															<p class="col-sm-offset-3 col-xs-offset-3"
+																id="error-hc_form_bkh"></p>
 														</div>
-														<p class="col-sm-offset-3 col-xs-offset-3"
-															id="error-hc_form_bkh"></p>
-													</div> -->
-													
+													</c:if>
 													<div class="form-group text-s12 " id="fg_hc_form_xm">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"

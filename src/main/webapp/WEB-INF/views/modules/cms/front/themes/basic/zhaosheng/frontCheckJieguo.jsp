@@ -243,7 +243,7 @@
 		function chechForm(){
 			var name = $("#name").val();
 			var idCardNumber = $("#idCardNumber").val();
-			var captchaImage = $("#captchaImage").val();
+			var captcha = $("#captcha").val();
 			var ret = "";
 			if(name==""){
 				ret ="姓名不能为空\r\n";
@@ -254,7 +254,7 @@
 			if(!check_sfzh(idCardNumber)){
 				ret = ret + "身份证信息不合法\r\n";
 			}
-			if(captchaImage==""){
+			if(captcha==""){
 				ret = ret+ "验证码信息不合法\r\n";
 			}
 			if(ret!=""){

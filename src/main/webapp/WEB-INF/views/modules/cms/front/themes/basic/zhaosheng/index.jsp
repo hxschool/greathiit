@@ -70,7 +70,6 @@
 <c:if test="${fns:getDictValue('switch', 'greathiit_zhaosheng', '关')=='no'}">  
 <script>
 alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
-window.close();
 </script>
 </c:if>
 <body class=" layout-home">

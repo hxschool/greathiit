@@ -36,8 +36,8 @@ public class DictService extends CrudService<DictDao, Dict> {
 	public void save(Dict dict) {
 		if(dict.getType().equals("greathiit_zhaosheng")&&dict.getValue().equals("2018")){
 			dict.setDescription(StringEscapeUtils.unescapeHtml4(dict.getDescription()));
-			super.save(dict);
 		}
+		super.save(dict);
 		CacheUtils.remove(DictUtils.CACHE_DICT_MAP);
 	}
 

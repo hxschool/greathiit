@@ -594,17 +594,17 @@ window.close();
 															id="error-hc_form_dz"></p>
 													</div>
 													 -->
-
-													<div class="form-group text-s12 video_in" id="fg_hc_form_zy1">
+													<div class="video_in">
+													<div class="form-group text-s12" id="fg_hc_form_zy1">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy1"> <b class="text-red">*</b>
 															报考专业1:
 														</label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<select class="form-control margin-r-5 hc_form_zy1 "
+															<select class="form-control margin-r-5 hc_form_zy1 select"
 																id="hc_form_zy1" name="hc_form_zy1">
-																<option value='00' selected='selected'>== 请选择 ==</option>
+																<option value="0" selected='selected'>== 请选择 ==</option>
 																
 																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
 																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy1}"> selected </c:if> >${dict.label }</option> 
@@ -618,14 +618,14 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12 video_in" id="fg_hc_form_zy2">
+													<div class="form-group text-s12" id="fg_hc_form_zy2">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy2"> 报考专业2: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<select class="form-control margin-r-5 hc_form_zy2"
+															<select class="form-control margin-r-5 hc_form_zy2 select"
 																id="hc_form_zy2" name="hc_form_zy2">
-																<option value='00' selected='selected'>== 请选择 ==</option>
+																<option value="0" selected='selected'>== 请选择 ==</option>
 																 <c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
 																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy2}"> selected </c:if> >${dict.label }</option> 
 																 </c:forEach>
@@ -636,14 +636,14 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12 video_in" id="fg_hc_form_zy3">
+													<div class="form-group text-s12 " id="fg_hc_form_zy3">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy3"> 报考专业3: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<select class="form-control margin-r-5 hc_form_zy3"
+															<select class="form-control margin-r-5 hc_form_zy3 select"
 																id="hc_form_zy3" name="hc_form_zy3">
-																<option value='00' selected='selected'>== 请选择 ==</option>
+																<option value="0" selected='selected'>== 请选择 ==</option>
 																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
 																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy3}"> selected </c:if> >${dict.label }</option> 
 																 </c:forEach>
@@ -654,14 +654,14 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12 video_in" id="fg_hc_form_zy4">
+													<div class="form-group text-s12 " id="fg_hc_form_zy4">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy4"> 报考专业4: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<select class="form-control margin-r-5 hc_form_zy4"
+															<select class="form-control margin-r-5 hc_form_zy4 select"
 																id="hc_form_zy4" name="hc_form_zy4">
-																<option value='00' selected='selected'>== 请选择 ==</option>
+																<option value="0" selected='selected'>== 请选择 ==</option>
 																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
 																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy4}"> selected </c:if> >${dict.label }</option> 
 																 </c:forEach>
@@ -671,14 +671,14 @@ window.close();
 															id="error-hc_form_zy4"></p>
 													</div>
 
-													<div class="form-group text-s12 video_in" id="fg_hc_form_zy5">
+													<div class="form-group text-s12 " id="fg_hc_form_zy5">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy5"> 报考专业5: </label>
 														<div class="input-group input-group-sm col-sm-7 col-xs-12">
-															<select class="form-control margin-r-5 hc_form_zy5"
+															<select class="form-control margin-r-5 hc_form_zy5 select"
 																id="hc_form_zy5" name="hc_form_zy5">
-																<option value='00' selected='selected'>== 请选择 ==</option>
+																<option value="0" selected='selected'>== 请选择 ==</option>
 																<c:forEach var="dict"   items="${fns:getDictList('greathiit_zhaosheng_major')}"   varStatus="status">
 																 	<option value="${dict.value }" <c:if test="${dict.value==systemStudent.hcFormZy5}"> selected </c:if> >${dict.label }</option> 
 																 </c:forEach>
@@ -687,6 +687,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_zy5"></p>
+													</div>
 													</div>
 
 													<div class="form-group text-s12 " id="fg_hc_form_zytj">
@@ -983,22 +984,52 @@ window.close();
 $(document).ready(function(){
 	
 
-    
-   $(".video_in select").each(function(i){$(this).attr("xh",i);});
-   $(".video_in select").change(function(){
-       var val=$(this).val();
-       $(".video_in select[xh!="+$(this).attr("xh")+"]").each(function(){
-             if(val!=''&&val==$(this).val())
-             {
-                   alert("该值已经存在！请重新选择");
-                   ret = true;
-                   return;
+	 var oldvalue = "";      //上一次选中的值
+     var currentvalue = "";  //当前选中的值
+
+     $('.video_in select').each(function() {
+         // 默认选中的值
+         if ($(this).find("option:selected")) {
+             oldvalue = $(this).attr('old');
+             var id = $(this).attr('id');
+             currentvalue = $(this).find('option:checked').val();
+             $(this).attr('old', currentvalue);
+             // 如果this下的某一项被选中，则not这个select find option[value=当前选择的值]外面添加other标签
+             // .not('option[value=0]') 该项是select的第一项 默认value为0
+             $('.video_in select').not('#' + id).find('option[value=' + currentvalue + ']').not('option[value=0]').wrap('<other></other>')
+         }
+     })
+     $('.video_in select').change(function(e) {
+         oldvalue = $(this).attr('old');
+         currentvalue = $(this).find('option:checked').val();
+         var id = $(this).attr('id');
+         if (oldvalue != "0") {
+             if(currentvalue==0){    //当前选择值等于0的一项 => 第一项（请选择）
+                 if($('.video_in select').find('option[value=0]').parent().hasClass("select")){
+                     $('.video_in select').not('#' + id).find('option[value=' + oldvalue + ']').unwrap();    //unwrap 移除other
+                     $(this).attr('old', currentvalue);   //更新oldvalue的值 已便下次使用
+                     return false;
+                 }
+             }else{
+                 $('.video_in select').not('#' + id).find('option[value=' + oldvalue + ']').unwrap();
+                 $('.video_in select').not('#' + id).find('option[value=' + currentvalue + ']').wrap('<other></other>');
+                 $(this).attr('old', currentvalue);  //更新oldvalue的值 已便下次使用
+                 if( $('.video_in select').find('option[value=0]').parent().hasClass("select")){
+                     return false;
+                 }
+                 $('.video_in select').find('option[value=0]').unwrap();
+
              }
-       })
-       if(ret) {
-    	   $(this).parent().find("option[value='00']").attr("selected",true);
-       }
-   })
+         }else{
+             $('.video_in select').not('#' + id).find('option[value=' + currentvalue + ']').wrap('<other></other>');
+             $(this).attr('old', currentvalue);   //更新oldvalue的值 已便下次使用
+             if( $('.video_in select').find('option[value=0]').parent().hasClass("select")){     //如果请选择  退出
+                 return false;
+             }
+             $('.video_in select').not('#' + id).find('option[value=' + oldvalue + ']').unwrap()
+
+         }
+     });
  
 	
 	

@@ -42,6 +42,11 @@ $(document).ready(function(){
 						min: 2,
                         max: 8,
                         message: '姓名长度最小为两位,最大为八位！' + zx
+                    },
+                    regexp: {
+                        regexp: /^[\u4E00-\u9FA5]+$/,
+                       // regexp: /^[a-zA-Z0-9_\.]+$/,
+			message: '姓名必须为中文,不支持数字与英文'
                     }
 				}
 			},
@@ -60,8 +65,13 @@ $(document).ready(function(){
 				trigger: 'blur',
 				validators: {
 					notEmpty: {
-						message: '毕业学校及班级不能为空！' + zx
-					}
+						message: '毕业学校不能为空！' + zx
+					},
+					regexp: {
+                        regexp: /^[0-9|\u4E00-\u9FA5]+$/,
+                        message: '毕业学校只允许为中文或者数字,不允许为英文或特殊字符'
+                    }
+
 				}
 			},
 			

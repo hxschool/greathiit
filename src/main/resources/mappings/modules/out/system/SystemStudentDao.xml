@@ -71,7 +71,7 @@
 			<include refid="systemStudentColumns"/>
 		FROM rs_student a
 		<include refid="systemStudentJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.id = #{id} and a.del_flag = 0
 	</select>
 	
 	<select id="getByIdCard" resultType="SystemStudent">
@@ -79,7 +79,7 @@
 			<include refid="systemStudentColumns"/>
 		FROM rs_student a
 		<include refid="systemStudentJoins"/>
-		WHERE a.hc_form_sfzh = #{idCard}
+		WHERE a.hc_form_sfzh = #{idCard} and a.del_flag = 0
 	</select>
 	
 		<select id="getByUsernameAndIdCard" resultType="SystemStudent">
@@ -87,7 +87,7 @@
 			<include refid="systemStudentColumns"/>
 		FROM rs_student a
 		<include refid="systemStudentJoins"/>
-		WHERE a.hc_form_sfzh = #{idCard} and  a.hc_form_xm = #{username}
+		WHERE a.hc_form_sfzh = #{idCard} and  a.hc_form_xm = #{username} and a.del_flag = 0
 	</select>
 	
 	<select id="findList" resultType="SystemStudent">

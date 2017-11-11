@@ -71,14 +71,11 @@
 				<th>与本人关系</th>
 				<th>联系人姓名</th>
 				<th>联系电话</th>
-				<th>工作单位</th>
-				<th>任何职务</th>
 				
 				<th>备用联系方式</th>
 				<th>qq</th>
-				<th>备注</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
+				<th>审批状态</th>
+				
 				<shiro:hasPermission name="out:system:systemStudent:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -144,12 +141,7 @@
 				<td>
 					${systemStudent.hcFormJjlxrFaTel}
 				</td>
-				<td>
-					${systemStudent.hcFormJjlxrFaWork}
-				</td>
-				<td>
-					${systemStudent.hcFormJjlxrFaZw}
-				</td>
+	
 				
 				<td>
 					${systemStudent.hcFormBysj}
@@ -157,15 +149,12 @@
 				<td>
 					${systemStudent.hcFormQq}
 				</td>
-				<td>
-					${systemStudent.hcFormBz}
-				</td>
-				<td>
-					<fmt:formatDate value="${systemStudent.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${systemStudent.remarks}
-				</td>
+			
+				<td><c:choose>
+							<c:when test="${systemStudent.hcFormZhuangtai==''||empty systemStudent.hcFormZhuangtai||systemStudent.hcFormZhuangtai=='0'}">未审批</c:when>
+							<c:when test="${systemStudent.hcFormZhuangtai=='1'}">已审批</c:when>
+							<c:when test="${systemStudent.hcFormZhuangtai=='2'}">审批拒绝</c:when>
+						</c:choose></td>
 				<shiro:hasPermission name="out:system:systemStudent:edit"><td>
     				<a href="${ctx}/out/system/systemStudent/form?id=${systemStudent.id}">修改</a>
 					<a href="${ctx}/out/system/systemStudent/delete?id=${systemStudent.id}" onclick="return confirmx('确认要删除该单招报名申请表吗？', this.href)">删除</a>

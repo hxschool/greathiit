@@ -168,7 +168,7 @@
 				</td>
 				<shiro:hasPermission name="out:system:systemStudent:edit"><td>
     				<a href="${ctx}/out/system/systemStudent/form?id=${systemStudent.id}">修改</a>
-					<!-- <a href="${ctx}/out/system/systemStudent/delete?id=${systemStudent.id}" onclick="return confirmx('确认要删除该单招报名申请表吗？', this.href)">删除</a> -->
+					<a href="${ctx}/out/system/systemStudent/delete?id=${systemStudent.id}" onclick="return confirmx('确认要删除该单招报名申请表吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

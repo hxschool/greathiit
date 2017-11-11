@@ -38,6 +38,12 @@ public class SystemDictController extends BaseController {
 		}
 	}
 
+	
+	@RequestMapping(value = "open")
+	public String open(Dict dict, Model model) {
+		model.addAttribute("dict", dict);
+		return "modules/out/dict/openForm";
+	}
 
 	
 	@RequestMapping(value = "form")
@@ -46,17 +52,25 @@ public class SystemDictController extends BaseController {
 		return "modules/out/dict/dictForm";
 	}
 
-	@RequestMapping(value = "save")//@Valid 
-	public String save(Dict dict, Model model, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/dict/?repage&type="+dict.getType();
-		}
+	@RequestMapping(value = "sv")//@Valid 
+	public String sv(Dict dict, Model model, RedirectAttributes redirectAttributes) {
+		
 		if (!beanValidator(model, dict)){
 			return form(dict, model);
 		}
 		dictService.save(dict);
-		addMessage(redirectAttributes, "保存字典'" + dict.getLabel() + "'成功");
+		addMessage(redirectAttributes, "保存'" + dict.getLabel() + "'成功");
+		return "redirect:" + adminPath + "/out/system/dict/open?id="+dict.getId();
+	}
+	
+	@RequestMapping(value = "save")//@Valid 
+	public String save(Dict dict, Model model, RedirectAttributes redirectAttributes) {
+		
+		if (!beanValidator(model, dict)){
+			return form(dict, model);
+		}
+		dictService.save(dict);
+		addMessage(redirectAttributes, "保存'" + dict.getLabel() + "'成功");
 		return "redirect:" + adminPath + "/out/system/dict/form?id="+dict.getId();
 	}
 	

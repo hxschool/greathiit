@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 单招报名申请表Entity
@@ -295,16 +296,36 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormDz(String hcFormDz) {
 		this.hcFormDz = hcFormDz;
 	}
-	@ExcelField(title="报考专业1", align=2, sort=16)
+	
 	@Length(min=0, max=64, message="报考专业1长度必须介于 0 和 64 之间")
 	public String getHcFormZy1() {
 		return hcFormZy1;
+	}
+	@ExcelField(title="报考专业1", align=2, sort=16)
+	public String getHcFormZy1Value() {
+		return DictUtils.getDictLabel(hcFormZy1, "greathiit_zhaosheng_major", "报考专业1");
+	}
+	@ExcelField(title="报考专业2", align=2, sort=17)
+	public String getHcFormZy2Value() {
+		return DictUtils.getDictLabel(hcFormZy2, "greathiit_zhaosheng_major", "报考专业2");
+	}
+	@ExcelField(title="报考专业3", align=2, sort=18)
+	public String getHcFormZy3Value() {
+		return DictUtils.getDictLabel(hcFormZy3, "greathiit_zhaosheng_major", "报考专业3");
+	}
+	@ExcelField(title="报考专业4", align=2, sort=19)
+	public String getHcFormZy4Value() {
+		return DictUtils.getDictLabel(hcFormZy4, "greathiit_zhaosheng_major", "报考专业4");
+	}
+	@ExcelField(title="报考专业5", align=2, sort=20)
+	public String getHcFormZy5Value() {
+		return DictUtils.getDictLabel(hcFormZy5, "greathiit_zhaosheng_major", "报考专业5");
 	}
 
 	public void setHcFormZy1(String hcFormZy1) {
 		this.hcFormZy1 = hcFormZy1;
 	}
-	@ExcelField(title="报考专业2", align=2, sort=16)
+
 	@Length(min=0, max=64, message="报考专业2长度必须介于 0 和 64 之间")
 	public String getHcFormZy2() {
 		return hcFormZy2;
@@ -313,7 +334,6 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy2(String hcFormZy2) {
 		this.hcFormZy2 = hcFormZy2;
 	}
-	@ExcelField(title="报考专业3", align=2, sort=16)
 	@Length(min=0, max=64, message="报考专业3长度必须介于 0 和 64 之间")
 	public String getHcFormZy3() {
 		return hcFormZy3;
@@ -322,7 +342,6 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy3(String hcFormZy3) {
 		this.hcFormZy3 = hcFormZy3;
 	}
-	@ExcelField(title="报考专业4", align=2, sort=16)
 	@Length(min=0, max=64, message="报考专业4长度必须介于 0 和 64 之间")
 	public String getHcFormZy4() {
 		return hcFormZy4;
@@ -331,7 +350,6 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy4(String hcFormZy4) {
 		this.hcFormZy4 = hcFormZy4;
 	}
-	@ExcelField(title="报考专业5", align=2, sort=16)
 	@Length(min=0, max=64, message="报考专业5长度必须介于 0 和 64 之间")
 	public String getHcFormZy5() {
 		return hcFormZy5;
@@ -340,7 +358,7 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	public void setHcFormZy5(String hcFormZy5) {
 		this.hcFormZy5 = hcFormZy5;
 	}
-	@ExcelField(title="是否服从专业调剂", align=2, sort=17)
+	@ExcelField(title="是否服从专业调剂", align=2, sort=30)
 	@Length(min=0, max=64, message="是否服从专业调剂长度必须介于 0 和 64 之间")
 	public String getHcFormZytj() {
 		return hcFormZytj;

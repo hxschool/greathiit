@@ -27,14 +27,23 @@
 </head>
 <body>
 	
-	<form:form id="inputForm" modelAttribute="dict" action="${ctx}/out/system/dict/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="dict" action="${ctx}/out/system/dict/sv" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
-			<label class="control-label">描述信息设置:</label>
+			<label class="control-label">开关设置:</label>
 			<div class="controls">
-				<form:textarea id="description" htmlEscape="true" path="description" rows="4" class="input-xxlarge"/>
-				<sys:ckeditor replace="description" />
+				<select name="value">
+					<option value="yes" <c:if test="${dict.value=='yes'}">selected="selected"</c:if>  >开</option>
+					<option value="no" <c:if test="${dict.value=='no'}">selected="selected"</c:if> >关</option>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">关闭提示语:</label>
+			<div class="controls">
+				<form:textarea id="description" htmlEscape="false" path="description" rows="4" class="input-xxlarge"/>
+				
 			</div>
 		</div>
 		<div class="form-actions">

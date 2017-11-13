@@ -45,7 +45,7 @@ public class BookController extends BaseController {
 		}
 		
 		if(!StringUtils.isEmpty(sortbookname)){
-			String url = "http://book.greathiit.com/api/getSortBook?sortBookname="+sortbookname;
+			String url = "http://book.greathiit.com/api/getBook?bookname="+sortbookname;
 			String result = HttpClientUtil.get(url);
 			Gson gson = new Gson();
 			List<Map<String,String>> booklist = gson.fromJson(result, new TypeToken<List<Map<String,String>>>(){}.getType()); 
@@ -76,7 +76,6 @@ public class BookController extends BaseController {
 	public String mybook( HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		String student_number = user.getNo();
-		student_number = "006005";
 		if(!StringUtils.isEmpty(student_number)){
 			String url = "http://book.greathiit.com/api/getReaderByStudentNumber?studentNumber="+student_number;
 			String result = HttpClientUtil.get(url);

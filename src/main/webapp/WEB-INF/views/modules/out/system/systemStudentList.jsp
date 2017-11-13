@@ -66,6 +66,10 @@
 				<th>联系方式</th>
 				
 				<th>报考专业1</th>
+				<th>报考专业2</th>
+				<th>报考专业3</th>
+				<th>报考专业4</th>
+				<th>报考专业5</th>
 				
 				<th>是否服从专业调剂</th>
 				<th>与本人关系</th>
@@ -124,8 +128,23 @@
 				</td>
 
 				<td>
-					
 					${fns:getDictLabel(systemStudent.hcFormZy1,'greathiit_zhaosheng_major','') }
+				</td>
+				
+				<td>
+					${fns:getDictLabel(systemStudent.hcFormZy2,'greathiit_zhaosheng_major','') }
+				</td>
+				
+				<td>
+					${fns:getDictLabel(systemStudent.hcFormZy3,'greathiit_zhaosheng_major','') }
+				</td>
+				
+				<td>
+					${fns:getDictLabel(systemStudent.hcFormZy4,'greathiit_zhaosheng_major','') }
+				</td>
+				
+				<td>
+					${fns:getDictLabel(systemStudent.hcFormZy5,'greathiit_zhaosheng_major','') }
 				</td>
 				
 				<td>

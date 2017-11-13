@@ -53,6 +53,12 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">学号:</label>
+			<div class="controls">
+				<form:input path="no" htmlEscape="false" maxlength="50" class="required" readonly="true"/>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">姓名:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50" class="required" readonly="true"/>
@@ -61,7 +67,13 @@
 		<div class="control-group">
 			<label class="control-label">邮箱:</label>
 			<div class="controls">
-				<form:input path="email" htmlEscape="false" maxlength="50" class="email"/>
+				<form:input path="email" htmlEscape="false" maxlength="50" class="email" readonly="true"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">手机:</label>
+			<div class="controls">
+				<form:input path="mobile" htmlEscape="false" maxlength="50" readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -70,12 +82,7 @@
 				<form:input path="phone" htmlEscape="false" maxlength="50"/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">手机:</label>
-			<div class="controls">
-				<form:input path="mobile" htmlEscape="false" maxlength="50"/>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">

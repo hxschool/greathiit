@@ -305,23 +305,23 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 	}
 	@ExcelField(title="报考专业1", align=2, sort=16)
 	public String getHcFormZy1Value() {
-		return DictUtils.getDictLabel(hcFormZy1, "greathiit_zhaosheng_major", "报考专业1");
+		return DictUtils.getDictLabel(hcFormZy1, "greathiit_zhaosheng_major", "");
 	}
 	@ExcelField(title="报考专业2", align=2, sort=17)
 	public String getHcFormZy2Value() {
-		return DictUtils.getDictLabel(hcFormZy2, "greathiit_zhaosheng_major", "报考专业2");
+		return DictUtils.getDictLabel(hcFormZy2, "greathiit_zhaosheng_major", "");
 	}
 	@ExcelField(title="报考专业3", align=2, sort=18)
 	public String getHcFormZy3Value() {
-		return DictUtils.getDictLabel(hcFormZy3, "greathiit_zhaosheng_major", "报考专业3");
+		return DictUtils.getDictLabel(hcFormZy3, "greathiit_zhaosheng_major", "");
 	}
 	@ExcelField(title="报考专业4", align=2, sort=19)
 	public String getHcFormZy4Value() {
-		return DictUtils.getDictLabel(hcFormZy4, "greathiit_zhaosheng_major", "报考专业4");
+		return DictUtils.getDictLabel(hcFormZy4, "greathiit_zhaosheng_major", "");
 	}
 	@ExcelField(title="报考专业5", align=2, sort=20)
 	public String getHcFormZy5Value() {
-		return DictUtils.getDictLabel(hcFormZy5, "greathiit_zhaosheng_major", "报考专业5");
+		return DictUtils.getDictLabel(hcFormZy5, "greathiit_zhaosheng_major", "");
 	}
 
 	public void setHcFormZy1(String hcFormZy1) {

@@ -75,6 +75,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
 		
 		// 校验用户名密码
 		User user = getSystemService().getUserByLoginName(token.getUsername());
+		if(org.springframework.util.StringUtils.isEmpty(user)){
+			user = systemService.findUserbyMobileOrStudentNumberOrMail(token.getUsername());
+		}
 		if (user != null) {
 			if (Global.NO.equals(user.getLoginFlag())){
 				throw new AuthenticationException("msg:该已帐号禁止登录.");

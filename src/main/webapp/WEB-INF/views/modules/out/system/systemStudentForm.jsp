@@ -41,13 +41,13 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">所在省份：</label>
+			<label class="control-label">市（行署）：</label>
 			<div class="controls">
 				<form:input path="hcFormProvince" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">所在城市：</label>
+			<label class="control-label">县（市、区）：</label>
 			<div class="controls">
 				<form:input path="hcFormCity" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>

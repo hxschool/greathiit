@@ -276,7 +276,16 @@ $(document).ready(function(){
 				validators: {
 					notEmpty: {
 						message: '尚未填写紧急联系人姓名！' + zx
-					}
+					},
+					stringLength: {
+						min: 2,
+                        max: 8,
+                        message: '紧急联系人长度最小为两位,最大为八位！' + zx
+                    },
+                    regexp: {
+                        regexp: /^[\u4E00-\u9FA5]+$/,
+						message: '紧急联系人必须为中文,不支持数字与英文'
+                    }
 				}
 			},
 			hc_form_jjlxr_fa_tel: {

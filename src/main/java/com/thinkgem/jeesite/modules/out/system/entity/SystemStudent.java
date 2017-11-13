@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.out.system.entity;
 
+import java.util.Date;
+
 import org.hibernate.validator.constraints.Length;
 
 
@@ -555,6 +557,17 @@ public class SystemStudent extends DataEntity<SystemStudent> {
 
 	public void setHcFormZhuangtai(String hcFormZhuangtai) {
 		this.hcFormZhuangtai = hcFormZhuangtai;
+	}
+	@ExcelField(title="填报时间", align=2, sort=50)
+	@Override
+	public Date getCreateDate() {
+		return super.getCreateDate();
+	}
+	@ExcelField(title="修改时间", align=2, sort=51)
+	@Override
+	public Date getUpdateDate() {
+		// TODO Auto-generated method stub
+		return super.getUpdateDate();
 	}
 	
 }

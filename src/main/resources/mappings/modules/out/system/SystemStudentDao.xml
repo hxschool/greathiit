@@ -334,4 +334,47 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="tj" resultType="map">
+		select count(hc_form_zytj) as TOTAL ,hc_form_zytj as NAME from rs_student group by hc_form_zytj
+	</select>
+	
+	
+	<select id="kl" resultType="map">
+		select count(hc_form_kl) as TOTAL ,hc_form_kl as NAME from rs_student group by hc_form_kl
+	</select>
+	
+	
+	<select id="lb" resultType="map">
+		select count(hc_form_bylb) as TOTAL ,hc_form_bylb as NAME from rs_student group by hc_form_bylb
+	</select>
+	
+	
+	<select id="xb" resultType="map">
+		select count(hc_form_xb) as TOTAL ,hc_form_xb as NAME from rs_student group by hc_form_xb
+	</select>
+	
+	<select id="zy" resultType="map">
+		
+select count(zy) as TOTAL ,zy,case zy when '01' then 	'软件技术' 
+   when '02' then 	'计算机应用技术' 
+   when '03' then '会计' 
+   when '04' then 	'广告设计与制' 
+   when '05' then '建筑室内设计' 
+   when '06' then '市场营销' 
+   when '07' then 	'电子商务' end as NAME from (
+select hc_form_zy1 as zy from rs_student
+union all
+select hc_form_zy2 as zy from rs_student where hc_form_zy2!=0
+
+union all
+select hc_form_zy3 as zy from rs_student where hc_form_zy3!=0
+
+union all
+select hc_form_zy4 as zy from rs_student where hc_form_zy4!=0
+
+union all
+select hc_form_zy5 as zy from rs_student where hc_form_zy5!=0
+) tmp group by zy
+	</select>
+	
 </mapper>

@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.out.system.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,20 @@ public class SystemStudentService extends CrudService<SystemStudentDao, SystemSt
 	public void delete(SystemStudent systemStudent) {
 		super.delete(systemStudent);
 	}
-	
+
+	public List<Map<String,Object>> tj(){
+		return systemStudentDao.tj();
+	}
+	public List<Map<String,Object>> kl(){
+		return systemStudentDao.kl();
+	}
+	public List<Map<String,Object>> lb(){
+		return systemStudentDao.lb();
+	}
+	public List<Map<String,Object>> xb(){
+		return systemStudentDao.xb();
+	}
+	public List<Map<String,Object>> zy(){
+		return systemStudentDao.zy();
+	}
 }

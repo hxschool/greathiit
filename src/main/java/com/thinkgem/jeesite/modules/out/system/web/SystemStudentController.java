@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.out.system.web;
 
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -97,4 +101,45 @@ public class SystemStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/out/system/systemStudent/?repage";
 	}
 
+	
+	
+	
+	@RequestMapping("tj")
+	public String major(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = systemStudentService.tj();
+				
+		model.addAttribute("list", list);
+		return "modules/out/system/tj";
+	}
+	
+	@RequestMapping("kl")
+	public String kl(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = systemStudentService.kl();
+		model.addAttribute("list", list);
+		return "modules/out/system/kl";
+	}
+	
+	@RequestMapping("lb")
+	public String lb(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = systemStudentService.lb();
+		model.addAttribute("list", list);
+		return "modules/out/system/lb";
+	}
+	
+	@RequestMapping("xb")
+	public String xb(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = systemStudentService.xb();
+		model.addAttribute("list", list);
+		return "modules/out/system/xb";
+	}
+	
+	@RequestMapping("zy")
+	public String zy(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = systemStudentService.zy();
+		model.addAttribute("list", list);
+		return "modules/out/system/zy";
+	}
+	
+	
+	
 }

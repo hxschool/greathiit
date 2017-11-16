@@ -3,7 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.cms.web.front;
 
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.thinkgem.jeesite.common.annotation.SameUrlData;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
+import com.thinkgem.jeesite.common.utils.AccountValidatorUtil;
+import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
@@ -69,13 +72,114 @@ public class FrontZhaoShengController extends BaseController{
 		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheck".concat(module);
 	}
 	
-	
-	
-	
+
+
 	@SameUrlData
 	@RequestMapping(value = "zhaosheng", method = RequestMethod.POST)
 	public String checkZhaosheng(RsStudent rsStudent, HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
+		StringBuffer sb = new StringBuffer();
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_province())){
+			sb.append("市（行署）不允许为空");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_city())){
+			sb.append(" 县（市、区）不允许为空");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_kl())){
+			sb.append(" 尚未选择科类");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_xm())){
+			sb.append(" 姓名不允许为空");
+			sb.append("\r\n");
+		}else{
+			if(rsStudent.getHc_form_xm().length()>6){
+				sb.append(" 姓名长度超限,姓名长度最大为6位");
+				sb.append("\r\n");
+			}
+			if(!AccountValidatorUtil.isChinese(rsStudent.getHc_form_xm())){
+				sb.append(" 姓名必须为中文");
+				sb.append("\r\n");
+			}
+		}
+		
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_birth())){
+			sb.append(" 出生日期不允许为空");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_sfzh())){
+			sb.append(" 身份证号不允许为空");
+			sb.append("\r\n");
+		}
+		
+		if(!IdcardValidator.isValidatedAllIdcard(rsStudent.getHc_form_sfzh())){
+			sb.append(" 身份证号信息不合法");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_bylb())){
+			sb.append(" 尚未选择毕业类别");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_byxx())){
+			sb.append(" 尚未选择毕业学校");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_sj())){
+			sb.append(" 联系方式不能为空");
+			sb.append("\r\n");
+		}
+		if(!AccountValidatorUtil.isMobile(rsStudent.getHc_form_sj())){
+			sb.append(" 联系手机号格式不对");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_zy1())){
+			sb.append(" 尚未选择报考专业1");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_zytj())){
+			sb.append(" 尚未选择专业调剂");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_jjlxr_fa_gx())){
+			sb.append(" 紧急联系人与本人关系不允许为空");
+			sb.append("\r\n");
+		}
+		if(StringUtils.isEmpty(rsStudent.getHc_form_jjlxr_fa_name())){
+			sb.append(" 紧急联系人不允许为空");
+			sb.append("\r\n");
+		}
+		
+		if(!AccountValidatorUtil.isChinese(rsStudent.getHc_form_jjlxr_fa_name())){
+			sb.append(" 紧急联系人必须为中文");
+			sb.append("\r\n");
+		}
+		
+		if(StringUtils.isEmpty(rsStudent.getHc_form_jjlxr_fa_tel())){
+			sb.append(" 紧急联系人电话不允许为空");
+			sb.append("\r\n");
+		}
+		if(!AccountValidatorUtil.isMobile(rsStudent.getHc_form_sj())){
+			sb.append(" 紧急联系人电话手机号格式不对");
+			sb.append("\r\n");
+		}
+		
+		
+		
+		if(!StringUtils.isEmpty(sb.toString())){
+			model.addAttribute("message", sb.toString());
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckError";
+		}
+		
 		if(StringUtils.isEmpty(rsStudent.getId())){
 			String no = systemService.getRsStudentId();
 			//报考顺序号

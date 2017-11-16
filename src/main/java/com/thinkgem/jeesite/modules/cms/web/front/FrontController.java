@@ -147,9 +147,12 @@ public class FrontController extends BaseController{
 	}
 	
 	@RequestMapping(value = "skip_{module}")
-	public String frontCheckMobile(@PathVariable("module") String module) {
+	public String frontCheckMobile(@PathVariable("module") String module ,HttpServletRequest request) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		module = module.substring(0, 1).toUpperCase() + module.substring(1);
+		if("ZhaoSheng".equals(module)){
+			return "redirect:"+Global.getFrontPath()+"/2018/skip_ZhaoSheng?hc_form_sfzh="+request.getParameter("hc_form_sfzh");
+		}
 		return "modules/cms/front/themes/"+site.getTheme()+"/frontCheck".concat(module);
 	}
 	

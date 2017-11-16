@@ -118,13 +118,17 @@ window.close();
 											id="bmform">2018年哈尔滨信息工程学院单招报名申请表</div>
 										<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
-		${fns:getDictDescription('2018', 'greathiit_zhaosheng', '暂无')}
+												${fns:getDictDescription('2018', 'greathiit_zhaosheng', '暂无')}
+												
+												
 											<p class="text-s16" style="line-height: 26px;">
 												<a href="http://www.hxci.com.cn/zy/"
 													class="btn btn-info btn-sm ">查看招生简章</a> <a
 													href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
 											</p>
 										</div>
+										
+										
 										<div class="panel-body">
 											<div class="clearfix"></div>
 											<form id="form" method="post" class="form-horizontal"
@@ -940,7 +944,7 @@ window.close();
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_qq"></p>
 													</div>
-													<div class="form-group text-s12">
+													<!-- <div class="form-group text-s12">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_bz"> 备注: </label>
@@ -952,7 +956,7 @@ window.close();
 														</div>
 														<p class="col-sm-offset-3 col-xs-offset-3"
 															id="error-hc_form_bz"></p>
-													</div>
+													</div> -->
 													<div class="form-group text-s12">
 														<div class="text-center">
 															<input type="submit" class="btn btn-primary"
@@ -1167,6 +1171,7 @@ function setValueCity(p,v){
 	} 
 }
 <c:if test="${not empty systemStudent}">setValueCity('${systemStudent.hcFormProvince}','${systemStudent.hcFormCity}');</c:if>
+
 </script> 
 
 </body>

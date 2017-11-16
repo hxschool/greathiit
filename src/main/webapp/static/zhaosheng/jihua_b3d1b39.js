@@ -22,6 +22,13 @@ $(document).ready(function(){
 		}
 	}
 	
+	function check_hc_form_zy1(value){
+		if(value!='0'){
+			return true;
+		}
+		return false;
+	}
+	
 	$('#form').bootstrapValidator({
 		excluded: [':disabled'],
 		message: '验证失败',
@@ -46,7 +53,7 @@ $(document).ready(function(){
                     regexp: {
                         regexp: /^[\u4E00-\u9FA5]+$/,
                        // regexp: /^[a-zA-Z0-9_\.]+$/,
-			message: '姓名必须为中文,不支持数字与英文'
+                        message: '姓名必须为中文,不支持数字与英文'
                     }
 				}
 			},
@@ -187,7 +194,13 @@ $(document).ready(function(){
 				container: '#error-hc_form_zy1',
 				validators: {
 					notEmpty: {
-						message: '报考专业不能为空！' + zx
+						message: '尚未选择报考专业1！' + zx
+					},
+					callback: {
+						message: '尚未选择报考专业1！' + zx,
+						callback: function(value, validator) {
+							return check_hc_form_zy1(value);
+						}
 					}
 				}
 			},

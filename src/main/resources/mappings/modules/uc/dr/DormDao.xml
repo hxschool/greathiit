@@ -43,6 +43,14 @@
 		WHERE a.id = #{id}
 	</select>
 	
+		<select id="getByStudentNumber" resultType="Dorm">
+		SELECT 
+			<include refid="dormColumns"/>
+		FROM uc_person a
+		<include refid="dormJoins"/>
+		WHERE a.student_number = #{studentNumber}
+	</select>
+	
 	<select id="findList" resultType="Dorm">
 		SELECT 
 			<include refid="dormColumns"/>

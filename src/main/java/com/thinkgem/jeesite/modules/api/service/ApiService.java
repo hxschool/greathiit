@@ -12,6 +12,8 @@ import com.thinkgem.jeesite.modules.api.dao.ApiDao;
 import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
 import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.dr.dao.DormDao;
+import com.thinkgem.jeesite.modules.uc.dr.entity.Dorm;
 import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
@@ -29,6 +31,8 @@ public class ApiService {
 	private ApiDao apiDao;
 	@Autowired
 	private AreaDao areaDao;
+	@Autowired
+	private DormDao dormDao;
 	
 	public List<Map<String,Object>> getMajor(){
 		return apiDao.getMajor();
@@ -54,5 +58,9 @@ public class ApiService {
 			return UserUtils.getAreaList();
 		}
 		return areaDao.findAreaByParentId(parentId);
+	}
+	
+	public Dorm getDorm(String studentNumber){
+		return dormDao.getByStudentNumber(studentNumber);
 	}
 }

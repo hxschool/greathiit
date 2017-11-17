@@ -4,12 +4,6 @@ package com.thinkgem.jeesite.common.utils;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.http.HttpEntity;
@@ -21,10 +15,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;  
+import org.slf4j.LoggerFactory;  
 public class HttpClientUtil {
 	private final static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
 	public static String postJson(String url, String jsonString) {
@@ -105,23 +96,5 @@ public class HttpClientUtil {
 		}
 		return result.toString();
 	}
-	
-	public static void main(String[] args) throws ParseException, IOException{
-		
-		String url = "http://book.greathiit.com/api/getBook?bookname=房屋租赁案件";
-		
-		String result = get(url);
-		Gson gson = new Gson();
-		List<Map<String,String>> booklist = gson.fromJson(result, new TypeToken<List<Map<String,String>>>(){}.getType()); 
-		Set<String> set = new HashSet<String>();
-		
-		for(Map<String,String> map:booklist){
-			for (Map.Entry<String, String> entry : map.entrySet()) {  
-				set.add(entry.getKey()); 
-			}
-		}
-		Map<String,Object> resultMap = new HashMap<String,Object>();
-		resultMap.put("header", set);
-		resultMap.put("body", booklist);
-	}
+
 }

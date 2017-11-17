@@ -43,7 +43,7 @@ public class ApiController extends BaseController {
 
 	@RequestMapping(value = "parameter/{s}")
 	@ResponseBody
-	public Map<String, Object> getStudent(@PathVariable("s") String s) {
+	public Map<String, Object> getParameter(@PathVariable("s") String s) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("responseCode", "00000000");
 		map.put("responseMessage", "获取参数信息成功");
@@ -81,5 +81,16 @@ public class ApiController extends BaseController {
 		map.put("result", apiService.getArea(parentId));
 		return map;
 	}
+	
+	@RequestMapping(value = "getDorm")
+	@ResponseBody
+	public Map<String, Object> getDorm(String studentNumber) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("responseCode", "00000000");
+		map.put("responseMessage", "获取参数信息成功");
+		map.put("result", apiService.getDorm(studentNumber));
+		return map;
+	}
+	
 	
 }

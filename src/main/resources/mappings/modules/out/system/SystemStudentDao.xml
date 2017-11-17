@@ -118,13 +118,18 @@
 			<if test="hcFormSfzh != null and hcFormSfzh != ''">
 				AND a.hc_form_sfzh = #{hcFormSfzh}
 			</if>
+			
+			<if test="hcFormArea != null and hcFormArea != ''">
+				AND a.hc_form_area = #{hcFormArea}
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.hc_form_area DESC
 			</otherwise>
 		</choose>
 	</select>

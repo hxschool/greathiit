@@ -26,6 +26,9 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			
+			<li><label>顺序号：</label>
+				<form:input path="hcFormArea" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
 			<li><label>科类：</label>
 				<form:input path="hcFormKl" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
@@ -35,13 +38,11 @@
 			<li><label>姓名：</label>
 				<form:input path="hcFormXm" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>性别：</label>
-				<select name="hcFormXb" class="input-medium"><option value="">请选择</option><option value="男">男</option><option value="女">女</option></select>
-			</li>
+			
 			<li><label>身份证号：</label>
 				<form:input path="hcFormSfzh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/><input id="btnExport" class="btn btn-primary" type="button" value="导出"/>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			<input id="btnExportAll" class="btn btn-primary" type="button" value="导出全部"/>
 			<!-- <input id="btnImport" class="btn btn-primary" type="button" value="导入"/> -->
 			</li>
@@ -203,6 +204,8 @@
 						$("#pageSize").val(2000);
 						$("#searchForm").attr("action","${ctx}/out/system/systemStudent/export");
 						$("#searchForm").submit();
+						$("#searchForm").attr("action","${ctx}/out/system/systemStudent/");
+						
 					}
 				},{buttonsFocus:1});
 				top.$('.jbox-body .jbox-icon').css('top','55px');

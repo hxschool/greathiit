@@ -109,4 +109,21 @@ CREATE TABLE uc_contact_person  (
 )
 ;
 
+CREATE TABLE uc_dorm  ( 
+	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '寝室编码'  NOT NULL,
+    dormbuild_id   varchar(64) COMMENT '公寓号'  NULL,
+	dorm_number     varchar(64) COMMENT '门牌号'  NULL,
+    dorm_floor      varchar(64) COMMENT '楼层'  NULL,
+    cnt             varchar(64) COMMENT '总人数'  NULL,
+	master        	varchar(64) COMMENT '班主任'  NULL,
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;
+
 

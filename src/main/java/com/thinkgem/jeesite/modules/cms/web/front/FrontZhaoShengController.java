@@ -228,7 +228,7 @@ public class FrontZhaoShengController extends BaseController{
 	
 		String ret = "0";
 		
-		if(!StringUtils.isEmpty(systemStudent.getHcFormZhuangtai())){
+		if(!StringUtils.isEmpty(systemStudent.getHcFormZhuangtai())&&!systemStudent.getHcFormZhuangtai().equals("")){
 			ret = systemStudent.getHcFormZhuangtai().equals("1")?"1":"2";
 		}
 		

@@ -126,4 +126,39 @@ CREATE TABLE uc_dorm  (
 )
 ;
 
+CREATE TABLE uc_dorm_build  ( 
+	id         	varchar(64) COMMENT '编号'  NOT NULL,
+	dorm_build_no 	varchar(64) COMMENT '楼号'  NOT NULL,
+	dorm_build_name  	varchar(64) COMMENT '名称'  NOT NULL,
+	dorm_build_type  	varchar(64) COMMENT '类型'  NOT NULL,
+	dorm_build_address  	varchar(64) COMMENT '地址'   NULL,
+	dorm_build_cnt    	int(11) NULL DEFAULT '0',
+	create_by  	varchar(64) COMMENT '创建者'  NOT NULL,
+	create_date	datetime COMMENT '创建时间'  NOT NULL,
+	update_by  	varchar(64) COMMENT '更新者'  NOT NULL,
+	update_date	datetime COMMENT '更新时间'  NOT NULL,
+	remarks    	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '寝室楼信息' 
+;
+
+CREATE TABLE t_dorm_record  ( 
+	id         	varchar(64) COMMENT '编号'  NOT NULL,
+	student_number	varchar(64)  COMMENT '学号' not NULL,
+	username  	varchar(64)  COMMENT '姓名' NULL,
+	dorm_build_id  	varchar(64)  COMMENT '楼号' NULL,
+	dorm_id     	varchar(64)  COMMENT '寝室号' NULL,
+	date         	date  COMMENT '日期' NULL,
+	detail       	varchar(50)  COMMENT '详情' NULL,
+	create_by  	varchar(64) COMMENT '创建者'  NOT NULL,
+	create_date	datetime COMMENT '创建时间'  NOT NULL,
+	update_by  	varchar(64) COMMENT '更新者'  NOT NULL,
+	update_date	datetime COMMENT '更新时间'  NOT NULL,
+	remarks    	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;
 

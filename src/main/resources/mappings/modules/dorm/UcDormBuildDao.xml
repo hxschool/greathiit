@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dorm.dao.UcDormBuildDao">
+    
+	<sql id="ucDormBuildColumns">
+		a.id AS "id",
+		a.dorm_build_no AS "dormBuildNo",
+		a.dorm_build_name AS "dormBuildName",
+		a.dorm_build_type AS "dormBuildType",
+		a.dorm_build_address AS "dormBuildAddress",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.dorm_build_cnt AS "dormBuildCnt"
+	</sql>
+	
+	<sql id="ucDormBuildJoins">
+	</sql>
+    
+	<select id="get" resultType="UcDormBuild">
+		SELECT 
+			<include refid="ucDormBuildColumns"/>
+		FROM uc_dorm_build a
+		<include refid="ucDormBuildJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UcDormBuild">
+		SELECT 
+			<include refid="ucDormBuildColumns"/>
+		FROM uc_dorm_build a
+		<include refid="ucDormBuildJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UcDormBuild">
+		SELECT 
+			<include refid="ucDormBuildColumns"/>
+		FROM uc_dorm_build a
+		<include refid="ucDormBuildJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_dorm_build(
+			id,
+			dorm_build_no,
+			dorm_build_name,
+			dorm_build_type,
+			dorm_build_address,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			dorm_build_cnt
+		) VALUES (
+			#{id},
+			#{dormBuildNo},
+			#{dormBuildName},
+			#{dormBuildType},
+			#{dormBuildAddress},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{dormBuildCnt}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_dorm_build SET 	
+			dorm_build_no = #{dormBuildNo},
+			dorm_build_name = #{dormBuildName},
+			dorm_build_type = #{dormBuildType},
+			dorm_build_address = #{dormBuildAddress},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			dorm_build_cnt = #{dormBuildCnt}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_dorm_build SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

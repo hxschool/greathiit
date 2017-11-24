@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dorm.dao.UcDormDao">
+    
+	<sql id="ucDormColumns">
+		a.id AS "id",
+		a.dormbuild_id AS "dormbuildId",
+		a.dorm_number AS "dormNumber",
+		a.dorm_floor AS "dormFloor",
+		a.cnt AS "cnt",
+		a.master AS "master",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="ucDormJoins">
+	</sql>
+    
+	<select id="get" resultType="UcDorm">
+		SELECT 
+			<include refid="ucDormColumns"/>
+		FROM uc_dorm a
+		<include refid="ucDormJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UcDorm">
+		SELECT 
+			<include refid="ucDormColumns"/>
+		FROM uc_dorm a
+		<include refid="ucDormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="dormbuildId != null and dormbuildId != ''">
+				AND a.dormbuild_id = #{dormbuildId}
+			</if>
+			<if test="dormNumber != null and dormNumber != ''">
+				AND a.dorm_number = #{dormNumber}
+			</if>
+			<if test="dormFloor != null and dormFloor != ''">
+				AND a.dorm_floor = #{dormFloor}
+			</if>
+			<if test="cnt != null and cnt != ''">
+				AND a.cnt = #{cnt}
+			</if>
+			<if test="master != null and master != ''">
+				AND a.master = #{master}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UcDorm">
+		SELECT 
+			<include refid="ucDormColumns"/>
+		FROM uc_dorm a
+		<include refid="ucDormJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_dorm(
+			id,
+			dormbuild_id,
+			dorm_number,
+			dorm_floor,
+			cnt,
+			master,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{dormbuildId},
+			#{dormNumber},
+			#{dormFloor},
+			#{cnt},
+			#{master},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_dorm SET 	
+			dormbuild_id = #{dormbuildId},
+			dorm_number = #{dormNumber},
+			dorm_floor = #{dormFloor},
+			cnt = #{cnt},
+			master = #{master},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_dorm SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

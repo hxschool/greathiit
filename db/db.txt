@@ -185,8 +185,17 @@ COMMENT = '访客信息表'
 ;
 
 ALTER TABLE sys_user
-ADD  class_id 	varchar(64) COMMENT '归属班级'   NULL after office_id;
+ADD  clazz_id 	varchar(64) COMMENT '归属班级'   NULL after office_id;
 
 ALTER TABLE sys_user
-ADD  dorm_id 	varchar(64) COMMENT '归属寝室'   NULL after class_id;
+ADD  dorm_id 	varchar(64) COMMENT '归属寝室'   NULL after clazz_id;
+
+
+
+
+INSERT INTO sys_office(id, parent_id, parent_ids, name, sort, area_id, code, type, grade, address, zip_code, master, phone, fax, email, USEABLE, PRIMARY_PERSON, DEPUTY_PERSON, create_by, create_date, update_by, update_date, remarks, del_flag) 
+
+
+select REPLACE(UUID(),'-','') AS id,a.id as parent_id,concat(a.parent_ids,a.id,',') as parent_ids,  b.class_number  as name,30 sort,a.area_id,a.code,4 as type,4 as  grade,a.address,a.zip_code, a.master, a.phone, a.fax, a.email, a.USEABLE, a.PRIMARY_PERSON, a.DEPUTY_PERSON, a.create_by, a.create_date, a.update_by, a.update_date, a.remarks, a.del_flag from sys_office a left join uc_student b on a.id=b.major_id where a.id!=0 and b.class_number is not null and  b.class_number!='0'
+group by b.class_number,a.id
 

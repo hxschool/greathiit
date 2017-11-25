@@ -101,6 +101,15 @@
     	cu2.name AS "company.deputyPerson.name",
     	ou.id AS "office.primaryPerson.id",
     	ou.name AS "office.primaryPerson.name",
+    	
+    	cl.name AS "clazz.name",
+    	cl.parent_id AS "clazz.parent.id",
+    	cl.parent_ids AS "clazz.parentIds",
+    	dm.id as "dorm.id",
+    	dm.dormbuild_id as "dorm.dormbuildId",
+    	dm.dorm_number as "dorm.dormNumber",
+    	dm.dorm_floor as "dorm.dormFloor",
+    	
     	ou2.id AS "office.deputyPerson.id",
     	ou2.name AS "office.deputyPerson.name"<!-- ,
         r.id AS "roleList.id",
@@ -112,6 +121,8 @@
     </sql>
     
     <sql id="userJoins">
+    	LEFT JOIN sys_office cl ON cl.id = a.clazz_id
+    	LEFT JOIN uc_dorm dm ON dm.id = a.dorm_id
 		LEFT JOIN sys_office c ON c.id = a.company_id
 		LEFT JOIN sys_area ca ON ca.id = c.area_id
 		LEFT JOIN sys_office o ON o.id = a.office_id

@@ -155,22 +155,24 @@ public class OfficeController extends BaseController {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		List<Office> list = officeService.findList(isAll);
 		for (int i=0; i<list.size(); i++){
-			Office e = list.get(i);
-			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1))
-					&& (type == null || (type != null && (type.equals("1") ? type.equals(e.getType()) : true)))
-					&& (grade == null || (grade != null && Integer.parseInt(e.getGrade()) <= grade.intValue()))
-					&& Global.YES.equals(e.getUseable())){
+			Office office = list.get(i);
+			if ((StringUtils.isBlank(extId) || (extId!=null && !extId.equals(office.getId()) && office.getParentIds().indexOf(","+extId+",")==-1))
+					&& (type == null || (type != null && (type.equals("1") ? type.equals(office.getType()) : true)))
+					&& (grade == null || (grade != null && Integer.parseInt(office.getGrade()) <= grade.intValue()))
+					&& Global.YES.equals(office.getUseable())){
 				Map<String, Object> map = Maps.newHashMap();
-				map.put("id", e.getId());
-				map.put("pId", e.getParentId());
-				map.put("pIds", e.getParentIds());
-				map.put("name", e.getName());
+				map.put("id", office.getId());
+				map.put("pId", office.getParentId());
+				map.put("pIds", office.getParentIds());
+				map.put("name", office.getName());
 				if (type != null && "3".equals(type)){
 					map.put("isParent", true);
 				}
 				mapList.add(map);
 			}
 		}
+		
+		
 		return mapList;
 	}
 }

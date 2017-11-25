@@ -68,8 +68,8 @@
 		<div class="control-group">
 			<label class="control-label">描述:</label>
 			<div class="controls">
-				<form:textarea id="description" htmlEscape="true" path="description" rows="4" class="input-xxlarge"/>
-				<sys:ckeditor replace="description" />
+				<form:textarea id="description" htmlEscape="false" path="description" rows="4" class="input-xxlarge"/>
+				
 			</div>
 		</div>
 		<div class="form-actions">

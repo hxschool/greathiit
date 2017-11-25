@@ -20,6 +20,7 @@ import com.thinkgem.jeesite.common.supcan.annotation.treelist.cols.SupCol;
 import com.thinkgem.jeesite.common.utils.Collections3;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.common.utils.excel.fieldtype.RoleListType;
+import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
 
 /**
  * 用户Entity
@@ -31,6 +32,8 @@ public class User extends DataEntity<User> {
 	private static final long serialVersionUID = 1L;
 	private Office company;	// 归属公司
 	private Office office;	// 归属部门
+	private Office clazz;	// 归属部门
+	private UcDorm dorm;
 	private String loginName;// 登录名
 	private String password;// 密码
 	private String no;		// 工号
@@ -113,6 +116,28 @@ public class User extends DataEntity<User> {
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {
 		return office;
+	}
+
+	
+	@JsonIgnore
+	@ExcelField(title="归属班级", align=2, sort=20)
+	public Office getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Office clazz) {
+		this.clazz = clazz;
+	}
+
+	
+	@JsonIgnore
+	@ExcelField(title="归属寝室", align=2, sort=20)
+	public UcDorm getDorm() {
+		return dorm;
+	}
+
+	public void setDorm(UcDorm dorm) {
+		this.dorm = dorm;
 	}
 
 	public void setOffice(Office office) {

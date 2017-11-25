@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.shiro.SecurityUtils;
@@ -49,6 +50,7 @@ public class UserUtils {
 	public static final String CACHE_AREA_LIST = "areaList";
 	public static final String CACHE_OFFICE_LIST = "officeList";
 	public static final String CACHE_OFFICE_ALL_LIST = "officeAllList";
+	public static final String CACHE_OFFICE_TYPE_LIST = "officeTypeList";
 	
 	/**
 	 * 根据ID获取用户
@@ -214,6 +216,16 @@ public class UserUtils {
 	public static List<Office> getOfficeAllList(){
 		@SuppressWarnings("unchecked")
 		List<Office> officeList = (List<Office>)getCache(CACHE_OFFICE_ALL_LIST);
+		if (officeList == null){
+			officeList = officeDao.findAllList(new Office());
+		}
+		return officeList;
+	}
+	
+	public static List<Office> getOfficeAllList(String type){
+		List<Office> officeList = new ArrayList<Office>();
+		Office office = new Office();
+		office.setType(type);
 		if (officeList == null){
 			officeList = officeDao.findAllList(new Office());
 		}

@@ -3,18 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.uc.dr.dao;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.uc.dr.entity.Dorm;
+import com.thinkgem.jeesite.modules.uc.dr.entity.UcPerson;
 
 /**
- * 寝室信息DAO接口
+ * 学院基本信息DAO接口
  * @author 赵俊飞
- * @version 2017-10-11
+ * @version 2017-11-25
  */
 @MyBatisDao
-public interface DormDao extends CrudDao<Dorm> {
-	Dorm getByStudentNumber(@Param("studentNumber")String studentNumber);
+public interface UcPersonDao extends CrudDao<UcPerson> {
+	
 }

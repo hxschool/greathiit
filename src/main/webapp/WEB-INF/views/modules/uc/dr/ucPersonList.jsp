@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>寝室信息管理</title>
+	<title>学院基本信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,10 +18,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/uc/dr/dorm/">寝室信息列表</a></li>
-		<shiro:hasPermission name="uc:dr:dorm:edit"><li><a href="${ctx}/uc/dr/dorm/form">寝室信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/uc/dr/ucPerson/">学院基本信息列表</a></li>
+		<shiro:hasPermission name="uc:dr:ucPerson:edit"><li><a href="${ctx}/uc/dr/ucPerson/form">学院基本信息添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="dorm" action="${ctx}/uc/dr/dorm/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucPerson" action="${ctx}/uc/dr/ucPerson/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -43,10 +43,7 @@
 		<thead>
 			<tr>
 				<th>学号</th>
-				<th>姓名</th>
-				<th>性别</th>
 				<th>公寓编号</th>
-				
 				<th>公寓名称</th>
 				<th>寝室号</th>
 				<th>家庭地址</th>
@@ -57,59 +54,51 @@
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<th>删除标记</th>
-				<shiro:hasPermission name="uc:dr:dorm:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="uc:dr:ucPerson:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="dorm">
+		<c:forEach items="${page.list}" var="ucPerson">
 			<tr>
-				<td><a href="${ctx}/uc/dr/dorm/form?id=${dorm.id}">
-					${dorm.studentNumber}
+				<td><a href="${ctx}/uc/dr/ucPerson/form?id=${ucPerson.id}">
+					${ucPerson.studentNumber}
 				</a></td>
-				
 				<td>
-					${dorm.ucStudent.username}
+					${ucPerson.dormbuildId}
 				</td>
 				<td>
-					${fns:getDictLabel(dorm.ucStudent.gender, 'sex', '')}
-				</td>
-				
-				<td>
-					${dorm.dormbuildId}
+					${ucPerson.dormbuildName}
 				</td>
 				<td>
-					${dorm.dormbuildName}
+					${ucPerson.dormNumber}
 				</td>
 				<td>
-					${dorm.dormNumber}
+					${ucPerson.location}
 				</td>
 				<td>
-					${dorm.location}
+					${ucPerson.mobile}
 				</td>
 				<td>
-					${dorm.mobile}
+					${ucPerson.health}
 				</td>
 				<td>
-					${dorm.health}
+					${ucPerson.master}
 				</td>
 				<td>
-					${dorm.master}
+					${ucPerson.instructor}
 				</td>
 				<td>
-					${dorm.instructor}
+					<fmt:formatDate value="${ucPerson.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					<fmt:formatDate value="${dorm.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${ucPerson.remarks}
 				</td>
 				<td>
-					${dorm.remarks}
+					${fns:getDictLabel(ucPerson.delFlag, 'del_flag', '')}
 				</td>
-				<td>
-					${fns:getDictLabel(dorm.delFlag, 'del_flag', '')}
-				</td>
-				<shiro:hasPermission name="uc:dr:dorm:edit"><td>
-    				<a href="${ctx}/uc/dr/dorm/form?id=${dorm.id}">修改</a>
-					<a href="${ctx}/uc/dr/dorm/delete?id=${dorm.id}" onclick="return confirmx('确认要删除该寝室信息吗？', this.href)">删除</a>
+				<shiro:hasPermission name="uc:dr:ucPerson:edit"><td>
+    				<a href="${ctx}/uc/dr/ucPerson/form?id=${ucPerson.id}">修改</a>
+					<a href="${ctx}/uc/dr/ucPerson/delete?id=${ucPerson.id}" onclick="return confirmx('确认要删除该学院基本信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

@@ -6,14 +6,13 @@ package com.thinkgem.jeesite.modules.uc.dr.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
-import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
- * 寝室信息Entity
+ * 学院基本信息Entity
  * @author 赵俊飞
- * @version 2017-10-11
+ * @version 2017-11-25
  */
-public class Dorm extends DataEntity<Dorm> {
+public class UcPerson extends DataEntity<UcPerson> {
 	
 	private static final long serialVersionUID = 1L;
 	private String studentNumber;		// 学号
@@ -34,25 +33,13 @@ public class Dorm extends DataEntity<Dorm> {
 	private String master;		// 班主任
 	private String instructor;		// 导员
 	
-	private UcStudent ucStudent = new UcStudent();
-	
-	public Dorm() {
+	public UcPerson() {
 		super();
 	}
 
-	public Dorm(String id){
+	public UcPerson(String id){
 		super(id);
 	}
-	
-
-	public UcStudent getUcStudent() {
-		return ucStudent;
-	}
-
-	public void setUcStudent(UcStudent ucStudent) {
-		this.ucStudent = ucStudent;
-	}
-
 
 	@Length(min=1, max=64, message="学号长度必须介于 1 和 64 之间")
 	public String getStudentNumber() {

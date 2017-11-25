@@ -81,16 +81,6 @@ public class ApiController extends BaseController {
 		map.put("result", apiService.getArea(parentId));
 		return map;
 	}
-	
-	@RequestMapping(value = "getDorm")
-	@ResponseBody
-	public Map<String, Object> getDorm(String studentNumber) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("responseCode", "00000000");
-		map.put("responseMessage", "获取参数信息成功");
-		map.put("result", apiService.getDorm(studentNumber));
-		return map;
-	}
-	
+
 	
 }

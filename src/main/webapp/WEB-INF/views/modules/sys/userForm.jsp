@@ -59,7 +59,7 @@
 			<label class="control-label">所属专业:</label>
 			<div class="controls">
                 <sys:treeselect id="office" name="office.id" value="${user.office.id}" labelName="office.name" labelValue="${user.office.name}"
-					title="专业" url="/sys/office/treeData?grade=3" cssClass="required" notAllowSelectParent="true"/>
+					title="专业" url="/sys/office/treeData?grade=3" cssClass="required" notAllowSelectParent="true"  />
 			</div>
 		</div>
 		
@@ -67,19 +67,19 @@
 			<label class="control-label">所属班级:</label>
 			<div class="controls">
                 <sys:treeselect id="clazz" name="clazz.id" value="${user.clazz.id}" labelName="clazz.name" labelValue="${user.clazz.name}"
-					title="班级" url="/sys/office/treeData?type=4" cssClass="required" notAllowSelectParent="true"/>
+					title="班级" url="/sys/office/treeData?type=4" cssClass="required" notAllowSelectParent="true"  />
 			</div>
 		</div>
 		
 		<div class="control-group">
 			<label class="control-label">所属寝室:</label>
 			<div class="controls">
-                <sys:treeselect id="clazz" name="clazz.id" value="${user.clazz.id}" labelName="clazz.name" labelValue="${user.clazz.name}"
-					title="专业" url="/sys/office/treeData?type=2" cssClass="required" notAllowSelectParent="true"/>
+                
+					所在${user.dorm.dormbuildId }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室
 			</div>
 		</div>
-		--------
-		${user.dorm.dormbuildId }
+		
+		
 		<div class="control-group">
 			<label class="control-label">学号:</label>
 			<div class="controls">

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>寝室信息管理</title>
+	<title>学院基本信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/uc/dr/dorm/">寝室信息列表</a></li>
-		<li class="active"><a href="${ctx}/uc/dr/dorm/form?id=${dorm.id}">寝室信息<shiro:hasPermission name="uc:dr:dorm:edit">${not empty dorm.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:dr:dorm:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/uc/dr/ucPerson/">学院基本信息列表</a></li>
+		<li class="active"><a href="${ctx}/uc/dr/ucPerson/form?id=${ucPerson.id}">学院基本信息<shiro:hasPermission name="uc:dr:ucPerson:edit">${not empty ucPerson.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="uc:dr:ucPerson:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="dorm" action="${ctx}/uc/dr/dorm/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="ucPerson" action="${ctx}/uc/dr/ucPerson/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="uc:dr:dorm:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="uc:dr:ucPerson:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 公寓管理Entity
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2017-11-25
  */
 public class UcDormBuild extends DataEntity<UcDormBuild> {
 	
@@ -19,6 +19,9 @@ public class UcDormBuild extends DataEntity<UcDormBuild> {
 	private String dormBuildName;		// 名称
 	private String dormBuildType;		// 类型
 	private String dormBuildAddress;		// 地址
+	private String dormBuildTotal;		// 总人数
+	private String master;		// 楼长
+	private String sort;		// 排序
 	private String dormBuildCnt;		// 总人数
 	
 	public UcDormBuild() {
@@ -63,6 +66,33 @@ public class UcDormBuild extends DataEntity<UcDormBuild> {
 
 	public void setDormBuildAddress(String dormBuildAddress) {
 		this.dormBuildAddress = dormBuildAddress;
+	}
+	
+	@Length(min=0, max=11, message="总人数长度必须介于 0 和 11 之间")
+	public String getDormBuildTotal() {
+		return dormBuildTotal;
+	}
+
+	public void setDormBuildTotal(String dormBuildTotal) {
+		this.dormBuildTotal = dormBuildTotal;
+	}
+	
+	@Length(min=0, max=11, message="楼长长度必须介于 0 和 11 之间")
+	public String getMaster() {
+		return master;
+	}
+
+	public void setMaster(String master) {
+		this.master = master;
+	}
+	
+	@Length(min=1, max=11, message="排序长度必须介于 1 和 11 之间")
+	public String getSort() {
+		return sort;
+	}
+
+	public void setSort(String sort) {
+		this.sort = sort;
 	}
 	
 	@Length(min=0, max=11, message="总人数长度必须介于 0 和 11 之间")

@@ -16,7 +16,7 @@ import com.thinkgem.jeesite.modules.dorm.dao.UcDormBuildDao;
 /**
  * 公寓管理Service
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2017-11-25
  */
 @Service
 @Transactional(readOnly = true)

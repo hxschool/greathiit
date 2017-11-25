@@ -126,19 +126,23 @@ CREATE TABLE uc_dorm  (
 )
 ;
 
+
 CREATE TABLE uc_dorm_build  ( 
-	id         	varchar(64) COMMENT '编号'  NOT NULL,
-	dorm_build_no 	varchar(64) COMMENT '楼号'  NOT NULL,
-	dorm_build_name  	varchar(64) COMMENT '名称'  NOT NULL,
-	dorm_build_type  	varchar(64) COMMENT '类型'  NOT NULL,
-	dorm_build_address  	varchar(64) COMMENT '地址'   NULL,
-	dorm_build_cnt    	int(11) NULL DEFAULT '0',
-	create_by  	varchar(64) COMMENT '创建者'  NOT NULL,
-	create_date	datetime COMMENT '创建时间'  NOT NULL,
-	update_by  	varchar(64) COMMENT '更新者'  NOT NULL,
-	update_date	datetime COMMENT '更新时间'  NOT NULL,
-	remarks    	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	id                	varchar(64) COMMENT '编号'  NOT NULL,
+	dorm_build_no     	varchar(64) COMMENT '楼号'  NOT NULL,
+	dorm_build_name   	varchar(64) COMMENT '名称'  NOT NULL,
+	dorm_build_type   	varchar(64) COMMENT '类型'  NULL,
+	dorm_build_address	varchar(64) COMMENT '地址'  NULL,
+	dorm_build_cnt    	int(11) COMMENT '已入住人数'  NULL DEFAULT '0',
+	dorm_build_total  	int(11) COMMENT '总人数'  NULL DEFAULT '0',
+    master  	int(11) COMMENT '楼长'  NULL DEFAULT '0',
+	sort              	int(11) COMMENT '排序'  NOT NULL DEFAULT '0',
+	create_by         	varchar(64) COMMENT '创建者'  NOT NULL,
+	create_date       	datetime COMMENT '创建时间'  NOT NULL,
+	update_by         	varchar(64) COMMENT '更新者'  NOT NULL,
+	update_date       	datetime COMMENT '更新时间'  NOT NULL,
+	remarks           	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag          	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
 	PRIMARY KEY(id)
 )
 COMMENT = '寝室楼信息' 
@@ -161,4 +165,28 @@ CREATE TABLE t_dorm_record  (
 	PRIMARY KEY(id)
 )
 ;
+
+CREATE TABLE TM_VISITOR  ( 
+	id  	varchar(64) COMMENT '编号'  NOT NULL,
+	name	varchar(64) COMMENT '访客姓名'  NOT NULL,
+	sex 	varchar(64) COMMENT '访客性别'  NOT NULL,
+	mobile	varchar(64) COMMENT '联系电话'  NOT NULL,
+	drom_room	varchar(64) COMMENT '拜访寝室'  NOT NULL,
+	reason      	varchar(200)  COMMENT '访问事由' NULL,
+	create_by         	varchar(64) COMMENT '创建者'   NULL,
+	create_date       	datetime COMMENT '创建时间'  NOT NULL,
+	update_by         	varchar(64) COMMENT '更新者'   NULL,
+	update_date       	datetime COMMENT '更新时间'  NOT NULL,
+	remarks           	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag          	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+	)
+COMMENT = '访客信息表' 
+;
+
+ALTER TABLE sys_user
+ADD  class_id 	varchar(64) COMMENT '归属班级'   NULL after office_id;
+
+ALTER TABLE sys_user
+ADD  dorm_id 	varchar(64) COMMENT '归属寝室'   NULL after class_id;
 

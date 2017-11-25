@@ -63,6 +63,25 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">总人数：</label>
+			<div class="controls">
+				<form:input path="dormBuildTotal" htmlEscape="false" maxlength="11" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">楼长：</label>
+			<div class="controls">
+				<form:input path="master" htmlEscape="false" maxlength="11" class="input-xlarge "/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">排序：</label>
+			<div class="controls">
+				<form:input path="sort" htmlEscape="false" maxlength="11" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">备注信息：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>

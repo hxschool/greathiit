@@ -30,6 +30,23 @@
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
+	
+	<table id="contentTable"
+		class="table table-striped table-bordered table-condensed">
+		<tr>
+			<c:forEach items="${page.list}" var="ucDormBuild">
+
+				<td>
+				
+				<a  href="${ctx}/dorm/ucDorm/?dormbuildId=${ucDormBuild.dormBuildNo}">
+					<img src="${ctxStatic}/dorm/${ucDormBuild.dormBuildNo}.png" height="200px"
+					alt="${ucDormBuild.dormBuildCnt}" />
+					</a>
+				</td>
+			</c:forEach>
+		</tr>
+	</table>
+	
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>

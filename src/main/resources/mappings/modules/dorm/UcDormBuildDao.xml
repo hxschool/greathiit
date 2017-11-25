@@ -10,6 +10,9 @@
 		a.dorm_build_address AS "dormBuildAddress",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
+		a.dorm_build_total AS "dormBuildTotal",
+		a.master AS "master",
+		a.sort AS "sort",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
@@ -41,7 +44,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.sort asc
 			</otherwise>
 		</choose>
 	</select>
@@ -59,7 +62,7 @@
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.sort asc
 			</otherwise>
 		</choose>
 	</select>
@@ -73,6 +76,9 @@
 			dorm_build_address,
 			create_by,
 			create_date,
+			dorm_build_total,
+			master,
+			sort,
 			update_by,
 			update_date,
 			remarks,
@@ -86,6 +92,9 @@
 			#{dormBuildAddress},
 			#{createBy.id},
 			#{createDate},
+			#{dormBuildTotal},
+			#{master},
+			#{sort},
 			#{updateBy.id},
 			#{updateDate},
 			#{remarks},
@@ -100,6 +109,9 @@
 			dorm_build_name = #{dormBuildName},
 			dorm_build_type = #{dormBuildType},
 			dorm_build_address = #{dormBuildAddress},
+			dorm_build_total = #{dormBuildTotal},
+			master = #{master},
+			sort = #{sort},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks},

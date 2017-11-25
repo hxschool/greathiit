@@ -25,7 +25,7 @@ import com.thinkgem.jeesite.modules.dorm.service.UcDormBuildService;
 /**
  * 公寓管理Controller
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2017-11-25
  */
 @Controller
 @RequestMapping(value = "${adminPath}/dorm/ucDormBuild")

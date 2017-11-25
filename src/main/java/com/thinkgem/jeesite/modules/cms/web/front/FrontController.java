@@ -263,15 +263,18 @@ public class FrontController extends BaseController{
 		user.setRole(role);
 		user.setRoleList(rs);
 		user.setLoginFlag("1");
-		user.setUserType("3");
+		user.setUserType("6");
 		UcStudent student = apiService.getStudentNumber(name, loginname, no);
 		String department = student.getDepartmentName();
 		String major = student.getMajorName();
+		String clazz = student.getClassNumber();
 		
 		String companyId = apiService.getOfficeId(department);
 		String officeId = apiService.getOfficeId(major);
+		String clazzId = apiService.getOfficeId(clazz);
 		user.setCompany(new Office(companyId));
 		user.setOffice(new Office(officeId));
+		user.setClazz(new Office(clazzId));
 		User u = UserUtils.get("1");
 		user.setCreateBy(u);
 		user.setCreateDate(new Date());

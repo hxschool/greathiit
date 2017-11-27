@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.sys.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +23,16 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @Service
 @Transactional(readOnly = true)
 public class OfficeService extends TreeService<OfficeDao, Office> {
-
+	@Autowired
+	private OfficeDao officeDao;
 	public List<Office> findAll(){
 		return UserUtils.getOfficeList();
+	}
+	
+	public List<Office> findByParentId(String parnetId){
+		Office office = new Office();
+		office.setParent(new Office(parnetId));
+		return officeDao.findByParentId(office);
 	}
 
 	public List<Office> findList(Boolean isAll){

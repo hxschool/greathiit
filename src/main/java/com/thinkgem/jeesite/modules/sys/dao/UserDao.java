@@ -36,6 +36,8 @@ public interface UserDao extends CrudDao<User> {
 	 */
 	public List<User> findUserByOfficeId(User user);
 	
+	public List<User> findListByOfficeIdAndClazzId(@Param("officeId")String officeId,@Param("clazzId")String clazzId);
+	
 	/**
 	 * 查询全部用户数目
 	 * @return

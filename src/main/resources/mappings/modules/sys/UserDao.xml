@@ -238,6 +238,16 @@
 		ORDER BY c.code, o.code, a.name
 	</select>
 	
+	<select id="findListByOfficeIdAndClazzId" resultType="User">
+		SELECT
+			id,name
+		FROM sys_user a
+		WHERE a.del_flag = 0
+		AND a.office_id = #{officeId}
+		AND a.clazz_id = #{clazzId}
+		ORDER BY  a.name
+	</select>
+	
 	
 	<select id="exist" resultType="long" parameterType="User">
 		SELECT

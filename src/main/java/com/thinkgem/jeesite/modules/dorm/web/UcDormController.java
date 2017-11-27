@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.dorm.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,14 +15,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormService;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 /**
  * 宿舍管理Controller
@@ -33,7 +39,8 @@ public class UcDormController extends BaseController {
 
 	@Autowired
 	private UcDormService ucDormService;
-	
+	@Autowired
+	private SystemService systemService;
 	@ModelAttribute
 	public UcDorm get(@RequestParam(required=false) String id) {
 		UcDorm entity = null;
@@ -80,4 +87,18 @@ public class UcDormController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/dorm/ucDorm/?repage";
 	}
 
+	
+	
+	@RequestMapping(value = "info")
+	public String info(UcDorm ucDorm, Model model) {
+		return "modules/dorm/ucDormInfoForm";
+	}
+	
+	@RequestMapping(value = "student")
+	@ResponseBody
+	public List<User> studentlist(String officeId,String clazzId) {
+		return systemService.findListByOfficeIdAndClazzId(officeId,clazzId);
+	}
+	
+	
 }

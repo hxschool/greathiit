@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.dorm.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,12 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDormBuild;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormBuildService;
 
@@ -80,4 +83,11 @@ public class UcDormBuildController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/dorm/ucDormBuild/?repage";
 	}
 
+	
+	@RequestMapping(value = "info")
+	@ResponseBody
+	public List<UcDormBuild> info(UcDormBuild ucDormBuild) {
+		return ucDormBuildService.findList(ucDormBuild);
+	}
+	
 }

@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.aliyuncs.http.HttpRequest;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
@@ -179,11 +181,36 @@ public class OfficeController extends BaseController {
 	
 	@RequiresPermissions("user")
 	@ResponseBody
-	@RequestMapping(value = "selectData")
-	public List<Office> selectData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
-			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
+	@RequestMapping(value = "treeLink")
+	public List<TreeLink> treeLink(@RequestParam(required=false,defaultValue="1") String parnetId, HttpRequest request, HttpServletResponse response) {
 		
-		List<Office> list = officeService.findList(isAll);
-		return list;
+		List<Office> list1 = officeService.findByParentId(parnetId);
+		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
+		for(Office office:list1) {
+			TreeLink treeLink = new TreeLink();
+			treeLink.setValue(office.getId());
+			treeLink.setName(office.getName());
+			List<Office> list2 = officeService.findByParentId(office.getId());
+			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();
+			for(Office office2:list2) {
+				TreeLink treeLink2 = new TreeLink();
+				treeLink2.setValue(office2.getId());
+				treeLink2.setName(office2.getName());
+				List<Office> list3 = officeService.findByParentId(office2.getId());
+				List<TreeLink> treeLinks3 = new ArrayList<TreeLink>();
+				for(Office office3:list3) {
+					TreeLink treeLink3 = new TreeLink();
+					treeLink3.setValue(office3.getId());
+					treeLink3.setName(office3.getName());
+					treeLinks3.add(treeLink3);
+				}
+				treeLink2.setSub(treeLinks3);
+				treeLinks2.add(treeLink2);
+			}
+			treeLink.setSub(treeLinks2);
+			treeLinks1.add(treeLink);
+			
+		}
+		return treeLinks1;
 	}
 }

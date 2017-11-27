@@ -81,5 +81,10 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 */
 	public List<Map<String,Object>> studentEdu(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
 
-
+/**
+ * 根据导出做查询
+ * @param ucStudent
+ * @return
+ */
+	public List<UcStudent> exportList(UcStudent ucStudent);
 }

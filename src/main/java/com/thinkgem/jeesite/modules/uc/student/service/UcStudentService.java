@@ -72,4 +72,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	public List<Map<String,Object>> studentMajor(Date startDate,Date endDate){
 		return ucStudentDao.studentMajor(startDate, endDate);
 	}
+	public List<UcStudent> exportList(UcStudent ucStudent){
+		return ucStudentDao.exportList(ucStudent);
+	}
 }

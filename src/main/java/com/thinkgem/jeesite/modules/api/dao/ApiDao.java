@@ -33,4 +33,11 @@ public interface ApiDao{
 	 * @return
 	 */
 	public String getOfficeId(@Param("name")String name);
+	/**
+	 * 获取班级信息
+	 * @param officeId
+	 * @param clazzId
+	 * @return
+	 */
+	public String getClazzName(@Param("parentId")String parentId,@Param("name")String name);
 }

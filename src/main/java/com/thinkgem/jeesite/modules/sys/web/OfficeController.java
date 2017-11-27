@@ -175,4 +175,15 @@ public class OfficeController extends BaseController {
 		
 		return mapList;
 	}
+	
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "selectData")
+	public List<Office> selectData(@RequestParam(required=false) String extId, @RequestParam(required=false) String type,
+			@RequestParam(required=false) Long grade, @RequestParam(required=false) Boolean isAll, HttpServletResponse response) {
+		
+		List<Office> list = officeService.findList(isAll);
+		return list;
+	}
 }

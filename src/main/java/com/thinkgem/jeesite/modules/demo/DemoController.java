@@ -46,66 +46,80 @@ public class DemoController {
 	public String list(TmVisitor tmVisitor, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
 		List<UcStudent> list = ucStudentService.findList(new UcStudent());
-		
-		for(UcStudent ucStudent:list) {
-			
-			
-			String no = ucStudent.getStudentNumber();
-			String name = ucStudent.getUsername();
-			String loginname = ucStudent.getIdCard();
-			String password = "000000";
-			if(loginname.length()>6) {
-				 password = loginname.substring(loginname.length()-6);
+		String companyId = null;
+		String officeId = null;
+		String clazzId = null;
+		String loginname = null;
+		String department = null;
+		String major = null;
+		String clazz  = null;
+		for (UcStudent ucStudent : list) {
+			try {
+
+				String no = ucStudent.getStudentNumber();
+				String name = ucStudent.getUsername();
+				loginname = ucStudent.getIdCard();
+				String password = "000000";
+				if (loginname.length() > 6) {
+					password = loginname.substring(loginname.length() - 6);
+				}
+
+				User user = new User();
+				user.setNo(no);
+				user.setName(name);
+				user.setLoginName(loginname);
+				// user.setMobile(mobile);
+				// user.setPhone(mobile);
+				// user.setEmail(email);
+				user.setPassword(SystemService.entryptPassword(password));
+				Role role = new Role("6");
+				List<Role> rs = new ArrayList<Role>();
+				rs.add(role);
+				user.setRole(role);
+				user.setRoleList(rs);
+				user.setLoginFlag("1");
+				user.setUserType("6");
+				UcStudent student = apiService.getStudentNumber(name, loginname, no);
+				department = student.getDepartmentName();
+				major = student.getMajorName();
+				clazz = student.getClassNumber();
+
+				companyId = apiService.getOfficeId(department);
+				officeId = apiService.getOfficeId(major);
+
+				clazzId = apiService.getClazzName(officeId, clazz);
+
+				if (StringUtils.isEmpty(companyId) && !StringUtils.isEmpty(officeId)) {
+					Office office = officeService.get(officeId);
+					companyId = office.getParent().getId();
+				}
+				logger.info("department:{},companyId:{},major:{},clazzId:{}", department, companyId, major, officeId);
+
+				user.setCompany(new Office(companyId));
+				user.setOffice(new Office(officeId));
+				user.setClazz(new Office(clazzId));
+				User u = UserUtils.get("1");
+				user.setCreateBy(u);
+				user.setCreateDate(new Date());
+				user.setDelFlag("0");
+				user.setUpdateBy(u);
+				user.setUpdateDate(new Date());
+				user.setRemarks("认证学生信息");
+				if (Global.getConfig("virtualAccount").equals("true")) {
+					// 开通虚拟账户系统
+					String accountNo = "1";
+					user.setAccountNo(accountNo);
+				}
+				systemService.saveUser(user);
+			} catch (Exception e) {
+				System.out.println("----------------------------------------------------------------------");
+				System.out.println("companyId:" + companyId + " major "+ major +" officeId :" + officeId + " clazz:" + clazzId);
+				System.out.println("当前身份证号:" + loginname);
+				System.out.println("----------------------------------------------------------------------");
 			}
-			
-			User user = new User();
-			user.setNo(no);
-			user.setName(name);
-			user.setLoginName(loginname);
-//			user.setMobile(mobile);
-//			user.setPhone(mobile);
-//			user.setEmail(email);
-			user.setPassword(SystemService.entryptPassword(password));
-			Role role = new Role("6");
-			List<Role> rs = new ArrayList<Role>();
-			rs.add(role);
-			user.setRole(role);
-			user.setRoleList(rs);
-			user.setLoginFlag("1");
-			user.setUserType("6");
-			UcStudent student = apiService.getStudentNumber(name, loginname, no);
-			String department = student.getDepartmentName();
-			String major = student.getMajorName();
-			String clazz = student.getClassNumber();
-			
-			String companyId = apiService.getOfficeId(department);
-			String officeId = apiService.getOfficeId(major);
-			String clazzId = apiService.getOfficeId(clazz);
-			
-			if(StringUtils.isEmpty(companyId)&&!StringUtils.isEmpty(officeId)) {
-				Office office = officeService.get(officeId);
-				office.getParent().getId();
-			}
-			
-			logger.info("department:{},companyId:{},major:{},clazzId:{}",department,companyId,major,officeId);
-			
-			user.setCompany(new Office(companyId));
-			user.setOffice(new Office(officeId));
-			user.setClazz(new Office(clazzId));
-			User u = UserUtils.get("1");
-			user.setCreateBy(u);
-			user.setCreateDate(new Date());
-			user.setDelFlag("0");
-			user.setUpdateBy(u);
-			user.setUpdateDate(new Date());
-			user.setRemarks("认证学生信息");
-			if(Global.getConfig("virtualAccount").equals("true")){
-				//开通虚拟账户系统
-				String accountNo = "1";
-				user.setAccountNo(accountNo);
-			}
-			systemService.saveUser(user);
 		}
+		
+		
 		
 		return "ok";
 	}

@@ -38,6 +38,10 @@ public class ApiService {
 		return apiDao.getDepartment();
 	}
 	
+	public String getClazzName(String parentId,String name){
+		return apiDao.getClazzName(parentId,name);
+	}
+	
 	public String getOfficeId(String name){
 		return apiDao.getOfficeId(name);
 	}

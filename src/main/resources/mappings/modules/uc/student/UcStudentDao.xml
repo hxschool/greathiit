@@ -64,6 +64,21 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	
+	<select id="exportList" resultType="UcStudent">
+		SELECT 
+			<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		<include refid="ucStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			and a.department_id=#{departmentId}
+			and a.major_id=#{majorId}
+			and a.class_number=#{classNumber}
+		</where>
+	</select>
+	
+	
 	<select id="findList" resultType="UcStudent">
 		SELECT 
 			<include refid="ucStudentColumns"/>

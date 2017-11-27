@@ -15,4 +15,9 @@
 		select id from sys_office where del_flag=0 and trim(name)=trim("${name}")
 	</select>
 	
+	
+	<select id="getClazzName" resultType="String">
+		select id from sys_office where del_flag=0 and trim(parent_id)=trim("${parentId}") and trim(name)=trim("${name}")
+	</select>
+	
 </mapper>

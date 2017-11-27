@@ -81,7 +81,7 @@
 			 $( "#sortbookname" ).autocomplete({
 			      source: function( request, response ) {
 			        $.ajax({
-			          url: "book/sortname",
+			          url: "${ctx}/sys/book/sortname",
 			          data: {
 			        	  sortbookname: $("#sortbookname").val()
 			          },

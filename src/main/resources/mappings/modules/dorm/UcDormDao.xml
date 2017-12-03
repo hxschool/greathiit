@@ -8,6 +8,7 @@
 		a.dorm_number AS "dormNumber",
 		a.dorm_floor AS "dormFloor",
 		a.cnt AS "cnt",
+		a.total AS "total",
 		a.master AS "master",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -46,6 +47,9 @@
 			</if>
 			<if test="cnt != null and cnt != ''">
 				AND a.cnt = #{cnt}
+			</if>
+			<if test="total != null and total != ''">
+				AND a.total = #{total}
 			</if>
 			<if test="master != null and master != ''">
 				AND a.master = #{master}
@@ -86,6 +90,7 @@
 			dorm_number,
 			dorm_floor,
 			cnt,
+			total,
 			master,
 			create_by,
 			create_date,
@@ -99,6 +104,7 @@
 			#{dormNumber},
 			#{dormFloor},
 			#{cnt},
+			#{total},
 			#{master},
 			#{createBy.id},
 			#{createDate},
@@ -115,6 +121,7 @@
 			dorm_number = #{dormNumber},
 			dorm_floor = #{dormFloor},
 			cnt = #{cnt},
+			total = #{total},
 			master = #{master},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

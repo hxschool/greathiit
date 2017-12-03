@@ -53,11 +53,14 @@
 				<th>楼号</th>
 				<th>名称</th>
 				<th>类型</th>
+				<th>已入住人数</th>
+				<th>可入住人数</th>
+				<th>总人数</th>
 				<th>地址</th>
 				<th>更新时间</th>
+				<th>楼长</th>
 				<th>备注信息</th>
-				<th>删除标记</th>
-				<th>总人数</th>
+				
 				<shiro:hasPermission name="dorm:ucDormBuild:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -73,6 +76,17 @@
 				<td>
 					${fns:getDictLabel(ucDormBuild.dormBuildType, 'sex', '')}
 				</td>
+				
+				
+				<td>
+					${ucDormBuild.dormBuildCnt}
+				</td>
+				<td>
+					${ucDormBuild.dormBuildTotal-ucDormBuild.dormBuildCnt}
+				</td>
+				<td>
+					${ucDormBuild.dormBuildTotal}
+				</td>
 				<td>
 					${ucDormBuild.dormBuildAddress}
 				</td>
@@ -80,14 +94,12 @@
 					<fmt:formatDate value="${ucDormBuild.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
+					${ucDormBuild.master}
+				</td>
+				<td>
 					${ucDormBuild.remarks}
 				</td>
-				<td>
-					${fns:getDictLabel(ucDormBuild.delFlag, 'del_flag', '')}
-				</td>
-				<td>
-					${ucDormBuild.dormBuildCnt}
-				</td>
+				
 				<shiro:hasPermission name="dorm:ucDormBuild:edit"><td>
     				<a href="${ctx}/dorm/ucDormBuild/form?id=${ucDormBuild.id}">修改</a>
 					<a href="${ctx}/dorm/ucDormBuild/delete?id=${ucDormBuild.id}" onclick="return confirmx('确认要删除该公寓管理吗？', this.href)">删除</a>

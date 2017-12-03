@@ -34,8 +34,11 @@
 			<li><label>楼层：</label>
 				<form:input path="dormFloor" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>总人数：</label>
+			<li><label>可入住人数：</label>
 				<form:input path="cnt" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			<li><label>总人数：</label>
+				<form:input path="total" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>寝室长：</label>
 				<form:input path="master" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -49,8 +52,10 @@
 		<thead>
 			<tr>
 				<th>公寓号</th>
-				<th>宿舍门牌号</th>
 				<th>楼层</th>
+				<th>宿舍门牌号</th>
+				<th>已入住人数</th>
+				<th>可入住人数</th>
 				<th>总人数</th>
 				<th>寝室长</th>
 				<th>更新时间</th>
@@ -62,17 +67,25 @@
 		<c:forEach items="${page.list}" var="ucDorm">
 			<tr>
 				<td><a href="${ctx}/dorm/ucDorm/form?id=${ucDorm.id}">
-					${ucDorm.dormbuildId}
+					${ucDorm.dormbuildId}栋${ucDorm.dormFloor}层${ucDorm.dormNumber}
 				</a></td>
-				<td>
-					${ucDorm.dormNumber}
-				</td>
 				<td>
 					${ucDorm.dormFloor}
 				</td>
 				<td>
+					${ucDorm.dormNumber}
+				</td>
+				
+				<td>
 					${ucDorm.cnt}
 				</td>
+				<td>
+					${ucDorm.total-ucDorm.cnt}
+				</td>
+				<td>
+					${ucDorm.total}
+				</td>
+				
 				<td>
 					${ucDorm.master}
 				</td>

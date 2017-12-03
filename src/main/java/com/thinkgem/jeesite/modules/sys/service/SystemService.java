@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -81,6 +82,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	 */
 	public User getUser(String id) {
 		return UserUtils.get(id);
+	}
+	public User getUser(User user) {
+		return UserUtils.getUser(user);
 	}
 
 	/**
@@ -233,13 +237,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
 	}
 	
-	public static void main(String[] args){
-		String password = entryptPassword("admin");
-		System.out.println(password);
-		if(validatePassword("admin", password)){
-			System.out.println("验证成功");
-		}
-	}
+	
 	
 	/**
 	 * 验证密码
@@ -571,7 +569,6 @@ public class SystemService extends BaseService implements InitializingBean {
 	public User findUserbyMobileOrStudentNumberOrMail(String loginname){
 		return userDao.findUserbyMobileOrStudentNumberOrMail(loginname);
 	}
-	
 	
 	public String getRsStudentId(){
 		return systemDao.getRsStudentId();

@@ -154,7 +154,12 @@
 		FROM sys_user a
 		<include refid="userJoins"/><!-- 
 		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
-		WHERE a.login_name = #{loginName} AND a.del_flag = #{DEL_FLAG_NORMAL}
+		WHERE 1=1 
+		<if test="loginName != null and loginName != ''"> AND a.login_name = #{loginName} </if>
+		<if test="no != null and no != ''"> AND a.no = #{no} </if>
+		<if test="mobile != null and mobile != ''"> AND a.mobile = #{mobile} </if>
+		
+		 AND a.del_flag = #{DEL_FLAG_NORMAL}
 	</select>
 	
 	
@@ -263,6 +268,9 @@
 		
 		<if test="phone != null and phone != ''">
 			AND a.phone = #{phone} 
+		</if>
+		<if test="no != null and no != ''">
+			AND a.no = #{no} 
 		</if>
 		<if test="email != null and email != ''">
 			AND a.email = #{email} 

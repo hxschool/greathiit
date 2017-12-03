@@ -79,7 +79,7 @@ public class UserUtils {
 	public static User getByLoginName(String loginName){
 		User user = (User)CacheUtils.get(USER_CACHE, USER_CACHE_LOGIN_NAME_ + loginName);
 		if (user == null){
-			user = userDao.getByLoginName(new User(null, loginName));
+			user = getUser(new User(null, loginName));
 			if (user == null){
 				return null;
 			}
@@ -88,6 +88,10 @@ public class UserUtils {
 			CacheUtils.put(USER_CACHE, USER_CACHE_LOGIN_NAME_ + user.getLoginName(), user);
 		}
 		return user;
+	}
+	
+	public static User getUser(User user) {
+		return  userDao.getByLoginName(user);
 	}
 	
 	/**

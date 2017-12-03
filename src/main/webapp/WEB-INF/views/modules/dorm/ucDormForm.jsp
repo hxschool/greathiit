@@ -52,9 +52,22 @@
 			</div>
 		</div>
 		<div class="control-group">
+			<label class="control-label">已入住人数：</label>
+			<div class="controls">
+				
+				${ucDorm.cnt }
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">可入住人数：</label>
+			<div class="controls">
+				${ucDorm.total-ucDorm.cnt }
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">总人数：</label>
 			<div class="controls">
-				<form:input path="cnt" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				${ucDorm.total }
 			</div>
 		</div>
 		<div class="control-group">

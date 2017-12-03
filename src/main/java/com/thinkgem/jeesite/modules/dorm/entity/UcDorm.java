@@ -19,6 +19,7 @@ public class UcDorm extends DataEntity<UcDorm> {
 	private String dormNumber;		// 宿舍门牌号
 	private String dormFloor;		// 楼层
 	private String cnt;		// 总人数
+	private String total;		// 总人数
 	private String master;		// 寝室长
 	
 	public UcDorm() {
@@ -56,7 +57,7 @@ public class UcDorm extends DataEntity<UcDorm> {
 		this.dormFloor = dormFloor;
 	}
 	
-	@Length(min=0, max=64, message="总人数长度必须介于 0 和 64 之间")
+	@Length(min=0, max=64, message="已入住人数长度必须介于 0 和 64 之间")
 	public String getCnt() {
 		return cnt;
 	}
@@ -65,6 +66,14 @@ public class UcDorm extends DataEntity<UcDorm> {
 		this.cnt = cnt;
 	}
 	
+	@Length(min=0, max=64, message="总人数长度必须介于 0 和 64 之间")
+	public String getTotal() {
+		return total;
+	}
+
+	public void setTotal(String total) {
+		this.total = total;
+	}
 	@Length(min=0, max=64, message="寝室长长度必须介于 0 和 64 之间")
 	public String getMaster() {
 		return master;

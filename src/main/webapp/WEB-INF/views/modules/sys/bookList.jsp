@@ -22,7 +22,7 @@
 				
 				<li><label>拼音查找：</label> <input id="sortbookname"
 					name="sortbookname" type="text" maxlength="50" class="input-small"
-					value="${sortbookname }" /></ &nbsp;&nbsp;&nbsp;</li>
+					value="${sortbookname }" /> &nbsp;&nbsp;&nbsp;</li>
 				
 				<li>&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit"
 					value="查询" /></li>

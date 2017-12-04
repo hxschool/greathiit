@@ -42,7 +42,7 @@
 			<div class="control-group">
 				<label class="control-label">学员：</label>
 				<div class="controls">
-					<select id="studentNumber" name="studentNumber" class="input-medium" ><option>请选择</option></select>
+					<select id="studentNumber" name="studentNumber" class="input-medium" ><option value="">请选择</option></select>
 					&nbsp;&nbsp;&nbsp;
 						<span id="studentNumberMessage"></span>
 				</div>
@@ -73,6 +73,7 @@
 
 		<div class="form-actions">
 		<input type="hidden" id="ajax_total"> 
+		<input type="hidden" id="ajax_studentNumber" value="1"> 
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
@@ -134,18 +135,50 @@
 			        	  clazzId: clazzId,
 			          },
 			          success: function( data ) {
-			        	  $("#studentNumber").empty();
+			        	  
+			        	  $("#studentNumber option").each(function(){
+			        		  if($(this).val()!=''){
+			        			  $(this).remove();
+			        		  }
+			        	  })
 			              var optionString = "";
 			        	  var beanList = data;            //返回的json数据
 			                if(beanList){                   //判断
 			                    for(var i=0; i<beanList.length; i++){ //遍历，动态赋值
-			                        optionString +="<option  value=\""+beanList[i].id+"\"";  
+			                        optionString +="<option  value=\""+beanList[i].no+"\"";  
 			                        optionString += ">"+beanList[i].name+"</option>";  //动态添加数据  
 			                    }   
 			                	$("#studentNumber").append(optionString);
 			                }  
 			          }
 			        });
+			});
+			
+			$('#studentNumber').change(function(){
+				var studentNumber = $(this).children('option:selected').val();
+				
+				if(studentNumber!=''){
+					$.post("${ctx}/dorm/ucDorm/ajaxStudentnumber", {
+						studentNumber : studentNumber
+					}, function(data) {
+							$("#ajax_studentNumber").val("1");
+							$("#studentNumberMessage").html("");
+							if(data.responseCode!='0000'){
+								$("#studentNumberMessage").html(data.responseMessage);
+								$("#ajax_studentNumber").val("0");
+							}
+							
+							if(data.responseCode=="9998"){
+								var btn ='<input id="btnStudentNumber" class="btn btn-danger " type="button" value="{studentNumber}"/></span>';
+								
+								var val = "腾出学员:["+$("#studentNumber").val()+"]";
+								btn = btn.replace("{studentNumber}",val);
+								
+								$("#studentNumberMessage").html($("#studentNumberMessage").html() + btn);
+							}
+						
+					});
+				}
 			});
 
 			var validate = $("#form").validate({
@@ -161,7 +194,7 @@
                 	$("#studentNumberMessage").html("");
                 	
                 	
-                	if($("#studentNumber").val()!=''&&$("#ajax_total").val()>0){
+                	if($("#ajax_studentNumber").val()!='0'&&$("#studentNumber").val()!=''&&$("#ajax_total").val()>0){
                 		form.submit();
                 	}
                 	

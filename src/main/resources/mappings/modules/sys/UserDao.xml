@@ -245,7 +245,7 @@
 	
 	<select id="findListByOfficeIdAndClazzId" resultType="User">
 		SELECT
-			id,name
+			id,name,no
 		FROM sys_user a
 		WHERE a.del_flag = 0
 		AND a.office_id = #{officeId}

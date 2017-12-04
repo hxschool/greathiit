@@ -147,7 +147,24 @@ public class UcDormController extends BaseController {
 	
 	@RequestMapping(value = "studentnumber")
 	public String studentnumber(UcDorm ucDorm,String studentNumber, Model model) {
+		return "modules/dorm/ucDormStudentNumberForm";
+	}
+	@RequestMapping(value = "saveDorm")
+	public String saveDorm(String dorm,String studentNumber, Model model) {
+		User user = new User();
+		user.setNo(studentNumber);
+		user = systemService.getUser(user);
 		
+		if(!org.springframework.util.StringUtils.isEmpty(user.getDorm())) {
+			UcDormBuild dormBuild=	ucDormBuildService.get(user.getDorm().getDormbuildId());
+			model.addAttribute("message", "当前学员:["+studentNumber+"]已入住"+dormBuild.getDormBuildName() + "栋" + user.getDorm().getDormFloor() +"层"+ user.getDorm().getDormNumber()+"室");
+			return "modules/dorm/ucDormStudentNumberForm";
+		}
+		UcDorm ucDorm = ucDormService.get(dorm);
+		user.setDorm(ucDorm);
+		ucDormService.addDorm(user);
+		
+		model.addAttribute("message", "操作成功");
 		return "modules/dorm/ucDormStudentNumberForm";
 	}
 	
@@ -156,9 +173,20 @@ public class UcDormController extends BaseController {
 		return "modules/dorm/unUcDormInfoForm";
 	}
 	
+	@RequestMapping(value = "getAjaxDorm")
+	@ResponseBody
+	public Map<String,Object> getAjaxDorm(String id, Model model) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		UcDorm ucDorm = ucDormService.get(id);
+		map.put("responseCode", "0000");
+		map.put("responseMessage", "查询成功");
+		map.put("result", ucDorm);
+		return map;
+	}
 	
 	
-	@RequestMapping(value = "student")
+	
+	@RequestMapping(value = "getAjaxStudent")
 	@ResponseBody
 	public List<User> studentlist(String officeId,String clazzId) {
 		return systemService.findListByOfficeIdAndClazzId(officeId,clazzId);

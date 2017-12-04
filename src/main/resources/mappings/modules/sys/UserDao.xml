@@ -380,6 +380,10 @@
 	<update id="updateUserInfo">
 		UPDATE sys_user SET 
 			email = #{email}, 
+			company_id = #{company.id}, 
+			office_id = #{office.id}, 
+			clazz_id = #{clazz.id}, 
+			dorm_id = #{dorm.id}, 
 			phone = #{phone}, 
 			mobile = #{mobile}, 
 			update_by = #{updateBy.id}, 

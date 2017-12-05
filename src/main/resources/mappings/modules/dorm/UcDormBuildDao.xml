@@ -36,9 +36,16 @@
 			<include refid="ucDormBuildColumns"/>
 		FROM uc_dorm_build a
 		<include refid="ucDormBuildJoins"/>
-		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>
+		where a.del_flag = #{DEL_FLAG_NORMAL}
+		<if test="dormBuildType != null and dormBuildType != ''">
+			and a.dorm_build_type = #{dormBuildType}
+		</if>
+		<if test="dormBuildTotal != null and dormBuildTotal != ''">
+			and a.dorm_build_total = #{dormBuildTotal}
+		</if>
+		<if test="dormBuildCnt != null and dormBuildCnt != ''">
+			and a.dorm_build_cnt = #{dormBuildCnt}
+		</if>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

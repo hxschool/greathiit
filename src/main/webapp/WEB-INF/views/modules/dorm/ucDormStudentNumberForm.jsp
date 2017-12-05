@@ -95,7 +95,7 @@
 			$('#dorm').change(function(){
 				var dorm = $("#dorm").val();
 				 $.ajax({
-			          url: "${ctx}/dorm/ucDorm/getAjaxDorm",
+			          url: "${ctx}/dorm/ucDorm/ajaxDorm",
 			          data: {
 			        	  id: dorm
 			          },

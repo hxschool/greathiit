@@ -92,7 +92,7 @@
 			$('#dorm').change(function(){
 				var dorm = $("#dorm").val();
 				 $.ajax({
-			          url: "${ctx}/dorm/ucDorm/getAjaxDorm",
+			          url: "${ctx}/dorm/ucDorm/ajaxDorm",
 			          data: {
 			        	  id: dorm
 			          },
@@ -128,7 +128,7 @@
 				var clazzId = $(this).children('option:selected').val();
 				 console.log(officeId);
 				 $.ajax({
-			          url: "${ctx}/dorm/ucDorm/getAjaxStudent",
+			          url: "${ctx}/dorm/ucDorm/ajaxStudent",
 			          async: false,
 			          data: {
 			        	  officeId: officeId,

@@ -26,7 +26,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>公寓号：</label>
-				<form:input path="dormbuildId" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:input path="ucDormBuild.id" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>宿舍门牌号：</label>
 				<form:input path="dormNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -67,7 +67,7 @@
 		<c:forEach items="${page.list}" var="ucDorm">
 			<tr>
 				<td><a href="${ctx}/dorm/ucDorm/form?id=${ucDorm.id}">
-					${ucDorm.dormbuildId}栋${ucDorm.dormFloor}层${ucDorm.dormNumber}
+					${ucDorm.ucDormBuild.id}栋${ucDorm.dormFloor}层${ucDorm.dormNumber}
 				</a></td>
 				<td>
 					${ucDorm.dormFloor}

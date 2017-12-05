@@ -106,7 +106,6 @@ public class UcDormController extends BaseController {
 	 */
 	@RequestMapping(value = "uninfo")
 	public String uninfo(UcDorm ucDorm, Model model) {
-		
 		return "modules/dorm/unUcDormInfoForm";
 	}
 	/**
@@ -149,29 +148,36 @@ public class UcDormController extends BaseController {
 	public String studentnumber(UcDorm ucDorm,String studentNumber, Model model) {
 		return "modules/dorm/ucDormStudentNumberForm";
 	}
+	
+	
+	
 	@RequestMapping(value = "saveDorm")
-	public String saveDorm(String dorm,String studentNumber, Model model) {
+	public String saveDorm(String dorm,String studentNumber, HttpServletRequest request,Model model) {
 		User user = new User();
 		user.setNo(studentNumber);
 		user = systemService.getUser(user);
 		
+		
 		if(!org.springframework.util.StringUtils.isEmpty(user.getDorm())) {
 			UcDormBuild dormBuild=	ucDormBuildService.get(user.getDorm().getDormbuildId());
 			model.addAttribute("message", "当前学员:["+studentNumber+"]已入住"+dormBuild.getDormBuildName() + "栋" + user.getDorm().getDormFloor() +"层"+ user.getDorm().getDormNumber()+"室");
-			return "modules/dorm/ucDormStudentNumberForm";
+			return "modules/dorm/".concat(request.getParameter("studentDormType"));
 		}
 		UcDorm ucDorm = ucDormService.get(dorm);
 		user.setDorm(ucDorm);
 		ucDormService.addDorm(user);
 		
 		model.addAttribute("message", "操作成功");
-		return "modules/dorm/ucDormStudentNumberForm";
+		
+		return "modules/dorm/".concat(request.getParameter("studentDormType"));
 	}
 	
 	@RequestMapping(value = "unstudentnumber")
 	public String unstudentnumber(UcDorm ucDorm,String studentNumber, Model model) {
 		return "modules/dorm/unUcDormInfoForm";
 	}
+	
+	
 	
 	@RequestMapping(value = "getAjaxDorm")
 	@ResponseBody

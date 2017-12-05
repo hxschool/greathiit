@@ -202,3 +202,7 @@ group by b.class_number,a.id
 
 ALTER TABLE uc_dorm
 ADD   total	int(4) COMMENT '总人数'   NULL after cnt;
+
+初始化用户信息
+SELECT REPLACE(UUID(),'-','') as id , '2' as company_id ,'50000010' as office_id,'7074fee7d1ba11e78645fc6c277d0290' as clazz_id, id_card as login_name,'123123' as password,student_number, username,'773152@qq.com','','18801029695' ,6,'18801029695','127.0.0.1','2013-5-27 08:00:00' ,1	,1,	'2013-5-27 08:00:00'	,1,	'2013-5-27 08:00:00'
+	FROM uc_student where  class_number='软件1701'

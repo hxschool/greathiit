@@ -12,8 +12,8 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dorm/ucDorm/">按学号分配</a></li>
 	</ul><br/>
-	<form id="form" action="${ctx}/dorm/ucDorm/save" method="post" class="form-horizontal">
-		
+	<form id="form" action="${ctx}/dorm/ucDorm/saveDorm" method="post" class="form-horizontal">
+		<input type="hidden" name="studentDormType" value="ucDormInfoForm">
 		<sys:message content="${message}"/>
 		<div id="element_id">
 

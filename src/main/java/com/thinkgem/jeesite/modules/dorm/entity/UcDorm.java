@@ -15,7 +15,9 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class UcDorm extends DataEntity<UcDorm> {
 	
 	private static final long serialVersionUID = 1L;
-	private String dormbuildId;		// 公寓号
+	
+	private UcDormBuild ucDormBuild;
+	
 	private String dormNumber;		// 宿舍门牌号
 	private String dormFloor;		// 楼层
 	private String cnt;		// 总人数
@@ -30,15 +32,14 @@ public class UcDorm extends DataEntity<UcDorm> {
 		super(id);
 	}
 
-	@Length(min=0, max=64, message="公寓号长度必须介于 0 和 64 之间")
-	public String getDormbuildId() {
-		return dormbuildId;
+	public UcDormBuild getUcDormBuild() {
+		return ucDormBuild;
 	}
 
-	public void setDormbuildId(String dormbuildId) {
-		this.dormbuildId = dormbuildId;
+	public void setUcDormBuild(UcDormBuild ucDormBuild) {
+		this.ucDormBuild = ucDormBuild;
 	}
-	
+
 	@Length(min=0, max=64, message="宿舍门牌号长度必须介于 0 和 64 之间")
 	public String getDormNumber() {
 		return dormNumber;

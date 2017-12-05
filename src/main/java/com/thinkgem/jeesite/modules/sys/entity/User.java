@@ -18,6 +18,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.supcan.annotation.treelist.cols.SupCol;
 import com.thinkgem.jeesite.common.utils.Collections3;
+import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.common.utils.excel.fieldtype.RoleListType;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
@@ -38,6 +39,7 @@ public class User extends DataEntity<User> {
 	private String password;// 密码
 	private String no;		// 工号
 	private String name;	// 姓名
+	private String sex;//性别
 	private String email;	// 邮箱
 	private String phone;	// 电话
 	private String mobile;	// 手机
@@ -78,6 +80,16 @@ public class User extends DataEntity<User> {
 		this.role = role;
 	}
 	
+	
+	
+	public String getSex() {
+		if(!org.springframework.util.StringUtils.isEmpty(loginName)&&!org.springframework.util.StringUtils.isEmpty(userType)&&userType.equals("6")) {
+			return IdcardUtils.getGenderByIdCard(loginName);
+		}
+		return "";
+	}
+
+
 	public String getPhoto() {
 		return photo;
 	}

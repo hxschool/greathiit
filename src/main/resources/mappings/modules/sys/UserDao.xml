@@ -106,7 +106,6 @@
     	cl.parent_id AS "clazz.parent.id",
     	cl.parent_ids AS "clazz.parentIds",
     	dm.id as "dorm.id",
-    	dm.dormbuild_id as "dorm.dormbuildId",
     	dm.dorm_number as "dorm.dormNumber",
     	dm.dorm_floor as "dorm.dormFloor",
     	

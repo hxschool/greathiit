@@ -539,27 +539,18 @@ public class IdcardUtils extends StringUtils {
 		}
 		return Short.valueOf(idCard.substring(12, 14));
 	}
+	
+    public static String getGenderByIdCard(String idCard) {
+        String sGender = "未知";
 
-	/**
-	 * 根据身份编号获取性别
-	 * 
-	 * @param idCard
-	 *            身份编号
-	 * @return 性别(M-男，F-女，N-未知)
-	 */
-	public static String getGenderByIdCard(String idCard) {
-		String sGender = "N";
-		if (idCard.length() == CHINA_ID_MIN_LENGTH) {
-			idCard = conver15CardTo18(idCard);
-		}
-		String sCardNum = idCard.substring(16, 17);
-		if (Integer.parseInt(sCardNum) % 2 != 0) {
-			sGender = "M";
-		} else {
-			sGender = "F";
-		}
-		return sGender;
-	}
+        String sCardNum = idCard.substring(16, 17);
+        if (Integer.parseInt(sCardNum) % 2 != 0) {
+            sGender = "1";//男
+        } else {
+            sGender = "2";//女
+        }
+        return sGender;
+    }
 
 	/**
 	 * 根据身份编号获取户籍省份

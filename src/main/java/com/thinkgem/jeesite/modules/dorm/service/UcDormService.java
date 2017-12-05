@@ -37,7 +37,7 @@ public class UcDormService extends CrudService<UcDormDao, UcDorm> {
 	@Transactional(readOnly = false)
 	public void addDorm(User user) {
 		UcDorm dorm = get(user.getDorm().getId());
-		UcDormBuild ucDormBuild = ucDormBuildDao.get(dorm.getDormbuildId());
+		UcDormBuild ucDormBuild=dorm.getUcDormBuild();
 		if(userDao.update(user)>0) {
 			int cnt = Integer.valueOf(dorm.getCnt())+1;
 			dorm.setCnt(String.valueOf(cnt));
@@ -51,7 +51,7 @@ public class UcDormService extends CrudService<UcDormDao, UcDorm> {
 	public void removeDorm(User user) {
 		UcDorm dorm = get(user.getDorm().getId());
 		user.setDorm(null);
-		UcDormBuild ucDormBuild = ucDormBuildDao.get(dorm.getDormbuildId());
+		UcDormBuild ucDormBuild=dorm.getUcDormBuild();
 		if(userDao.update(user)>0) {
 			int cnt = Integer.valueOf(dorm.getCnt())-1;
 			dorm.setCnt(String.valueOf(cnt));

@@ -131,14 +131,14 @@
 								$("#ajax_studentNumber").val("0");
 							}
 							
-							if(data.responseCode=="9998"){
-								var btn ='<input id="btnStudentNumber" class="btn btn-danger " type="button" value="{studentNumber}"/></span>';
-								
-								var val = "腾出学员:["+$("#studentNumber").val()+"]";
-								btn = btn.replace("{studentNumber}",val);
-								
-								$("#studentNumberMessage").html($("#studentNumberMessage").html() + btn);
+							if(data.responseCode=='0000'){
+								var user=data.result;
+								alert(user.sex);
+								$("#studentNumberMessage").html(data.responseMessage);
+								$("#ajax_studentNumber").val("0");
 							}
+							
+							
 						
 					});
 				}

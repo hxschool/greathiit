@@ -4,7 +4,6 @@
     
 	<sql id="ucDormColumns">
 		a.id AS "id",
-		a.dormbuild_id AS "dormbuildId",
 		a.dorm_number AS "dormNumber",
 		a.dorm_floor AS "dormFloor",
 		a.cnt AS "cnt",
@@ -15,10 +14,15 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		b.id as "ucDormBuild.id",
+		b.dorm_build_name as "ucDormBuild.dormBuildName",
+		b.dorm_build_type as "ucDormBuild.dormBuildType",
+		b.dorm_build_no as "ucDormBuild.dormBuildNo"
 	</sql>
 	
 	<sql id="ucDormJoins">
+		LEFT JOIN uc_dorm_build b ON b.id = a.dormbuild_id
 	</sql>
     
 	<select id="get" resultType="UcDorm">
@@ -36,8 +40,8 @@
 		<include refid="ucDormJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="dormbuildId != null and dormbuildId != ''">
-				AND a.dormbuild_id = #{dormbuildId}
+			<if test="ucDormBuild != null and ucDormBuild != ''">
+				AND a.dormbuild_id = #{ucDormBuild.id}
 			</if>
 			<if test="dormNumber != null and dormNumber != ''">
 				AND a.dorm_number = #{dormNumber}
@@ -100,7 +104,7 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{dormbuildId},
+			#{dorm.ucDormBuild.id},
 			#{dormNumber},
 			#{dormFloor},
 			#{cnt},
@@ -117,7 +121,7 @@
 	
 	<update id="update">
 		UPDATE uc_dorm SET 	
-			dormbuild_id = #{dormbuildId},
+			dormbuild_id = #{dorm.ucDormBuild.id},
 			dorm_number = #{dormNumber},
 			dorm_floor = #{dormFloor},
 			cnt = #{cnt},

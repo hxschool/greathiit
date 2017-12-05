@@ -112,7 +112,7 @@ public class UcDormBuildController extends BaseController {
 			treeLink.setValue(dormBuild.getId());
 			treeLink.setName(dormBuild.getDormBuildName());
 			UcDorm ucDorm = new UcDorm();
-			ucDorm.setDormbuildId(dormBuild.getId());
+			ucDorm.setUcDormBuild(dormBuild);
 			ucDormService.findList(ucDorm);
 			List<UcDorm> list2 = ucDormService.findList(ucDorm);
 			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();

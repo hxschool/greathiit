@@ -26,7 +26,6 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDormBuild;
-import com.thinkgem.jeesite.modules.dorm.service.UcDormBuildService;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -42,8 +41,7 @@ public class UcDormController extends BaseController {
 
 	@Autowired
 	private UcDormService ucDormService;
-	@Autowired
-	private UcDormBuildService ucDormBuildService;
+	
 	@Autowired
 	private SystemService systemService;
 	@ModelAttribute
@@ -116,8 +114,8 @@ public class UcDormController extends BaseController {
 	 */
 	@RequestMapping(value = "ajaxStudentnumber")
 	@ResponseBody
-	public Map<String,String> ajaxStudentnumber(String studentNumber, Model model) {
-		Map<String,String> map = new HashMap<String,String>();
+	public Map<String,Object> ajaxStudentnumber(String studentNumber, Model model) {
+		Map<String,Object> map = new HashMap<String,Object>();
 		if(org.springframework.util.StringUtils.isEmpty(studentNumber)) {
 			map.put("responseCode", "9999");
 			map.put("responseMessage", "请求参数异常,学号信息异常");
@@ -134,13 +132,14 @@ public class UcDormController extends BaseController {
 		}
 		UcDorm dorm = tmp.getDorm();
 		if(!org.springframework.util.StringUtils.isEmpty(dorm)) {
-				UcDormBuild dormBuild=	ucDormBuildService.get(dorm.getDormbuildId());
+				UcDormBuild dormBuild=	ucDormService.get(dorm.getId()).getUcDormBuild();
 				map.put("responseCode", "9998");
 				map.put("responseMessage", "不可以分配寝室,当前学生已经入住"+dormBuild.getDormBuildName() + "栋"+dorm.getDormFloor()+"层"+dorm.getDormNumber()+"室");
 				return map;
 		}
 		map.put("responseCode", "0000");
 		map.put("responseMessage", "可以分配寝室");
+		map.put("result", tmp);
 		return map;
 	}
 	
@@ -159,7 +158,7 @@ public class UcDormController extends BaseController {
 		
 		
 		if(!org.springframework.util.StringUtils.isEmpty(user.getDorm())) {
-			UcDormBuild dormBuild=	ucDormBuildService.get(user.getDorm().getDormbuildId());
+			UcDormBuild dormBuild=	user.getDorm().getUcDormBuild();
 			model.addAttribute("message", "当前学员:["+studentNumber+"]已入住"+dormBuild.getDormBuildName() + "栋" + user.getDorm().getDormFloor() +"层"+ user.getDorm().getDormNumber()+"室");
 			return "modules/dorm/".concat(request.getParameter("studentDormType"));
 		}

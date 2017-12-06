@@ -1,0 +1,415 @@
+.container {
+	min-width: 1180px;
+	max-width: 2560px;
+	margin: 0 auto;
+	position: relative
+}
+
+
+/*!player/views/home/home.scss*/
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu {
+	margin: 0;
+	padding: 0
+}
+
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details {
+	display: block
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0
+}
+
+caption,th {
+	text-align: left;
+	font-weight: 400
+}
+
+html,body,fieldset,img,iframe,abbr {
+	border: 0
+}
+
+i,cite,em,var,address,dfn {
+	font-style: normal
+}[hidefocus],summary {
+	outline: 0
+}
+
+li {
+	list-style: none
+}
+
+h1,h2,h3,h4,h5,h6,small {
+	font-size: 100%
+}
+
+sup,sub {
+	font-size: 83%
+}
+
+pre,code,kbd,samp {
+	font-family: inherit
+}
+
+q:before,q:after {
+	content: none
+}
+
+textarea {
+	overflow: auto;
+	resize: none
+}
+
+label,summary {
+	cursor: default
+}
+
+a,button {
+	cursor: pointer;
+	outline: 0
+}
+
+h1,h2,h3,h4,h5,h6,em,strong,b {
+	font-weight: 700
+}
+
+del,ins,u,s,a,a:hover {
+	text-decoration: none
+}
+
+body,textarea,input,button,select,keygen,legend {
+	font: 12px/1.14 'Microsoft YaHei',Tahoma,Helvetica,SimSun,sans-serif,arial,\5b8b\4f53;
+	color: #333;
+	outline: 0
+}
+
+body {
+	background: #fff;
+	-webkit-font-smoothing: antialiased
+}
+
+a {
+	color: #333
+}
+
+p {
+	word-wrap: break-word
+}
+
+img {
+	background-color: none
+}
+
+html,body {
+	min-height: 100%;
+	height: 100%
+}
+
+body {
+	min-width: 1280px;
+	max-width: 2560px;
+	margin: 0 auto;
+	position: relative
+}
+
+#layout,#main-view {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	min-height: 100%
+}
+
+.fl {
+	float: left
+}
+
+.fr {
+	float: right
+}
+
+.clear {
+	zoom: 1
+}
+
+.clear:after {
+	display: block;
+	clear: both;
+	content: ''
+}
+
+button {
+	display: inline-block;
+	text-align: center;
+	font-size: 18px;
+	height: 48px;
+	line-height: 48px;
+	color: #fff;
+	border-radius: 4px;
+	background-color: #5db449;
+	border-color: #3f6f21;
+	border-width: 0 0 2px;
+	border-style: solid
+}
+
+.textarea-group label {
+	vertical-align: top;
+	margin-top: 7px
+}
+
+table {
+	table-layout: fixed;
+	word-wrap: break-word
+}
+
+
+ .common-race-list {
+	margin-bottom: 15px
+}
+
+ .common-race-list ul {
+	margin-left: -14px
+}
+
+ .common-race-list .race-item {
+	width: 280px;
+	border-radius: 5px;
+	border: 2px solid #e0e3e3;
+	float: left;
+	margin-left: 14px;
+	margin-bottom: 20px
+}
+
+ .common-race-list .item-img {
+	width: 280px;
+	height: 160px;
+	border-radius: 4px 4px 0 0
+}
+
+ .common-race-list .race-item:hover .time {
+	color: #4d4d4d
+}
+
+ .common-race-list .race-content {
+	padding: 10px 12px 26px;
+	background: #fff;
+	border-bottom: 1px solid #f3f3f3;
+	line-height: 24px
+}
+
+ .common-race-list .race-content .race-name {
+	font-size: 14px;
+	color: #333;
+	line-height: 1.8;
+	height: 52px;
+	padding-bottom: 5px;
+	display: -webkit-box!important;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2
+}
+
+ .common-race-list .race-content .race-status {
+	border-bottom: 1px solid #e3e3e3;
+	padding-bottom: 5px
+}
+
+ .common-race-list .race-content .race-status span {
+	display: inline-block;
+	color: #fff;
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	text-align: center;
+	border-radius: 15px;
+	padding: 0 8px
+}
+
+ .common-race-list .race-content .race-status .signing {
+	background: #1dd67d
+}
+
+ .common-race-list .race-content .race-status .will-start {
+	background: #8baee9
+}
+
+ .common-race-list .race-content .race-status .raceing {
+	color: #1dd67d;
+	border: 1px solid #1dd67d
+}
+
+ .common-race-list .race-content .race-status .end {
+	background: #838c91
+}
+
+ .common-race-list .race-content .time {
+	color: #a9a9a9
+}
+
+ .common-race-list .race-content .time .race-time, .common-race-list .race-content .time .sign-time {
+	width: 140px
+}
+
+ .common-race-list .race-content .time i {
+	display: inline-block;
+	vertical-align: middle;
+	margin: 9px 6px 0 5px
+}
+
+ .common-race-list .race-content .time i.start {
+	width: 1px;
+	height: 1px;
+	border-left: 6px solid #1dd67d;
+	border-top: 4px solid transparent;
+	border-bottom: 4px solid transparent
+}
+
+ .common-race-list .race-content .time i.end {
+	width: 6px;
+	height: 6px;
+	background: #e4788c
+}
+
+ .common-race-list .race-content p {
+	overflow: hidden;
+	white-space: nowrap;
+	word-wrap: normal;
+	text-overflow: ellipsis;
+	font-size: 12px
+}
+
+ .common-race-list .race-info {
+	padding: 10px;
+	height: 16px;
+	background: #f6f6f6;
+	line-height: 18px;
+	font-size: 12px;
+	color: #aaa;
+	position: relative;
+	border-radius: 0 0 5px 5px
+}
+
+ .common-race-list .race-info .race-info-star {
+	position: relative;
+	padding-left: 20px;
+	padding-right: 8px;
+	min-width: 20px;
+	float: left
+}
+
+ .common-race-list .race-info .race-info-star i {
+	background-repeat: no-repeat;
+}
+
+ .common-race-list .race-info .race-info-member {
+	position: absolute;
+	right: 10px;
+	top: 0;
+	padding: 10px 0 0 30px;
+	min-width: 20px;
+	float: right;
+	height: 28px;
+	margin-left: 18px;
+	border-left: 1px solid #e3e3e3
+}
+
+ .common-race-list .race-info .race-info-member i {
+	width: 18px;
+	margin: 13px 0 0 10px;
+	background-repeat: no-repeat;
+}
+
+ .common-race-list .race-info .race-info-member span {
+	margin-left: 3px
+}
+
+ .common-race-list .race-info .race-info-icon {
+	height: 16px;
+	width: 16px;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0
+}
+
+ .common-race-list.search-list {
+	width: 880px
+}
+
+ .common-race-list.search-list .search-loading {
+	height: 420px;
+	padding-top: 160px;
+	text-align: center;
+	background: #fff
+}
+
+ .common-race-list.search-list .no-result {
+	height: 420px;
+	padding-top: 160px
+}
+
+ .common-race-list.search-list .no-result p {
+	padding-top: 10px;
+	font-size: 16px
+}
+
+ .common-race-list.search-list .race-list-title {
+	background: #fff url(/player/public/images/search-result.png) no-repeat 32px 34px
+}
+
+ .common-race-list.search-list .search-value {
+	color: #0079bf
+}
+
+ .pager {
+	margin-bottom: 100px
+}
+
+ .pagination {
+	background: #f4f4f4
+}
+
+ .no-result {
+	min-height: 300px;
+	text-align: center;
+	font-size: 16px;
+	background: #fff
+}
+
+ .no-result p {
+	padding-top: 100px
+}
+
+ .no-result img {
+	vertical-align: middle
+}
+
+ .common-list-title {
+	height: 31px;
+	font-size: 20px;
+	color: #333;
+	border-bottom: 2px solid #0079bf;
+	padding: 28px 0 0 54px;
+	margin-bottom: 20px
+}
+
+ .hot-racing {
+	width: 280px
+}
+
+ .hot-racing .hot-racing-title {
+	background: #fff url(/player/public/images/filter-icon.png) no-repeat 32px 34px
+}
+
+ .hot-racing .hot-racing-item {
+	width: 280px;
+	height: 160px;
+	overflow: hidden;
+	margin-bottom: 10px
+}
+
+ .hot-racing .img {
+	width: 100%
+}

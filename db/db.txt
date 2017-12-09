@@ -206,3 +206,37 @@ ADD   total	int(4) COMMENT '总人数'   NULL after cnt;
 初始化用户信息
 SELECT REPLACE(UUID(),'-','') as id , '2' as company_id ,'50000010' as office_id,'7074fee7d1ba11e78645fc6c277d0290' as clazz_id, id_card as login_name,'123123' as password,student_number, username,'773152@qq.com','','18801029695' ,6,'18801029695','127.0.0.1','2013-5-27 08:00:00' ,1	,1,	'2013-5-27 08:00:00'	,1,	'2013-5-27 08:00:00'
 	FROM uc_student where  class_number='软件1701'
+
+	
+create table rs_jcd(
+    id                     	varchar(64) COMMENT '唯一主键'  NOT NULL,
+    ksh             varchar(64) COMMENT '考生号'  NULL,
+    xm             varchar(64) COMMENT '姓名'  NULL,
+    sfzh             varchar(64) COMMENT '身份证号'  NULL,
+    zf             varchar(64) COMMENT '总分'  NULL,
+    cj             varchar(64) COMMENT '投档成绩'  NULL,
+    km1            	varchar(64) COMMENT '科目1'  NULL,
+    km2            	varchar(64) COMMENT '科目2'  NULL,
+    km3            	varchar(64) COMMENT '科目3'  NULL,
+    km4            	varchar(64) COMMENT '科目4'  NULL,
+    zy1            	varchar(64) COMMENT '意向专业1'  NULL,
+    zy2            	varchar(64) COMMENT '意向专业2'  NULL,
+    zy3            	varchar(64) COMMENT '意向专业3'  NULL,
+    zy4            	varchar(64) COMMENT '意向专业4'  NULL,
+    zy5            	varchar(64) COMMENT '意向专业5'  NULL,
+    zy6            	varchar(64) COMMENT '意向专业6'  NULL,
+    zytj           	varchar(64) COMMENT '是否服从专业调剂'  NULL,
+    create_by              	varchar(64) COMMENT '创建者'  NULL,
+	create_date            	datetime COMMENT '创建时间'  NULL,
+	update_by              	varchar(64) COMMENT '更新者'  NULL,
+	update_date            	datetime COMMENT '更新时间'  NULL,
+	remarks                	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag               	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+
+)
+comment='单独招生考试成绩单';
+
+ALTER TABLE `rs_jcd` ADD INDEX xm_index ( `xm` ) ;
+ALTER TABLE `rs_jcd` ADD INDEX sfzh_index ( `sfzh` ) ;	
+	

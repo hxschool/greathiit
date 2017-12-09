@@ -47,7 +47,7 @@
 			<div class="control-group">
 				<label class="control-label">选择要分配的男寝：</label>
 				<div class="controls">
-					<select id="boy" class="boy ajx input-medium"><option>请选择</option></select>
+					<select id="boy" class="boy ajx input-medium" name="boy"><option>请选择</option></select>
 					&nbsp;&nbsp;&nbsp;
 						<span id="boyMessage"></span>
 				</div>
@@ -58,7 +58,7 @@
 			<div class="control-group">
 				<label class="control-label">选择要分配的女寝：</label>
 				<div class="controls">
-					<select id="gril" class="gril ajx input-medium"><option>请选择</option></select>
+					<select id="gril" class="gril ajx input-medium" name="gril"><option>请选择</option></select>
 					&nbsp;&nbsp;&nbsp;
 						<span id="grilMessage"></span>
 				</div>
@@ -66,10 +66,10 @@
 		</div>
 
 		<div class="form-actions">
-		<input type="hidden" id="ajax_boy_total"> 
-		<input type="hidden" id="ajax_gril_total">
-		<input type="hidden" id="ajax_total" value="1"> 
-		<input type="hidden" id="ajax_studentNumber" value="1"> 
+		<input type="text" id="ajax_boy_total"> 
+		<input type="text" id="ajax_gril_total">
+		<input type="text" id="ajax_total" value="1"> 
+		<input type="text" id="ajax_studentNumber" value="1"> 
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
@@ -103,18 +103,23 @@
 				var operType = $(this).attr("id");
 				var val = $(this).children('option:selected').val();
 				$("#ajax_total").val("1");
+				
 				$.ajax({
 			          url: "${ctx}/dorm/ucDormBuild/info",
 			          async: false,
 			          success: function( data ) {
+			        	  $("#"+operType+"Message").html("");
 			        	  for (var i=0;i<data.length;i++)
 			        	  {
 			        	 		var dormBuild = data[i];
 			        	 		if(dormBuild.id==val){
 			        	 			var dormBuildTotal = dormBuild.dormBuildTotal;
 			        	 			var dormBuildCnt = dormBuild.dormBuildCnt;
-			        	 			if((dormBuildTotal-dormBuildCnt)<$("ajax_"+operType+"_total").val()){
-			        	 				$("#"+operType+"Message")
+			        	 			
+			        	 			if((dormBuildTotal-dormBuildCnt)<$("#ajax_"+operType+"_total").val()){
+			        	 				
+			        	 				$("#"+operType+"Message").css("color","red");
+						        		$("#"+operType+"Message").html("当前公寓信息人数小于可以分配的人数,请确认后重新操作.当前公寓可入住人数"+(dormBuildTotal-dormBuildCnt) +",实际需要入住人数"+$("#ajax_"+operType+"_total").val());
 			        	 				$("#ajax_total").val("0");
 			        	 			}
 			        	 		}
@@ -125,12 +130,11 @@
 			})
 			
 			$('#area').change(function(){
-				 $("#ajax_studentNumber").val("1");
-				var clazzId = $(this).children('option:selected').val();
-				 console.log(clazzId);
+				 $("#ajax_studentNumber").val("0");
+				 var clazzId = $(this).children('option:selected').val();
 				 $.ajax({
 			          url: "${ctx}/dorm/ucDorm/ajaxClazzNumber",
-			          async: false,
+			         
 			          data: {
 			        	  clazzId: clazzId,
 			          },
@@ -142,9 +146,11 @@
 			        	  }else{
 			        		 var boyList=data.result.boyList;
 			        		 var grilList=data.result.grilList;
+			        		 $("#ajax_boy_total").val(boyList.length);
+			        		 $("#ajax_gril_total").val(grilList.length);
 			        		  $("#areaMessage").css("color","green");
 			        		  $("#areaMessage").html("当前班级共计"+(boyList.length+grilList.length)+"人,男生共计"+boyList.length+"人,女生共计"+grilList.length+"人");
-			        		  $("#ajax_studentNumber").val("0");
+			        		  $("#ajax_studentNumber").val("1");
 			        	  }
 			          }
 			        });
@@ -154,17 +160,10 @@
 			var validate = $("#form").validate({
 				
                 submitHandler: function(form){
-                	
-                	if($("#studentNumber").val()==''||$("#studentNumber").val()==null){
-                		$("#studentNumberMessage").css("color","red");
-                		$("#studentNumberMessage").html("请选择学员信息");
-                		return false;
-    				}
-                	
-                	$("#studentNumberMessage").html("");
+
                 	
                 	
-                	if($("#ajax_studentNumber").val()!='0'&&$("#studentNumber").val()!=''){
+                	if($("#ajax_studentNumber").val()!='0'&&$("#ajax_total").val()!=''&&$("#ajax_total").val()!='0'){
                 		form.submit();
                 	}
                 	

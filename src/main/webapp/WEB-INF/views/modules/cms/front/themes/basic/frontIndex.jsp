@@ -7,15 +7,66 @@
 	<meta name="decorator" content="cms_default_${site.theme}"/>
 	<meta name="description" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.description}" />
 	<meta name="keywords" content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.keywords}" />
+	<script type="text/javascript" src="${ctxStaticTheme}/jquery.sliderPro.min.js"></script>
+	<link href="${ctxStaticTheme}/css/slider-pro.min.css" type="text/css" rel="stylesheet" />
+	<link href="${ctxStaticTheme}/css/sliderPro.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript">
+	$( document ).ready(function( $ ) {
+		$( '#example-slide' ).sliderPro({
+			width: 936,
+			height: 532,
+			orientation: 'vertical',
+			loop: false,
+			arrows: true,
+			buttons: false,
+			thumbnailsPosition: 'right',
+			thumbnailPointer: true,
+			thumbnailWidth: 250,
+			thumbnailHeight: 130,
+		});
+	});
+</script>
 </head>
 <body>
-    <div class="hero-unit" style="padding-bottom:35px;margin:10px 0;">
-      <c:set var="article" value="${fnc:getArticle('2')}"/>
-      <h1>${fns:abbr(article.title,28)}</h1><p></p>
-      <p>${fns:abbr(fns:replaceHtml(article.articleData.content),260)}</p>
-      <p><a href="${article.url}" class="btn btn-primary btn-large">&nbsp;&nbsp;&nbsp;查看详情 &raquo;&nbsp;&nbsp;&nbsp;</a></p>
+<div id="example-slide" class="slider-pro">
+  <div class="sp-slides">
+    <div class="sp-slide"><img class="sp-image" src="${ctxStaticTheme}/css/images/blank.gif" data-src="${ctxStaticTheme}/images/1.jpg" data-retina="${ctxStaticTheme}/images/1.jpg"/>
+      
+    </div>
+    <div class="sp-slide"><img class="sp-image" src="${ctxStaticTheme}/css/images/blank.gif" data-src="${ctxStaticTheme}/images/2.jpg" data-retina="${ctxStaticTheme}/images/2.jpg"/>
+      
+    </div>
+   <div class="sp-slide"><img class="sp-image" src="${ctxStaticTheme}/css/images/blank.gif" data-src="${ctxStaticTheme}/images/3.jpg" data-retina="${ctxStaticTheme}/images/3.jpg"/>
+      
+    </div>
+    <div class="sp-slide"><img class="sp-image" src="${ctxStaticTheme}/css/images/blank.gif" data-src="${ctxStaticTheme}/images/4.png" data-retina="${ctxStaticTheme}/images/4.png"/>
+      
+    </div>
+  </div>
+  <div class="sp-thumbnails">
+    <div class="sp-thumbnail">
+      <img class="sp-thumbnail-image" src="${ctxStaticTheme}/images/1.jpg" />
+      
+    </div>
+    <div class="sp-thumbnail">
+     <img class="sp-thumbnail-image" src="${ctxStaticTheme}/images/2.jpg"/>
+    </div>
+    <div class="sp-thumbnail">
+     <img class="sp-thumbnail-image" src="${ctxStaticTheme}/images/3.jpg"/>
+      
+    </div>
+    <div class="sp-thumbnail">
+     <img class="sp-thumbnail-image" src="${ctxStaticTheme}/images/4.png"/>
+      
     </div>
     
+  </div>
+</div>
+
+    
+    
+  
+<br>
   
    <div class="common-race-list">
                 <ul class="clear" data-bind="foreach: raceList">

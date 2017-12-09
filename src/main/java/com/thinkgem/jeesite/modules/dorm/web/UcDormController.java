@@ -4,6 +4,8 @@
 package com.thinkgem.jeesite.modules.dorm.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CommonUtils;
+import com.thinkgem.jeesite.common.utils.CommonUtils.GroupBy;
+import com.thinkgem.jeesite.common.utils.RandomListUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
@@ -154,7 +159,7 @@ public class UcDormController extends BaseController {
 	}
 	
 	@RequestMapping(value = "saveClazzDorm")
-	public String saveClazzDorm(String clazzId, HttpServletRequest request,Model model) {
+	public String saveClazzDorm(String clazzId,String boy,String gril, HttpServletRequest request,Model model) {
 		User user = new User();
 		Office clazz = new Office(clazzId);
 		user.setClazz(clazz);
@@ -164,6 +169,7 @@ public class UcDormController extends BaseController {
 		List<User> grilList = new ArrayList<User>();
 		for(User u:tmp) {
 			if(!org.springframework.util.StringUtils.isEmpty(u.getSex())) {
+				
 				if(u.getSex().equals("1")) {
 					boyList.add(u);
 				}else {
@@ -172,17 +178,272 @@ public class UcDormController extends BaseController {
 			}
 		}
 		
+		parseDorm(boy, boyList);
+		parseDorm(gril, grilList);
 		
 		
-		
-		
-		ucDormService.addDorm(user);
 		
 		model.addAttribute("message", "操作成功");
 		
 		return "modules/dorm/".concat(request.getParameter("studentDormType"));
 	}
+
+	private void handerDorm(String boy, List<User> boyList) {
+		UcDorm ucDorm = new UcDorm();
+		ucDorm.setUcDormBuild(new UcDormBuild(boy));
+		
+		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		
+		 Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {  
+	            @Override  
+	            public String groupby(Object obj) {  
+	            	UcDorm d = (UcDorm) obj;  
+	                return d.getDormFloor();
+	            }  
+	     });  
+		
+//		for(User u:boyList) {
+//			List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+//			//这个地方很麻烦,需要把当前操作的放到数据库里面
+//			for(UcDorm dorm:boyDorms) {
+//				int total = Integer.valueOf(dorm.getTotal())-Integer.valueOf(dorm.getCnt());
+//				for(int i=0;i<total;i++) {
+//					u.setDorm(dorm);
+//					ucDormService.addDorm(u);
+//				}
+//			}
+//		}
+	}
 	
+	public void parseDorm(String  ucDormBuild,List<User> users) {
+		UcDorm ucDorm = new UcDorm();
+		ucDorm.setUcDormBuild(new UcDormBuild(ucDormBuild));
+		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		
+		Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {
+			@Override
+			public String groupby(Object obj) {
+				UcDorm d = (UcDorm) obj;
+				return d.getDormFloor();
+			}
+		});
+
+		List<Integer> list = new ArrayList<Integer>();
+		//这个地方有问题,不是计算list大小,计算可入住寝室人数
+		for (Map.Entry<String, List<UcDorm>> m : floorMap.entrySet()) {
+			list.add(m.getValue().size());
+			
+			logger.info("当前楼层:{},当前楼层共有:{}寝室", m.getKey(), m.getValue().size());
+		}
+		int ret = binarysearchKey(list.toArray(new Integer[list.size()]), users.size());
+		logger.info("需要分配床位为:{},其中{}趋近于分配条件.权重计算", users.size(), ret);
+		int index = list.indexOf(ret);
+		List<UcDorm> resultList = null;
+		
+		for(Map.Entry<String,  List<UcDorm>> m:floorMap.entrySet()) {
+			if(m.getValue().size()==ret) {
+				resultList = m.getValue();
+			}
+		}
+		logger.info("从{}楼层分配寝室,寝室信息:{}", String.valueOf(index + 1), resultList);
+		int cnt = users.size()%4;
+		List<User> remainder = RandomListUtils.createRandomList(users, cnt);
+		users.removeAll(remainder);
+		int y = 0;
+		 Collections.sort(resultList);
+		loop1: for (UcDorm dorm : resultList) {
+			logger.info("准备开始分配寝室,寝室信息:{}", dorm);
+			int total = Integer.valueOf(dorm.getTotal()) - Integer.valueOf(dorm.getCnt());
+			
+			logger.info("当前可分配入住人数:{}", total);
+			if (y == users.size()) {
+				logger.info("分配结束,跳出循环", total);
+				break loop1;
+			}
+			if (total != 4) {
+				for (int i = 0; i < total; i++) {
+					User user = remainder.get(i);
+					user.setDorm(dorm);
+					ucDormService.addDorm(user);
+				}
+			} else {
+				// 正常的list学生寝室学生处理
+				for (int i = 0; i < 4; i++) {
+					System.out.println("整除" + i);
+					User user = users.get(y);
+					user.setDorm(dorm);
+					ucDormService.addDorm(user);
+					y++;
+				}
+			}
+			continue loop1;
+		}
+	}
+	
+	public  void main1(String[] args) {
+		int x = 7;
+		List<UcDorm> boyDorms = new ArrayList<UcDorm>();
+		for(int i=1;i<=6;i++) {
+			init(String.valueOf(i),boyDorms);
+		}
+		 Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {  
+	            @Override  
+	            public String groupby(Object obj) {  
+	            	UcDorm d = (UcDorm) obj;  
+	                return d.getDormFloor();
+	            }  
+	     });
+		 
+		 List<Integer> list = new ArrayList<Integer>();
+		 for(Map.Entry<String, List<UcDorm>> m:floorMap.entrySet()) {
+			 list.add(m.getValue().size());
+			 logger.info("当前楼层:{},当前楼层共有:{}寝室", m.getKey() , m.getValue().size());
+		 }
+		 int ret = binarysearchKey(list.toArray(new Integer[list.size()]),x);
+		 logger.info("需要分配床位为:{},其中{}趋近于分配条件.权重计算",x , ret);
+		 int index = list.indexOf(ret);
+		 List<UcDorm> resultList = floorMap.get(String.valueOf(index+1));
+		 logger.info("从{}楼层分配寝室,寝室信息:{}",String.valueOf(index+1) , resultList);
+		
+		 List<User> users = new ArrayList<User>();
+		 List<User> remainder = RandomListUtils.createRandomList(users,x);
+		 users.removeAll(remainder);
+		int k=0;
+		int y = users.size() - remainder.size();
+		loop1:for (UcDorm dorm : resultList) {
+			 logger.info("准备开始分配寝室,寝室信息:{}",dorm);
+			int total = Integer.valueOf(dorm.getTotal()) - Integer.valueOf(dorm.getCnt());
+			 logger.info("当前可分配入住人数:{}",total);
+			if(k==x) {
+				logger.info("分配结束,跳出循环",total);
+				break loop1;
+			}
+			if(total!=4) {
+				for (int i = 0; i < total; i++) {
+					User user = remainder.get(i);
+				}
+			}else {
+				//正常的list学生寝室学生处理
+				for (int i = 0; i < 4; i++) {
+					System.out.println("整除" + i);
+					User user = users.get(y);
+					y++;
+				}
+			}
+			continue loop1;
+		}
+		
+	}
+	
+
+	
+	public static void main(String[] args) {
+		
+		List<Integer> ls = new ArrayList<Integer>();
+		ls.add(1);
+		ls.add(2);
+		ls.add(3);
+		ls.add(4);
+		ls.add(5);
+		ls.add(6);
+		ls.add(7);
+		List<Integer> bb = RandomListUtils.createRandomList(ls,3);
+		
+		ls.removeAll(bb);
+		for(Integer i:bb) {
+			System.out.println(i);
+		}
+		for(Integer i:ls) {
+			System.out.println(i);
+		}
+	}
+	
+	
+	
+	
+	
+	public static void init(String dormFloor,List<UcDorm> boyDorms) {
+		int randomNumber = (int) Math.round(Math.random()*99);  
+		for(int i=0;i<randomNumber;i++) {
+			UcDorm ucDorm = new UcDorm();
+			ucDorm.setDormFloor(dormFloor);
+			ucDorm.setDormNumber(dormFloor.concat(String.valueOf(randomNumber)));
+			
+			if (i == 1) {
+				ucDorm.setCnt("3");
+			} else if (i == 2) {
+				ucDorm.setCnt("1");
+			} else {
+				ucDorm.setCnt("0");
+			}
+			ucDorm.setTotal("4");
+			boyDorms.add(ucDorm);
+		}
+		
+	}
+	
+	public static int binarysearchKey(Object[] array, int targetNum) {
+		Arrays.sort(array);
+		int left = 0, right = 0;
+		for (right = array.length - 1; left != right;) {
+			int midIndex = (right + left) / 2;
+			int mid = (right - left);
+			int midValue = (Integer) array[midIndex];
+			if (targetNum == midValue) {
+				return midIndex;
+			}
+
+			if (targetNum > midValue) {
+				left = midIndex;
+			} else {
+				right = midIndex;
+			}
+
+			if (mid <= 1) {
+				break;
+			}
+		}
+		int rightnum = ((Integer) array[right]).intValue();
+		int leftnum = ((Integer) array[left]).intValue();
+		int ret = Math.abs((rightnum - leftnum) / 2) > Math.abs(rightnum - targetNum) ? rightnum : leftnum;
+		if(ret<targetNum) {
+			int index = binarysearchKey(array,ret);
+			List<Object> list = new ArrayList<Object>();
+			for (int i = 0; i < array.length; i++) {
+				list.add(array[i]);
+			}
+			list.remove(index);
+			return binarysearchKey(list.toArray(),targetNum);
+		}
+		return ret;
+	} 
+
+	private void handerDorm(String boy, User user) {
+		UcDorm ucDorm = new UcDorm();
+		ucDorm.setUcDormBuild(new UcDormBuild(boy));
+		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		for(UcDorm dorm:boyDorms) {
+			int total = Integer.valueOf(dorm.getTotal())-Integer.valueOf(dorm.getCnt());
+			for(int i=0;i<total;i++) {
+				user.setDorm(dorm);
+				ucDormService.addDorm(user);
+			}
+		}
+	}
+	
+	private void hander(String id, User user,List<User> list) {
+		UcDorm ucDorm = new UcDorm();
+		ucDorm.setUcDormBuild(new UcDormBuild(id));
+		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		
+		for(UcDorm dorm:boyDorms) {
+			int total = Integer.valueOf(dorm.getTotal())-Integer.valueOf(dorm.getCnt());
+			for(int i=0;i<total;i++) {
+				user.setDorm(dorm);
+				list.add(user);
+			}
+		}
+	}
 	
 	/**
 	 * 腾出操作页面

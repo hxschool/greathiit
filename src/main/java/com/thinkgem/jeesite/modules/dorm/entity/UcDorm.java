@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author 赵俊飞
  * @version 2017-11-24
  */
-public class UcDorm extends DataEntity<UcDorm> {
+public class UcDorm extends DataEntity<UcDorm> implements Comparable<UcDorm>{
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -83,5 +83,10 @@ public class UcDorm extends DataEntity<UcDorm> {
 	public void setMaster(String master) {
 		this.master = master;
 	}
+	
+	@Override  
+    public int compareTo(UcDorm o) {
+        return Integer.valueOf(this.total)-Integer.valueOf(this.cnt);
+    } 
 	
 }

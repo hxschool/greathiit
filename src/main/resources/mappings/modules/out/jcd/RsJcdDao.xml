@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsJcdDao">
+    
+	<sql id="rsJcdColumns">
+		a.id AS "id",
+		a.ksh AS "ksh",
+		a.xm AS "xm",
+		a.sfzh AS "sfzh",
+		a.zf AS "zf",
+		a.cj AS "cj",
+		a.km1 AS "km1",
+		a.km2 AS "km2",
+		a.km3 AS "km3",
+		a.km4 AS "km4",
+		a.zy1 AS "zy1",
+		a.zy2 AS "zy2",
+		a.zy3 AS "zy3",
+		a.zy4 AS "zy4",
+		a.zy5 AS "zy5",
+		a.zy6 AS "zy6",
+		a.zytj AS "zytj",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="rsJcdJoins">
+	</sql>
+    
+	<select id="get" resultType="RsJcd">
+		SELECT 
+			<include refid="rsJcdColumns"/>
+		FROM rs_jcd a
+		<include refid="rsJcdJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RsJcd">
+		SELECT 
+			<include refid="rsJcdColumns"/>
+		FROM rs_jcd a
+		<include refid="rsJcdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RsJcd">
+		SELECT 
+			<include refid="rsJcdColumns"/>
+		FROM rs_jcd a
+		<include refid="rsJcdJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rs_jcd(
+			id,
+			ksh,
+			xm,
+			sfzh,
+			zf,
+			cj,
+			km1,
+			km2,
+			km3,
+			km4,
+			zy1,
+			zy2,
+			zy3,
+			zy4,
+			zy5,
+			zy6,
+			zytj,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{ksh},
+			#{xm},
+			#{sfzh},
+			#{zf},
+			#{cj},
+			#{km1},
+			#{km2},
+			#{km3},
+			#{km4},
+			#{zy1},
+			#{zy2},
+			#{zy3},
+			#{zy4},
+			#{zy5},
+			#{zy6},
+			#{zytj},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rs_jcd SET 	
+			ksh = #{ksh},
+			xm = #{xm},
+			sfzh = #{sfzh},
+			zf = #{zf},
+			cj = #{cj},
+			km1 = #{km1},
+			km2 = #{km2},
+			km3 = #{km3},
+			km4 = #{km4},
+			zy1 = #{zy1},
+			zy2 = #{zy2},
+			zy3 = #{zy3},
+			zy4 = #{zy4},
+			zy5 = #{zy5},
+			zy6 = #{zy6},
+			zytj = #{zytj},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE rs_jcd SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

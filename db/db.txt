@@ -1,242 +1,58 @@
-CREATE DATABASE IF NOT EXISTS greathiit DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
-grant all privileges on greathiit.* to greathiit@localhost identified by 'f6zx3qc';
-grant all privileges on greathiit.* to greathiit@'%' identified by 'f6zx3qc';
-grant create routine on greathiit.* to greathiit@'%';
-grant alter  routine on greathiit.* to greathiit@'%';
-grant execute on greathiit.* to greathiit@'%';
 
-
-
-
-
-
-CREATE TABLE uc_student  ( 
-	id             	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	exa_number     	varchar(64) COMMENT '考试号'  NOT NULL,
-	location       	varchar(64) COMMENT '生源所在地'  NULL,
-	student_number 	varchar(64) NOT NULL,
-	username       	varchar(64) COMMENT '真实姓名'  NOT NULL,
-	gender         	varchar(64) COMMENT '性别'  NOT NULL,
-	birthday       	varchar(14) COMMENT '出生日期'  NULL,
-	id_card        	varchar(18) COMMENT '身份证号码'  NOT NULL,
-	political      	varchar(18) COMMENT '政治面貌'  NULL,
-	nation         	varchar(18) COMMENT '民族'  NULL,
-	department_code	varchar(64) COMMENT '所在标注代码'  NOT NULL,
-	department_id  	varchar(64) NULL,
-	department_name	varchar(64) COMMENT '院校名称'  NOT NULL,
-	major_code     	varchar(64) COMMENT '标注代码'  NOT NULL,
-	major_id       	varchar(64) COMMENT '专业代码'  NOT NULL,
-	major_name     	varchar(64) COMMENT '专业名称'  NOT NULL,
-	class_number   	varchar(64) COMMENT '班号'  NOT NULL,
-	edu            	varchar(64) COMMENT '层次(学历)'  NULL,
-	school_system  	varchar(64) COMMENT '学制'  NULL,
-	learning       	varchar(64) COMMENT '学习形式'  NULL,
-	start_date     	varchar(64) COMMENT '入学日期'  NULL,
-	current_level  	varchar(64) COMMENT '当前所在年级'  NOT NULL,
-	over_date      	varchar(64) COMMENT '结业日期(预计毕业日期)'  NULL,
-	status         	varchar(64) COMMENT '状态'  NULL,
-	region_code    	varchar(64) COMMENT '身份所在城市代码'  NULL,
-	region_name    	varchar(64) COMMENT '身份所在城市信息'  NULL,
-	create_by      	varchar(64) COMMENT '创建者'  NULL,
-	create_date    	datetime COMMENT '创建时间'  NULL,
-	update_by      	varchar(64) COMMENT '更新者'  NULL,
-	update_date    	datetime COMMENT '更新时间'  NULL,
-	remarks        	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag       	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
+create table course_material  ( 
+	id         	varchar(64) comment '编号'  not null,
+	cm_type   	int(4) comment '1:课程教材,2:参考书目' null,
+	cm_author   	varchar(255) comment '作者' null,
+	cm_name     	varchar(255) comment '书名' null,
+	cm_pub_year  	varchar(255) comment '出版年份' null,
+	cm_publisher	varchar(255) comment '出版社' null,
+	course_id     	varchar(64) not null,
+	create_by  	varchar(64) comment '创建者'   null,
+	create_date	datetime comment '创建时间'   null,
+	update_by  	varchar(64) comment '更新者'  null,
+	update_date	datetime comment '更新时间'   null,
+	remarks    	varchar(2000) null,
+	del_flag   	char(1) comment '删除标记'  not null default '0',
+	primary key(id)
 )
+comment '课程教材'
 ;
 
-
-CREATE TABLE uc_emergency_contact  ( 
-	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	student_number	varchar(64) COMMENT '学号'  NOT NULL,
-	contact_type  	varchar(2) COMMENT '1:微信,2:QQ,3:手机'  NOT NULL,
-	contact       	varchar(64) COMMENT '联系方式'  NOT NULL,
-	create_by     	varchar(64) COMMENT '创建者'  NULL,
-	create_date   	datetime COMMENT '创建时间'  NULL,
-	update_by     	varchar(64) COMMENT '更新者'  NULL,
-	update_date   	datetime COMMENT '更新时间'  NULL,
-	remarks       	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
+create table course_specific_content  ( 
+	id         	varchar(64) comment '编号'  not null,
+	csc_bas_requ   	varchar(255) comment '基本要求' null,
+	csc_chapter   	varchar(255) comment '章节名称' null,
+	csc_class_hour 	varchar(255) comment '学时' null,
+	csc_goal      	varchar(255) comment '学习目的'  null,
+	csc_homework  	varchar(255) comment '课外作业及要求' null,
+	csc_study_diffi	varchar(255) comment '学习难点' null,
+	csc_study_empha	varchar(255) comment '学习重点' null,
+	csc_target    	varchar(255) comment '教学目标' null,
+	course_id     	varchar(64) not null,
+	create_by  	varchar(64) comment '创建者'   null,
+	create_date	datetime comment '创建时间'   null,
+	update_by  	varchar(64) comment '更新者'  null,
+	update_date	datetime comment '更新时间'   null,
+	remarks    	varchar(2000) null,
+	del_flag   	char(1) comment '删除标记'  not null default '0',
+	primary key(id)
 )
-;
+comment '课程具体内容'
 
---用户信息扩展信息
-CREATE TABLE uc_person  ( 
-	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	student_number	varchar(64) NOT NULL,
-	height        	varchar(18) COMMENT '身高'  NULL,
-	weight        	varchar(18) COMMENT '体重'  NULL,
-	dormbuild_id  	varchar(64) COMMENT '公寓编号'  NULL,
-	dormbuild_name	varchar(64) COMMENT '公寓名称'  NULL,
-	dorm_number   	varchar(64) COMMENT '寝室号'  NULL,
-	location      	varchar(64) COMMENT '家庭地址'  NULL,
-	mobile        	varchar(64) COMMENT '手机号'   NULL,
-	wechat        	varchar(64) COMMENT '微信号'   NULL,
-	qq            	varchar(64) COMMENT 'qq号'   NULL,
-	health        	varchar(64) COMMENT '健康状态'  NULL,
-	father_name   	varchar(64) COMMENT '父亲姓名'  NULL,
-	father_mobile 	varchar(64) COMMENT '父亲联系方式'  NULL,
-	mother_name   	varchar(64) COMMENT '母亲姓名'  NULL,
-	mother_mobile 	varchar(64) COMMENT '母亲联系方式'  NULL,
-	master        	varchar(64) COMMENT '班主任'  NULL,
-	instructor    	varchar(64) COMMENT '导员'  NULL,
-	create_by     	varchar(64) COMMENT '创建者'  NULL,
-	create_date   	datetime COMMENT '创建时间'  NULL,
-	update_by     	varchar(64) COMMENT '更新者'  NULL,
-	update_date   	datetime COMMENT '更新时间'  NULL,
-	remarks       	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
+
+
+create table course_teaching_mode  ( 
+	id         	varchar(64) comment '编号'  not null,
+	curs_content	varchar(255) comment'课程内容' null,
+	period     	varchar(255) comment '学时' null,
+	teac_method 	varchar(255) comment '教学方式' null,
+	course_id     	varchar(64) not null,
+	create_by  	varchar(64) comment '创建者'   null,
+	create_date	datetime comment '创建时间'   null,
+	update_by  	varchar(64) comment '更新者'  null,
+	update_date	datetime comment '更新时间'   null,
+	remarks    	varchar(2000) null,
+	del_flag   	char(1) comment '删除标记'  not null default '0',
+	primary key(id)
 )
-;
-
-
-CREATE TABLE uc_contact_person  ( 
-	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	student_number	varchar(64) COMMENT '学号'  NOT NULL,
-	contact_type  	varchar(2) COMMENT '0:本人 1:同事 2:配偶 3:父亲 4:母亲 5:其他亲属 6:朋友 7:同学 8:其他 9:子女'  NULL,
-	contact       	varchar(64) COMMENT '联系方式'  NOT NULL,
-	create_by     	varchar(64) COMMENT '创建者'  NULL,
-	create_date   	datetime COMMENT '创建时间'  NULL,
-	update_by     	varchar(64) COMMENT '更新者'  NULL,
-	update_date   	datetime COMMENT '更新时间'  NULL,
-	remarks       	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-)
-;
-
-CREATE TABLE uc_dorm  ( 
-	id            	int(11) UNSIGNED AUTO_INCREMENT COMMENT '寝室编码'  NOT NULL,
-    dormbuild_id   varchar(64) COMMENT '公寓号'  NULL,
-	dorm_number     varchar(64) COMMENT '门牌号'  NULL,
-    dorm_floor      varchar(64) COMMENT '楼层'  NULL,
-    cnt             varchar(64) COMMENT '总人数'  NULL,
-	master        	varchar(64) COMMENT '班主任'  NULL,
-	create_by     	varchar(64) COMMENT '创建者'  NULL,
-	create_date   	datetime COMMENT '创建时间'  NULL,
-	update_by     	varchar(64) COMMENT '更新者'  NULL,
-	update_date   	datetime COMMENT '更新时间'  NULL,
-	remarks       	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-)
-;
-
-
-CREATE TABLE uc_dorm_build  ( 
-	id                	varchar(64) COMMENT '编号'  NOT NULL,
-	dorm_build_no     	varchar(64) COMMENT '楼号'  NOT NULL,
-	dorm_build_name   	varchar(64) COMMENT '名称'  NOT NULL,
-	dorm_build_type   	varchar(64) COMMENT '类型'  NULL,
-	dorm_build_address	varchar(64) COMMENT '地址'  NULL,
-	dorm_build_cnt    	int(11) COMMENT '已入住人数'  NULL DEFAULT '0',
-	dorm_build_total  	int(11) COMMENT '总人数'  NULL DEFAULT '0',
-    master  	int(11) COMMENT '楼长'  NULL DEFAULT '0',
-	sort              	int(11) COMMENT '排序'  NOT NULL DEFAULT '0',
-	create_by         	varchar(64) COMMENT '创建者'  NOT NULL,
-	create_date       	datetime COMMENT '创建时间'  NOT NULL,
-	update_by         	varchar(64) COMMENT '更新者'  NOT NULL,
-	update_date       	datetime COMMENT '更新时间'  NOT NULL,
-	remarks           	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag          	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-)
-COMMENT = '寝室楼信息' 
-;
-
-CREATE TABLE uc_dorm_record  ( 
-	id         	varchar(64) COMMENT '编号'  NOT NULL,
-	student_number	varchar(64)  COMMENT '学号' not NULL,
-	username  	varchar(64)  COMMENT '姓名' NULL,
-	dorm_build_id  	varchar(64)  COMMENT '楼号' NULL,
-	dorm_id     	varchar(64)  COMMENT '寝室号' NULL,
-	date         	date  COMMENT '日期' NULL,
-	detail       	varchar(50)  COMMENT '详情' NULL,
-	create_by  	varchar(64) COMMENT '创建者'  NOT NULL,
-	create_date	datetime COMMENT '创建时间'  NOT NULL,
-	update_by  	varchar(64) COMMENT '更新者'  NOT NULL,
-	update_date	datetime COMMENT '更新时间'  NOT NULL,
-	remarks    	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-)
-;
-
-CREATE TABLE TM_VISITOR  ( 
-	id  	varchar(64) COMMENT '编号'  NOT NULL,
-	name	varchar(64) COMMENT '访客姓名'  NOT NULL,
-	sex 	varchar(64) COMMENT '访客性别'  NOT NULL,
-	mobile	varchar(64) COMMENT '联系电话'  NOT NULL,
-	drom_room	varchar(64) COMMENT '拜访寝室'  NOT NULL,
-	reason      	varchar(200)  COMMENT '访问事由' NULL,
-	create_by         	varchar(64) COMMENT '创建者'   NULL,
-	create_date       	datetime COMMENT '创建时间'  NOT NULL,
-	update_by         	varchar(64) COMMENT '更新者'   NULL,
-	update_date       	datetime COMMENT '更新时间'  NOT NULL,
-	remarks           	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag          	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-	)
-COMMENT = '访客信息表' 
-;
-
-ALTER TABLE sys_user
-ADD  clazz_id 	varchar(64) COMMENT '归属班级'   NULL after office_id;
-
-ALTER TABLE sys_user
-ADD  dorm_id 	varchar(64) COMMENT '归属寝室'   NULL after clazz_id;
-
-
-
-
-INSERT INTO sys_office(id, parent_id, parent_ids, name, sort, area_id, code, type, grade, address, zip_code, master, phone, fax, email, USEABLE, PRIMARY_PERSON, DEPUTY_PERSON, create_by, create_date, update_by, update_date, remarks, del_flag) 
-
-
-select REPLACE(UUID(),'-','') AS id,a.id as parent_id,concat(a.parent_ids,a.id,',') as parent_ids,  b.class_number  as name,30 sort,a.area_id,a.code,4 as type,4 as  grade,a.address,a.zip_code, a.master, a.phone, a.fax, a.email, a.USEABLE, a.PRIMARY_PERSON, a.DEPUTY_PERSON, a.create_by, a.create_date, a.update_by, a.update_date, a.remarks, a.del_flag from sys_office a left join uc_student b on a.id=b.major_id where a.id!=0 and b.class_number is not null and  b.class_number!='0'
-group by b.class_number,a.id
-
-
-ALTER TABLE uc_dorm
-ADD   total	int(4) COMMENT '总人数'   NULL after cnt;
-
-初始化用户信息
-SELECT REPLACE(UUID(),'-','') as id , '2' as company_id ,'50000010' as office_id,'7074fee7d1ba11e78645fc6c277d0290' as clazz_id, id_card as login_name,'123123' as password,student_number, username,'773152@qq.com','','18801029695' ,6,'18801029695','127.0.0.1','2013-5-27 08:00:00' ,1	,1,	'2013-5-27 08:00:00'	,1,	'2013-5-27 08:00:00'
-	FROM uc_student where  class_number='软件1701'
-
-	
-create table rs_jcd(
-    id                     	varchar(64) COMMENT '唯一主键'  NOT NULL,
-    ksh             varchar(64) COMMENT '考生号'  NULL,
-    xm             varchar(64) COMMENT '姓名'  NULL,
-    sfzh             varchar(64) COMMENT '身份证号'  NULL,
-    zf             varchar(64) COMMENT '总分'  NULL,
-    cj             varchar(64) COMMENT '投档成绩'  NULL,
-    km1            	varchar(64) COMMENT '科目1'  NULL,
-    km2            	varchar(64) COMMENT '科目2'  NULL,
-    km3            	varchar(64) COMMENT '科目3'  NULL,
-    km4            	varchar(64) COMMENT '科目4'  NULL,
-    zy1            	varchar(64) COMMENT '意向专业1'  NULL,
-    zy2            	varchar(64) COMMENT '意向专业2'  NULL,
-    zy3            	varchar(64) COMMENT '意向专业3'  NULL,
-    zy4            	varchar(64) COMMENT '意向专业4'  NULL,
-    zy5            	varchar(64) COMMENT '意向专业5'  NULL,
-    zy6            	varchar(64) COMMENT '意向专业6'  NULL,
-    zytj           	varchar(64) COMMENT '是否服从专业调剂'  NULL,
-    create_by              	varchar(64) COMMENT '创建者'  NULL,
-	create_date            	datetime COMMENT '创建时间'  NULL,
-	update_by              	varchar(64) COMMENT '更新者'  NULL,
-	update_date            	datetime COMMENT '更新时间'  NULL,
-	remarks                	varchar(255) COMMENT '备注信息'  NULL,
-	del_flag               	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
-	PRIMARY KEY(id)
-
-)
-comment='单独招生考试成绩单';
-
-ALTER TABLE `rs_jcd` ADD INDEX xm_index ( `xm` ) ;
-ALTER TABLE `rs_jcd` ADD INDEX sfzh_index ( `sfzh` ) ;	
-	
+comment '教学方式';

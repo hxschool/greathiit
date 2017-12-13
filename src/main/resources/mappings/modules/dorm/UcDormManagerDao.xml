@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dorm.dao.UcDormManagerDao">
+    
+	<sql id="ucDormManagerColumns">
+		b.id AS "id",
+		b.dormbuild_id AS "dormbuildId",
+		b.dorm_floor AS "dormFloor",
+		b.dorm_number AS "dormNumber",
+		c.id AS "userId",
+		c.no AS "studentNumber",
+		c.name AS "name",
+		c.phone AS "phone",
+		a.master as "master"
+	</sql>
+	
+	<select id="findList" resultType="UcDormManager">
+		SELECT 
+			<include refid="ucDormManagerColumns"/>
+		from uc_dorm_build a left join uc_dorm b on a.id=b.dormbuild_id left join sys_user c on b.id=c.dorm_id where dorm_id is not null
+	</select>
+	
+</mapper>

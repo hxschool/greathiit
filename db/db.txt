@@ -242,6 +242,114 @@ comment='单独招生考试成绩单';
 ALTER TABLE `rs_jcd` ADD INDEX xm_index ( `xm` ) ;
 ALTER TABLE `rs_jcd` ADD INDEX sfzh_index ( `sfzh` ) ;	
 
+
+
+CREATE TABLE teacher  ( 
+	id                     	varchar(64) COMMENT '编号'  NOT NULL,
+	tchr_attend_date       	date COMMENT '任职'  NULL,
+	tchr_birthday          	date COMMENT '生日'  NULL,
+	tchr_degree            	varchar(255) COMMENT '学位'  NULL,
+	tchr_email             	varchar(255) COMMENT 'email'  NULL,
+	tchr_fax               	varchar(255) COMMENT '邮政编码'  NULL,
+	tchr_name              	varchar(255) COMMENT '姓名'  NULL,
+	tchr_idcard            	varchar(255) COMMENT '身份证号'  NULL,
+	tchr_gender            	tinyint(1) COMMENT '性别'  NULL,
+	tchr_nation            	varchar(10) COMMENT '民族'  NULL,
+	tchr_political         	varchar(10) COMMENT '政治面貌'  NULL,
+	tchr_major             	varchar(255) COMMENT '专业'  NULL,
+	tchr_graduate_school   	varchar(255) COMMENT '毕业院校'  NULL,
+	tchr_office_addr       	varchar(255) COMMENT '办公地点'  NULL,
+	tchr_phone             	varchar(255) COMMENT '联系电话'  NULL,
+	tchr_school            	varchar(10) COMMENT '政治面貌'  NULL,
+	tchr_self_introduce    	text COMMENT '自我介绍'  NULL,
+	tchr_eng_self_introduce	text COMMENT '英文自我介绍'  NULL,
+	tchr_title             	varchar(64) COMMENT '职称'  NULL,
+	tchr_number            	varchar(255) COMMENT '教师号'  NOT NULL,
+	user_id                	varchar(64) COMMENT '用户号'  NOT NULL,
+	create_by              	varchar(64) COMMENT '创建者'  NULL,
+	create_date            	datetime COMMENT '创建时间'  NULL,
+	update_by              	varchar(64) COMMENT '更新者'  NULL,
+	update_date            	datetime COMMENT '更新时间'  NULL,
+	remarks                	varchar(2000) NULL,
+	del_flag               	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '教师信息表' 
+;
+
+
+CREATE TABLE teacher_experiment  ( 
+	id           	varchar(64) COMMENT '编号'  NOT NULL,
+	tchr_position	varchar(255) COMMENT '学位/职称'  NOT NULL,
+	tchr_school  	varchar(255) COMMENT '学校/单位'  NOT NULL,
+	tchr_time    	varchar(255) COMMENT '时间'  NOT NULL,
+	tchr_number  	varchar(255) COMMENT '教师号'  NOT NULL,
+	user_id      	varchar(64) COMMENT '用户号'  NOT NULL,
+	create_by    	varchar(64) COMMENT '创建者'  NULL,
+	create_date  	datetime COMMENT '创建时间'  NULL,
+	update_by    	varchar(64) COMMENT '更新者'  NULL,
+	update_date  	datetime COMMENT '更新时间'  NULL,
+	remarks      	varchar(2000) NULL,
+	del_flag     	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '学历&履历' 
+;
+
+
+CREATE TABLE student  ( 
+	id                	varchar(64) COMMENT '编号'  NOT NULL,
+	name              	varchar(255) COMMENT '姓名'  NULL,
+	id_card           	varchar(255) COMMENT '身份证号'  NULL,
+	birthday          	date COMMENT '生日'  NULL,
+	gender            	varchar(10) COMMENT '性别'  NULL,
+	nation            	varchar(10) COMMENT '民族'  NULL,
+	political         	varchar(10) COMMENT '政治面貌'  NULL,
+	phone             	varchar(255) COMMENT '联系电话'  NULL,
+	address           	varchar(255) COMMENT '联系地址'  NULL,
+	mail              	varchar(255) COMMENT 'email'  NULL,
+	long_goal         	varchar(255) COMMENT '长期目标'  NULL,
+	mid_goal          	varchar(255) COMMENT '中期目标'  NULL,
+	short_goal        	varchar(255) COMMENT '短期目标'  NULL,
+	self_eng_introduce	text COMMENT '英文简介'  NULL,
+	self_introduce    	text COMMENT '中文简介'  NULL,
+	edu               	varchar(64) COMMENT '学历'  NULL,
+	native_place      	varchar(255) COMMENT '户口所在地'  NULL,
+	student_length    	int(11) COMMENT '学制'  NULL,
+	student_number    	varchar(64) COMMENT '学号'  NOT NULL,
+	user_id           	varchar(64) COMMENT '用户号'  NOT NULL,
+	create_by         	varchar(64) COMMENT '创建者'  NULL,
+	create_date       	datetime COMMENT '创建时间'  NULL,
+	update_by         	varchar(64) COMMENT '更新者'  NULL,
+	update_date       	datetime COMMENT '更新时间'  NULL,
+	remarks           	varchar(2000) NULL,
+	del_flag          	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+comment '学生信息表'
+;
+
+CREATE TABLE student_activity  ( 
+	id            	varchar(64) COMMENT '编号'  NOT NULL,
+	act_name      	varchar(255) COMMENT '活动名称'  NULL,
+	act_time      	date COMMENT '活动日期'  NULL,
+	act_duty      	varchar(255) COMMENT '职责描述'  NULL,
+	act_state     	tinyint(1) COMMENT '状态'  NULL,
+	act_type      	varchar(64) COMMENT '活动类型'  NULL,
+	unit          	varchar(255) COMMENT '主办单位'  NULL,
+	student_number	varchar(64) COMMENT '学号'  NOT NULL,
+	user_id       	varchar(64) COMMENT '用户号'  NOT NULL,
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(2000) NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+comment '学生活动信息表'
+;
+
 create table course_material  ( 
 	id         	varchar(64) comment '编号'  not null,
 	cm_type   	int(4) comment '1:课程教材,2:参考书目' null,

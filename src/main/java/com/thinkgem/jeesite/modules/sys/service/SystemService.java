@@ -239,6 +239,14 @@ public class SystemService extends BaseService implements InitializingBean {
 		return Encodes.encodeHex(salt)+Encodes.encodeHex(hashPassword);
 	}
 	
+	public static void main(String[] args) {
+		System.out.println("------------");
+		for(int i=0;i<190;i++) {
+			System.out.println(entryptPassword("888888"));
+		}
+		System.out.println("------------");
+	}
+	
 	
 	
 	/**

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.calendar.dao.CourseCalendarDao">
+    
+	<sql id="courseCalendarColumns">
+		a.id AS "id",
+		a.calendar_month AS "calendarMonth",
+		a.calendar_day AS "calendarDay",
+		a.calendar_year AS "calendarYear",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="courseCalendarJoins">
+	</sql>
+    
+	<select id="get" resultType="CourseCalendar">
+		SELECT 
+			<include refid="courseCalendarColumns"/>
+		FROM course_calendar a
+		<include refid="courseCalendarJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CourseCalendar">
+		SELECT 
+			<include refid="courseCalendarColumns"/>
+		FROM course_calendar a
+		<include refid="courseCalendarJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CourseCalendar">
+		SELECT 
+			<include refid="courseCalendarColumns"/>
+		FROM course_calendar a
+		<include refid="courseCalendarJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_calendar(
+			id,
+			calendar_month,
+			calendar_day,
+			calendar_year,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{calendarMonth},
+			#{calendarDay},
+			#{calendarYear},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_calendar SET 	
+			calendar_month = #{calendarMonth},
+			calendar_day = #{calendarDay},
+			calendar_year = #{calendarYear},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_calendar SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

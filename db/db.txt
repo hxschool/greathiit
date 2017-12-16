@@ -426,7 +426,7 @@ create table course  (
 	curs_property  	varchar(255) comment '课程性质' null,
 	curs_term      	varchar(255) comment '开设学期' null,
 	curs_type          	varchar(255) comment '课程类型' null,
-	user_id     	varchar(64) comment '用户号(教师)' not null,
+	
 	teacher_number     	varchar(64) comment '教师号' not null,
 	create_by  	varchar(64) comment '创建者'   null,
 	create_date	datetime comment '创建时间'   null,
@@ -438,3 +438,71 @@ create table course  (
 )
 comment '课程基本信息';
 
+
+CREATE TABLE course_calendar  ( 
+	id         	varchar(64) COMMENT '编号'  NOT NULL,
+	calendar_month	varchar(2) NOT NULL,
+	calendar_day  	varchar(2) NOT NULL,
+	calendar_year 	varchar(4) NOT NULL ,
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+comment '校历校验'
+;
+
+CREATE TABLE school_root  ( 
+	id         	varchar(64) COMMENT '编号'  NOT NULL,
+	value      	varchar(100) COMMENT '数据值'  NOT NULL,
+	label      	varchar(100) COMMENT '标签名'  NOT NULL,
+	type       	varchar(100) COMMENT '类型'  NOT NULL,
+	description	text NOT NULL,
+	sort       	decimal(10,0) COMMENT '排序（升序）'  NOT NULL,
+	parent_id  	varchar(64) COMMENT '父级编号'  NULL DEFAULT '0',
+	create_by  	varchar(64) COMMENT '创建者'  NOT NULL,
+	create_date	datetime COMMENT '创建时间'  NOT NULL,
+	update_by  	varchar(64) COMMENT '更新者'  NOT NULL,
+	update_date	datetime COMMENT '更新时间'  NOT NULL,
+	remarks    	varchar(255) NULL,
+	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '教学楼,班级' 
+;
+
+
+CREATE TABLE course_year_term  ( 
+    id         	varchar(64) COMMENT '编号'  NOT NULL,
+	year_term    	varchar(10) COMMENT '前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几'  NOT NULL,
+	create_by  	varchar(64) COMMENT '创建者'   NULL,
+	create_date	datetime COMMENT '创建时间'   NULL,
+	update_by  	varchar(64) COMMENT '更新者'   NULL,
+	update_date	datetime COMMENT '更新时间'   NULL,
+	remarks    	varchar(255) NULL,
+	del_flag   	char(1) COMMENT '删除标记'   NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+comment = '初始化'
+
+
+
+CREATE TABLE course_schedule  ( 
+    id         	varchar(64) COMMENT '编号'  NOT NULL,
+	time_add    	varchar(14) COMMENT '前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几'  NOT NULL,
+	course_id   	varchar(64) NOT NULL DEFAULT '00000000',
+	course_class	varchar(64) COMMENT '7个解析一个班级'  NOT NULL,
+	`lock`       	varchar(1) COMMENT '0表示管理员加的课,1表示可排课,2表示已排课'  NOT NULL DEFAULT '1',
+	tips        	text NOT NULL,
+	create_by  	varchar(64) COMMENT '创建者'   NULL,
+	create_date	datetime COMMENT '创建时间'   NULL,
+	update_by  	varchar(64) COMMENT '更新者'   NULL,
+	update_date	datetime COMMENT '更新时间'   NULL,
+	remarks    	varchar(255) NULL,
+	del_flag   	char(1) COMMENT '删除标记'   NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+comment = '计划教室,根据选择学院,教室生成相关信息'

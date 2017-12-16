@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.student.dao.StudentDao">
+    
+	<sql id="studentColumns">
+		a.id AS "id",
+		a.name AS "name",
+		a.id_card AS "idCard",
+		a.birthday AS "birthday",
+		a.gender AS "gender",
+		a.nation AS "nation",
+		a.political AS "political",
+		a.phone AS "phone",
+		a.address AS "address",
+		a.mail AS "mail",
+		a.long_goal AS "longGoal",
+		a.mid_goal AS "midGoal",
+		a.short_goal AS "shortGoal",
+		a.self_eng_introduce AS "selfEngIntroduce",
+		a.self_introduce AS "selfIntroduce",
+		a.edu AS "edu",
+		a.native_place AS "nativePlace",
+		a.student_length AS "studentLength",
+		a.student_number AS "student.no",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="studentJoins">
+	</sql>
+    
+	<select id="get" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="name != null and name != ''">
+				AND a.name LIKE 
+					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
+					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
+					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO student(
+			id,
+			name,
+			id_card,
+			birthday,
+			gender,
+			nation,
+			political,
+			phone,
+			address,
+			mail,
+			long_goal,
+			mid_goal,
+			short_goal,
+			self_eng_introduce,
+			self_introduce,
+			edu,
+			native_place,
+			student_length,
+			student_number,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{name},
+			#{idCard},
+			#{birthday},
+			#{gender},
+			#{nation},
+			#{political},
+			#{phone},
+			#{address},
+			#{mail},
+			#{longGoal},
+			#{midGoal},
+			#{shortGoal},
+			#{selfEngIntroduce},
+			#{selfIntroduce},
+			#{edu},
+			#{nativePlace},
+			#{studentLength},
+			#{student.no},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE student SET 	
+			name = #{name},
+			id_card = #{idCard},
+			birthday = #{birthday},
+			gender = #{gender},
+			nation = #{nation},
+			political = #{political},
+			phone = #{phone},
+			address = #{address},
+			mail = #{mail},
+			long_goal = #{longGoal},
+			mid_goal = #{midGoal},
+			short_goal = #{shortGoal},
+			self_eng_introduce = #{selfEngIntroduce},
+			self_introduce = #{selfIntroduce},
+			edu = #{edu},
+			native_place = #{nativePlace},
+			student_length = #{studentLength},
+			student_number = #{student.no},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

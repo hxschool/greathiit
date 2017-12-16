@@ -1,0 +1,117 @@
+/**
+ * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+ */
+package com.thinkgem.jeesite.modules.course.web;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
+import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
+import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
+import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
+import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
+
+/**
+ * 学期初始化Controller
+ * @author 赵俊飞
+ * @version 2017-12-15
+ */
+@Controller
+@RequestMapping(value = "${adminPath}/course/courseYearTerm")
+public class CourseYearTermController extends BaseController {
+
+	@Autowired
+	private CourseYearTermService courseYearTermService;
+	@Autowired
+	private SchoolRootService schoolRootService;
+	@Autowired
+	private CourseScheduleService courseScheduleService;
+	 
+	@ModelAttribute
+	public CourseYearTerm get(@RequestParam(required=false) String id,@RequestParam(required=false) String yearTerm) {
+		CourseYearTerm entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = courseYearTermService.get(id);
+		}
+		
+		if (entity == null && StringUtils.isNotBlank(yearTerm)){
+			CourseYearTerm courseYearTerm = new CourseYearTerm();
+			courseYearTerm.setYearTerm(yearTerm);
+			entity = courseYearTermService.get(courseYearTerm);
+		}
+		if (entity == null){
+			entity = new CourseYearTerm();
+		}
+		return entity;
+	}
+	
+	//@RequiresPermissions("course:courseYearTerm:view")
+	@RequestMapping(value = {"list", ""})
+	public String list(CourseYearTerm courseYearTerm, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<CourseYearTerm> page = courseYearTermService.findPage(new Page<CourseYearTerm>(request, response), courseYearTerm); 
+		model.addAttribute("page", page);
+		return "modules/course/courseYearTermList";
+	}
+
+	//@RequiresPermissions("course:courseYearTerm:view")
+	@RequestMapping(value = "form")
+	public String form(CourseYearTerm courseYearTerm, Model model) {
+		model.addAttribute("courseYearTerm", courseYearTerm);
+		return "modules/course/courseYearTermForm";
+	}
+
+	//@RequiresPermissions("course:courseYearTerm:edit")
+	@RequestMapping(value = "save")
+	public String save(CourseYearTerm courseYearTerm, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, courseYearTerm)){
+			return form(courseYearTerm, model);
+		}
+		courseYearTermService.save(courseYearTerm);
+		
+		//学期初始化过程需要讲全部的教学楼以及班级添加到courseSchedule
+		SchoolRoot emptySchoolRoot = new SchoolRoot();
+		SchoolRoot parentRoot = new SchoolRoot();
+		parentRoot.setId("0");
+		emptySchoolRoot.setParent(parentRoot);
+		List<SchoolRoot> schoolRoots = schoolRootService.findList(emptySchoolRoot);
+		for(SchoolRoot schoolRoot: schoolRoots) {
+			List<SchoolRoot> roots = schoolRootService.findList(schoolRoot);
+			String schoolNumber = schoolRoot.getValue();
+			for(SchoolRoot root: roots) {
+				CourseSchedule courseSchedule = new CourseSchedule();
+				String rootNumber = root.getValue();
+				String timeAdd = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
+				courseSchedule.setTimeAdd(timeAdd);
+				courseScheduleService.save(courseSchedule);
+			}
+		}
+		
+		addMessage(redirectAttributes, "保存学期初始化成功");
+		return "redirect:"+Global.getAdminPath()+"/course/courseYearTerm/?repage";
+	}
+	
+	//@RequiresPermissions("course:courseYearTerm:edit")
+	@RequestMapping(value = "delete")
+	public String delete(CourseYearTerm courseYearTerm, RedirectAttributes redirectAttributes) {
+		courseYearTermService.delete(courseYearTerm);
+		addMessage(redirectAttributes, "删除学期初始化成功");
+		return "redirect:"+Global.getAdminPath()+"/course/courseYearTerm/?repage";
+	}
+
+}

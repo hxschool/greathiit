@@ -18,7 +18,7 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 	private String timeAdd;		// 前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几
 	private String courseId;		// course_id
 	private String courseClass;		// 7个解析一个班级
-	private String lock;		// 0表示管理员加的课,1表示可排课,2表示已排课
+	private String scLock;		// 0表示管理员加的课,1表示可排课,2表示已排课
 	private String tips;		// tips
 	
 	public CourseSchedule() {
@@ -57,12 +57,12 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 	}
 	
 	@Length(min=1, max=1, message="0表示管理员加的课,1表示可排课,2表示已排课长度必须介于 1 和 1 之间")
-	public String getLock() {
-		return lock;
+	public String getScLock() {
+		return scLock;
 	}
 
-	public void setLock(String lock) {
-		this.lock = lock;
+	public void setScLock(String scLock) {
+		this.scLock = scLock;
 	}
 	
 	public String getTips() {

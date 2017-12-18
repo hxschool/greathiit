@@ -94,11 +94,33 @@ public class CourseYearTermController extends BaseController {
 			List<SchoolRoot> roots = schoolRootService.findList(schoolRoot);
 			String schoolNumber = schoolRoot.getValue();
 			for(SchoolRoot root: roots) {
-				CourseSchedule courseSchedule = new CourseSchedule();
-				String rootNumber = root.getValue();
-				String timeAdd = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
-				courseSchedule.setTimeAdd(timeAdd);
-				courseScheduleService.save(courseSchedule);
+				
+				for(int $i = 1;$i<=20;$i++)
+				{
+					for(int $j = 1;$j<=5;$j++)
+					{
+						for(int $k = 1;$k<=7;$k++)
+						{
+							CourseSchedule courseSchedule = new CourseSchedule();
+							String rootNumber = root.getValue();
+							String $id = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
+							String timeAdd ="";
+							
+							if($i<=9)
+								timeAdd = $id + '0' + $i + $j + $k;
+							else
+								timeAdd = $id + $i + $j + $k;
+							
+							courseSchedule.setTimeAdd(timeAdd);
+							courseSchedule.setCourseId("00000000");
+							courseSchedule.setScLock("1");
+							courseSchedule.setCourseClass("");
+							courseSchedule.setTips("");
+							courseScheduleService.save(courseSchedule);
+						}
+					}
+				}
+				
 			}
 		}
 		

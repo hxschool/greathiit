@@ -36,8 +36,8 @@
 		<include refid="schoolRootJoins"/>
 		where
 		a.del_flag = #{DEL_FLAG_NORMAL} 
-		  <if test="parentId != null and parentId!=''">  
-          	and   a.parent_Id=#{parentId}  
+		  <if test="parent.id != null and parent.id!=''">  
+          	and   a.parent_Id=#{parent.id}  
           </if>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

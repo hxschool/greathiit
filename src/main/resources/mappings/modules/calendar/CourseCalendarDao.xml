@@ -17,6 +17,13 @@
 	
 	<sql id="courseCalendarJoins">
 	</sql>
+	
+	<select id="systemConfig" resultType="CourseCalendar">
+		SELECT 
+			<include refid="courseCalendarColumns"/>
+		FROM course_calendar a
+		limit 1
+	</select>
     
 	<select id="get" resultType="CourseCalendar">
 		SELECT 

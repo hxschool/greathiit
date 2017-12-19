@@ -38,6 +38,15 @@
 		WHERE a.id = #{id}
 	</select>
 	
+		<select id="findListByCourse" resultType="Course">
+		SELECT 
+			<include refid="courseColumns"/>
+		FROM course a
+		<include refid="courseJoins"/>
+		WHERE a.curs_num = #{courseNumber}
+	</select>
+	
+	
 	<select id="findList" resultType="Course">
 		SELECT 
 			<include refid="courseColumns"/>

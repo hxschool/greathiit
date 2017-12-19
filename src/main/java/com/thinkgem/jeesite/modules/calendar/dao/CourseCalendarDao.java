@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
  */
 @MyBatisDao
 public interface CourseCalendarDao extends CrudDao<CourseCalendar> {
-	
+	public CourseCalendar systemConfig();
 }

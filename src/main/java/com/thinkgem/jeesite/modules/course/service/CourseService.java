@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.course.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,12 @@ import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 @Service
 @Transactional(readOnly = true)
 public class CourseService extends CrudService<CourseDao, Course> {
-
+	@Autowired
+	private CourseDao courseDao;
+	public Course findListByCourse(String courseNumber) {
+		return courseDao.findListByCourse(courseNumber);
+	}
+	
 	public Course get(String id) {
 		return super.get(id);
 	}

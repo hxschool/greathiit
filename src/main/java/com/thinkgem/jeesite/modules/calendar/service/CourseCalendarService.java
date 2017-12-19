@@ -5,13 +5,14 @@ package com.thinkgem.jeesite.modules.calendar.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.dao.CourseCalendarDao;
+import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 
 /**
  * 校历校准Service
@@ -21,7 +22,12 @@ import com.thinkgem.jeesite.modules.calendar.dao.CourseCalendarDao;
 @Service
 @Transactional(readOnly = true)
 public class CourseCalendarService extends CrudService<CourseCalendarDao, CourseCalendar> {
-
+	@Autowired
+	private CourseCalendarDao courseCalendarDao;
+	public CourseCalendar systemConfig() {
+		return courseCalendarDao.systemConfig();
+	}
+	
 	public CourseCalendar get(String id) {
 		return super.get(id);
 	}

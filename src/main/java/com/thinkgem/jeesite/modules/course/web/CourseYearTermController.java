@@ -85,13 +85,10 @@ public class CourseYearTermController extends BaseController {
 		courseYearTermService.save(courseYearTerm);
 		
 		//学期初始化过程需要讲全部的教学楼以及班级添加到courseSchedule
-		SchoolRoot emptySchoolRoot = new SchoolRoot();
-		SchoolRoot parentRoot = new SchoolRoot();
-		parentRoot.setId("0");
-		emptySchoolRoot.setParent(parentRoot);
-		List<SchoolRoot> schoolRoots = schoolRootService.findList(emptySchoolRoot);
+		
+		List<SchoolRoot> schoolRoots = schoolRootService.findByParentId("0");
 		for(SchoolRoot schoolRoot: schoolRoots) {
-			List<SchoolRoot> roots = schoolRootService.findList(schoolRoot);
+			List<SchoolRoot> roots = schoolRootService.findByParentId(schoolRoot.getId());
 			String schoolNumber = schoolRoot.getValue();
 			for(SchoolRoot root: roots) {
 				

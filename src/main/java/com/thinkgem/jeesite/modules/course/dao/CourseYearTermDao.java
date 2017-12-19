@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
  */
 @MyBatisDao
 public interface CourseYearTermDao extends CrudDao<CourseYearTerm> {
-	
+	CourseYearTerm systemConfig();
 }

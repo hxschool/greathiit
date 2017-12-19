@@ -4,36 +4,135 @@
 <head>
 	<title>校历校准管理</title>
 	<meta name="decorator" content="default"/>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			
-		});
-		function page(n,s){
-			$("#pageNo").val(n);
-			$("#pageSize").val(s);
-			$("#searchForm").submit();
-        	return false;
-        }
-	</script>
+	
 	<style>
+
+body
+{
+	font-family:'微软雅黑';
+	background-color:#EBEAEB;
+}
+
+#contest{
+	background-color:#FFF;
+	/*position:absolute;
+	top:7%;
+	left:13%;
+	margin-left:auto;
+	margin-right:auto;*/
+	position:relative;
+	top:20px;
+	margin:0 auto;
+	width:1000px;
+	height:800px;
+	
+	box-shadow:0px 0px 50px #000;
+	border-radius:5px;
+}
+
+.psw
+{
+	width:160px;
+	height:25px;
+	background-color:#6e6e6e;
+	border-radius:3px;
+	border:0px;
+	color:#f9f9f9;
+	font-family:'微软雅黑';
+	padding-left:5px;
+}
+
+.a
+{
+	display:block;
+
+	border:1px solid;
+	border-radius:3px;
+	border-color:#09F;
+	color:#000;
+	padding:4px 10px;
+	margin-top:2px;
+
+	box-shadow:#6e6e6e 0 0 3px;
+	text-decoration:none;
+}
+.a:hover
+{
+	background-color:#C6B19A;
+	color:#FFF;
+	box-shadow:#2d2d2d 0 0 3px;	
+}
+.prime_a
+{
+	font-size:13px;
+	cursor:pointer;
+	color:#000;
+	text-decoration:none;
+}
+.prime_a:hover
+{
+	color:#0CF;
+}
+
+table
+{
+	border-collapse:collapse;
+	font-size:15px;
+	/*border-color:#000;*/
+}
+
 td{
 	width:200px;
 	height:50px;
 	border:1px solid #000000;
 }
+#up{
+	position:absolute;
+	background-color:#ffffff;
+	left:50%;
+	top:300px;
+	margin-top:-205px;
+	margin-left:-200px;
+	z-index:6;
+	border-radius:6px;
+	-webkit-box-shadow:0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+#mask
+{
+	background-color:#2d2d2d;
+	opacity:0;
+	filter:alpha(opacity=0);
+	position:fixed;
+	width:100%;
+	height:100%;
+	top:0px;
+	left:0px;
+	z-index:-5;
+}
+
+.course_text{
+	text-align:center;
+}
+
+.admin_tips
+{
+	font-size:14px;
+	line-height:30px;
+	color:#999;
+}
 </style>
 </head>
 <body>
 <div id="mask"></div>
-
 <form name="form0">
-<input type="text" name="year"  style="display:none;" value="20172"/>
+<input type="text" name="year"  style="display:none;" value="${yearTerm}"/>
 <input type="text" name="year_rili"  id="year_rili" style="display:none;" value="${courseCalendar.calendarYear}"/>
 <input type="text" name="month_rili"  id="month_rili" style="display:none;" value="${courseCalendar.calendarMonth}"/>
 <input type="text" name="day_rili"  id="day_rili" style="display:none;" value="${courseCalendar.calendarDay}"/>
 
 <div id="top">
-第&nbsp;<select id="week_select" onchange="change_week()">
+第&nbsp;<select id="week_select" onchange="change_week()"  style="width:100px;">
     <option value="01" selected>1</option>
 	<%
 	for(int $i=2;$i<=9;$i++)
@@ -41,27 +140,16 @@ td{
 	for(int $i=10;$i<=20;$i++)
 		out.println(  "<option value=\""+$i+"\">"+$i+"</option>");
 	%>
-  
-	
 </select>&nbsp;周
+
 &nbsp;&nbsp;&nbsp;&nbsp;
-学院:&nbsp;&nbsp;<select name="h_school" id="h_school" onchange="change()">
-<%
-for(int i=0;i<4;i++)
-{
-	out.println( "<option value = \""+i+"\">"+i+"</option>");
-}
-%>
+学院:&nbsp;&nbsp;<select name="h_school" id="h_school" class="h_school" onchange="change()" style="width:100px;">
+
 </select>
 &nbsp;&nbsp;&nbsp;&nbsp;机房:&nbsp;&nbsp;
-<select id="address" onchange="change_address()">
-<%
-for(int i=0;i<10;i++)
-{
-	out.println( "<option value = \""+i+"\">"+i+"</option>");
-}
-%>
+<select id="address" class="address" onchange="change_address()" style="width:100px;">
 </select>
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="button"; onclick="window_print()"; name="win_print"; id="win_print" value="打印" class="button"/>
 </div>
@@ -111,21 +199,20 @@ for(int i=0;i<10;i++)
 
 
 </div>
+
+
 <script>
 var time_array = new Array();//日历数组
 //页面加载完成后执行change()填表格操作
 $(document).ready(function()
 {
-	var s = document.getElementById("h_school");  
-    var ops = s.options;  
-    for(var i=0;i<ops.length; i++)
-	{  
-        var tempValue = ops[i].value;  
-        if(tempValue == "04")  
-        {  
-            ops[i].selected = true;  
-        }  
-    }  
+	$('#top').cxSelect({ 
+		  url: '${ctx}/school/schoolRoot/treeLink',
+		  selects: ['h_school', 'address'], 
+		  jsonName: 'name',
+		  jsonValue: 'value',
+		  jsonSub: 'sub'
+		}); 
 	change();
    //document.form0.h_school.options[04].selected = true; 
 });
@@ -208,30 +295,28 @@ function change_week()
 {
 	change();
 }
+
 //获取当前表单数据
 function change()
 {
-
 	
 	var table_temp = document.getElementById("s_week");//表格 
 	var year = document.form0.year.value;//获取年份
-	var h_school = document.getElementById("h_school");
-	h_school = h_school.options[h_school.selectedIndex].value;//获取学院
-	var address = document.getElementById("address");//获取机房号
-	address = address.options[address.selectedIndex].value;
-	//alert(address);
+	var h_school = $("#h_school").children('option:selected').val();
+	var address = $("#address").children('option:selected').val();
 	var temp = document.getElementById("week_select");//获取周次
 	week= temp.options[temp.selectedIndex].value;
 	time = year+''+h_school+''+address+''+week;
 	//alert(time);
 	//日历相关
 	var week_rili = temp.options[temp.selectedIndex].text;
+	
 	//alert(time);
 	var year_rili = document.form0.year_rili.value;
 	var month_rili = document.form0.month_rili.value;
 	var day_rili  = document.form0.day_rili.value;
 	var flag_year = rili(year_rili,month_rili,day_rili);
-
+	
 	table_temp.rows[0].cells[1].innerHTML = "星期一 ["+time_array[week_rili][1]+"]";
 	table_temp.rows[0].cells[2].innerHTML = "星期二 ["+time_array[week_rili][2]+"]";
 	table_temp.rows[0].cells[3].innerHTML = "星期三 ["+time_array[week_rili][3]+"]";

@@ -5,13 +5,14 @@ package com.thinkgem.jeesite.modules.course.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
+import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 
 /**
  * 计划教室Service
@@ -21,9 +22,14 @@ import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 @Service
 @Transactional(readOnly = true)
 public class CourseScheduleService extends CrudService<CourseScheduleDao, CourseSchedule> {
-
+	@Autowired
+	private CourseScheduleDao courseScheduleDao;
 	public CourseSchedule get(String id) {
 		return super.get(id);
+	}
+	
+	public List<CourseSchedule> findListByTimeAdd(String timeAdd) {
+		return courseScheduleDao.findListByTimeAdd(timeAdd);
 	}
 	
 	public List<CourseSchedule> findList(CourseSchedule courseSchedule) {

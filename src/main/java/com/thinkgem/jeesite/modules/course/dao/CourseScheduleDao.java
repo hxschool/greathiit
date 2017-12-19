@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.course.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
@@ -14,5 +18,5 @@ import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
  */
 @MyBatisDao
 public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
-	
+	public List<CourseSchedule> findListByTimeAdd(@Param("timeAdd")String timeAdd);
 }

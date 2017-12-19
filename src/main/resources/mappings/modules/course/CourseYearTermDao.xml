@@ -15,7 +15,9 @@
 	
 	<sql id="courseYearTermJoins">
 	</sql>
-    
+	<select id="systemConfig" resultType="CourseYearTerm">
+		SELECT <include refid="courseYearTermColumns"/> FROM course_year_term a order by a.update_date desc limit 1
+    </select>
 	<select id="get" resultType="CourseYearTerm">
 		SELECT 
 			<include refid="courseYearTermColumns"/>

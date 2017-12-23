@@ -8,9 +8,9 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
 /**
- * 课程内容Entity
+ * 课程具体内容Entity
  * @author 赵俊飞
- * @version 2017-12-13
+ * @version 2017-12-24
  */
 public class CourseSpecificContent extends DataEntity<CourseSpecificContent> {
 	

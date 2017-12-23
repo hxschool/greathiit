@@ -14,9 +14,9 @@ import com.thinkgem.jeesite.modules.course.entity.CourseSpecificContent;
 import com.thinkgem.jeesite.modules.course.dao.CourseSpecificContentDao;
 
 /**
- * 课程内容Service
+ * 课程具体内容Service
  * @author 赵俊飞
- * @version 2017-12-13
+ * @version 2017-12-24
  */
 @Service
 @Transactional(readOnly = true)

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.course.dao.CourseTeachingtargetDao">
+    
+	<sql id="courseTeachingtargetColumns">
+		a.id AS "id",
+		a.tchtarget_content AS "tchtargetContent",
+		a.tchtarget_class_target_value AS "tchtargetClassTargetValue",
+		a.tchtarget_homework_target_value AS "tchtargetHomeworkTargetValue",
+		a.tchtarget_exp_target_value AS "tchtargetExpTargetValue",
+		a.tchtarget_mid_target_value AS "tchtargetMidTargetValue",
+		a.tchtarget_fin_target_value AS "tchtargetFinTargetValue",
+		a.course_id AS "courseId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="courseTeachingtargetJoins">
+	</sql>
+    
+	<select id="get" resultType="CourseTeachingtarget">
+		SELECT 
+			<include refid="courseTeachingtargetColumns"/>
+		FROM course_teachingtarget a
+		<include refid="courseTeachingtargetJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CourseTeachingtarget">
+		SELECT 
+			<include refid="courseTeachingtargetColumns"/>
+		FROM course_teachingtarget a
+		<include refid="courseTeachingtargetJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="tchtargetContent != null and tchtargetContent != ''">
+				AND a.tchtarget_content = #{tchtargetContent}
+			</if>
+			<if test="tchtargetClassTargetValue != null and tchtargetClassTargetValue != ''">
+				AND a.tchtarget_class_target_value = #{tchtargetClassTargetValue}
+			</if>
+			<if test="tchtargetHomeworkTargetValue != null and tchtargetHomeworkTargetValue != ''">
+				AND a.tchtarget_homework_target_value = #{tchtargetHomeworkTargetValue}
+			</if>
+			<if test="tchtargetExpTargetValue != null and tchtargetExpTargetValue != ''">
+				AND a.tchtarget_exp_target_value = #{tchtargetExpTargetValue}
+			</if>
+			<if test="tchtargetMidTargetValue != null and tchtargetMidTargetValue != ''">
+				AND a.tchtarget_mid_target_value = #{tchtargetMidTargetValue}
+			</if>
+			<if test="tchtargetFinTargetValue != null and tchtargetFinTargetValue != ''">
+				AND a.tchtarget_fin_target_value = #{tchtargetFinTargetValue}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CourseTeachingtarget">
+		SELECT 
+			<include refid="courseTeachingtargetColumns"/>
+		FROM course_teachingtarget a
+		<include refid="courseTeachingtargetJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_teachingtarget(
+			id,
+			tchtarget_content,
+			tchtarget_class_target_value,
+			tchtarget_homework_target_value,
+			tchtarget_exp_target_value,
+			tchtarget_mid_target_value,
+			tchtarget_fin_target_value,
+			course_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{tchtargetContent},
+			#{tchtargetClassTargetValue},
+			#{tchtargetHomeworkTargetValue},
+			#{tchtargetExpTargetValue},
+			#{tchtargetMidTargetValue},
+			#{tchtargetFinTargetValue},
+			#{courseId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_teachingtarget SET 	
+			tchtarget_content = #{tchtargetContent},
+			tchtarget_class_target_value = #{tchtargetClassTargetValue},
+			tchtarget_homework_target_value = #{tchtargetHomeworkTargetValue},
+			tchtarget_exp_target_value = #{tchtargetExpTargetValue},
+			tchtarget_mid_target_value = #{tchtargetMidTargetValue},
+			tchtarget_fin_target_value = #{tchtargetFinTargetValue},
+			course_id = #{courseId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_teachingtarget SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

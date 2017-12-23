@@ -14,27 +14,27 @@
 	<div id="content" class="row-fluid">
 		<div id="left" class="accordion-group">
 			<div class="accordion-heading">
-		    	<a class="accordion-toggle">111</a>
+		    	<a class="accordion-toggle">教学大纲</a>
 		    </div>
 			
 			 <div id="ztree" class="ztree"></div>
 		</div>
 		<div id="openClose" class="close">&nbsp;</div>
 		<div id="right">
-			<iframe id="officeContent" src="${ctx}/sys/user/list" width="100%" height="91%" frameborder="0"></iframe>
+			<iframe id="officeContent" src="${ctx}/course/course/detail_1_selectBasicInfByCursId?id=${course.id}" width="100%" height="91%" frameborder="0"></iframe>
 		</div>
 	</div>
 	<script type="text/javascript">
 	
 		var data = {
 		    teacher:[
-		    	 {id:1,name:"课程基本信息",pId:"0"},
-		    	 {id:1,name:"课程教学目标",pId:"0"},
-		    	 {id:1,name:"课程具体内容",pId:"0"},
-		    	 {id:1,name:"教学方式",pId:"0"},
-		    	 {id:1,name:"考核与评定",pId:"0"},
-		    	 {id:1,name:"参考教材",pId:"0"},
-		    	 {id:1,name:"说明",pId:"0"}
+		    	 {id:"detail_1_selectBasicInfByCursId",name:"课程基本信息",pId:"0"},
+		    	 {id:"detail_2_selectTchingTargetByCursId",name:"课程教学目标",pId:"0"},
+		    	 {id:"detail_3_selectSpeContentCursId",name:"课程具体内容",pId:"0"},
+		    	 {id:"detail_4_selectTchingModeByCursId",name:"教学方式",pId:"0"},
+		    	 {id:"detail_6_selectPerRuleByCursId",name:"考核与评定",pId:"0"},
+		    	 {id:"detail_7_selectBookByCursId",name:"参考教材",pId:"0"},
+		    	 {id:"detail_8_selectNoteByCursId",name:"说明",pId:"0"}
 		    ]
 		}
 		
@@ -42,7 +42,9 @@
 				callback:{onClick:function(event, treeId, treeNode){
 						var id = treeNode.id == '0' ? '' :treeNode.id;
 						
-						$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+						//$('#officeContent').attr("src","${ctx}/sys/user/list?office.id="+id+"&office.name="+treeNode.name);
+						$('#officeContent').attr("src","${ctx}/course/course/"+id+"?id=${course.id}");
+						
 					}
 				}
 			};
@@ -50,7 +52,7 @@
 			function refreshTree(){
 				var teacherList = data.teacher;
 				 var treeData = [];
-				    treeData.push({id:"root",name:"学校",pId:null});
+				    treeData.push({id:"root",name:"${course.cursName}",pId:null});
 				    for(var i=0,il=teacherList.length;i<il;i++){
 				        teacherList[i].pId = "root";
 				        treeData.push(teacherList[i]);

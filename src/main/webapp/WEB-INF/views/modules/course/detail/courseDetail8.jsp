@@ -26,9 +26,29 @@
 	</script>
 	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/common.css" />
 <link rel="stylesheet"
-	href="${ctxStatic}/modules/teacher/teaching_management.css" />
+	href="${ctxStatic}/modules/teacher/course-detail.css" />
 </head>
 <body>
-	ssss
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<div class="div-module-add-curs">
+					<h6><img class="image-path-1" src="${ctxStatic}/modules/img/circle.jpg"/>
+						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
+					</h6>
+				</div>
+				<div class="div-inf">
+					<div class="div-inf-title">说明</div>
+					<div class="div-inner-text">
+						<h5 class="gray">（一）与相关课程的分工衔接</h5>
+						<label>${course.cursNote1}</label>
+						<h5 class="gray">（二）其他说明</h5>
+						<label>${course.cursNote2}</label>
+						<label></label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

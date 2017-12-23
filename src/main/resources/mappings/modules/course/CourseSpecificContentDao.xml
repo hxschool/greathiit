@@ -39,6 +39,33 @@
 		<include refid="courseSpecificContentJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="cscBasRequ != null and cscBasRequ != ''">
+				AND a.csc_bas_requ = #{cscBasRequ}
+			</if>
+			<if test="cscChapter != null and cscChapter != ''">
+				AND a.csc_chapter = #{cscChapter}
+			</if>
+			<if test="cscClassHour != null and cscClassHour != ''">
+				AND a.csc_class_hour = #{cscClassHour}
+			</if>
+			<if test="cscGoal != null and cscGoal != ''">
+				AND a.csc_goal = #{cscGoal}
+			</if>
+			<if test="cscHomework != null and cscHomework != ''">
+				AND a.csc_homework = #{cscHomework}
+			</if>
+			<if test="cscStudyDiffi != null and cscStudyDiffi != ''">
+				AND a.csc_study_diffi = #{cscStudyDiffi}
+			</if>
+			<if test="cscStudyEmpha != null and cscStudyEmpha != ''">
+				AND a.csc_study_empha = #{cscStudyEmpha}
+			</if>
+			<if test="cscTarget != null and cscTarget != ''">
+				AND a.csc_target = #{cscTarget}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

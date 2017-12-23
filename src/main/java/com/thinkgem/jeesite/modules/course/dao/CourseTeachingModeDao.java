@@ -5,14 +5,14 @@ package com.thinkgem.jeesite.modules.course.dao;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.course.entity.CourseSpecificContent;
+import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 
 /**
- * 课程具体内容DAO接口
+ * 教学方式DAO接口
  * @author 赵俊飞
  * @version 2017-12-24
  */
 @MyBatisDao
-public interface CourseSpecificContentDao extends CrudDao<CourseSpecificContent> {
+public interface CourseTeachingModeDao extends CrudDao<CourseTeachingMode> {
 	
 }

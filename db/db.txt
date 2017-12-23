@@ -506,3 +506,47 @@ CREATE TABLE course_schedule  (
 	PRIMARY KEY(id)
 )
 comment = '计划教室,根据选择学院,教室生成相关信息'
+
+
+
+
+CREATE TABLE course_composition_rules  ( 
+	id          	varchar(64) COMMENT '编号'  NOT NULL,
+	clazz_per         	double comment '课堂表现' NULL,
+	exp_result_per     	double comment '实验成绩' NULL,
+	final_examPer     	double comment '期末成绩' NULL,
+	homework_result_per	double comment '平时作业' NULL,
+	mid_term_per       	double comment '期中成绩' NULL,
+	course_id   	varchar(64) NOT NULL,
+	create_by   	varchar(64) COMMENT '创建者'  NULL,
+	create_date 	datetime COMMENT '创建时间'  NULL,
+	update_by   	varchar(64) COMMENT '更新者'  NULL,
+	update_date 	datetime COMMENT '更新时间'  NULL,
+	remarks     	varchar(2000) NULL,
+	del_flag    	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '课程考试与教学目标支撑分值设置' 
+;
+
+
+create table course_teachingtarget  ( 
+	id          varchar(64) comment '编号'  not null,
+	tchtarget_content   varchar(200) comment '教学目标'  not null,
+	tchtarget_class_target_value         	double comment '课堂表现' null,
+	tchtarget_homework_target_value	double comment '平时作业' null,
+	tchtarget_exp_target_value    	double comment '实验成绩' null,
+	tchtarget_mid_target_value      	double comment '期中成绩' null,
+	tchtarget_fin_target_value    	double comment '期末成绩' null,
+	course_id   	varchar(64) not null,
+	create_by   	varchar(64) comment '创建者'  null,
+	create_date 	datetime comment '创建时间'  null,
+	update_by   	varchar(64) comment '更新者'  null,
+	update_date 	datetime comment '更新时间'  null,
+	remarks     	varchar(2000) null,
+	del_flag    	char(1) comment '删除标记'  not null default '0',
+	primary key(id)
+)
+comment = '设置课程考试与教学目标支撑分值' 
+go
+

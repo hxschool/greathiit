@@ -32,9 +32,9 @@
 	<div class="content">
 		<div class="container">
 			<div class="row">
-				<div class="span9">
+				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr">
+						<div class="span12 div-content-white-bgr">
 							<!-- 研究成果 -->
 							<div class="div-tchr-curs">
 								<div class="div-inf-bar">

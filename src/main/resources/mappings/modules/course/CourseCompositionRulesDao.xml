@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao">
+    
+	<sql id="courseCompositionRulesColumns">
+		a.id AS "id",
+		a.clazz_per AS "clazzPer",
+		a.exp_result_per AS "expResultPer",
+		a.final_examper AS "finalExamper",
+		a.homework_result_per AS "homeworkResultPer",
+		a.mid_term_per AS "midTermPer",
+		a.course_id AS "courseId",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="courseCompositionRulesJoins">
+	</sql>
+    
+	<select id="get" resultType="CourseCompositionRules">
+		SELECT 
+			<include refid="courseCompositionRulesColumns"/>
+		FROM course_composition_rules a
+		<include refid="courseCompositionRulesJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	  
+	<select id="getCourseCompositionRulesByCourseId" resultType="CourseCompositionRules">
+		SELECT 
+			<include refid="courseCompositionRulesColumns"/>
+		FROM course_composition_rules a
+		<include refid="courseCompositionRulesJoins"/>
+		WHERE a.course_id = #{courseId}
+	</select>
+	
+	<select id="findList" resultType="CourseCompositionRules">
+		SELECT 
+			<include refid="courseCompositionRulesColumns"/>
+		FROM course_composition_rules a
+		<include refid="courseCompositionRulesJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="clazzPer != null and clazzPer != ''">
+				AND a.clazz_per = #{clazzPer}
+			</if>
+			<if test="expResultPer != null and expResultPer != ''">
+				AND a.exp_result_per = #{expResultPer}
+			</if>
+			<if test="finalExamper != null and finalExamper != ''">
+				AND a.final_examper = #{finalExamper}
+			</if>
+			<if test="homeworkResultPer != null and homeworkResultPer != ''">
+				AND a.homework_result_per = #{homeworkResultPer}
+			</if>
+			<if test="midTermPer != null and midTermPer != ''">
+				AND a.mid_term_per = #{midTermPer}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CourseCompositionRules">
+		SELECT 
+			<include refid="courseCompositionRulesColumns"/>
+		FROM course_composition_rules a
+		<include refid="courseCompositionRulesJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_composition_rules(
+			id,
+			clazz_per,
+			exp_result_per,
+			final_examper,
+			homework_result_per,
+			mid_term_per,
+			course_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{clazzPer},
+			#{expResultPer},
+			#{finalExamper},
+			#{homeworkResultPer},
+			#{midTermPer},
+			#{courseId},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_composition_rules SET 	
+			clazz_per = #{clazzPer},
+			exp_result_per = #{expResultPer},
+			final_examper = #{finalExamper},
+			homework_result_per = #{homeworkResultPer},
+			mid_term_per = #{midTermPer},
+			course_id = #{courseId},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_composition_rules SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

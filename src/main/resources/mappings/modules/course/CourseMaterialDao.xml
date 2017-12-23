@@ -36,6 +36,12 @@
 		<include refid="courseMaterialJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+			<if test="cmType != null and cmType != ''">
+				AND a.cm_type = #{cmType}
+			</if>
 			<if test="cmAuthor != null and cmAuthor != ''">
 				AND a.cm_author = #{cmAuthor}
 			</if>

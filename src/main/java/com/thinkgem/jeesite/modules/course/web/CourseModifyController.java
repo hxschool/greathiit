@@ -42,8 +42,8 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  * @version 2017-12-13
  */
 @Controller
-@RequestMapping(value = "${adminPath}/course/course")
-public class CourseController extends BaseController {
+@RequestMapping(value = "${adminPath}/course/modify")
+public class CourseModifyController extends BaseController {
 
 	@Autowired
 	private CourseService courseService;
@@ -121,13 +121,13 @@ public class CourseController extends BaseController {
 	public String course_Detail_1_selectByCursId(String cursId, Model model) {
 		Course course = courseService.get(cursId);
 		model.addAttribute("course",course);
-		return "modules/course/detail/course_detail_1_selectByCursId";
+		return "modules/course/modify/course_detail_1_selectByCursId";
 	}
 	//课程基本信息
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "detail_1_selectBasicInfByCursId")
 	public String selectBasicInfByCursId(Course course,  Model model) {
-		return "modules/course/detail/courseDetail1";
+		return "modules/course/modify/courseDetail1";
 	}
 	//课程教学目标
 	@RequiresPermissions("course:course:view")
@@ -137,7 +137,7 @@ public class CourseController extends BaseController {
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
 		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
-		return "modules/course/detail/courseDetail2";
+		return "modules/course/modify/courseDetail2";
 	}
 	//课程具体内容
 	@RequiresPermissions("course:course:view")
@@ -148,7 +148,7 @@ public class CourseController extends BaseController {
 		courseSpecificContent.setCourseId(courseId);
 		List<CourseSpecificContent> csc = courseSpecificContentService.findList(courseSpecificContent);
 		model.addAttribute("csc",csc);
-		return "modules/course/detail/courseDetail3";
+		return "modules/course/modify/courseDetail3";
 	}
 
 	
@@ -161,7 +161,7 @@ public class CourseController extends BaseController {
 		courseTeachingMode.setCourseId(courseId);
 		List<CourseTeachingMode> ctm = courseTeachingModeService.findList(courseTeachingMode);
 		model.addAttribute("ctm",ctm);
-		return "modules/course/detail/courseDetail4";
+		return "modules/course/modify/courseDetail4";
 	}
 
 	// 考核与评定
@@ -177,7 +177,7 @@ public class CourseController extends BaseController {
 
 		model.addAttribute("rules",rules);
 		model.addAttribute("targets",targets);
-		return "modules/course/detail/courseDetail6";
+		return "modules/course/modify/courseDetail6";
 	}
 
 	// 参考教材
@@ -191,14 +191,14 @@ public class CourseController extends BaseController {
 		model.addAttribute("cm",courseMaterialService.findList(courseMaterial));
 		courseMaterial.setCmType("2");
 		model.addAttribute("crb",courseMaterialService.findList(courseMaterial));
-		return "modules/course/detail/courseDetail7";
+		return "modules/course/modify/courseDetail7";
 	}
 
 	// 说明
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "detail_8_selectNoteByCursId")
 	public String selectNoteByCursId(Course course, RedirectAttributes redirectAttributes) {
-		return "modules/course/detail/courseDetail8";
+		return "modules/course/modify/courseDetail8";
 	}
 
 }

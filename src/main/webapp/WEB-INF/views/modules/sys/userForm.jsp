@@ -66,8 +66,10 @@
 		<div class="control-group">
 			<label class="control-label">所属班级:</label>
 			<div class="controls">
-                <sys:treeselect id="clazz" name="clazz.id" value="${user.clazz.id}" labelName="clazz.name" labelValue="${user.clazz.name}"
-					title="班级" url="/sys/office/treeData?type=4" cssClass="required" notAllowSelectParent="true"  />
+
+					
+					<sys:treeselect id="clazz" name="clazz.id" value="${user.clazz.id}" labelName="clazz.name" labelValue="${user.clazz.name}"
+					title="班级" url="/sys/office/treeData?grade=4" cssClass="required" notAllowSelectParent="true"  />
 			</div>
 		</div>
 		

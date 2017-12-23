@@ -23,9 +23,9 @@ import com.thinkgem.jeesite.modules.course.entity.CourseSpecificContent;
 import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 
 /**
- * 课程内容Controller
+ * 课程具体内容Controller
  * @author 赵俊飞
- * @version 2017-12-13
+ * @version 2017-12-24
  */
 @Controller
 @RequestMapping(value = "${adminPath}/course/courseSpecificContent")
@@ -68,7 +68,7 @@ public class CourseSpecificContentController extends BaseController {
 			return form(courseSpecificContent, model);
 		}
 		courseSpecificContentService.save(courseSpecificContent);
-		addMessage(redirectAttributes, "保存课程内容成功");
+		addMessage(redirectAttributes, "保存课程具体内容成功");
 		return "redirect:"+Global.getAdminPath()+"/course/courseSpecificContent/?repage";
 	}
 	
@@ -76,7 +76,7 @@ public class CourseSpecificContentController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(CourseSpecificContent courseSpecificContent, RedirectAttributes redirectAttributes) {
 		courseSpecificContentService.delete(courseSpecificContent);
-		addMessage(redirectAttributes, "删除课程内容成功");
+		addMessage(redirectAttributes, "删除课程具体内容成功");
 		return "redirect:"+Global.getAdminPath()+"/course/courseSpecificContent/?repage";
 	}
 

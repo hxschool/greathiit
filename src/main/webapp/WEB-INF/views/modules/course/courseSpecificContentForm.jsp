@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>课程内容管理</title>
+	<title>课程具体内容管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/course/courseSpecificContent/">课程内容列表</a></li>
-		<li class="active"><a href="${ctx}/course/courseSpecificContent/form?id=${courseSpecificContent.id}">课程内容<shiro:hasPermission name="course:courseSpecificContent:edit">${not empty courseSpecificContent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="course:courseSpecificContent:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/course/courseSpecificContent/">课程具体内容列表</a></li>
+		<li class="active"><a href="${ctx}/course/courseSpecificContent/form?id=${courseSpecificContent.id}">课程具体内容<shiro:hasPermission name="course:courseSpecificContent:edit">${not empty courseSpecificContent.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="course:courseSpecificContent:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="courseSpecificContent" action="${ctx}/course/courseSpecificContent/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

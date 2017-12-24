@@ -33,10 +33,10 @@
 	
 	<div class="container">
 		<div class="row">
-			<div class="span10">
-			<div class="div-module-add-curs">
-					<h6><img class="image-path-1" src="img/circle.jpg"/>
-						<a href="Teacher_Management_2_selectTchrCourse">课程列表</a><img class="image-path-2" src="img/zhexian.jpg"/><s:property value="course.cursName" />
+			<div class="span12">
+				<div class="div-module-add-curs">
+					<h6><img class="image-path-1" src="${ctxStatic}/modules/img/circle.jpg"/>
+						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
 				<form action="TeacherCourse_Modify_2_modifyTargetByCursId" method="post"

@@ -58,7 +58,7 @@
 											<h6>开设学期：</h6>
 											<label>${item.cursTerm}</label>
 											<div class="div-curs-detail-inf a">
-												<a href="Course_Detail_1_selectByCursId?cursId=${item.id}">详细</a>&nbsp;&nbsp;
+												<a href="courseDetail?cursId=${item.id}">详细</a>&nbsp;&nbsp;
 											</div>
 										</section>
 									</c:forEach>

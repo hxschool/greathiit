@@ -72,7 +72,7 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">年份：</label>
+			<label class="control-label">学期：</label>
 			<div class="controls">
 				<select name="term" id="term" class="input-medium required" >
 					<option value="1">1</option>

@@ -33,6 +33,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>年份</th>
+				<th>学期</th>
 				<th>更新时间</th>
 				<th>remarks</th>
 				<shiro:hasPermission name="course:courseYearTerm:edit"><th>操作</th></shiro:hasPermission>
@@ -42,14 +44,19 @@
 		<c:forEach items="${page.list}" var="courseYearTerm">
 			<tr>
 				<td><a href="${ctx}/course/courseYearTerm/form?id=${courseYearTerm.id}">
-					<fmt:formatDate value="${courseYearTerm.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${fn:substring(courseYearTerm.yearTerm,0,4)}
 				</a></td>
+				<td>
+					${fn:substring(courseYearTerm.yearTerm,4,5)}
+				</td>
+				<td>
+					<fmt:formatDate value="${courseYearTerm.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
 				<td>
 					${courseYearTerm.remarks}
 				</td>
 				<shiro:hasPermission name="course:courseYearTerm:edit"><td>
     				<a href="${ctx}/course/courseYearTerm/form?id=${courseYearTerm.id}">修改</a>
-					<a href="${ctx}/course/courseYearTerm/delete?id=${courseYearTerm.id}" onclick="return confirmx('确认要删除该学期初始化吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

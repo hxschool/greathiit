@@ -127,9 +127,12 @@ td{
 <div id="mask"></div>
 <form name="form0">
 <input type="text" name="year"  style="display:none;" value="${yearTerm}"/>
+<input type="text" id="servers_time" name="servers_time" style="display:none;" value="${mm}@${dd}">
 <input type="text" name="year_rili"  id="year_rili" style="display:none;" value="${courseCalendar.calendarYear}"/>
 <input type="text" name="month_rili"  id="month_rili" style="display:none;" value="${courseCalendar.calendarMonth}"/>
 <input type="text" name="day_rili"  id="day_rili" style="display:none;" value="${courseCalendar.calendarDay}"/>
+<fmt:formatDate value="<%=new java.util.Date()%>" pattern="MM" var="mm"/>
+<fmt:formatDate value="<%=new java.util.Date()%>" pattern="dd" var="dd"/>
 
 <div id="top">
 第&nbsp;<select id="week_select" onchange="change_week()"  style="width:100px;">
@@ -188,7 +191,7 @@ td{
 <!-- div层[排一个课]-->
 <div id="up"; style="display:none; width:400px; height:400px;">
 <form action="" name="form" style="margin-left:30px; margin-top:50px;">
-	<input  type="text" style="display:none" name="time" /> <!-- 存放时间地址字段-->
+	<input  type="hidden" style="display:none" name="time" id="time" /> <!-- 存放时间地址字段-->
     <p>
 	相关说明:&nbsp;&nbsp;<p>
   	<textarea name="tips" style="height:100px; width:300px;"></textarea>
@@ -199,6 +202,43 @@ td{
 
 
 </div>
+
+<div id="teacherUp"; style="display:none; width:400px; height:400px;">
+                    <form action="" name="form" style="margin-left:30px; margin-top:50px;">
+                        <p>
+                        <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;|&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a>
+                        <input  type="text" style="display:none" name="teacherTime" id="teacherTime" /> <!-- 存放时间地址字段-->
+                        <p>
+                        <div id="putong">
+                       学院:&nbsp;&nbsp;
+                       <select name="school" id="school" onChange="change_school(document.form.school.options[document.form.school.selectedIndex].value)">
+                            <option value="" selected="selected">==请选择学院==</option>
+                        </select>
+                        <p>专业:&nbsp;&nbsp;
+                        <select name="major"  id="major" onChange="change_major(document.form.major.options[document.form.major.selectedIndex].value)">
+                          <option value=""selected="selected">==请选择专业==</option>
+                        </select>
+                        <p>年级:&nbsp;&nbsp;
+                        <select name="grade"  id="grade" onchange="change_grade(document.form.grade.options[document.form.grade.selectedIndex].value)">
+                          <option value="" selected="selected">==请选择年级==</option>
+                        </select>
+                        <p>班级:&nbsp;&nbsp;
+                        <select name="w_class" id="w_class">
+                          <option value="" selected="selected">==请选择班级==</option>
+                        </select>
+                        <p>课程:&nbsp;&nbsp;
+                        <select name="course" id="course">
+                        <option value="" selected="selected">==请选择课程==</option>
+                        <option value=00000150>大型数据库管理与应用</option><option value=00000196>网络工程规划课程设计</option><option value=00000324>111</option>                        </select>
+                        <p>
+                        备注:&nbsp;&nbsp;<input type="text" name="tips"/>
+                        <p>
+                        <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
+                    </form>
+            
+            
+            </div>
 
 
 <script>
@@ -372,7 +412,7 @@ function chuancan(selected)
 						else
 						{
 							var temp = document.getElementById("s_week");
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"prime_a\">点此加锁</a><div>";
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"prime_a\">加锁</a> <a onclick=\"teacherPaike("+selected+","+i+","+j+")\"  class=\"prime_a\">排课</a> <div>";
 						}
 						cnt++;
 					}
@@ -381,11 +421,64 @@ function chuancan(selected)
    		}
 	   }); 
 }
+
+function time_limit(xingqi)
+{	
+	var t = document.getElementById("week_select");//获取周次
+	var zhou = t.options[t.selectedIndex].text;
+	var servers_time = $("#servers_time").val().split("@");
+	var local_time=time_array[zhou][xingqi];
+
+	local_time=local_time.replace("月","日");
+	local_time=local_time.split("日");
+	var local_mon=parseInt(local_time[0]);
+	var servers_mon=parseInt(servers_time[0]);
+	var local_day=parseInt(local_time[1]);
+	var servers_day=parseInt(servers_time[1]);
+
+	if(servers_mon<local_mon)
+	{
+		//alert(servers_mon+"<"+local_mon);
+		return 1;
+	}
+	else if(servers_mon==local_mon && servers_day<=local_day)
+	{
+		return 1;
+	}
+        else if((servers_mon >= 8 && servers_mon <= 12) && local_mon == 1)
+        {
+            return 1;
+        }
+	else
+	{	return 0;}
+}
+
+function teacherPaike(time,row,cell)
+{
+	if(time_limit(cell)==0)
+	{
+		alert("日期已过，不允许排课");
+	}
+	else
+	{
+		document.form.add.value="添加"
+		var temp = document.getElementById("s_week");
+		time_add = time+''+row+''+cell;
+		$("#teacherTime").val(time_add)//给存储时间地址ID赋值
+		//alert(time_add);
+		
+			$('#mask').css({'zIndex':'5'});
+			$('#mask').animate({'opacity':'0.5'},200);
+		
+		$('#teacherUp').fadeIn(200);
+	}
+}
+
 //获取点击坐标 显示div隐藏排课层
 function paike(time,row,cell)
 {
 time_add = time+''+row+''+cell;
-document.form.time.value = time_add;//给存储时间地址ID赋值
+$("#time").val(time_add);//给存储时间地址ID赋值
 //alert(time_add);
 
 	$('#mask').css({'zIndex':'5'});

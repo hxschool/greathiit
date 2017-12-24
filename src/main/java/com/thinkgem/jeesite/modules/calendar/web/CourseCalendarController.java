@@ -64,7 +64,7 @@ public class CourseCalendarController extends BaseController {
 		return entity;
 	}
 	
-	//@RequiresPermissions("calendar:courseCalendar:view")
+	@RequiresPermissions("calendar:courseCalendar:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CourseCalendar courseCalendar, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CourseCalendar> page = courseCalendarService.findPage(new Page<CourseCalendar>(request, response), courseCalendar); 
@@ -72,14 +72,14 @@ public class CourseCalendarController extends BaseController {
 		return "modules/calendar/courseCalendarList";
 	}
 
-	//@RequiresPermissions("calendar:courseCalendar:view")
+	@RequiresPermissions("calendar:courseCalendar:view")
 	@RequestMapping(value = "form")
 	public String form(CourseCalendar courseCalendar, Model model) {
 		model.addAttribute("courseCalendar", courseCalendar);
 		return "modules/calendar/courseCalendarForm";
 	}
 	
-	// @RequiresPermissions("calendar:courseCalendar:view")
+	@RequiresPermissions("calendar:courseCalendar:view")
 	@RequestMapping(value = "manageCourseSchedule")
 	public String manageCourseSchedule(CourseCalendar courseCalendar, Model model) {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
@@ -123,7 +123,7 @@ public class CourseCalendarController extends BaseController {
 	}
 	
 
-	//@RequiresPermissions("calendar:courseCalendar:edit")
+	@RequiresPermissions("calendar:courseCalendar:edit")
 	@RequestMapping(value = "save")
 	public String save(CourseCalendar courseCalendar, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, courseCalendar)){

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,7 +62,7 @@ public class CourseYearTermController extends BaseController {
 		return entity;
 	}
 	
-	//@RequiresPermissions("course:courseYearTerm:view")
+	@RequiresPermissions("course:courseYearTerm:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(CourseYearTerm courseYearTerm, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<CourseYearTerm> page = courseYearTermService.findPage(new Page<CourseYearTerm>(request, response), courseYearTerm); 
@@ -69,14 +70,14 @@ public class CourseYearTermController extends BaseController {
 		return "modules/course/courseYearTermList";
 	}
 
-	//@RequiresPermissions("course:courseYearTerm:view")
+	@RequiresPermissions("course:courseYearTerm:view")
 	@RequestMapping(value = "form")
 	public String form(CourseYearTerm courseYearTerm, Model model) {
 		model.addAttribute("courseYearTerm", courseYearTerm);
 		return "modules/course/courseYearTermForm";
 	}
 
-	//@RequiresPermissions("course:courseYearTerm:edit")
+	@RequiresPermissions("course:courseYearTerm:edit")
 	@RequestMapping(value = "save")
 	public String save(CourseYearTerm courseYearTerm, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, courseYearTerm)){
@@ -125,7 +126,7 @@ public class CourseYearTermController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/course/courseYearTerm/?repage";
 	}
 	
-	//@RequiresPermissions("course:courseYearTerm:edit")
+	@RequiresPermissions("course:courseYearTerm:edit")
 	@RequestMapping(value = "delete")
 	public String delete(CourseYearTerm courseYearTerm, RedirectAttributes redirectAttributes) {
 		courseYearTermService.delete(courseYearTerm);

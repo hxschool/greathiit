@@ -584,6 +584,10 @@ public class SystemService extends BaseService implements InitializingBean {
 		return systemDao.getRsStudentId();
 	}
 	
+	public String getSequence(String serialNo){
+		return systemDao.getSequence(serialNo);
+	}
+	
 	///////////////// Synchronized to the Activiti end //////////////////
 	
 }

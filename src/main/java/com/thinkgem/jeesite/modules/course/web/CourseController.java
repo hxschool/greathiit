@@ -33,7 +33,9 @@ import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
+import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -57,6 +59,8 @@ public class CourseController extends BaseController {
 	private CourseTeachingModeService courseTeachingModeService;
 	@Autowired
 	private CourseSpecificContentService courseSpecificContentService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
@@ -104,6 +108,133 @@ public class CourseController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}
 	
+	/*新增课程信息-------------------------------------------------------------------------------------*/
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd1")
+	public String adminCourseAdd1(Course course, RedirectAttributes redirectAttributes) {
+		
+		return "modules/course/add/adminCourseAdd1";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd2")
+	public String adminCourseAdd2(Course course, Model model) {
+		String courseId = systemService.getSequence("serialNo10");
+		try {
+			logger.info("新增课程基本信息,课程信息:{}",course);
+			course.setId(courseId);
+			course.setTeacher(UserUtils.getUser());
+			courseService.save(course);
+		}catch(Exception e) {
+			addMessage(model,"添加信息异常"+e.getMessage());
+			return "modules/course/add/adminCourseAdd1";
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"课程基本信息设置成功");
+		return "modules/course/add/adminCourseAdd2";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd3")
+	public String adminCourseAdd3(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		
+		for(CourseTeachingtarget courseTeachingtarget:courseRequestParam.getTargets()) {
+			courseTeachingtarget.setCourseId(courseId);
+			
+			courseTeachingtargetService.save(courseTeachingtarget);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程教学目标成功");
+		return "modules/course/add/adminCourseAdd3";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd4")
+	public String adminCourseAdd4(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		
+		
+		for(CourseSpecificContent courseSpecificContent:courseRequestParam.getCsc()) {
+			courseSpecificContent.setCourseId(courseId);
+			courseSpecificContentService.save(courseSpecificContent);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程教学目标成功");
+	
+		return "modules/course/add/adminCourseAdd4";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd5")
+	public String adminCourseAdd5(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		for(CourseTeachingMode courseTeachingMode:courseRequestParam.getCtm()) {
+			courseTeachingMode.setCourseId(courseId);
+			courseTeachingModeService.save(courseTeachingMode);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程教学方式成功");
+		return "modules/course/add/adminCourseAdd5";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd6")
+	public String adminCourseAdd6(String courseId,Model model) {
+		model.addAttribute("courseId",courseId);
+		return "modules/course/add/adminCourseAdd6";
+	}
+	
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd7")
+	public String adminCourseAdd7(String courseId, Model model) {
+		
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程贡献点成功");
+		return "modules/course/add/adminCourseAdd7";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd8")
+	public String adminCourseAdd8(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		for(CourseMaterial courseMaterial:courseRequestParam.getCrb()) {
+			courseMaterial.setCmType("1");
+			courseMaterial.setCourseId(courseId);
+			courseMaterialService.save(courseMaterial);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程教材及参考书目成功");
+		return "modules/course/add/adminCourseAdd8";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd9")
+	public String adminCourseAdd9(String courseId,String cursNote1, String cursNote2,Model model) {
+		Course course = courseService.get(courseId);
+		course.setCursNote1(cursNote1);
+		course.setCursNote2(cursNote2);
+		courseService.save(course);
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程说明成功");
+		return "modules/course/add/adminCourseAdd9";
+	}
+	
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAdd10")
+	public String adminCourseAdd10(String courseId,CourseCompositionRules compositionRules,Model model) {
+		courseCompositionRulesService.save(compositionRules);
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"课程考试与教学目标支撑分值设置成功");
+		return "modules/course/add/adminCourseAdd10";
+	}
+	
+	@RequiresPermissions("course:course:edit")
+	@RequestMapping(value = "adminCourseAddOk")
+	public String adminCourseAddOk(Course course, Model model) {
+		addMessage(model,"添加课程贡献点");
+		return "modules/course/add/adminCourseAddOk";
+	}
+	
 	
 	//课程查询
 	@RequiresPermissions("course:course:view")
@@ -117,11 +248,11 @@ public class CourseController extends BaseController {
 	}
 	//课程基本信息
 	@RequiresPermissions("course:course:view")
-	@RequestMapping(value = "Course_Detail_1_selectByCursId")
+	@RequestMapping(value = "courseDetail")
 	public String course_Detail_1_selectByCursId(String cursId, Model model) {
 		Course course = courseService.get(cursId);
 		model.addAttribute("course",course);
-		return "modules/course/detail/course_detail_1_selectByCursId";
+		return "modules/course/detail/courseDetail";
 	}
 	//课程基本信息
 	@RequiresPermissions("course:course:view")

@@ -7,7 +7,7 @@
   </select>
   
     <select id="getSequence" resultType="String" parameterType="string" >
-    select getSequence(${serialNo}) 
+    select getSequence('${serialNo}') 
   </select>
 
   

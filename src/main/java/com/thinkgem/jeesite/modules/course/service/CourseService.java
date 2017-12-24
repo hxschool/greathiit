@@ -42,7 +42,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	
 	@Transactional(readOnly = false)
 	public void save(Course course) {
-		super.save(course);
+		courseDao.insert(course);
 	}
 	
 	@Transactional(readOnly = false)

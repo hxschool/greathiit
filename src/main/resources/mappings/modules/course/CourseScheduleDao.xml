@@ -27,6 +27,26 @@
 		<include refid="courseScheduleJoins"/>
 		WHERE a.id = #{id}
 	</select>
+
+	<select id="getByYearTermAndTeacherNumber" resultType="CourseYearTerm">
+		SELECT
+		<include refid="courseScheduleColumns" />
+		FROM course_schedule a
+		<include refid="courseScheduleJoins" />
+		WHERE a.time_add like CONCAT(#{timeAdd},'%') and
+		AND a.course_class!='' AND a.course_id in (SELECT course_id FROM course
+		WHERE teacher_number = #{teacherNumber}) ORDER BY a.time_add
+	</select>
+	
+	
+	
+		<select id="getByAddTime" resultType="CourseSchedule">
+		SELECT 
+			<include refid="courseScheduleColumns"/>
+		FROM course_schedule a
+		<include refid="courseScheduleJoins"/>
+		WHERE time_add=#{timeAdd}
+	</select>
 	
 	<select id="findListByTimeAdd" resultType="CourseSchedule">
 		SELECT 
@@ -34,6 +54,7 @@
 		FROM course_schedule a
 		<include refid="courseScheduleJoins"/>
 		WHERE substr(a.time_add,1,12) = #{timeAdd}
+		order by a.time_add
 	</select>
 	
 	

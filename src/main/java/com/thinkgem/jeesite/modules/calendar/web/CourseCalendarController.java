@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -93,6 +94,35 @@ public class CourseCalendarController extends BaseController {
 		return "modules/calendar/manageCourseSchedule";
 	}
 	
+	@RequiresPermissions("calendar:courseCalendar:view")
+	@RequestMapping(value = "ajaxAddLock")
+	@ResponseBody
+	public String addlock(String time_add,String tips, Model model) {
+		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+			courseSchedule.setScLock("0");
+			courseSchedule.setTips(tips);
+			courseScheduleService.save(courseSchedule);
+			return "1";
+		}
+		return "0";
+	}
+	
+	@RequiresPermissions("calendar:courseCalendar:view")
+	@RequestMapping(value = "ajaxDeleteLock")
+	@ResponseBody
+	public String dellock(String time_add, Model model) {
+		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("0")) {
+			courseSchedule.setScLock("1");
+			courseSchedule.setTips("");
+			courseScheduleService.save(courseSchedule);
+			return "1";
+		}
+		return "0";
+	}
+	
+	
 	@RequestMapping(value = "ajaxChangeTable")
 	public void ajaxChangeTable(String time_add,HttpServletRequest request,HttpServletResponse response) throws IOException {
 		response.setContentType("text/html");
@@ -131,7 +161,7 @@ public class CourseCalendarController extends BaseController {
 		}
 		courseCalendarService.save(courseCalendar);
 		addMessage(redirectAttributes, "保存校历校准成功");
-		return "redirect:"+Global.getAdminPath()+"/calendar/courseCalendar/?repage";
+		return "redirect:"+Global.getAdminPath()+"/calendar/courseCalendar/form?id=1&repage";
 	}
 	
 	@RequiresPermissions("calendar:courseCalendar:edit")

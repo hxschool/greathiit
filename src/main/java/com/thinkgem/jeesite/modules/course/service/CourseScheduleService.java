@@ -28,6 +28,15 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 		return super.get(id);
 	}
 	
+	public List<CourseSchedule> getByYearTermAndTeacherNumber(String yearTerm,String teacherNumber) {
+		return courseScheduleDao.getByYearTermAndTeacherNumber(yearTerm,teacherNumber);
+	}
+	
+	
+	public CourseSchedule getByAddTime(String timeAdd) {
+		return courseScheduleDao.getByAddTime(timeAdd);
+	}
+	
 	public List<CourseSchedule> findListByTimeAdd(String timeAdd) {
 		return courseScheduleDao.findListByTimeAdd(timeAdd);
 	}

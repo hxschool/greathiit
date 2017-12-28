@@ -62,13 +62,7 @@ body
 	color:#FFF;
 	box-shadow:#2d2d2d 0 0 3px;	
 }
-.prime_a
-{
-	font-size:13px;
-	cursor:pointer;
-	color:#000;
-	text-decoration:none;
-}
+
 .prime_a:hover
 {
 	color:#0CF;
@@ -87,6 +81,18 @@ td{
 	border:1px solid #000000;
 }
 #up{
+	position:absolute;
+	background-color:#ffffff;
+	left:50%;
+	top:300px;
+	margin-top:-205px;
+	margin-left:-200px;
+	z-index:6;
+	border-radius:6px;
+	-webkit-box-shadow:0 3px 7px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+}
+#teacherUp{
 	position:absolute;
 	background-color:#ffffff;
 	left:50%;
@@ -124,77 +130,93 @@ td{
 </style>
 </head>
 <body>
-<div id="mask"></div>
-<form name="form0">
-<input type="text" name="year"  style="display:none;" value="${yearTerm}"/>
-<input type="text" id="servers_time" name="servers_time" style="display:none;" value="${mm}@${dd}">
-<input type="text" name="year_rili"  id="year_rili" style="display:none;" value="${courseCalendar.calendarYear}"/>
-<input type="text" name="month_rili"  id="month_rili" style="display:none;" value="${courseCalendar.calendarMonth}"/>
-<input type="text" name="day_rili"  id="day_rili" style="display:none;" value="${courseCalendar.calendarDay}"/>
-<fmt:formatDate value="<%=new java.util.Date()%>" pattern="MM" var="mm"/>
-<fmt:formatDate value="<%=new java.util.Date()%>" pattern="dd" var="dd"/>
 
-<div id="top">
-第&nbsp;<select id="week_select" onchange="change_week()"  style="width:100px;">
-    <option value="01" selected>1</option>
-	<%
-	for(int $i=2;$i<=9;$i++)
-		out.println(  "<option value=\""+'0'+$i+"\">"+$i+"</option>");
-	for(int $i=10;$i<=20;$i++)
-		out.println(  "<option value=\""+$i+"\">"+$i+"</option>");
-	%>
-</select>&nbsp;周
+<body>
+<br>
+<br>
+	<div class="container">
+		<div class="row">
+			<div class="span12">
+				<fmt:formatDate value="<%=new java.util.Date()%>" pattern="MM"
+					var="mm" />
+				<fmt:formatDate value="<%=new java.util.Date()%>" pattern="dd"
+					var="dd" />
+				<div id="mask"></div>
+				
+					<form name="form0">
+						<input type="text" id="year" name="year" style="display: none;"
+							value="${yearTerm}" /> <input type="text" id="servers_time"
+							name="servers_time" style="display: none;" value="${mm}@${dd}">
+						<input type="text" name="year_rili" id="year_rili"
+							style="display: none;" value="${courseCalendar.calendarYear}" />
+						<input type="text" name="month_rili" id="month_rili"
+							style="display: none;" value="${courseCalendar.calendarMonth}" />
+						<input type="text" name="day_rili" id="day_rili"
+							style="display: none;" value="${courseCalendar.calendarDay}" />
 
-&nbsp;&nbsp;&nbsp;&nbsp;
-学院:&nbsp;&nbsp;<select name="h_school" id="h_school" class="h_school" onchange="change()" style="width:100px;">
 
-</select>
-&nbsp;&nbsp;&nbsp;&nbsp;机房:&nbsp;&nbsp;
-<select id="address" class="address" onchange="change_address()" style="width:100px;">
-</select>
+						<div id="top">
+							第&nbsp;<select id="week_select" onchange="change_week()"
+								style="width: 100px;">
+								<option value="01" selected>1</option>
+								<%
+									for (int $i = 2; $i <= 9; $i++)
+										out.println("<option value=\"" + '0' + $i + "\">" + $i + "</option>");
+									for (int $i = 10; $i <= 20; $i++)
+										out.println("<option value=\"" + $i + "\">" + $i + "</option>");
+								%>
+							</select>&nbsp;周 &nbsp;&nbsp;&nbsp;&nbsp; 学院:&nbsp;&nbsp;<select
+								name="h_school" id="h_school" class="h_school"
+								onchange="change()" style="width: 100px;">
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<input type="button"; onclick="window_print()"; name="win_print"; id="win_print" value="打印" class="button"/>
-</div>
-<p>
-<table width="900px;"; id="s_week"; height="550px;"; style="font-size:10px;";>
-<tr align="center" height="10px;">
-	<td></td>
-    <td>星期一</td>
-    <td>星期二</td>
-    <td>星期三</td>
-    <td>星期四</td>
-    <td>星期五</td>
-    <td>星期六</td>
-    <td>星期日</td>
-  </tr>
-  <%
-  //生成空表格
- int i = 1;
- int j = 2;
- for(int $row=1;$row<=5;$row++)
- {
-  		out.println( "<tr height=\"100px;\">");
-  		out.println( "<td align=\"center\">" + i + "-" + j +"节</td>");
-		i+=2;
-		j+=2;
-		for(int $cell=1;$cell<=7;$cell++)
-		{
-			out.println( "<td></td>");		
-		}
-		out.println( "</tr>");
- }
- %>
- </table>
- </form>
+							</select> &nbsp;&nbsp;&nbsp;&nbsp;机房:&nbsp;&nbsp; <select id="address"
+								class="address" onchange="change_address()"
+								style="width: 100px;">
+							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
+								; onclick="window_print()" ; name="win_print" ; id="win_print"
+								value="打印" class="button" />
+						</div>
+						<p>
+						<table id="s_week" style="font-size: 10px; height: 550px;">
+							<tr align="center">
+								<td></td>
+								<td>星期一</td>
+								<td>星期二</td>
+								<td>星期三</td>
+								<td>星期四</td>
+								<td>星期五</td>
+								<td>星期六</td>
+								<td>星期日</td>
+							</tr>
+							<%
+								//生成空表格
+								int i = 1;
+								int j = 2;
+								for (int $row = 1; $row <= 5; $row++) {
+									out.println("<tr height=\"100px;\">");
+									out.println("<td align=\"center\">" + i + "-" + j + "节</td>");
+									i += 2;
+									j += 2;
+									for (int $cell = 1; $cell <= 7; $cell++) {
+										out.println("<td></td>");
+									}
+									out.println("</tr>");
+								}
+							%>
+						</table>
+					</form>
+				
+			</div>
+		</div>
+	</div>
 
-<!-- div层[排一个课]-->
+	<!-- div层[排一个课]-->
 <div id="up"; style="display:none; width:400px; height:400px;">
 <form action="" name="form" style="margin-left:30px; margin-top:50px;">
 	<input  type="hidden" style="display:none" name="time" id="time" /> <!-- 存放时间地址字段-->
     <p>
 	相关说明:&nbsp;&nbsp;<p>
-  	<textarea name="tips" style="height:100px; width:300px;"></textarea>
+  	<textarea name="tips" id="tips" style="height:100px; width:300px;"></textarea>
 	<p>
 	<input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
 	<input  name="over" type="button" value="返回" onclick="cancel()" class="button"/>
@@ -204,41 +226,42 @@ td{
 </div>
 
 <div id="teacherUp"; style="display:none; width:400px; height:400px;">
-                    <form action="" name="form" style="margin-left:30px; margin-top:50px;">
-                        <p>
-                        <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;|&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a>
-                        <input  type="text" style="display:none" name="teacherTime" id="teacherTime" /> <!-- 存放时间地址字段-->
-                        <p>
-                        <div id="putong">
-                       学院:&nbsp;&nbsp;
-                       <select name="school" id="school" onChange="change_school(document.form.school.options[document.form.school.selectedIndex].value)">
-                            <option value="" selected="selected">==请选择学院==</option>
-                        </select>
-                        <p>专业:&nbsp;&nbsp;
-                        <select name="major"  id="major" onChange="change_major(document.form.major.options[document.form.major.selectedIndex].value)">
-                          <option value=""selected="selected">==请选择专业==</option>
-                        </select>
-                        <p>年级:&nbsp;&nbsp;
-                        <select name="grade"  id="grade" onchange="change_grade(document.form.grade.options[document.form.grade.selectedIndex].value)">
-                          <option value="" selected="selected">==请选择年级==</option>
-                        </select>
-                        <p>班级:&nbsp;&nbsp;
-                        <select name="w_class" id="w_class">
-                          <option value="" selected="selected">==请选择班级==</option>
-                        </select>
-                        <p>课程:&nbsp;&nbsp;
-                        <select name="course" id="course">
-                        <option value="" selected="selected">==请选择课程==</option>
-                        <option value=00000150>大型数据库管理与应用</option><option value=00000196>网络工程规划课程设计</option><option value=00000324>111</option>                        </select>
-                        <p>
-                        备注:&nbsp;&nbsp;<input type="text" name="tips"/>
-                        <p>
-                        <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
-                    </form>
+	<div id="putong">
+        <form action="" name="form" style="margin-left:30px; margin-top:50px;">
+            <p>
+            <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;|&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a>
+            <input  type="text" style="display:none" name="teacherTime" id="teacherTime" /> <!-- 存放时间地址字段-->
+            <p>
             
-            
-            </div>
+           学院:&nbsp;&nbsp;
+           <select name="school" id="school" onChange="change_school(document.form.school.options[document.form.school.selectedIndex].value)">
+                <option value="" selected="selected">==请选择学院==</option>
+            </select>
+            <p>专业:&nbsp;&nbsp;
+            <select name="major"  id="major" onChange="change_major(document.form.major.options[document.form.major.selectedIndex].value)">
+              <option value=""selected="selected">==请选择专业==</option>
+            </select>
+            <p>年级:&nbsp;&nbsp;
+            <select name="grade"  id="grade" onchange="change_grade(document.form.grade.options[document.form.grade.selectedIndex].value)">
+              <option value="" selected="selected">==请选择年级==</option>
+            </select>
+            <p>班级:&nbsp;&nbsp;
+            <select name="w_class" id="w_class">
+              <option value="" selected="selected">==请选择班级==</option>
+            </select>
+            <p>课程:&nbsp;&nbsp;
+            <select name="course" id="course">
+            <option value="" selected="selected">==请选择课程==</option>
+            <option value=00000150>大型数据库管理与应用</option><option value=00000196>网络工程规划课程设计</option><option value=00000324>111</option>                        </select>
+            <p>
+            备注:&nbsp;&nbsp;<input type="text" id="teacherTips" name="tips"/>
+            <p>
+            <input  name="add" id="teacherAdd" type="button" value="添加" onclick="teacherResure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
+            <input  name="over" id="teacherOver" type="button" value="返回" onclick="teacherCancel()"  class="button"/>
+        </form>
+
+	</div>
+</div>
 
 
 <script>
@@ -341,20 +364,20 @@ function change()
 {
 	
 	var table_temp = document.getElementById("s_week");//表格 
-	var year = document.form0.year.value;//获取年份
+	var year = $("#year").val();//获取年份
 	var h_school = $("#h_school").children('option:selected').val();
 	var address = $("#address").children('option:selected').val();
 	var temp = document.getElementById("week_select");//获取周次
 	week= temp.options[temp.selectedIndex].value;
 	time = year+''+h_school+''+address+''+week;
-	//alert(time);
+	
 	//日历相关
 	var week_rili = temp.options[temp.selectedIndex].text;
 	
 	//alert(time);
-	var year_rili = document.form0.year_rili.value;
-	var month_rili = document.form0.month_rili.value;
-	var day_rili  = document.form0.day_rili.value;
+	var year_rili = $("#year_rili").val();
+	var month_rili = $("#month_rili").val(); 
+	var day_rili  = $("#day_rili").val();
 	var flag_year = rili(year_rili,month_rili,day_rili);
 	
 	table_temp.rows[0].cells[1].innerHTML = "星期一 ["+time_array[week_rili][1]+"]";
@@ -371,6 +394,7 @@ function change()
 
 function chuancan(selected)
 {
+	
 	//selected为前12位，即没有节次和第几周
 	//JQ的ajax返回id为selected的数据
 	$.ajax({
@@ -407,12 +431,12 @@ function chuancan(selected)
 						}
 						else if(lock=='0')
 						{
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\">管理员已加锁<p>备注:"+tips[1]+"<p><a style = \"color:red;\" class=\"prime_a\"onclick=\"deleted("+selected+","+i+","+j+")\">&nbsp;&nbsp;删除</a></div>"
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\" >管理员已加锁<p style=\"margin:0px;\">备注:"+tips[1]+"<p></div><div class=\"course_text\" ><a class=\"btn btn-mini btn-danger\" onclick=\"deleted("+selected+","+i+","+j+")\">删除</a></div>"
 						}
 						else
 						{
 							var temp = document.getElementById("s_week");
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"prime_a\">加锁</a> <a onclick=\"teacherPaike("+selected+","+i+","+j+")\"  class=\"prime_a\">排课</a> <div>";
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-info\">加锁</a> <a onclick=\"teacherPaike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-success\">排课</a>   <div>";
 						}
 						cnt++;
 					}
@@ -461,7 +485,7 @@ function teacherPaike(time,row,cell)
 	}
 	else
 	{
-		document.form.add.value="添加"
+		//document.form.add.value="添加"
 		var temp = document.getElementById("s_week");
 		time_add = time+''+row+''+cell;
 		$("#teacherTime").val(time_add)//给存储时间地址ID赋值
@@ -496,14 +520,14 @@ function deleted(time,row,cell)
 	{
 		$.ajax({
    		type: "POST",
-  		url: "../teacher/delete_course_schedule.ajax.php",
+  		url: "ajaxDeleteLock",
   	 	data: "time_add="+time_add,
    		success: function(msg)
 		{
 			//alert(msg);
 			if(msg=='1')
 			{
-				//$('#up').fadeOut(100);
+				//$('#up').fadeOut(100)
 				chuancan(time_add.substr(0,12));
 				
 			}
@@ -517,25 +541,27 @@ function deleted(time,row,cell)
 	   }); 
 	}
 }
+
+
 //确定按钮 用来加一门课
 function resure()
 {
-	if(document.form.tips.value=="")
+	if($("#tips")=="")
 	{
 		alert("您需要输入说明!");
-		document.form.tips.focus();
+		$("#tips").focus();
 	}
 	else
 	{
 		var student_id = "";
 		var course_id = "00000000";
-		time_add = document.form.time.value;
-		tips = document.form.tips.value;
+		time_add = $("#time").val();
+		tips =  $("#tips").val();;
 		//alert(time_add);
 		//通过ajax给数据库添加一个课程安排
 		$.ajax({
    		type: "POST",
-  		url: "add_lock.ajax.php",
+  		url: "ajaxAddLock",
   	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips,
    		success: function(msg)
 		{
@@ -560,14 +586,111 @@ function resure()
 	} 
 	//alert(student_id+''+time_add+course_id);
 }
+
+
+
 //取消按钮，返回并更新页面
 function cancel()
 {
 	$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
 	$('#up').fadeOut(500);
-	time_add = document.form.time.value;
+	time_add = $("#time").val();
 	chuancan(time_add.substr(0,12));
 	
+}
+
+//确定按钮 用来加一门课
+function teacherResure()
+{
+	if($("#teacherTips")=="")
+	{
+		alert("您需要输入说明!");
+		$("#teacherTips").focus();
+	}
+	else
+	{
+		var student_id = "";
+		var course_id = "00000000";
+		time_add = $("#time").val();
+		
+		tips =  $("#teacherTips").val();;
+		//alert(time_add);
+		//通过ajax给数据库添加一个课程安排
+		$.ajax({
+   		type: "POST",
+  		url: "add_lock.ajax.php",
+  	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips,
+   		success: function(msg)
+		{
+			//alert(msg);
+			if(msg=='1')
+			{
+				alert("加锁成功");
+				chuancan(time_add.substr(0,12));
+				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
+				$("#teacherUp").fadeOut(100);
+				
+			}
+			else
+			{
+				alert("加锁失败");
+				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
+				$('#teacherUp').fadeOut(100);
+				chuancan(time_add.substr(0,12));
+			}
+   		}
+	   });
+	} 
+	//alert(student_id+''+time_add+course_id);
+}
+
+function teacherCancel()
+{
+	
+	$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
+	$('#teacherUp').fadeOut(500);
+	time_add = $("#teacherTime").val();
+	chuancan(time_add.substr(0,12));
+	
+}
+
+//普通课
+var renxuanke_or_putongke=1;
+function putongke()
+{
+	renxuanke_or_putongke=1;
+	//select_ini("school","01");//设置学院默认值为信息学院
+	$("#school").attr("disabled",false);
+	$("#major").attr("disabled",false);
+	$("#grade").attr("disabled",false);
+	$("#w_class").attr("disabled",false);
+}
+//任选课
+function renxuanke()
+{
+	renxuanke_or_putongke=0;
+	select_ini("school","");//设置学院默认值为空即｛==请选择学院==｝
+	select_ini("major","");
+	select_ini("grade","");
+	select_ini("w_class",""); 
+	//禁用部分下拉列表
+	$("#school").attr("disabled",true);
+	$("#major").attr("disabled",true);
+	$("#grade").attr("disabled",true);
+	$("#w_class").attr("disabled",true);
+}
+function select_ini(select_name,select_value)
+{
+	var s = document.getElementById(select_name);  
+    var ops = s.options;  
+    for(var i=0;i<ops.length; i++)
+	{  
+        var tempValue = ops[i].value;  
+        if(tempValue == select_value)  
+        {  
+            ops[i].selected = true;  
+        }  
+    }  
 }
 </script>
 </body>

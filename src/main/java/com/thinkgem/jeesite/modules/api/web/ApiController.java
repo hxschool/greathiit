@@ -7,7 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.greathiit.common.util.SecureRequest;
+import com.greathiit.common.util.SecureUser;
 import com.greathiit.common.util.SecureUtil;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -34,7 +37,7 @@ public class ApiController extends BaseController {
 	private ApiService apiService;
 	@Autowired
 	private SystemService systemService;
-	
+	@Autowired
 	private SysAppconfigService sysAppconfigService;
 	@RequestMapping(value = "getStudentNumber")
 	@ResponseBody
@@ -67,8 +70,10 @@ public class ApiController extends BaseController {
 			String loginName = new Gson().fromJson(retVal, String.class);
 			User user = systemService.getUserByLoginName(loginName);
 			if(!StringUtils.isEmpty(user)) {
-				String tradeJson = new Gson().toJson(user);
-				Map<String,String> result = SecureUtil.encryptTradeInfo(appid, tradeJson, Global.privateKey, otherPublicKey);
+				SecureUser secureUser = new SecureUser();
+				BeanUtils.copyProperties(user, secureUser);
+				String tradeJson = new Gson().toJson(secureUser);
+				Map<String,String> result = SecureUtil.encryptTradeInfo(appid,tradeJson, Global.privateKey, otherPublicKey);
 				map.putAll(result);
 			}
 		} catch (IOException e) {

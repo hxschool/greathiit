@@ -51,11 +51,6 @@ public class CourseYearTermController extends BaseController {
 			entity = courseYearTermService.get(id);
 		}
 		
-		if (entity == null && StringUtils.isNotBlank(yearTerm)){
-			CourseYearTerm courseYearTerm = new CourseYearTerm();
-			courseYearTerm.setYearTerm(yearTerm);
-			entity = courseYearTermService.get(courseYearTerm);
-		}
 		if (entity == null){
 			entity = new CourseYearTerm();
 		}
@@ -83,6 +78,10 @@ public class CourseYearTermController extends BaseController {
 		if (!beanValidator(model, courseYearTerm)){
 			return form(courseYearTerm, model);
 		}
+		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
+			courseYearTerm = courseYearTermService.get(courseYearTerm);
+		}
+		
 		courseYearTermService.save(courseYearTerm);
 		
 		//学期初始化过程需要讲全部的教学楼以及班级添加到courseSchedule

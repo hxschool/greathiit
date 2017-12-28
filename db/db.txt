@@ -550,3 +550,25 @@ create table course_teachingtarget  (
 comment = '设置课程考试与教学目标支撑分值' 
 go
 
+
+
+CREATE TABLE sys_appconfig  ( 
+	id         	varchar(64) COMMENT '编号'  NOT NULL,
+	APPID	varchar(30) COMMENT '应用编号' NOT NULL,
+	NAME          	varchar(100) COMMENT '应用名称' NOT NULL,
+	PRIVATEKEY    	varchar(2048) COMMENT '私钥' NOT NULL,
+	PUBLICKEY     	varchar(2048)  COMMENT '公钥' NOT NULL,
+	CONTACTPERSON 	varchar(60) NULL,
+	EMAIL         	varchar(60) NULL,
+	PHONE         	varchar(30) NULL,
+	MOBILE        	varchar(20) NULL,
+	STATUS        	char(1) NOT NULL,
+	create_by  	varchar(64) COMMENT '创建者'  NULL,
+	create_date	datetime COMMENT '创建时间'  NULL,
+	update_by  	varchar(64) COMMENT '更新者'  NULL,
+	update_date	datetime COMMENT '更新时间'  NULL,
+	remarks    	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '系统秘钥' 

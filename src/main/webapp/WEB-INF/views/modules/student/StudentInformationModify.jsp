@@ -54,8 +54,8 @@
 										<label class="control-label">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;:&nbsp;</label>
 										<div class="controls"><input type="text" name="s.stuSchNum"
 											id="stuSchNum" value="${student.student.no}"
-											disabled="disabled"><label class="lable-modify" data-toggle="modal"
-									data-target="#myModal">修改密码</label>
+											disabled="disabled"><!-- <label class="lable-modify" data-toggle="modal"
+									data-target="#myModal">修改密码</label> -->
 									</div>
 									</div>
 									<div class="control-group">

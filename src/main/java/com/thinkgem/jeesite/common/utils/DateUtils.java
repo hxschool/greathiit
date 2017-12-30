@@ -112,6 +112,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			return null;
 		}
 	}
+	
+
 
 	/**
 	 * 获取过去的天数

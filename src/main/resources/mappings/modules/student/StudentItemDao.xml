@@ -147,7 +147,7 @@
 			#{itemEvaPoint},
 			#{itemEvaScore},
 			#{itemEvaType},
-			#{student.id},
+			#{student.no},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},

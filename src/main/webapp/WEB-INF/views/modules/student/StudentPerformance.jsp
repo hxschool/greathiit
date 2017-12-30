@@ -96,7 +96,9 @@
 										</tr>
 									</thead>
 									<tbody>
-										<s:iterator value="stuCurs" var="p">
+										<tr><td colspan="6">系统升级中</td></tr>
+										
+										<!-- <s:iterator value="stuCurs" var="p">
 											<tr>
 												<td><s:property value="#p.course.cursNum" /></td>
 												<td><s:property value="#p.course.cursName" /></td>
@@ -105,7 +107,7 @@
 												<td><s:property value="#p.EvaValue" /></td>
 												<td><s:property value="#p.course.dept.deptName" /></td>
 											</tr>
-										</s:iterator>
+										</s:iterator> -->
 									</tbody>
 								</table>
 							</div>

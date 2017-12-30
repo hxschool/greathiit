@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
@@ -61,10 +66,30 @@ public class StudentController extends BaseController {
 	//个人资料	30	/student/student/Student_Information_Detail
 	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Information_Detail")
-	public String Student_Information_Detail(HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Information_Detail(HttpServletRequest request, HttpServletResponse response, Model model) throws ParseException {
 		
 		User user = UserUtils.getUser();
 		Student student = studentService.getStudentByStudentNumber(user.getNo());
+		
+		if(org.springframework.util.StringUtils.isEmpty(student)) {
+			String idCard = user.getLoginName();
+			student = new Student();
+			student.setName(user.getName());
+			student.setStudent(user);
+			student.setIdCard(idCard);
+			student.setPhone(user.getPhone());
+			student.setMail(user.getEmail());
+			student.setGender(IdcardUtils.getGenderByIdCard(idCard));
+			String birthday = IdcardUtils.getBirthByIdCard(idCard);
+			if(!org.springframework.util.StringUtils.isEmpty(birthday)) {
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+				formatter.setLenient(false);
+				Date newDate = formatter.parse(birthday);
+				formatter = new SimpleDateFormat("yyyy-MM-dd");
+				student.setBirthday(DateUtils.parseDate(formatter.format(newDate)));
+			}
+			studentService.save(student);
+		}
 		model.addAttribute("student",student);		
 		return "modules/student/StudentInformationDetail";
 	}
@@ -84,14 +109,15 @@ public class StudentController extends BaseController {
 	
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Information_Modify_Save")
-	public String Student_Information_Modify_Save(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Information_Modify_Save(Student student, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		
 		User user = UserUtils.getUser();
 		Student entity = studentService.getStudentByStudentNumber(user.getNo());
 		BeanUtils.copyProperties(student, entity);
 		studentService.save(student);
-		model.addAttribute("student",student);		
-		return "redirect:"+Global.getAdminPath()+"/student/student/StudentInformationModify?repage";
+		model.addAttribute("student",student);
+		addMessage(redirectAttributes, "操作成功");
+		return "redirect:"+Global.getAdminPath()+"/student/student/Student_Information_Modify?repage";
 	}
 	
 	
@@ -99,23 +125,23 @@ public class StudentController extends BaseController {
 	
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Portfolio_Activity_addActivity")
-	public String Student_Portfolio_Activity_addActivity(StudentActivity studentActivity, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Portfolio_Activity_addActivity(StudentActivity studentActivity, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		User student = UserUtils.getUser();
 		studentActivity.setStudent(student);
 		studentActivityService.save(studentActivity);
-		model.addAttribute("message","操作成功");
+		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/student/student/Student_Portfolio_Activity?repage";
 	}
 	
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Portfolio_Activity_deleteActivity")
-	public String Student_Portfolio_Activity_deleteActivity(@RequestParam("actId")String actId, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Portfolio_Activity_deleteActivity(@RequestParam("actId")String actId, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		User user = UserUtils.getUser();
 		StudentActivity studentActivity = new StudentActivity();
 		studentActivity.setId(actId);
 		studentActivity.setStudent(user);
 		studentActivityService.delete(studentActivity);
-		model.addAttribute("message","操作成功");
+		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/student/student/Student_Portfolio_Activity?repage";
 	}
 	
@@ -199,11 +225,11 @@ public class StudentController extends BaseController {
 		@RequiresPermissions("student:student:edit")
 		@RequestMapping("Student_Portfolio_Activity_deleteItem")
 		public String Student_Portfolio_Activity_deleteItem(@RequestParam(value="itemId",required=false) String itemId,HttpServletRequest request, HttpServletResponse response,
-				Model model) {
+				RedirectAttributes redirectAttributes,Model model) {
 			StudentItem studentItem = new StudentItem();
 			studentItem.setId(itemId);
 			studentItemService.delete(studentItem);
-			model.addAttribute("message","操作成功");
+			addMessage(redirectAttributes, "操作成功");
 			return "redirect:"+Global.getAdminPath()+"/student/student/Student_Award?repage";
 		}
 
@@ -217,11 +243,11 @@ public class StudentController extends BaseController {
 	
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Award_Add_Save")
-	public String Student_Award_Add_Save(StudentItem studentItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Award_Add_Save(StudentItem studentItem, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes,Model model) {
 		User user = UserUtils.getUser();
 		studentItem.setStudent(user);
 		studentItemService.save(studentItem);
-		model.addAttribute("message","操作成功");
+		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/student/student/Student_Award?repage";
 	}
 	

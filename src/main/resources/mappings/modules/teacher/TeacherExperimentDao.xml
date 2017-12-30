@@ -106,7 +106,8 @@
 	<update id="delete">
 		UPDATE teacher_experiment SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE id = #{id} 
+		
 	</update>
 	
 </mapper>

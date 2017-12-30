@@ -167,7 +167,6 @@
 			tchr_self_introduce = #{tchrSelfIntroduce},
 			tchr_eng_self_introduce = #{tchrEngSelfIntroduce},
 			tchr_title = #{tchrTitle},
-			teacher_number = #{teacher.no},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

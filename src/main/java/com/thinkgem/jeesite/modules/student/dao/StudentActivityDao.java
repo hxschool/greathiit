@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.student.dao;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
@@ -14,5 +18,5 @@ import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
  */
 @MyBatisDao
 public interface StudentActivityDao extends CrudDao<StudentActivity> {
-	
+	List<StudentActivity> getStudentActivitysByType(@Param("studentNumber")String studentNumber,@Param("actType")String actType);
 }

@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.student.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,20 @@ import com.thinkgem.jeesite.modules.student.dao.StudentActivityDao;
 @Service
 @Transactional(readOnly = true)
 public class StudentActivityService extends CrudService<StudentActivityDao, StudentActivity> {
-
+	private final static String ORG="组织活动";
+	private final static String ATTEND="参与活动";
+	private final static String SOCIAL="社会实践";
+	@Autowired
+	private StudentActivityDao studentActivityDao;
+	public List<StudentActivity> getOrgActivities(String studentNumber){
+		return studentActivityDao.getStudentActivitysByType(studentNumber,ORG);
+	}
+	public List<StudentActivity> getAttendActivities(String studentNumber){
+		return studentActivityDao.getStudentActivitysByType(studentNumber,ATTEND);
+	}
+	public List<StudentActivity> getSocialActivities(String studentNumber){
+		return studentActivityDao.getStudentActivitysByType(studentNumber,SOCIAL);
+	}
 	public StudentActivity get(String id) {
 		return super.get(id);
 	}

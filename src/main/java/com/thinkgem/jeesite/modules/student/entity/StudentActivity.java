@@ -24,7 +24,7 @@ public class StudentActivity extends DataEntity<StudentActivity> {
 	private String actDuty;		// 职责描述
 	private String actState;		// 状态
 	private String actType;		// 活动类型
-	private String unit;		// 主办单位
+	private String actUnit;		// 主办单位
 	private User student;		// 学号
 	
 	public StudentActivity() {
@@ -81,12 +81,12 @@ public class StudentActivity extends DataEntity<StudentActivity> {
 	}
 	
 	@Length(min=0, max=255, message="主办单位长度必须介于 0 和 255 之间")
-	public String getUnit() {
-		return unit;
+	public String getActUnit() {
+		return actUnit;
 	}
 
-	public void setUnit(String unit) {
-		this.unit = unit;
+	public void setActUnit(String actUnit) {
+		this.actUnit = actUnit;
 	}
 	
 	@NotNull(message="学号不能为空")

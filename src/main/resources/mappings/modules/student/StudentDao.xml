@@ -41,6 +41,14 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="getStudentByStudentNumber" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		WHERE a.student_number = #{studentNumber}
+	</select>
+	
 	<select id="findList" resultType="Student">
 		SELECT 
 			<include refid="studentColumns"/>

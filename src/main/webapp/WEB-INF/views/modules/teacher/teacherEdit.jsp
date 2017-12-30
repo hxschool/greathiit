@@ -151,7 +151,7 @@
 							</div>
 							<div class="control-group">
 								<label class="control-label">自我介绍</label>
-								<textarea name="tchrSelflIntroduction"
+								<textarea name="tchrSelfIntroduce"
 									class="textarea-selfIntr">${teacher.tchrSelfIntroduce }</textarea>
 							</div>
 							<div class="control-group">

@@ -51,6 +51,9 @@ public class TeacherController extends BaseController {
 		}
 		if(entity == null) {
 			User user = UserUtils.getUser();
+			if(user.getUserType().equals("6")) {
+				return entity;
+			}
 			Teacher teacher = new Teacher();
 			teacher.setTeacher(user);
 			entity = teacherService.get(teacher);
@@ -107,8 +110,8 @@ public class TeacherController extends BaseController {
 	}
 	
 
-//	@RequiresPermissions("teacher:teacher:view")
-	@RequestMapping(value = "info")
+	@RequiresPermissions("teacher:teacher:view")
+	@RequestMapping(value = "teacherInfo")
 	public String info(Teacher teacher, Model model) {
 		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
@@ -118,8 +121,8 @@ public class TeacherController extends BaseController {
 		return "modules/teacher/teacherInfo";
 	}
 	
-//	@RequiresPermissions("teacher:teacher:view")
-	@RequestMapping(value = "edit")
+	@RequiresPermissions("teacher:teacher:view")
+	@RequestMapping(value = "teacherEdit")
 	public String edit(Teacher teacher, Model model) {
 		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();

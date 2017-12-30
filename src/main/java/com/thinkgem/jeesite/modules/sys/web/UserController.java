@@ -32,6 +32,8 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
+import com.thinkgem.jeesite.modules.dorm.service.UcDormService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -49,6 +51,8 @@ public class UserController extends BaseController {
 
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private UcDormService ucDormService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -275,6 +279,10 @@ public class UserController extends BaseController {
 	@RequestMapping(value = "info")
 	public String info(User user, HttpServletResponse response, Model model) {
 		User currentUser = UserUtils.getUser();
+		
+		UcDorm dorm = ucDormService.get(currentUser.getDorm());
+		currentUser.setDorm(dorm);
+		
 		if (StringUtils.isNotBlank(user.getName())){
 			if(Global.isDemoMode()){
 				model.addAttribute("message", "演示模式，不允许操作！");

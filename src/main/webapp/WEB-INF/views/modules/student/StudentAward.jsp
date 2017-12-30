@@ -46,7 +46,7 @@
 			<div class="row">
 				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr" style="min-height: 440px">
+						<div class="span12 div-content-white-bgr" style="min-height: 440px">
 							<div class="div-inf-bar">
 								<label>学生参与项目</label>
 							</div>
@@ -66,7 +66,7 @@
 									<tbody>
 										
 
-									<c:forEach items="${lists}" var="item">
+									<c:forEach items="${studentItems}" var="item">
 
 											<tr>
 												<td>${item.itemNum}</td>
@@ -74,15 +74,15 @@
 												<td>${item.itemState}</td>
 												<td>${item.itemScore}</td>
 												<td><a onclick="return confirm('确认删除？')"
-													href="Student_Portfolio_Activity_deleteItem?itemId=${item.stuItemId}">删除</a></td>
+													href="Student_Portfolio_Activity_deleteItem?itemId=${item.id}">删除</a></td>
 												<td><a
-													href="Student_Award_Info_selectItemInfo?itemId=${item.stuItemId}">详情</a></td>
+													href="Student_Award_Info?itemId=${item.id}">详情</a></td>
 											</tr>
 										 </c:forEach>
 									</tbody>
 								</table>
 								<label class="lable-add"><a
-									href="Student_Award_Add_selectItemEvaType">添加</a></label>
+									href="Student_Award_Add">添加</a></label>
 								
 							</div>
 						</div>

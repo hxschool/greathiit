@@ -350,6 +350,35 @@ CREATE TABLE student_activity  (
 comment '学生活动信息表'
 ;
 
+
+create table student_item  ( 
+	id            	varchar(64) comment '编号'  not null,
+	item_name       	varchar(255) comment '项目名称' null,
+	item_num        	varchar(255) comment '项目编号' null,
+	item_prize_object	varchar(255) comment '项目表彰对象' null,
+	item_role       	varchar(255) comment '项目参与角色' null,
+	item_score      	varchar(255) comment '审核得分' null,
+	item_state      	varchar(255) comment '状态' null,
+	item_submit_date 	datetime comment '提交时间' null,
+	item_unit       	varchar(255) comment '主办单位' null,
+	note           	varchar(255) comment '审核意见' null,
+	item_eva_point 	varchar(64) comment '项目指标点' null,
+	item_eva_score 	varchar(64) comment '项目等级' null,
+	item_eva_type  	varchar(64) comment '项目类别'  null,
+	student_number	varchar(64) comment '学号'  not null,
+	create_by     	varchar(64) comment '创建者'  null,
+	create_date   	datetime comment '创建时间'  null,
+	update_by     	varchar(64) comment '更新者'  null,
+	update_date   	datetime comment '更新时间'  null,
+	remarks       	varchar(2000) null,
+	del_flag      	char(1) comment '删除标记'  not null default '0',
+	primary key(id)
+)
+comment '获奖信息'
+;
+
+
+
 create table course_material  ( 
 	id         	varchar(64) comment '编号'  not null,
 	cm_type   	int(4) comment '1:课程教材,2:参考书目' null,
@@ -572,3 +601,6 @@ CREATE TABLE sys_appconfig  (
 	PRIMARY KEY(id)
 )
 COMMENT = '系统秘钥' 
+
+
+

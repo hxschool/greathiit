@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.student.dao.StudentItemDao">
+    
+	<sql id="studentItemColumns">
+		a.id AS "id",
+		a.item_name AS "itemName",
+		a.item_num AS "itemNum",
+		a.item_prize_object AS "itemPrizeObject",
+		a.item_role AS "itemRole",
+		a.item_score AS "itemScore",
+		a.item_state AS "itemState",
+		a.item_submit_date AS "itemSubmitDate",
+		a.item_unit AS "itemUnit",
+		a.note AS "note",
+		a.item_eva_point AS "itemEvaPoint",
+		a.item_eva_score AS "itemEvaScore",
+		a.item_eva_type AS "itemEvaType",
+		a.student_number AS "student.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="studentItemJoins">
+	</sql>
+    
+	<select id="get" resultType="StudentItem">
+		SELECT 
+			<include refid="studentItemColumns"/>
+		FROM student_item a
+		<include refid="studentItemJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="StudentItem">
+		SELECT 
+			<include refid="studentItemColumns"/>
+		FROM student_item a
+		<include refid="studentItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="itemName != null and itemName != ''">
+				AND a.item_name = #{itemName}
+			</if>
+			<if test="itemNum != null and itemNum != ''">
+				AND a.item_num = #{itemNum}
+			</if>
+			<if test="itemPrizeObject != null and itemPrizeObject != ''">
+				AND a.item_prize_object = #{itemPrizeObject}
+			</if>
+			<if test="itemRole != null and itemRole != ''">
+				AND a.item_role = #{itemRole}
+			</if>
+			<if test="itemScore != null and itemScore != ''">
+				AND a.item_score = #{itemScore}
+			</if>
+			<if test="itemState != null and itemState != ''">
+				AND a.item_state = #{itemState}
+			</if>
+			<if test="itemSubmitDate != null and itemSubmitDate != ''">
+				AND a.item_submit_date = #{itemSubmitDate}
+			</if>
+			<if test="itemUnit != null and itemUnit != ''">
+				AND a.item_unit = #{itemUnit}
+			</if>
+			<if test="note != null and note != ''">
+				AND a.note = #{note}
+			</if>
+			<if test="itemEvaPoint != null and itemEvaPoint != ''">
+				AND a.item_eva_point = #{itemEvaPoint}
+			</if>
+			<if test="itemEvaScore != null and itemEvaScore != ''">
+				AND a.item_eva_score = #{itemEvaScore}
+			</if>
+			<if test="itemEvaType != null and itemEvaType != ''">
+				AND a.item_eva_type = #{itemEvaType}
+			</if>
+			<if test="student.no != null and student.no != ''">
+				AND a.student_number = #{student.no}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="StudentItem">
+		SELECT 
+			<include refid="studentItemColumns"/>
+		FROM student_item a
+		<include refid="studentItemJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO student_item(
+			id,
+			item_name,
+			item_num,
+			item_prize_object,
+			item_role,
+			item_score,
+			item_state,
+			item_submit_date,
+			item_unit,
+			note,
+			item_eva_point,
+			item_eva_score,
+			item_eva_type,
+			student_number,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{itemName},
+			#{itemNum},
+			#{itemPrizeObject},
+			#{itemRole},
+			#{itemScore},
+			#{itemState},
+			#{itemSubmitDate},
+			#{itemUnit},
+			#{note},
+			#{itemEvaPoint},
+			#{itemEvaScore},
+			#{itemEvaType},
+			#{student.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE student_item SET 	
+			item_name = #{itemName},
+			item_num = #{itemNum},
+			item_prize_object = #{itemPrizeObject},
+			item_role = #{itemRole},
+			item_score = #{itemScore},
+			item_state = #{itemState},
+			item_submit_date = #{itemSubmitDate},
+			item_unit = #{itemUnit},
+			note = #{note},
+			item_eva_point = #{itemEvaPoint},
+			item_eva_score = #{itemEvaScore},
+			item_eva_type = #{itemEvaType},
+			student_number = #{student.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE student_item SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

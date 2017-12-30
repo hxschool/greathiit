@@ -1,5 +1,3 @@
-
-
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
@@ -36,7 +34,7 @@
 	if (msg != "") {
 		alert(msg);
 	}
-<%request.removeAttribute("Message");%>
+
 	//显示后将request里的Message清空，防止回退时重复显示。
 </script>
 </head>
@@ -46,7 +44,7 @@
 			<div class="row">
 				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr" style=" min-height:440px ">
+						<div class="span12 div-content-white-bgr" style=" min-height:440px ">
 							<div class="div-inf-bar">
 								<label>项目信息</label>
 							</div>
@@ -56,39 +54,39 @@
 										<tbody>
 											<tr>
 												<td width="120px">项目编号</td>
-												<td><s:property value="item.itemNum" /></td>
+												<td>${studentItem.itemNum}</td>
 												<td width="120px">项目名称</td>
-												<td><s:property value="item.itemName" /></td>
+												<td>${studentItem.itemName}</td>
 											</tr>
 											<tr>
 												<td>项目类别</td>
-												<td><s:property value="itemEvaluateType.itemEvaTypeName" /></td>
+												<td>${fns:getDictLabel(studentItem.itemEvaType, 'project_type', '')}</td>
 												<td>评价指标点</td>
-												<td><s:property value="itemEvaluatePoint.itemEvaPointName" /></td>
+												<td>${fns:getDictLabel(studentItem.itemEvaPoint, 'project_point', '')}</td>
 											</tr>
 											<tr>
 												<td>奖项等级</td>
-												<td><s:property value="itemEvaluateScore.itemEvaScoreName" /></td>
+												<td>${fns:getDictLabel(studentItem.itemEvaScore, 'project_score', '')} </td>
 												<td>主办单位</td>
-												<td><s:property value="item.itemUnit" /></td>
+												<td>${studentItem.itemUnit}</td>
 											</tr>
 											<tr>
 												<td>项目表彰对象</td>
-												<td><s:property value="item.itemPrizeObject" /></td>
+												<td>${studentItem.itemPrizeObject}</td>
 												<td>项目参与角色</td>
-												<td><s:property value="item.itemRole" /></td>
+												<td>${studentItem.itemRole}</td>
 
 											</tr>
 											<tr>
 												<td>审核状态</td>
-												<td><s:property value="item.itemState" /></td>
+												<td>${studentItem.itemState}</td>
 												<td>审核得分</td>
-												<td><s:property value="item.itemScore" /></td>
+												<td>${studentItem.itemScore}</td>
 											</tr>
 											<tr>
 												
 												<td>审核意见</td>
-												<td colspan=3><s:property value="item.note" /></td>
+												<td colspan=3>${studentItem.note}</td>
 											</tr>
 										</tbody>
 									</table>
@@ -101,7 +99,8 @@
 												<th>下载</th>
 											</tr>
 										</thead>
-										<tbody>
+										<tbody><tr> <td colspan="3">开发中</td> </tr></tbody>
+										<!-- <tbody>
 											<s:iterator value="allFile" var="s">
 												<tr>
 													<td><s:property value="#s.fileName" /></td>
@@ -116,10 +115,10 @@
 														href="FileDown_downStuFile?fileName=<s:property value="#s.fileName" />&saveFileName=<s:property value="#s.saveFileName" />">下载</a></td>
 												</tr>
 											</s:iterator>
-										</tbody>
+										</tbody> -->
 									</table>
-									<a href="Student_Award_Info_createword">导出表格</a>
-									<a href="FileDown_exportfile?fileName=导出文档">下载</a>
+									<!-- <a href="Student_Award_Info_createword">导出表格</a>
+									<a href="FileDown_exportfile?fileName=导出文档">下载</a> -->
 								</div>
 							</div>
 						</div>
@@ -129,13 +128,13 @@
 		</div>
 	</div>
 	<!-- 显示大图片 -->
-	<div id="showBigPhoto" class="white_content">
-		<img id="exit" src="img/closelabel.gif" onClick="closeWindow()"
+	<!-- <div id="showBigPhoto" class="white_content">
+		<img id="exit" src="${ctxStatic}/modules/img/closelabel.gif" onClick="closeWindow()"
 			alt="退出显示" title="退出显示">
 		<div class="photo">
 			<img id="bigPhoto" />
 		</div>
-	</div>
+	</div> -->
 
 	
 

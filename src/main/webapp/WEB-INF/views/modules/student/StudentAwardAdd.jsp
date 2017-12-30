@@ -20,71 +20,71 @@
 				
 				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr">
+						<div class="span12 div-content-white-bgr">
 							<div class="div-inf-bar">
 								<label>添加项目信息</label>
 							</div>
 							<div class="div-inf-tbl">
-								<form action="Student_Award_1_addItem" method="post"
+								<form action="Student_Award_Add_Save" method="post"
 									class="form-horizontal form-add" enctype="multipart/form-data"
 									onsubmit="javascript:return isEmpty(1)">
-									<s:token></s:token>
+									
 									<div class="control-group">
 										<label class="control-label">项目编号：</label>
 										<div class="controls">
-											<input id="input-time" type="text" name="item.itemNum">
+											<input id="input-time" type="text" name="itemNum">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">项目名称：</label>
 										<div class="controls">
-											<input id="input-name" type="text" name="item.itemName">
+											<input id="input-name" type="text" name="itemName">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">项目类别：</label>
 										<div class="controls">
-											<select id="input-type" name="item.itemEvaluateType.itemEvaTypeId"
+											<select id="input-type" name="itemEvaType"
 												onchange="typeChange()">
-												<s:iterator value="itemEvaluateTypes" var="t">
-													<option value="<s:property value="#t.itemEvaTypeId" />">
-														<s:property value="#t.itemEvaTypeName" />
-													</option>
-												</s:iterator>
+													<c:forEach var="item" items="${fns:getDictList('project_type')}" varStatus="status">
+														<option value="${item.value}">
+															${item.label}
+														</option>
+													</c:forEach>
+												
 											</select>
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">项目指标点：</label>
 										<div class="controls">
-											<select id="input-point" name="item.itemEvaluatePoint.itemEvaPointId"
+											<select id="input-point" name="itemEvaPoint"
 												onchange="pointChange()">
-												<s:iterator value="itemEvaluatePoints" var="p">
-													<option value="<s:property value="#p.itemEvaPointId"/>"
-														class="<s:property value="#p.itemEvaluateType.itemEvaTypeId"/>">
-														<s:property value="#p.itemEvaPointName" />
-													</option>
-												</s:iterator>
+													<c:forEach var="item" items="${fns:getDictList('project_point')}" varStatus="status">
+														<option value="${item.value}">
+															${item.label}
+														</option>
+													</c:forEach>
 											</select>
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">项目等级：</label>
 										<div class="controls">
-											<select id="input-grade" name="item.itemEvaluateScore.itemEvaScoreId"
+											<select id="input-grade" name="itemEvaScore"
 												onchange="gradeChange()">
-												<s:iterator value="itemEvaluateScores" var="s">
-													<option value="<s:property value="#s.itemEvaScoreId"/>">
-														<s:property value="#s.itemEvaScoreName" />
-													</option>
-												</s:iterator>
+												<c:forEach var="item" items="${fns:getDictList('project_score')}" varStatus="status">
+														<option value="${item.value}">
+															${item.label}
+														</option>
+													</c:forEach>
 											</select>
 										</div>
 									</div>
 									<div class="control-group" id="itemobject">
 										<label class="control-label">项目表彰对象：</label>
 										<div class="controls">
-											<select id="input-object" name="item.itemPrizeObject"
+											<select id="input-object" name="itemPrizeObject"
 												onchange="objectChange()">
 												<option value="个人">个人</option>
 												<option value="团队">团队</option>
@@ -94,7 +94,7 @@
 									<div class="control-group" id="itemRoles">
 										<label class="control-label">项目参与角色：</label>
 										<div class="controls">
-											<select id="input-role" name="item.itemRole">
+											<select id="input-role" name="itemRole">
 												<option value="第一负责人">第一负责人</option>
 												<option value="其他成员">其他成员</option>
 											</select>
@@ -103,7 +103,7 @@
 									<div class="control-group">
 										<label class="control-label">主办单位：</label>
 										<div class="controls">
-											<input id="input-unit" type="text" name="item.itemUnit">
+											<input id="input-unit" type="text" name="itemUnit">
 										</div>
 									</div>
 									<!-- <div class="control-group">

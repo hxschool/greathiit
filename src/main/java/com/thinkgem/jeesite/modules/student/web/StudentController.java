@@ -23,7 +23,9 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
+import com.thinkgem.jeesite.modules.student.entity.StudentItem;
 import com.thinkgem.jeesite.modules.student.service.StudentActivityService;
+import com.thinkgem.jeesite.modules.student.service.StudentItemService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -41,6 +43,8 @@ public class StudentController extends BaseController {
 	private StudentService studentService;
 	@Autowired
 	private StudentActivityService studentActivityService;
+	@Autowired
+	private StudentItemService studentItemService;
 	
 	@ModelAttribute
 	public Student get(@RequestParam(required=false) String id) {
@@ -168,32 +172,60 @@ public class StudentController extends BaseController {
 	//获奖记录	30	/student/student/Student_Award
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Award")
-	public String Student_Award(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+	public String Student_Award(HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		StudentItem studentItem = new StudentItem();
+		studentItem.setStudent(user);
+		List<StudentItem> studentItems = studentItemService.findList(studentItem);
+		model.addAttribute("studentItems", studentItems);
 		return "modules/student/StudentAward";
 	}
 	
-	@RequiresPermissions("student:student:edit")
-	@RequestMapping("Student_Award_Add")
-	public String Student_Award_Add(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
-		return "modules/student/StudentAwardAdd";
-	}
-	
-	@RequiresPermissions("Student_Portfolio_Activity_deleteItem")
-	@RequestMapping("Student_Portfolio_Activity_deleteItem")
-	public String Student_Portfolio_Activity_deleteItem( HttpServletRequest request, HttpServletResponse response, Model model) {
-		
-		return "modules/student/StudentAwardAdd";
-	}
-	
-	
+	//获奖记录	30	/student/student/Student_Award
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Award_Info")
-	public String Student_Award_Info(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+	public String Student_Award_Info(@RequestParam(value="itemId",required=false) String itemId,HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+		User user = UserUtils.getUser();
+		StudentItem studentItem = new StudentItem();
+		studentItem.setStudent(user);
+		StudentItem entity = studentItemService.get(itemId);
+		model.addAttribute("studentItem", entity);
 		return "modules/student/StudentAwardInfo";
 	}
+	
+	
+	//获奖记录	30	/student/student/Student_Award
+		@RequiresPermissions("student:student:edit")
+		@RequestMapping("Student_Portfolio_Activity_deleteItem")
+		public String Student_Portfolio_Activity_deleteItem(@RequestParam(value="itemId",required=false) String itemId,HttpServletRequest request, HttpServletResponse response,
+				Model model) {
+			StudentItem studentItem = new StudentItem();
+			studentItem.setId(itemId);
+			studentItemService.delete(studentItem);
+			model.addAttribute("message","操作成功");
+			return "redirect:"+Global.getAdminPath()+"/student/student/Student_Award?repage";
+		}
+
+	@RequiresPermissions("student:student:edit")
+	@RequestMapping("Student_Award_Add")
+	public String Student_Award_Add(StudentItem studentItem, HttpServletRequest request, HttpServletResponse response,
+			Model model) {
+
+		return "modules/student/StudentAwardAdd";
+	}
+	
+	@RequiresPermissions("student:student:edit")
+	@RequestMapping("Student_Award_Add_Save")
+	public String Student_Award_Add_Save(StudentItem studentItem, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		studentItem.setStudent(user);
+		studentItemService.save(studentItem);
+		model.addAttribute("message","操作成功");
+		return "redirect:"+Global.getAdminPath()+"/student/student/Student_Award?repage";
+	}
+	
+
 	
 
 	@RequiresPermissions("student:student:view")

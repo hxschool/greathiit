@@ -1,36 +1,51 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<base href="<%=basePath%>">
-<title>学生获奖内容</title>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="css/bootstrap.css" />
-<link rel="stylesheet" href="css/bootstrap-responsive.css" />
-<link rel="stylesheet" href="css/common.css" />
-<link rel="stylesheet" href="css/teacher_information.css" />
-<link rel="stylesheet" href="css/teaching_management.css" />
-<!-- <link rel="stylesheet" href="css/student_goal.css" />
-<link rel="stylesheet" href="css/student_item_file.css" /> -->
-</head>
+	<title>学生参与项目页面</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//$("#name").focus();
+			$("#inputForm").validate({
+				submitHandler: function(form){
+					loading('正在提交，请稍等...');
+					form.submit();
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/common.css" />
+	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/teacher_information.css" />
+<link rel="stylesheet" href="${ctxStatic}/modules/teacher/teaching_management.css" />
 
+
+<script type="text/javascript">
+	var msg = "${message}";
+	if (msg != "") {
+		alert(msg);
+	}
+
+	//显示后将request里的Message清空，防止回退时重复显示。
+</script>
+</head>
 <body>
-	<%@ include file="/include/header.jsp"%>
-	<%@ include file="/include/student_main_nav.jsp"%>
+
 	<div class="content">
 		<div class="container">
 			<div class="row">
-				<%@ include file="/include/stuLeftBar.jsp"%>
-				<div class="span9">
+				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr" style="min-height: 440px">
+						<div class="span12 div-content-white-bgr" style="min-height: 440px">
 							<div class="div-inf-bar">
 								<label>学生成绩</label>
 							</div>
@@ -62,28 +77,11 @@
 											</tr>
 										</thead>
 										<tbody>
-											<s:iterator value="pageBean.list" var="sc">
-												<tr>
-													<td><s:property value="#sc.course.cursNum" /></td>
-													<td><s:property value="#sc.course.cursName" /></td>
-													<td><s:property value="#sc.course.cursCredit" /></td>
-													<td><s:property value="#sc.course.cursClassHour" /></td>
-													<td><s:property value="#sc.course.cursProperty" /></td>
-													<td><s:property value="#sc.course.teacher.tchrName" /></td>
-													<td><s:property value="#sc.EvaValue" /></td>
-												</tr>
-											</s:iterator>
+										<tr><td colspan="7">系统升级中</td></tr>
+											
 										</tbody>
 									</table>
-									<div>
-										<input type=button class="btn btn-bottom" onclick="upPage()"
-											id="upPage" value="上一页">&nbsp;&nbsp;<span id="page"><s:property
-												value="pageBean.page" /></span>&nbsp;&nbsp;<input type="button"
-											class="btn btn-bottom" onclick="downPage()" id="downPage"
-											value="下一页"><span class="left-distance">共&nbsp;&nbsp;<span
-											id="totalPage"><s:property value="pageBean.totalPage" /></span>&nbsp;&nbsp;页
-										</span>
-									</div>
+									
 								</div>
 							</div>
 						</div>
@@ -91,25 +89,17 @@
 				</div>
 			</div>
 		</div>
-	</div>
-
-
-	<%@ include file="/include/footer.jsp"%>
-	<script type="text/javascript" src="js/jquery1.12.1.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script src="js/My97DatePickerBeta/My97DatePicker/WdatePicker.js"></script>
-
+</div>
 	<script>
 		$(function() {
 			$(".container").css("min-height",
 					$(document).height() - 90 - 88 - 41 + "px");//container的最小高度为“浏览器当前窗口文档的高度-header高度-footer高度”
 		});
 
-		var msg = "${requestScope.Message}";
+		var msg = "${message}";
 		if (msg != "") {
 			alert(msg);
 		}
-	<%request.removeAttribute("Message");%>
 		//显示后将request里的Message清空，防止回退时重复显示。
 
 		//当选择学年开始时间之后给定结束时间

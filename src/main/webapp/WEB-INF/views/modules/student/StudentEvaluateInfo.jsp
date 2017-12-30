@@ -1,34 +1,51 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
-<!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<base href="<%=basePath%>">
-<title>学生获奖内容</title>
-<meta charset="UTF-8">
-<link rel="stylesheet" href="css/bootstrap.css" />
-<link rel="stylesheet" href="css/bootstrap-responsive.css" />
-<link rel="stylesheet" href="css/common.css" />
-<link rel="stylesheet" href="css/student_goal.css" />
-<link rel="stylesheet" href="css/student_item_file.css" />
+	<title>学生参与项目页面</title>
+	<meta name="decorator" content="default"/>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			//$("#name").focus();
+			$("#inputForm").validate({
+				submitHandler: function(form){
+					loading('正在提交，请稍等...');
+					form.submit();
+				},
+				errorContainer: "#messageBox",
+				errorPlacement: function(error, element) {
+					$("#messageBox").text("输入有误，请先更正。");
+					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
+						error.appendTo(element.parent().parent());
+					} else {
+						error.insertAfter(element);
+					}
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/common.css" />
+	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/student_goal.css" />
+<link rel="stylesheet" href="${ctxStatic}/modules/teacher/student_item_file.css" />
+
+
+<script type="text/javascript">
+	var msg = "${message}";
+	if (msg != "") {
+		alert(msg);
+	}
+
+	//显示后将request里的Message清空，防止回退时重复显示。
+</script>
 </head>
 
 <body>
-	<%@ include file="/include/header.jsp"%>
-	<%@ include file="/include/student_main_nav.jsp"%>
 	<div class="content">
 		<div class="container">
 			<div class="row">
-				<%@ include file="/include/stuLeftBar.jsp"%>
-				<div class="span9">
+				<div class="span12">
 					<div class="row">
-						<div class="span9 div-content-white-bgr" style="min-height: 440px">
+						<div class="span12 div-content-white-bgr" style="min-height: 440px">
 							<div class="div-inf-bar">
 								<label>项目信息</label>
 							</div>
@@ -76,11 +93,7 @@
 			</div>
 		</div>
 	</div>
-	<%@ include file="/include/footer.jsp"%>
-	<script type="text/javascript" src="js/jquery1.12.1.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
-	<script src="js/My97DatePickerBeta/My97DatePicker/WdatePicker.js"></script>
-	<script type="text/javascript" src="js/radarChart.js"></script>
+	
 
 	<script>
 		$(function() {

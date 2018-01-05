@@ -31,6 +31,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	private String zy4;		// 意向专业4
 	private String zy5;		// 意向专业5
 	private String zy6;		// 意向专业6
+	private String status;		// 意向专业6
 	private String zytj;		// 是否服从专业调剂
 	
 	public RsJcd() {
@@ -188,6 +189,16 @@ public class RsJcd extends DataEntity<RsJcd> {
 		this.zy6 = zy6;
 	}
 	
+	
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	@Length(min=0, max=64, message="是否服从专业调剂长度必须介于 0 和 64 之间")
 	@ExcelField(title="是否服从调剂", align=2, sort=13)
 	public String getZytj() {

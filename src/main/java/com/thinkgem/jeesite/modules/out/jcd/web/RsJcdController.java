@@ -55,6 +55,18 @@ public class RsJcdController extends BaseController {
 		return entity;
 	}
 	
+	public static void main(String[] args) {
+		System.out.println(String.format("%03d" ,Integer.parseInt("0")));
+		
+	}
+	
+	public String val(String value) {
+		if(org.springframework.util.StringUtils.isEmpty(value)) {
+			value = "0";
+		}
+		return String.format("%03d" ,Integer.parseInt(value));
+	}
+	
 	@RequestMapping(value = "import", method = RequestMethod.POST)
 	public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
 		
@@ -67,6 +79,10 @@ public class RsJcdController extends BaseController {
 			for (RsJcd jcd : list){
 				try{
 					if (!checkKsh(jcd.getKsh())){
+						//初始化状态,设置未录取
+						String cj = jcd.getZf().concat(".").concat(val(jcd.getKm1())).concat(val(jcd.getKm2())).concat(val(jcd.getKm3()));;
+						jcd.setCj(cj);
+						jcd.setStatus("0");
 						rsJcdService.save(jcd);
 						successNum++;
 					}else{

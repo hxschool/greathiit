@@ -603,4 +603,26 @@ CREATE TABLE sys_appconfig  (
 COMMENT = '系统秘钥' 
 
 
+CREATE TABLE rs_zsjh  ( 
+	id int(11) NOT NULL AUTO_INCREMENT,
+	major_type varchar(64) COMMENT '专业类型'  NULL,
+	major_count varchar(64) COMMENT '专业人数'  NULL,
+	zy1        	varchar(64) COMMENT '扩展1'  NULL,
+	zy2        	varchar(64) COMMENT '扩展2'  NULL,
+	zy3        	varchar(64) COMMENT '扩展3'  NULL,
+	zy4        	varchar(64) COMMENT '扩展4'  NULL,
+	zy5        	varchar(64) COMMENT '扩展5'  NULL,
+	zy6        	varchar(64) COMMENT '扩展6'  NULL,
+	status     int(4) COMMENT '状态'  default 0,
+	create_by  	varchar(64) COMMENT '创建者'  NULL,
+	create_date	datetime COMMENT '创建时间'  NULL,
+	update_by  	varchar(64) COMMENT '更新者'  NULL,
+	update_date	datetime COMMENT '更新时间'  NULL,
+	remarks    	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag   	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+
+
+
 

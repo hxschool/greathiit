@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.out.jcd.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 考试成绩单Entity
@@ -41,6 +42,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 
 	@Length(min=0, max=64, message="考生号长度必须介于 0 和 64 之间")
+	@ExcelField(title="考生号", align=2, sort=1)
 	public String getKsh() {
 		return ksh;
 	}
@@ -50,6 +52,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="姓名长度必须介于 0 和 64 之间")
+	@ExcelField(title="姓名", align=2, sort=2)
 	public String getXm() {
 		return xm;
 	}
@@ -59,6 +62,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="身份证号长度必须介于 0 和 64 之间")
+	@ExcelField(title="身份证号", align=2, sort=7)
 	public String getSfzh() {
 		return sfzh;
 	}
@@ -68,6 +72,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="总分长度必须介于 0 和 64 之间")
+	@ExcelField(title="总分", align=2, sort=6)
 	public String getZf() {
 		return zf;
 	}
@@ -86,6 +91,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="科目1长度必须介于 0 和 64 之间")
+	@ExcelField(title="语文", align=2, sort=3)
 	public String getKm1() {
 		return km1;
 	}
@@ -95,6 +101,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="科目2长度必须介于 0 和 64 之间")
+	@ExcelField(title="数学", align=2, sort=4)
 	public String getKm2() {
 		return km2;
 	}
@@ -104,6 +111,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="科目3长度必须介于 0 和 64 之间")
+	@ExcelField(title="职业技能", align=2, sort=5)
 	public String getKm3() {
 		return km3;
 	}
@@ -122,6 +130,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业1长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业1", align=2, sort=8, dictType="greathiit_zhaosheng_major")
 	public String getZy1() {
 		return zy1;
 	}
@@ -131,6 +140,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业2长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业2", align=2, sort=9, dictType="greathiit_zhaosheng_major")
 	public String getZy2() {
 		return zy2;
 	}
@@ -140,6 +150,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业3长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业3", align=2, sort=10, dictType="greathiit_zhaosheng_major")
 	public String getZy3() {
 		return zy3;
 	}
@@ -149,6 +160,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业4长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业4", align=2, sort=11, dictType="greathiit_zhaosheng_major")
 	public String getZy4() {
 		return zy4;
 	}
@@ -158,6 +170,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业5长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考专业5", align=2, sort=12, dictType="greathiit_zhaosheng_major")
 	public String getZy5() {
 		return zy5;
 	}
@@ -176,6 +189,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="是否服从专业调剂长度必须介于 0 和 64 之间")
+	@ExcelField(title="是否服从调剂", align=2, sort=13)
 	public String getZytj() {
 		return zytj;
 	}

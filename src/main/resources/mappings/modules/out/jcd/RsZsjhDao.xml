@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsJcdDao">
+<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsZsjhDao">
     
-	<sql id="rsJcdColumns">
+	<sql id="rsZsjhColumns">
 		a.id AS "id",
-		a.ksh AS "ksh",
-		a.xm AS "xm",
-		a.sfzh AS "sfzh",
-		a.zf AS "zf",
-		a.cj AS "cj",
-		a.km1 AS "km1",
-		a.km2 AS "km2",
-		a.km3 AS "km3",
-		a.km4 AS "km4",
+		a.major_type AS "majorType",
+		a.major_count AS "majorCount",
 		a.zy1 AS "zy1",
 		a.zy2 AS "zy2",
 		a.zy3 AS "zy3",
 		a.zy4 AS "zy4",
 		a.zy5 AS "zy5",
 		a.zy6 AS "zy6",
-		a.zytj AS "zytj",
+		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -28,32 +21,33 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="rsJcdJoins">
+	<sql id="rsZsjhJoins">
 	</sql>
     
-	<select id="get" resultType="RsJcd">
+	<select id="get" resultType="RsZsjh">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsZsjhColumns"/>
+		FROM rs_zsjh a
+		<include refid="rsZsjhJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="getByKsh" resultType="RsJcd">
+	<select id="findList" resultType="RsZsjh">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
-		WHERE a.ksh = #{ksh}
-	</select>
-	
-	<select id="findList" resultType="RsJcd">
-		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsZsjhColumns"/>
+		FROM rs_zsjh a
+		<include refid="rsZsjhJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="majorType != null and majorType != ''">
+				AND a.major_type = #{majorType}
+			</if>
+			<if test="majorCount != null and majorCount != ''">
+				AND a.major_count = #{majorCount}
+			</if>
+			<if test="zy1 != null and zy1 != ''">
+				AND a.zy1 = #{zy1}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -65,11 +59,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="RsJcd">
+	<select id="findAllList" resultType="RsZsjh">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsZsjhColumns"/>
+		FROM rs_zsjh a
+		<include refid="rsZsjhJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -84,24 +78,16 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO rs_jcd(
-			id,
-			ksh,
-			xm,
-			sfzh,
-			zf,
-			cj,
-			km1,
-			km2,
-			km3,
-			km4,
+		INSERT INTO rs_zsjh(
+			major_type,
+			major_count,
 			zy1,
 			zy2,
 			zy3,
 			zy4,
 			zy5,
 			zy6,
-			zytj,
+			status,
 			create_by,
 			create_date,
 			update_by,
@@ -109,23 +95,15 @@
 			remarks,
 			del_flag
 		) VALUES (
-			#{id},
-			#{ksh},
-			#{xm},
-			#{sfzh},
-			#{zf},
-			#{cj},
-			#{km1},
-			#{km2},
-			#{km3},
-			#{km4},
+			#{majorType},
+			#{majorCount},
 			#{zy1},
 			#{zy2},
 			#{zy3},
 			#{zy4},
 			#{zy5},
 			#{zy6},
-			#{zytj},
+			#{status},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -136,23 +114,16 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE rs_jcd SET 	
-			ksh = #{ksh},
-			xm = #{xm},
-			sfzh = #{sfzh},
-			zf = #{zf},
-			cj = #{cj},
-			km1 = #{km1},
-			km2 = #{km2},
-			km3 = #{km3},
-			km4 = #{km4},
+		UPDATE rs_zsjh SET 	
+			major_type = #{majorType},
+			major_count = #{majorCount},
 			zy1 = #{zy1},
 			zy2 = #{zy2},
 			zy3 = #{zy3},
 			zy4 = #{zy4},
 			zy5 = #{zy5},
 			zy6 = #{zy6},
-			zytj = #{zytj},
+			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
@@ -160,7 +131,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE rs_jcd SET 
+		UPDATE rs_zsjh SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>

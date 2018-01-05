@@ -3,18 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.out.jcd.dao;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
-import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
+import com.thinkgem.jeesite.modules.out.jcd.entity.RsZsjh;
 
 /**
- * 考试成绩单DAO接口
+ * 招生计划DAO接口
  * @author 赵俊飞
- * @version 2017-12-09
+ * @version 2018-01-05
  */
 @MyBatisDao
-public interface RsJcdDao extends CrudDao<RsJcd> {
-	public RsJcd getByKsh(@Param("ksh")String ksh);
+public interface RsZsjhDao extends CrudDao<RsZsjh> {
+	
 }

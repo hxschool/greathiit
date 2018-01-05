@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.out.jcd.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,12 @@ import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
 @Service
 @Transactional(readOnly = true)
 public class RsJcdService extends CrudService<RsJcdDao, RsJcd> {
-
+	@Autowired
+	private RsJcdDao rsJcdDao;
+	public RsJcd getByKsh(String ksh) {
+		return rsJcdDao.getByKsh(ksh);
+	}
+	
 	public RsJcd get(String id) {
 		return super.get(id);
 	}

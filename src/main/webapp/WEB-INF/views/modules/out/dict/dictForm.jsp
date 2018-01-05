@@ -31,6 +31,12 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
 		<div class="control-group">
+			<label class="control-label">值:</label>
+			<div class="controls">
+				<form:input path="value" htmlEscape="false" maxlength="50" class="required"/>
+			</div>
+		</div>
+		<div class="control-group">
 			<label class="control-label">描述信息设置:</label>
 			<div class="controls">
 				<form:textarea id="description" htmlEscape="true" path="description" rows="4" class="input-xxlarge"/>

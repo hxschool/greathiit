@@ -44,22 +44,23 @@ public class PaikeCourseController extends BaseController {
 	private CourseScheduleService courseScheduleService;
 	@Autowired
 	private CourseService courseService;
-	@RequiresPermissions("course:paike:view")
+	@RequiresPermissions("course:paike:edit")
+	
+	
 	@RequestMapping(value = "lock")
-	public String manageCourseSchedule(CourseCalendar courseCalendar, Model model) {
+	public String lock(CourseCalendar courseCalendar, Model model) {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm="20171";
+		String yearTerm="20181";
 		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
 			yearTerm = courseYearTerm.getYearTerm();
 		}
 		
 		model.addAttribute("yearTerm",yearTerm);
 		model.addAttribute("courseCalendar", courseCalendarService.systemConfig());
-		return "modules/calendar/manageCourseSchedule";
+		return "modules/paike/LockCourse";
 	}
 	
-	
-	@RequiresPermissions("calendar:courseCalendar:view")
+	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddLock")
 	@ResponseBody
 	public String addlock(String time_add,String tips, Model model) {
@@ -73,7 +74,67 @@ public class PaikeCourseController extends BaseController {
 		return "0";
 	}
 	
-	@RequiresPermissions("calendar:courseCalendar:view")
+	/**
+	 * 新增排课页面
+	 * @param courseCalendar
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "addCourse")
+	public String addCourse(CourseCalendar courseCalendar, Model model) {
+		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
+		String yearTerm="20181";
+		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
+			yearTerm = courseYearTerm.getYearTerm();
+		}
+		
+		model.addAttribute("yearTerm",yearTerm);
+		model.addAttribute("courseCalendar", courseCalendarService.systemConfig());
+		return "modules/paike/AddCourse";
+	}
+	/**
+	 * 添加排课信息
+	 * @param time_add
+	 * @param tips
+	 * @param model
+	 * @return
+	 */
+	@RequiresPermissions("course:paike:edit")
+	@RequestMapping(value = "ajaxAddCourse")
+	@ResponseBody
+	public String ajaxAddCourse(String time_add,String tips, Model model) {
+		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+			courseSchedule.setScLock("0");
+			courseSchedule.setTips(tips);
+			courseScheduleService.save(courseSchedule);
+			return "1";
+		}
+		return "0";
+	}
+	
+	
+	@RequiresPermissions("course:paike:edit")
+	@RequestMapping(value = "ajaxDeleteCourse")
+	@ResponseBody
+	public String ajaxDeleteCourse(String time_add, Model model) {
+		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("0")) {
+			courseSchedule.setScLock("1");
+			courseSchedule.setTips("");
+			courseScheduleService.save(courseSchedule);
+			return "1";
+		}
+		return "0";
+	}
+	
+	
+	
+	
+	
+	
+	
+	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxDeleteLock")
 	@ResponseBody
 	public String dellock(String time_add, Model model) {

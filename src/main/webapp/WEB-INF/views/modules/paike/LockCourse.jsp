@@ -92,18 +92,7 @@ td{
 	-webkit-box-shadow:0 3px 7px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
-#teacherUp{
-	position:absolute;
-	background-color:#ffffff;
-	left:50%;
-	top:300px;
-	margin-top:-205px;
-	margin-left:-200px;
-	z-index:6;
-	border-radius:6px;
-	-webkit-box-shadow:0 3px 7px rgba(0, 0, 0, 0.3);
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-}
+
 #mask
 {
 	background-color:#2d2d2d;
@@ -223,44 +212,6 @@ td{
 </form>
 
 
-</div>
-
-<div id="teacherUp"; style="display:none; width:400px; height:400px;">
-	<div id="putong">
-        <form action="" name="form" style="margin-left:30px; margin-top:50px;">
-            <p>
-            <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;|&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a>
-            <input  type="text" style="display:none" name="teacherTime" id="teacherTime" /> <!-- 存放时间地址字段-->
-            <p>
-            
-           学院:&nbsp;&nbsp;
-           <select name="school" id="school" onChange="change_school(document.form.school.options[document.form.school.selectedIndex].value)">
-                <option value="" selected="selected">==请选择学院==</option>
-            </select>
-            <p>专业:&nbsp;&nbsp;
-            <select name="major"  id="major" onChange="change_major(document.form.major.options[document.form.major.selectedIndex].value)">
-              <option value=""selected="selected">==请选择专业==</option>
-            </select>
-            <p>年级:&nbsp;&nbsp;
-            <select name="grade"  id="grade" onchange="change_grade(document.form.grade.options[document.form.grade.selectedIndex].value)">
-              <option value="" selected="selected">==请选择年级==</option>
-            </select>
-            <p>班级:&nbsp;&nbsp;
-            <select name="w_class" id="w_class">
-              <option value="" selected="selected">==请选择班级==</option>
-            </select>
-            <p>课程:&nbsp;&nbsp;
-            <select name="course" id="course">
-            <option value="" selected="selected">==请选择课程==</option>
-            <option value=00000150>大型数据库管理与应用</option><option value=00000196>网络工程规划课程设计</option><option value=00000324>111</option>                        </select>
-            <p>
-            备注:&nbsp;&nbsp;<input type="text" id="teacherTips" name="tips"/>
-            <p>
-            <input  name="add" id="teacherAdd" type="button" value="添加" onclick="teacherResure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
-            <input  name="over" id="teacherOver" type="button" value="返回" onclick="teacherCancel()"  class="button"/>
-        </form>
-
-	</div>
 </div>
 
 
@@ -436,7 +387,7 @@ function chuancan(selected)
 						else
 						{
 							var temp = document.getElementById("s_week");
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-info\">加锁</a> <a onclick=\"teacherPaike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-success\">排课</a>   <div>";
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-info\">加锁</a>   <div>";
 						}
 						cnt++;
 					}
@@ -477,26 +428,7 @@ function time_limit(xingqi)
 	{	return 0;}
 }
 
-function teacherPaike(time,row,cell)
-{
-	if(time_limit(cell)==0)
-	{
-		alert("日期已过，不允许排课");
-	}
-	else
-	{
-		//document.form.add.value="添加"
-		var temp = document.getElementById("s_week");
-		time_add = time+''+row+''+cell;
-		$("#teacherTime").val(time_add)//给存储时间地址ID赋值
-		//alert(time_add);
-		
-			$('#mask').css({'zIndex':'5'});
-			$('#mask').animate({'opacity':'0.5'},200);
-		
-		$('#teacherUp').fadeIn(200);
-	}
-}
+
 
 //获取点击坐标 显示div隐藏排课层
 function paike(time,row,cell)
@@ -599,86 +531,7 @@ function cancel()
 	
 }
 
-//确定按钮 用来加一门课
-function teacherResure()
-{
-	if($("#teacherTips")=="")
-	{
-		alert("您需要输入说明!");
-		$("#teacherTips").focus();
-	}
-	else
-	{
-		var student_id = "";
-		var course_id = "00000000";
-		time_add = $("#time").val();
-		
-		tips =  $("#teacherTips").val();;
-		//alert(time_add);
-		//通过ajax给数据库添加一个课程安排
-		$.ajax({
-   		type: "POST",
-  		url: "add_lock.ajax.php",
-  	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips,
-   		success: function(msg)
-		{
-			//alert(msg);
-			if(msg=='1')
-			{
-				alert("加锁成功");
-				chuancan(time_add.substr(0,12));
-				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
-				$("#teacherUp").fadeOut(100);
-				
-			}
-			else
-			{
-				alert("加锁失败");
-				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
-				$('#teacherUp').fadeOut(100);
-				chuancan(time_add.substr(0,12));
-			}
-   		}
-	   });
-	} 
-	//alert(student_id+''+time_add+course_id);
-}
 
-function teacherCancel()
-{
-	
-	$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
-	$('#teacherUp').fadeOut(500);
-	time_add = $("#teacherTime").val();
-	chuancan(time_add.substr(0,12));
-	
-}
-
-//普通课
-var renxuanke_or_putongke=1;
-function putongke()
-{
-	renxuanke_or_putongke=1;
-	//select_ini("school","01");//设置学院默认值为信息学院
-	$("#school").attr("disabled",false);
-	$("#major").attr("disabled",false);
-	$("#grade").attr("disabled",false);
-	$("#w_class").attr("disabled",false);
-}
-//任选课
-function renxuanke()
-{
-	renxuanke_or_putongke=0;
-	select_ini("school","");//设置学院默认值为空即｛==请选择学院==｝
-	select_ini("major","");
-	select_ini("grade","");
-	select_ini("w_class",""); 
-	//禁用部分下拉列表
-	$("#school").attr("disabled",true);
-	$("#major").attr("disabled",true);
-	$("#grade").attr("disabled",true);
-	$("#w_class").attr("disabled",true);
-}
 function select_ini(select_name,select_value)
 {
 	var s = document.getElementById(select_name);  

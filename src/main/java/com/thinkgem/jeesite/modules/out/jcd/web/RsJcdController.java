@@ -24,12 +24,17 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
+import com.thinkgem.jeesite.modules.out.jcd.entity.RsZsjh;
 import com.thinkgem.jeesite.modules.out.jcd.service.RsJcdService;
+import com.thinkgem.jeesite.modules.out.jcd.service.RsZsjhService;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 考试成绩单Controller
@@ -42,6 +47,8 @@ public class RsJcdController extends BaseController {
 
 	@Autowired
 	private RsJcdService rsJcdService;
+	@Autowired
+	private RsZsjhService rsZsjhService;
 	
 	@ModelAttribute
 	public RsJcd get(@RequestParam(required=false) String id) {
@@ -56,8 +63,75 @@ public class RsJcdController extends BaseController {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(String.format("%03d" ,Integer.parseInt("0")));
 		
+		
+	}
+	public  void L(List<RsJcd> list) {
+		List<Dict> dicts = DictUtils.getDictList("greathiit_zhaosheng_grade");
+		Double grade = Double.valueOf(dicts.get(0).getValue());
+		
+		for(RsJcd jcd:list) {
+			Double cj = Double.valueOf(jcd.getCj());
+			String majorType1 = jcd.getZy1();
+			if(cj>grade&&checkMajor(majorType1)) {
+				jcd.setStatus("1");
+				jcd.setZy6(majorType1);
+				rsJcdService.save(jcd);
+				continue;
+			}
+			String majorType2 = jcd.getZy2();
+			if (cj > grade && checkMajor(majorType2) && jcd.getZytj().equals("是")) {
+				jcd.setStatus("1");
+				jcd.setZy6(majorType2);
+				rsJcdService.save(jcd);
+				continue;
+			}
+			
+			
+			String majorType3 = jcd.getZy3();
+			if (cj > grade && checkMajor(majorType3) && jcd.getZytj().equals("是")) {
+				jcd.setStatus("1");
+				jcd.setZy6(majorType3);
+				rsJcdService.save(jcd);
+				continue;
+			}
+			
+			
+			String majorType4 = jcd.getZy4();
+			if (cj > grade && checkMajor(majorType4) && jcd.getZytj().equals("是")) {
+				jcd.setStatus("1");
+				jcd.setZy6(majorType4);
+				rsJcdService.save(jcd);
+				continue;
+			}
+			
+			
+			String majorType5 = jcd.getZy5();
+			if (cj > grade && checkMajor(majorType5) && jcd.getZytj().equals("是")) {
+				jcd.setStatus("1");
+				jcd.setZy6(majorType5);
+				rsJcdService.save(jcd);
+				continue;
+			}
+			
+		}
+		
+	}
+	
+	public boolean checkMajor(String majorType) {
+		RsZsjh rsZsjh = rsZsjhService.getByMajorType(majorType);
+		if (Integer.valueOf(rsZsjh.getMajorCount()) - Integer.valueOf(rsZsjh.getZy1()) > 0) {
+			//设置一个临时变量值
+			String zy = rsZsjh.getZy1();
+			if(org.springframework.util.StringUtils.isEmpty(zy)) {
+				rsZsjh.setZy1("0");
+			}
+			int result = Integer.valueOf(rsZsjh.getZy1()) + 1;
+			rsZsjh.setZy1(String.valueOf(result));
+			rsZsjhService.save(rsZsjh);
+			return true;
+		}
+		return false;
 	}
 	
 	public String val(String value) {
@@ -109,6 +183,8 @@ public class RsJcdController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/out/jcd/rsJcd/list?repage";
 	}
+	
+	
 	
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "import/template")

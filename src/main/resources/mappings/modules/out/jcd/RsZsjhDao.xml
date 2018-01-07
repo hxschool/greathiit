@@ -32,6 +32,15 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="getByMajorType" resultType="RsZsjh">
+		SELECT
+		<include refid="rsZsjhColumns" />
+		FROM rs_zsjh a
+		<include refid="rsZsjhJoins" />
+		WHERE a.major_type = #{majorType}
+	</select>
+	
+	
 	<select id="findList" resultType="RsZsjh">
 		SELECT 
 			<include refid="rsZsjhColumns"/>

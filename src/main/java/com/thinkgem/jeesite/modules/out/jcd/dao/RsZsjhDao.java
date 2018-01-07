@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.out.jcd.entity.RsZsjh;
  */
 @MyBatisDao
 public interface RsZsjhDao extends CrudDao<RsZsjh> {
-	
+	public RsZsjh getByMajorType(String majorType);
 }

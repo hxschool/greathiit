@@ -19,7 +19,6 @@
 		a.curs_term AS "cursTerm",
 		a.curs_type AS "cursType",
 		a.teacher_number AS "teacher.no",
-		t.tchr_name AS "teacher.tchrName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -29,7 +28,7 @@
 	</sql>
 	
 	<sql id="courseJoins">
-		LEFT JOIN teacher t ON t.teacher_number = a.teacher_number
+	
 	</sql>
     
 	<select id="get" resultType="Course">
@@ -70,7 +69,8 @@
 			</otherwise>
 		</choose>
 	</select>
-		<select id="findCoursesByPaike" resultType="Course">
+	
+	<select id="findListByStudentNumber" resultType="Course">
 		SELECT 
 			<include refid="courseColumns"/>
 		FROM course a
@@ -78,9 +78,30 @@
 		<where>
 		1=1 and
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			
+			and sc_lock='2' and right(course_class,8)=#{studentNumber}
 		</where>
-			ORDER BY a.update_date DESC
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findCoursesByPaike" resultType="Course">
+		SELECT
+		<include refid="courseColumns" />
+		FROM course a
+		<include refid="courseJoins" />
+		<where>
+			1=1 and
+			a.del_flag = #{DEL_FLAG_NORMAL}
+
+		</where>
+		ORDER BY a.update_date DESC
 	</select>
 	
 	

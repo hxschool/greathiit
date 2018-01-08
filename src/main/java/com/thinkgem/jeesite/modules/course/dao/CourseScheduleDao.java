@@ -22,5 +22,7 @@ public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
 	
 	public CourseSchedule getByAddTime(@Param("timeAdd")String timeAdd);
 	
-	public List<CourseSchedule> getByYearTermAndTeacherNumber(@Param("yearTerm")String yearTerm,@Param("teacherNumber")String teacherNumber); 
+	public List<CourseSchedule> getByYearTermAndTeacherNumber(@Param("yearTerm")String yearTerm,@Param("teacherNumber")String teacherNumber);
+	
+	public List<CourseSchedule> findListByStudentNumber(@Param("studentNumber")String studentNumber);
 }

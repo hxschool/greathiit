@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
@@ -207,19 +208,56 @@ public class PaikeCourseController extends BaseController {
 		ps.flush();
 	}
 	
-	public static void main(String[] args) {
-		String courseClass = "201420120140101";
+	
+	@RequestMapping(value = "ajaxStudentCourse")
+	public void ajaxStudentCourse(HttpServletRequest request,HttpServletResponse response) throws IOException {
+		response.setContentType("text/html");
+		PrintWriter ps = response.getWriter();
 		
-		String grade = courseClass.substring(0,4);
-		String school = courseClass.substring(4,5);
-		String major = courseClass.substring(5,7);
-		String clazz = courseClass.substring(7);
-		System.out.println(grade);
-		System.out.println(school);
-		System.out.println(major);
-		System.out.println(clazz);
+		User student = UserUtils.getUser();
 		
+		List<CourseSchedule> courseSchedules = courseScheduleService.findListByStudentNumber(student.getNo());
+		for(CourseSchedule courseSchedule:courseSchedules) {
+			ps.write(courseSchedule.getScLock());
+			if(courseSchedule.getScLock().equals("1")) {
+				ps.write("<div class=\"course_text\">教师:</div>");
+				ps.write("<div class=\"course_text\">课程:</div>");
+				ps.write("<div class=\"course_text\"></div>");
+				ps.write("<div class=\"course_text\">备注:</div>");
+				
+			}else {
+				//科目号,理论不应该出现异常现象,不应该出现空指针现象
+				String courseNumber = courseSchedule.getCourseId();
+				String courseClass = courseSchedule.getCourseClass();
+				Course course = courseService.findListByCourse(courseNumber);
+				
+				ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
+				
+				if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
+					ps.write("<div class=\"course_text\"></div>");
+					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
+				}else {
+					
+					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
+					String grade = courseClass.substring(0,4);
+					String school = courseClass.substring(4,5);
+					String major = courseClass.substring(5,7);
+					String clazz = courseClass.substring(7);
+					Office company = officeService.get(school);
+					Office office = officeService.get(major);
+					ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
+				}
+				
+				ps.write("<div class=\"course_text\">备注:"+courseSchedule.getTips()+"</div>");
+				
+			}
+			ps.write("@");
+		}
+		ps.flush();
 	}
+	
+	
 	
 	@ResponseBody
 	@RequestMapping(value = "ajaxAllCourse")

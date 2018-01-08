@@ -79,6 +79,29 @@
 		ORDER BY a.code
 	</select>
 	
+	
+	
+	<select id="findByParentIdGroupByYear" resultType="Office">
+		SELECT
+			substring(a.id,1,4) as id
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_id = #{parentId}
+		 group by substring(a.id,1,4)  order by substring(a.id,1,4) 
+	</select>
+	
+	
+	<select id="findByParentIdAndYear" resultType="Office">
+		SELECT
+			<include refid="officeColumns"/>
+		FROM sys_office a
+		<include refid="officeJoins"/>
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_id = #{parentId} and substring(a.id,1,4)=#{id}
+		ORDER BY a.code
+	</select>
+	
+	
+	
 	<select id="findByParentIdsLike" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>

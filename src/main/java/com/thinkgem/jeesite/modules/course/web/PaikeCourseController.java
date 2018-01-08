@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.course.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.aliyuncs.http.HttpRequest;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
@@ -26,7 +28,12 @@ import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.web.TreeLink;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
 
 /**
  * 课程基本信息Controller
@@ -44,9 +51,12 @@ public class PaikeCourseController extends BaseController {
 	private CourseScheduleService courseScheduleService;
 	@Autowired
 	private CourseService courseService;
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private OfficeService officeService;
+	
 	@RequiresPermissions("course:paike:edit")
-	
-	
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
@@ -102,10 +112,12 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddCourse")
 	@ResponseBody
-	public String ajaxAddCourse(String time_add,String tips, Model model) {
+	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips, Model model) {
 		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
 		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
-			courseSchedule.setScLock("0");
+			courseSchedule.setScLock("2");
+			courseSchedule.setCourseClass(student_id);
+			courseSchedule.setCourseId(course_id);
 			courseSchedule.setTips(tips);
 			courseScheduleService.save(courseSchedule);
 			return "1";
@@ -165,16 +177,65 @@ public class PaikeCourseController extends BaseController {
 			}else {
 				//科目号,理论不应该出现异常现象,不应该出现空指针现象
 				String courseNumber = courseSchedule.getCourseId();
+				String courseClass = courseSchedule.getCourseClass();
 				Course course = courseService.findListByCourse(courseNumber);
-				User teacher = course.getTeacher();
-				ps.write("<div class=\"course_text\">教师:"+teacher.getName()+"</div>");
+				
 				ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
-				ps.write("<div class=\"course_text\">"+courseSchedule.getCourseClass()+"</div>");
+				
+				if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
+					ps.write("<div class=\"course_text\"></div>");
+					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
+				}else {
+					
+					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
+					String grade = courseClass.substring(0,4);
+					String school = courseClass.substring(4,5);
+					String major = courseClass.substring(5,7);
+					String clazz = courseClass.substring(7);
+					Office company = officeService.get(school);
+					Office office = officeService.get(major);
+					ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
+				}
+				
+				
 				ps.write("<div class=\"course_text\">备注:"+courseSchedule.getTips()+"</div>");
 				
 			}
 			ps.write("@");
 		}
 		ps.flush();
+	}
+	
+	public static void main(String[] args) {
+		String courseClass = "201420120140101";
+		
+		String grade = courseClass.substring(0,4);
+		String school = courseClass.substring(4,5);
+		String major = courseClass.substring(5,7);
+		String clazz = courseClass.substring(7);
+		System.out.println(grade);
+		System.out.println(school);
+		System.out.println(major);
+		System.out.println(clazz);
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "ajaxAllCourse")
+	public List<TreeLink> ajaxAllCourse( HttpRequest request, HttpServletResponse response) {
+		
+		List<Course> list1 = courseService.findCoursesByPaike(new Course());
+		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
+		for(Course course:list1) {
+			TreeLink treeLink = new TreeLink();
+			treeLink.setValue(course.getCursNum());
+			Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+			treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
+			
+			treeLinks1.add(treeLink);
+			
+		}
+		return treeLinks1;
 	}
 }

@@ -4,8 +4,10 @@
 package com.thinkgem.jeesite.modules.sys.web;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -202,6 +204,51 @@ public class OfficeController extends BaseController {
 					TreeLink treeLink3 = new TreeLink();
 					treeLink3.setValue(office3.getId());
 					treeLink3.setName(office3.getName());
+					treeLinks3.add(treeLink3);
+				}
+				treeLink2.setSub(treeLinks3);
+				treeLinks2.add(treeLink2);
+			}
+			treeLink.setSub(treeLinks2);
+			treeLinks1.add(treeLink);
+			
+		}
+		return treeLinks1;
+	}
+
+	
+	@RequiresPermissions("user")
+	@ResponseBody
+	@RequestMapping(value = "treeClassLink")
+	public List<TreeLink> treeClassLink(@RequestParam(required=false,defaultValue="1") String parnetId, HttpRequest request, HttpServletResponse response) {
+		
+		List<Office> list1 = officeService.findByParentId(parnetId);
+		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
+		for(Office office:list1) {
+			TreeLink treeLink = new TreeLink();
+			treeLink.setValue(office.getId());
+			treeLink.setName(office.getName());
+			List<Office> list2 = officeService.findByParentId(office.getId());
+			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();
+			for(Office office2:list2) {
+				TreeLink treeLink2 = new TreeLink();
+				treeLink2.setValue(office2.getId());
+				treeLink2.setName(office2.getName());
+				List<Office> list3 = officeService.findByParentIdGroupByYear(office2.getId());
+				List<TreeLink> treeLinks3 = new ArrayList<TreeLink>();
+				for(Office office3:list3) {
+					TreeLink treeLink3 = new TreeLink();
+					treeLink3.setValue(office3.getId());
+					treeLink3.setName(office3.getId());
+					List<Office> list4 = officeService.findByParentIdAndYear(office2.getId(), office3.getId());
+					List<TreeLink> treeLinks4 = new ArrayList<TreeLink>();
+					for(Office office4:list4) {
+						TreeLink treeLink4 = new TreeLink();
+						treeLink4.setValue(office4.getId());
+						treeLink4.setName(office4.getId());
+						treeLinks4.add(treeLink4);
+					}
+					treeLink3.setSub(treeLinks4);
 					treeLinks3.add(treeLink3);
 				}
 				treeLink2.setSub(treeLinks3);

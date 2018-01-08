@@ -32,6 +32,10 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		return super.get(id);
 	}
 	
+	public List<Course> findCoursesByPaike(Course course) {
+		return courseDao.findCoursesByPaike(course);
+	}
+	
 	public List<Course> findList(Course course) {
 		return super.findList(course);
 	}

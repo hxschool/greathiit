@@ -50,6 +50,18 @@
 		 
 	</select>
 	
+	<select id="getTeacherByTeacherNumber" resultType="Teacher">
+		SELECT 
+			<include refid="teacherColumns"/>
+		FROM teacher a
+		<include refid="teacherJoins"/>
+		WHERE a.teacher_number = #{teacherNumber}
+		 
+	</select>
+	
+	
+	
+	
 	<select id="findList" resultType="Teacher">
 		SELECT 
 			<include refid="teacherColumns"/>

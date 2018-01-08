@@ -378,7 +378,7 @@ function chuancan(selected)
 						//alert(lock);
 						if(lock=='2')
 						{
-							temp.rows[i].cells[j].innerHTML=change[cnt]+"<div class=\"course_text\"><a style = \"color:red;\" class=\"prime_a\" onclick=\"deleted("+selected+","+i+","+j+")\">删除</a></div>";
+							temp.rows[i].cells[j].innerHTML=change[cnt]+"<div class=\"course_text\"><a class=\"btn btn-mini btn-danger\" onclick=\"deleted("+selected+","+i+","+j+")\">删除</a></div>";
 						}
 						else if(lock=='0')
 						{

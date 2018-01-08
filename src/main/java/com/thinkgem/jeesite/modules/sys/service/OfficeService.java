@@ -29,6 +29,20 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		return UserUtils.getOfficeList();
 	}
 	
+	
+	public List<Office> findByParentIdGroupByYear(String parnetId){
+		Office office = new Office();
+		office.setParent(new Office(parnetId));
+		return officeDao.findByParentIdGroupByYear(office);
+	}
+	
+	public List<Office> findByParentIdAndYear(String parnetId,String year){
+		Office office = new Office();
+		office.setParent(new Office(parnetId));
+		office.setId(year);
+		return officeDao.findByParentIdAndYear(office);
+	}
+	
 	public List<Office> findByParentId(String parnetId){
 		Office office = new Office();
 		office.setParent(new Office(parnetId));

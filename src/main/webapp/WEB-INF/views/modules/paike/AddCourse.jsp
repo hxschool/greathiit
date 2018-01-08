@@ -208,31 +208,33 @@ td{
 						<div id="element_id">
 						<p>
 							学院:&nbsp;&nbsp; <select name="school" id="school"
-								class="province">
+								class="school" style="width:200px;">
 								<option value="" selected="selected">==请选择学院==</option>
 							</select>
 							
 							<p>
 								专业:&nbsp;&nbsp; <select name="major" id="major"
-									class="city">
+									class="major" style="width:200px;">
 									<option value="" selected="selected">==请选择专业==</option>
 								</select>
 								
-								<!-- <p>年级:&nbsp;&nbsp;
-	                        <select name="grade"  id="grade" onchange="change_grade(document.form.grade.options[document.form.grade.selectedIndex].value)">
+							<p>年级:&nbsp;&nbsp;
+	                        <select name="grade"  id="grade" class="grade" style="width:200px;">
 	                          <option value="" selected="selected">==请选择年级==</option>
-	                        </select> -->
+	                        </select>
 							<p>
-								班级:&nbsp;&nbsp; <select name="w_class" class="area"
-									id="w_class" >
+								班级:&nbsp;&nbsp; <select name="w_class" class="w_class"
+									id="w_class" style="width:200px;">
 									<option value="" selected="selected">==请选择班级==</option>
 								</select>
 						</div>
+						<div id="course_id">
 						<p>课程:&nbsp;&nbsp;
-                        <select name="course" id="course">
+                        <select name="course" id="course" class="course" style="width:200px;">
                         <option value="" selected="selected">==请选择课程==</option>
                         
                         </select>
+                        </div>
                         <p>
                         备注:&nbsp;&nbsp;<input type="text" name="tips"/>
                         <p>
@@ -573,20 +575,17 @@ function renxuanke()
 function resure()
 {
 
-	var address = document.getElementById("address");//获取机房号
-	address = address.options[address.selectedIndex].value;
+	$("#address").children('option:selected').val();
 	
-	var grade_id = document.form.grade.options[document.form.grade.selectedIndex].value;
-	var school_id = document.form.school.options[document.form.school.selectedIndex].value;
-	var major_id = document.form.major.options[document.form.major.selectedIndex].value;
-	var class_id = document.form.w_class.options[document.form.w_class.selectedIndex].value;
+	var grade_id = $("#grade").children('option:selected').val();
+	var school_id = $("#school").children('option:selected').val();
+	var major_id = $("#major").children('option:selected').val();
+	var class_id = $("#w_class").children('option:selected').val();
 	var student_id = grade_id+''+school_id+''+major_id+''+class_id;
 	
-	var course_id = document.form.course.options[document.form.course.selectedIndex].value;
+	var course_id =  $("#course").children('option:selected').val();
 	tips = document.form.tips.value;
 	time_add = document.form.time.value;
-	
-	//alert(time_add);
 
 	if(school_id=="" && renxuanke_or_putongke)
 	{
@@ -694,11 +693,18 @@ $(document).ready(function()
 			change();
 			
 			$('#element_id').cxSelect({ 
-				  url: '${ctx}/sys/office/treeLink',
-				  selects: ['province', 'city', 'area'], 
+				  url: '${ctx}/sys/office/treeClassLink',
+				  selects: ['school', 'major', 'grade', 'w_class'], 
 				  jsonName: 'name',
 				  jsonValue: 'value',
 				  jsonSub: 'sub'
+				}); 
+			
+			$('#course_id').cxSelect({ 
+				  url: '${ctx}/course/paike/ajaxAllCourse',
+				  selects: ['course'], 
+				  jsonName: 'name',
+				  jsonValue: 'value'
 				}); 
 		   //document.form0.h_school.options[04].selected = true; 
 		});

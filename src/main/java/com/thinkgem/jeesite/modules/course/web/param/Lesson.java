@@ -1,5 +1,7 @@
 package com.thinkgem.jeesite.modules.course.web.param;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 public class Lesson {
 	private String week;
 	private String zhou;
@@ -49,4 +51,9 @@ public class Lesson {
 	public void setCourse(String course) {
 		this.course = course;
 	}
+	
+    @Override
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this);
+    }
 }

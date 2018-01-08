@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.course.web;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
@@ -114,6 +115,7 @@ public class CourseExportController extends BaseController {
 		user.setNo(teacherNumber);
 		User teacher = UserUtils.getUser(user);
 		PrintWriter pw = response.getWriter();
+		
 		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
 			pw.write("<script>alert(\"抱歉，数据库中没有查到该老师姓名\")</script>");
 			pw.flush();
@@ -124,8 +126,10 @@ public class CourseExportController extends BaseController {
 		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
 
 		String $file_name = teacher.getName() + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
-		
-		List<CourseSchedule> courseSchedules = courseScheduleService.getByYearTermAndTeacherNumber(yearTerm, teacherNumber);
+		response.setContentType("application/octet-stream;charset=utf-8"); 
+		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
+		OutputStream os = response.getOutputStream();
+		List<CourseSchedule> courseSchedules = courseScheduleService.getCourseScheduleByYearTermAndTeacherNumber(yearTerm, teacherNumber);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
 		Row row = sheet.createRow(0);
@@ -156,8 +160,13 @@ public class CourseExportController extends BaseController {
 			String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
 			String root = courseSchedule.getTimeAdd().substring(7, 10);
 			addCell(r, 1,schoolRootMap.get(buildRootKey) + " " + root , 2);
+			
+			String courseClass = courseSchedule.getCourseClass();
+			if(!StringUtils.isEmpty(courseClass)&&courseClass.length()>7) {
+				courseClass = courseClass.substring(courseClass.length()-8);
+			}
 			addCell(r, 2,courseSchedule.getCourseId(), 2);
-			addCell(r, 3,courseSchedule.getCourseClass(), 2);
+			addCell(r, 3,courseClass, 2);
 			addCell(r, 4,courseSchedule.getTips(), 2);
 			//添加相关数据信息
 			lessons.add(new Lesson($col_a.get("week"), zhou($col_a.get("zhou")),jie($col_a.get("jie")), schoolRootMap.get(buildRootKey) + " " + root, courseSchedule.getCourseId()))  ;
@@ -186,8 +195,11 @@ public class CourseExportController extends BaseController {
 		}
 		
 		for(Lesson lesson :lessons ) {
-			
+			System.out.println(lesson);
 		}
+		wb.write(os);
+		os.flush();
+		os.close();
 	}
 	
 	
@@ -195,34 +207,34 @@ public class CourseExportController extends BaseController {
 	
 	public String jie(String $j)
 	{
-	        if($j == "1")
+	        if($j.equals("1"))
 	                return "1-2节";
-	        if($j == "2")
+	        if($j.equals("2"))
 	                return "3-4节";
-	        if($j == "3")
+	        if($j.equals("3"))
 	                return "5-6节";
-	        if($j == "4")
+	        if($j.equals("4"))
 	                return "7-8节";
-	        if($j == "5")
+	        if($j.equals("5"))
 	                return "9-10节";
 			return $j;
 	}
 	//返回周
 	public String zhou(String $z)
 	{
-	        if($z == "1")
+	        if($z.equals("1"))
 	                return "周一";
-	        if($z == "2")
+	        if($z.equals("2"))
 	                return "周二";
-	        if($z == "3")
+	        if($z.equals("3"))
 	                return "周三";
-	        if($z == "4")
+	        if($z.equals("4"))
 	                return "周四";
-	        if($z == "5")
+	        if($z.equals("5"))
 	                return "周五";
-	        if($z == "6")
+	        if($z.equals("6"))
 	                return "周六";
-	        if($z == "7")
+	        if($z.equals("7"))
 	                return "周日";
 			return $z;
 	}
@@ -237,6 +249,8 @@ public class CourseExportController extends BaseController {
 	public static void main(String[] args) {
 		System.out.println((byte)('A'));
 		System.out.println((char)(65));
+		String courseclass = "201420120140101";
+		System.out.println(courseclass.substring(courseclass.length()-8));;
 	}
 	
 	

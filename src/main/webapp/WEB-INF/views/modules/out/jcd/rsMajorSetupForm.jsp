@@ -27,36 +27,42 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/out/jcd/rsZsjh/">招生计划列表</a></li>
-		<li class="active"><a href="${ctx}/out/jcd/rsZsjh/form?id=${rsZsjh.id}">招生计划<shiro:hasPermission name="out:jcd:rsZsjh:edit">${not empty rsZsjh.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsZsjh:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/out/jcd/rsMajorSetup/">招生计划列表</a></li>
+		<li class="active"><a href="${ctx}/out/jcd/rsMajorSetup/form?id=${rsMajorSetup.id}">招生计划<shiro:hasPermission name="out:jcd:rsMajorSetup:edit">${not empty rsMajorSetup.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsMajorSetup:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="rsZsjh" action="${ctx}/out/jcd/rsZsjh/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="rsMajorSetup" action="${ctx}/out/jcd/rsMajorSetup/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<form:hidden path="status" value="0"/>
 		<sys:message content="${message}"/>		
+		<div class="control-group">
+			<label class="control-label">专业编码：</label>
+			<div class="controls">
+				<form:input path="majorId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">专业名称：</label>
 			<div class="controls">
-				<form:select path="majorType" class="input-xlarge ">
-					<form:option value="" label=""/>
-					<form:options items="${fns:getDictList('greathiit_zhaosheng_major')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
-				</form:select>
+				<form:input path="majorName" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">专业人数：</label>
+			<label class="control-label">已招人数：</label>
 			<div class="controls">
-				<form:input path="majorCount" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="majorCount" htmlEscape="false" maxlength="11" class="input-xlarge "/>
 			</div>
 		</div>
-		<!-- <div class="control-group">
-			<label class="control-label">扩展1：</label>
+		<div class="control-group">
+			<label class="control-label">计划人数：</label>
 			<div class="controls">
-				<form:input path="zy1" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="majorTotal" htmlEscape="false" maxlength="11" class="input-xlarge "/>
 			</div>
 		</div>
-		 -->
-		
+		<div class="control-group">
+			<label class="control-label">状态：</label>
+			<div class="controls">
+				<form:input path="status" htmlEscape="false" maxlength="4" class="input-xlarge "/>
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">备注信息：</label>
 			<div class="controls">
@@ -64,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="out:jcd:rsZsjh:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

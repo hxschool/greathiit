@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsZsjhDao">
+<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsMajorSetupDao">
     
-	<sql id="rsZsjhColumns">
+	<sql id="rsMajorSetupColumns">
 		a.id AS "id",
-		a.major_type AS "majorType",
+		a.major_id AS "majorId",
+		a.major_name AS "majorName",
 		a.major_count AS "majorCount",
-		a.zy1 AS "zy1",
-		a.zy2 AS "zy2",
-		a.zy3 AS "zy3",
-		a.zy4 AS "zy4",
-		a.zy5 AS "zy5",
-		a.zy6 AS "zy6",
+		a.major_total AS "majorTotal",
 		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -21,41 +17,45 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="rsZsjhJoins">
+	<sql id="rsMajorSetupJoins">
 	</sql>
     
-	<select id="get" resultType="RsZsjh">
+	<select id="get" resultType="RsMajorSetup">
 		SELECT 
-			<include refid="rsZsjhColumns"/>
-		FROM rs_zsjh a
-		<include refid="rsZsjhJoins"/>
+			<include refid="rsMajorSetupColumns"/>
+		FROM rs_major_setup a
+		<include refid="rsMajorSetupJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="getByMajorType" resultType="RsZsjh">
-		SELECT
-		<include refid="rsZsjhColumns" />
-		FROM rs_zsjh a
-		<include refid="rsZsjhJoins" />
-		WHERE a.major_type = #{majorType}
+	<select id="getMajorId" resultType="RsMajorSetup">
+		SELECT 
+			<include refid="rsMajorSetupColumns"/>
+		FROM rs_major_setup a
+		<include refid="rsMajorSetupJoins"/>
+		WHERE a.major_id = #{majorId}
 	</select>
 	
+
 	
-	<select id="findList" resultType="RsZsjh">
+	<select id="findList" resultType="RsMajorSetup">
 		SELECT 
-			<include refid="rsZsjhColumns"/>
-		FROM rs_zsjh a
-		<include refid="rsZsjhJoins"/>
+			<include refid="rsMajorSetupColumns"/>
+		FROM rs_major_setup a
+		<include refid="rsMajorSetupJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="majorType != null and majorType != ''">
-				AND a.major_type = #{majorType}
+			<if test="majorId != null and majorId != ''">
+				AND a.major_id = #{majorId}
+			</if>
+			<if test="majorName != null and majorName != ''">
+				AND a.major_name = #{majorName}
 			</if>
 			<if test="majorCount != null and majorCount != ''">
 				AND a.major_count = #{majorCount}
 			</if>
-			<if test="zy1 != null and zy1 != ''">
-				AND a.zy1 = #{zy1}
+			<if test="majorTotal != null and majorTotal != ''">
+				AND a.major_total = #{majorTotal}
 			</if>
 		</where>
 		<choose>
@@ -68,11 +68,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="RsZsjh">
+	<select id="findAllList" resultType="RsMajorSetup">
 		SELECT 
-			<include refid="rsZsjhColumns"/>
-		FROM rs_zsjh a
-		<include refid="rsZsjhJoins"/>
+			<include refid="rsMajorSetupColumns"/>
+		FROM rs_major_setup a
+		<include refid="rsMajorSetupJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -87,15 +87,11 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO rs_zsjh(
-			major_type,
+		INSERT INTO rs_major_setup(
+			major_id,
+			major_name,
 			major_count,
-			zy1,
-			zy2,
-			zy3,
-			zy4,
-			zy5,
-			zy6,
+			major_total,
 			status,
 			create_by,
 			create_date,
@@ -104,14 +100,10 @@
 			remarks,
 			del_flag
 		) VALUES (
-			#{majorType},
+			#{majorId},
+			#{majorName},
 			#{majorCount},
-			#{zy1},
-			#{zy2},
-			#{zy3},
-			#{zy4},
-			#{zy5},
-			#{zy6},
+			#{majorTotal},
 			#{status},
 			#{createBy.id},
 			#{createDate},
@@ -123,15 +115,11 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE rs_zsjh SET 	
-			major_type = #{majorType},
+		UPDATE rs_major_setup SET 	
+			major_id = #{majorId},
+			major_name = #{majorName},
 			major_count = #{majorCount},
-			zy1 = #{zy1},
-			zy2 = #{zy2},
-			zy3 = #{zy3},
-			zy4 = #{zy4},
-			zy5 = #{zy5},
-			zy6 = #{zy6},
+			major_total = #{majorTotal},
 			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
@@ -140,7 +128,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE rs_zsjh SET 
+		UPDATE rs_major_setup SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>

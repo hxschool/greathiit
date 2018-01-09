@@ -27,17 +27,22 @@
 </head>
 <body>
 	
+	
+	
+	
 	<form:form id="inputForm" modelAttribute="dict" action="${ctx}/out/system/dict/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>
+		<c:if test="${dict.type=='greathiit_zhaosheng_grade'}">
 		<div class="control-group">
-			<label class="control-label">值:</label>
+			<label class="control-label">录取分数线设置:</label>
 			<div class="controls">
 				<form:input path="value" htmlEscape="false" maxlength="50" class="required"/>
 			</div>
 		</div>
+		</c:if>
 		<div class="control-group">
-			<label class="control-label">描述信息设置:</label>
+			<label class="control-label">描述信息:</label>
 			<div class="controls">
 				<form:textarea id="description" htmlEscape="true" path="description" rows="4" class="input-xxlarge"/>
 				<sys:ckeditor replace="description" />

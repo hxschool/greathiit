@@ -131,7 +131,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业1长度必须介于 0 和 64 之间")
-	@ExcelField(title="报考专业1", align=2, sort=8, dictType="greathiit_zhaosheng_major")
+	@ExcelField(title="报考专业1", align=2, sort=8)
 	public String getZy1() {
 		return zy1;
 	}
@@ -141,7 +141,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业2长度必须介于 0 和 64 之间")
-	@ExcelField(title="报考专业2", align=2, sort=9, dictType="greathiit_zhaosheng_major")
+	@ExcelField(title="报考专业2", align=2, sort=9)
 	public String getZy2() {
 		return zy2;
 	}
@@ -151,7 +151,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业3长度必须介于 0 和 64 之间")
-	@ExcelField(title="报考专业3", align=2, sort=10, dictType="greathiit_zhaosheng_major")
+	@ExcelField(title="报考专业3", align=2, sort=10)
 	public String getZy3() {
 		return zy3;
 	}
@@ -161,7 +161,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业4长度必须介于 0 和 64 之间")
-	@ExcelField(title="报考专业4", align=2, sort=11, dictType="greathiit_zhaosheng_major")
+	@ExcelField(title="报考专业4", align=2, sort=11)
 	public String getZy4() {
 		return zy4;
 	}
@@ -171,7 +171,7 @@ public class RsJcd extends DataEntity<RsJcd> {
 	}
 	
 	@Length(min=0, max=64, message="意向专业5长度必须介于 0 和 64 之间")
-	@ExcelField(title="报考专业5", align=2, sort=12, dictType="greathiit_zhaosheng_major")
+	@ExcelField(title="报考专业5", align=2, sort=12)
 	public String getZy5() {
 		return zy5;
 	}

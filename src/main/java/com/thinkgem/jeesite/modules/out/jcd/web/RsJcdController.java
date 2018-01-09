@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -132,17 +133,16 @@ public class RsJcdController extends BaseController {
 			List<RsJcd> list = ei.getDataList(RsJcd.class);
 			for (RsJcd jcd : list){
 				try{
-					if (!checkKsh(jcd.getKsh())){
-						//初始化状态,设置未录取
-						String cj = jcd.getZf().concat(".").concat(val(jcd.getKm1())).concat(val(jcd.getKm2())).concat(val(jcd.getKm3()));;
-						jcd.setCj(cj);
-						jcd.setStatus("0");
-						rsJcdService.save(jcd);
-						successNum++;
-					}else{
-						failureMsg.append("<br/>考试号"+jcd.getKsh()+" 姓名: "+ jcd.getXm() +" 已存在; ");
-						failureNum++;
+					RsJcd entity = rsJcdService.getByKsh(jcd.getKsh());
+					if(org.springframework.util.StringUtils.isEmpty(entity)) {
+						entity = new RsJcd();
 					}
+					BeanUtils.copyProperties(jcd, entity);
+					String cj = jcd.getZf().concat(".").concat(val(jcd.getKm1())).concat(val(jcd.getKm2())).concat(val(jcd.getKm3()));
+					entity.setCj(cj);
+					entity.setStatus("0");
+					rsJcdService.save(entity);
+					successNum++;
 				}catch(ConstraintViolationException ex){
 					failureMsg.append("<br/>考试号: "+jcd.getKsh()+" 导入失败：");
 					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");

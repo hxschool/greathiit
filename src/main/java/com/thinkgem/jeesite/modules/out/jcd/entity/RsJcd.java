@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.out.jcd.entity;
 
 import org.hibernate.validator.constraints.Length;
+import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
@@ -13,7 +14,7 @@ import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
  * @author 赵俊飞
  * @version 2017-12-09
  */
-public class RsJcd extends DataEntity<RsJcd> {
+public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 	
 	private static final long serialVersionUID = 1L;
 	private String ksh;		// 考生号
@@ -209,4 +210,22 @@ public class RsJcd extends DataEntity<RsJcd> {
 		this.zytj = zytj;
 	}
 	
+	
+	@Override  
+	public int compareTo(RsJcd o) {
+		if(StringUtils.isEmpty(this.cj)) {
+			this.cj = "0";
+		}
+		if(StringUtils.isEmpty(o.cj)) {
+			o.cj = "0";
+		}
+		if(Double.valueOf(this.cj)>Double.valueOf(o.cj)) {
+			return -1;
+		}
+		else if(Double.valueOf(this.cj)<Double.valueOf(o.cj)) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 }

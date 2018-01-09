@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.out.jcd.web;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,11 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
+import com.thinkgem.jeesite.modules.out.jcd.entity.RsMajorSetup;
 import com.thinkgem.jeesite.modules.out.jcd.service.RsJcdService;
+import com.thinkgem.jeesite.modules.out.jcd.service.RsMajorSetupService;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 考试成绩单Controller
@@ -43,7 +48,8 @@ public class RsJcdController extends BaseController {
 
 	@Autowired
 	private RsJcdService rsJcdService;
-	
+	@Autowired
+	private RsMajorSetupService rsMajorSetupService;
 	
 	@ModelAttribute
 	public RsJcd get(@RequestParam(required=false) String id) {
@@ -131,17 +137,35 @@ public class RsJcdController extends BaseController {
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<RsJcd> list = ei.getDataList(RsJcd.class);
+			
+			List<RsJcd> sortList = new ArrayList<RsJcd>();
+			
 			for (RsJcd jcd : list){
 				try{
 					RsJcd entity = rsJcdService.getByKsh(jcd.getKsh());
 					if(org.springframework.util.StringUtils.isEmpty(entity)) {
 						entity = new RsJcd();
 					}
-					BeanUtils.copyProperties(jcd, entity);
+					entity.setKsh(jcd.getKsh());
+					entity.setXm(jcd.getXm());
+					entity.setSfzh(jcd.getSfzh());
+					entity.setZf(jcd.getZf());
+					entity.setKm1(jcd.getKm1());
+					entity.setKm2(jcd.getKm2());
+					entity.setKm3(jcd.getKm3());
+					entity.setKm4(jcd.getKm4());
+					entity.setZy1(jcd.getZy1());
+					entity.setZy2(jcd.getZy2());
+					entity.setZy3(jcd.getZy3());
+					entity.setZy4(jcd.getZy4());
+					entity.setZy5(jcd.getZy5());
+					entity.setZy6(jcd.getZy6());
+					entity.setZytj(jcd.getZytj());
 					String cj = jcd.getZf().concat(".").concat(val(jcd.getKm1())).concat(val(jcd.getKm2())).concat(val(jcd.getKm3()));
 					entity.setCj(cj);
 					entity.setStatus("0");
 					rsJcdService.save(entity);
+					sortList.add(entity);
 					successNum++;
 				}catch(ConstraintViolationException ex){
 					failureMsg.append("<br/>考试号: "+jcd.getKsh()+" 导入失败：");
@@ -153,6 +177,65 @@ public class RsJcdController extends BaseController {
 				}catch (Exception ex) {
 					failureMsg.append("<br/>考试号: "+jcd.getKsh()+" 导入失败："+ex.getMessage());
 				}
+			}
+			
+			Collections.sort(sortList);  
+			List<Dict> dicts = DictUtils.getDictList("greathiit_zhaosheng_grade");
+			Double grade = Double.valueOf(dicts.get(0).getValue());
+			for(RsJcd jcd:sortList) {
+				Double cj = Double.valueOf(jcd.getCj());
+				if(cj>grade) {
+					jcd.setStatus("1");
+					RsMajorSetup rsMajorSetup = new RsMajorSetup();
+					rsMajorSetup.setMajorName(jcd.getZy1());
+					RsMajorSetup rsMajorSetup1 = rsMajorSetupService.getRsMajorSetupByMajorName(rsMajorSetup);
+					if (Integer.valueOf(rsMajorSetup1.getMajorTotal()) - Integer.valueOf(rsMajorSetup1.getMajorCount()) > 0) {
+						int majorCount = Integer.valueOf(rsMajorSetup1.getMajorCount()) + 1;
+						rsMajorSetup1.setMajorCount(String.valueOf(majorCount));
+						rsMajorSetupService.save(rsMajorSetup1);
+					}else if(jcd.getZytj().equals("是")) {
+						
+						RsMajorSetup newMajorSetup2 = new RsMajorSetup();
+						newMajorSetup2.setMajorName(jcd.getZy2());
+						RsMajorSetup rsMajorSetup2 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup2);
+						if (Integer.valueOf(rsMajorSetup2.getMajorTotal())
+								- Integer.valueOf(rsMajorSetup2.getMajorCount()) > 0) {
+							int majorCount = Integer.valueOf(rsMajorSetup2.getMajorCount()) + 1;
+							rsMajorSetup2.setMajorCount(String.valueOf(majorCount));
+							rsMajorSetupService.save(rsMajorSetup2);
+						} else if (jcd.getZytj().equals("是")) {
+
+							RsMajorSetup newMajorSetup3 = new RsMajorSetup();
+							newMajorSetup3.setMajorName(jcd.getZy3());
+							RsMajorSetup rsMajorSetup3 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup3);
+							if (Integer.valueOf(rsMajorSetup3.getMajorTotal())- Integer.valueOf(rsMajorSetup3.getMajorCount()) > 0) {
+								int majorCount = Integer.valueOf(rsMajorSetup3.getMajorCount()) + 1;
+								rsMajorSetup3.setMajorCount(String.valueOf(majorCount));
+								rsMajorSetupService.save(rsMajorSetup3);
+							} else if (jcd.getZytj().equals("是")) {
+								RsMajorSetup newMajorSetup4 = new RsMajorSetup();
+								newMajorSetup4.setMajorName(jcd.getZy4());
+								RsMajorSetup rsMajorSetup4 = rsMajorSetupService
+										.getRsMajorSetupByMajorName(newMajorSetup4);
+								if (Integer.valueOf(rsMajorSetup4.getMajorTotal()) - Integer.valueOf(rsMajorSetup4.getMajorCount()) > 0) {
+									int majorCount = Integer.valueOf(rsMajorSetup4.getMajorCount()) + 1;
+									rsMajorSetup4.setMajorCount(String.valueOf(majorCount));
+									rsMajorSetupService.save(rsMajorSetup4);
+								} else if (jcd.getZytj().equals("是")) {
+									RsMajorSetup newMajorSetup5 = new RsMajorSetup();
+									newMajorSetup5.setMajorName(jcd.getZy5());
+									RsMajorSetup rsMajorSetup5 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup5);
+									if (Integer.valueOf(rsMajorSetup5.getMajorTotal()) - Integer.valueOf(rsMajorSetup5.getMajorCount()) > 0) {
+										int majorCount = Integer.valueOf(rsMajorSetup5.getMajorCount()) + 1;
+										rsMajorSetup5.setMajorCount(String.valueOf(majorCount));
+										rsMajorSetupService.save(rsMajorSetup5);
+									}
+								}
+							}
+						}
+					}
+				}
+				rsJcdService.save(jcd);
 			}
 			if (failureNum>0){
 				failureMsg.insert(0, "，失败 "+failureNum+" 条考生信息，导入信息如下：");

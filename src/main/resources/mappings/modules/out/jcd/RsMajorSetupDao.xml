@@ -36,6 +36,14 @@
 		WHERE a.major_id = #{majorId}
 	</select>
 	
+	<select id="getRsMajorSetupByMajorName" resultType="RsMajorSetup">
+		SELECT 
+			<include refid="rsMajorSetupColumns"/>
+		FROM rs_major_setup a
+		<include refid="rsMajorSetupJoins"/>
+		WHERE a.major_name = #{majorName}
+	</select>
+	
 
 	
 	<select id="findList" resultType="RsMajorSetup">

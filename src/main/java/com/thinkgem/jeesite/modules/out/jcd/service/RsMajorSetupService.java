@@ -29,6 +29,10 @@ public class RsMajorSetupService extends CrudService<RsMajorSetupDao, RsMajorSet
 		return rsMajorSetupDao.getMajorId(entity);
 	}
 	
+	public RsMajorSetup getRsMajorSetupByMajorName(RsMajorSetup entity) {
+		return rsMajorSetupDao.getRsMajorSetupByMajorName(entity);
+	}
+	
 	public RsMajorSetup get(String id) {
 		return super.get(id);
 	}

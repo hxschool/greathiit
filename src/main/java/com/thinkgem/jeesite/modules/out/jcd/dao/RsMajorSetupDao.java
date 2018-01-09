@@ -15,4 +15,6 @@ import com.thinkgem.jeesite.modules.out.jcd.entity.RsMajorSetup;
 @MyBatisDao
 public interface RsMajorSetupDao extends CrudDao<RsMajorSetup> {
 	public RsMajorSetup getMajorId(RsMajorSetup entity);
+	public RsMajorSetup getRsMajorSetupByMajorName(RsMajorSetup entity);
+	
 }

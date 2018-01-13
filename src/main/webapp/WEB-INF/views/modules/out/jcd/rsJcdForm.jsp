@@ -117,12 +117,12 @@
 				<form:input path="zy5" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
+		<!-- <div class="control-group">
 			<label class="control-label">意向专业6：</label>
 			<div class="controls">
 				<form:input path="zy6" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
-		</div>
+		</div> -->
 		<div class="control-group">
 			<label class="control-label">是否服从专业调剂：</label>
 			<div class="controls">
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="out:jcd:rsJcd:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<!-- <shiro:hasPermission name="out:jcd:rsJcd:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission> -->
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

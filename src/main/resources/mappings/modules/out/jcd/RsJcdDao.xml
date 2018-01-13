@@ -55,6 +55,30 @@
 		<include refid="rsJcdJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="ksh != null and ksh != '' ">
+				AND a.ksh = #{ksh}
+			</if>
+			
+			<if test="xm != null and xm != '' ">
+				AND a.xm like CONCAT('%',#{xm},'%')
+			</if>
+			
+			<if test="sfzh != null and sfzh != '' ">
+				AND a.sfzh = #{sfzh}
+			</if>
+			
+			<if test="zytj != null and zytj != '' ">
+				AND a.zytj = #{zytj}
+			</if>
+			
+			<if test="status != null and status != '' and status=='all'">
+				AND a.status != 1
+			</if>
+			
+			<if test="status != null and status != '' and status!='all'">
+				AND a.status = #{status}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -73,6 +97,15 @@
 		<include refid="rsJcdJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="status != null and status != '' and status=='all'">
+				AND a.status != 1
+			</if>
+			
+			<if test="status != null and status != '' and status!='all'">
+				AND a.status = #{status}
+			</if>
+			
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

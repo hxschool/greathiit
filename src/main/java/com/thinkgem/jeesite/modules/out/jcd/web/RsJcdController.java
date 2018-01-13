@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +27,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
@@ -63,63 +65,6 @@ public class RsJcdController extends BaseController {
 		return entity;
 	}
 	
-	public static void main(String[] args) {
-		
-		
-	}
-//	public  void L(List<RsJcd> list) {
-//		List<Dict> dicts = DictUtils.getDictList("greathiit_zhaosheng_grade");
-//		Double grade = Double.valueOf(dicts.get(0).getValue());
-//		
-//		for(RsJcd jcd:list) {
-//			Double cj = Double.valueOf(jcd.getCj());
-//			String majorType1 = jcd.getZy1();
-//			if(cj>grade&&checkMajor(majorType1)) {
-//				jcd.setStatus("1");
-//				jcd.setZy6(majorType1);
-//				rsJcdService.save(jcd);
-//				continue;
-//			}
-//			String majorType2 = jcd.getZy2();
-//			if (cj > grade && checkMajor(majorType2) && jcd.getZytj().equals("是")) {
-//				jcd.setStatus("1");
-//				jcd.setZy6(majorType2);
-//				rsJcdService.save(jcd);
-//				continue;
-//			}
-//			
-//			
-//			String majorType3 = jcd.getZy3();
-//			if (cj > grade && checkMajor(majorType3) && jcd.getZytj().equals("是")) {
-//				jcd.setStatus("1");
-//				jcd.setZy6(majorType3);
-//				rsJcdService.save(jcd);
-//				continue;
-//			}
-//			
-//			
-//			String majorType4 = jcd.getZy4();
-//			if (cj > grade && checkMajor(majorType4) && jcd.getZytj().equals("是")) {
-//				jcd.setStatus("1");
-//				jcd.setZy6(majorType4);
-//				rsJcdService.save(jcd);
-//				continue;
-//			}
-//			
-//			
-//			String majorType5 = jcd.getZy5();
-//			if (cj > grade && checkMajor(majorType5) && jcd.getZytj().equals("是")) {
-//				jcd.setStatus("1");
-//				jcd.setZy6(majorType5);
-//				rsJcdService.save(jcd);
-//				continue;
-//			}
-//			
-//		}
-//		
-//	}
-	
-
 	
 	public String val(String value) {
 		if(org.springframework.util.StringUtils.isEmpty(value)) {
@@ -161,7 +106,7 @@ public class RsJcdController extends BaseController {
 					entity.setZy5(jcd.getZy5());
 					entity.setZy6(jcd.getZy6());
 					entity.setZytj(jcd.getZytj());
-					String cj = jcd.getZf().concat(".").concat(val(jcd.getKm1())).concat(val(jcd.getKm2())).concat(val(jcd.getKm3()));
+					String cj = jcd.getZf().concat(".").concat(val(jcd.getKm3())).concat(val(jcd.getKm1())).concat(val(jcd.getKm2()));
 					entity.setCj(cj);
 					entity.setStatus("0");
 					rsJcdService.save(entity);
@@ -183,57 +128,114 @@ public class RsJcdController extends BaseController {
 			List<Dict> dicts = DictUtils.getDictList("greathiit_zhaosheng_grade");
 			Double grade = Double.valueOf(dicts.get(0).getValue());
 			for(RsJcd jcd:sortList) {
+				if(org.springframework.util.StringUtils.isEmpty(jcd.getZf())) {
+					//未参加考试
+					jcd.setStatus("5");
+					rsJcdService.save(jcd);
+					continue;
+				}
+				if(Double.valueOf(jcd.getZf())==0||Double.valueOf(jcd.getZf())<grade) {
+					jcd.setStatus("4");
+					rsJcdService.save(jcd);
+					continue;
+				}
 				Double cj = Double.valueOf(jcd.getCj());
-				if(cj>grade) {
-					jcd.setStatus("1");
+				if(cj>=grade) {
+					/**
+					 * boolean ret = false;
 					RsMajorSetup rsMajorSetup = new RsMajorSetup();
 					rsMajorSetup.setMajorName(jcd.getZy1());
 					RsMajorSetup rsMajorSetup1 = rsMajorSetupService.getRsMajorSetupByMajorName(rsMajorSetup);
-					if (Integer.valueOf(rsMajorSetup1.getMajorTotal()) - Integer.valueOf(rsMajorSetup1.getMajorCount()) > 0) {
-						int majorCount = Integer.valueOf(rsMajorSetup1.getMajorCount()) + 1;
-						rsMajorSetup1.setMajorCount(String.valueOf(majorCount));
-						rsMajorSetupService.save(rsMajorSetup1);
-					}else if(jcd.getZytj().equals("是")) {
-						
-						RsMajorSetup newMajorSetup2 = new RsMajorSetup();
-						newMajorSetup2.setMajorName(jcd.getZy2());
-						RsMajorSetup rsMajorSetup2 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup2);
-						if (Integer.valueOf(rsMajorSetup2.getMajorTotal())
-								- Integer.valueOf(rsMajorSetup2.getMajorCount()) > 0) {
-							int majorCount = Integer.valueOf(rsMajorSetup2.getMajorCount()) + 1;
-							rsMajorSetup2.setMajorCount(String.valueOf(majorCount));
-							rsMajorSetupService.save(rsMajorSetup2);
-						} else if (jcd.getZytj().equals("是")) {
-
-							RsMajorSetup newMajorSetup3 = new RsMajorSetup();
-							newMajorSetup3.setMajorName(jcd.getZy3());
-							RsMajorSetup rsMajorSetup3 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup3);
-							if (Integer.valueOf(rsMajorSetup3.getMajorTotal())- Integer.valueOf(rsMajorSetup3.getMajorCount()) > 0) {
-								int majorCount = Integer.valueOf(rsMajorSetup3.getMajorCount()) + 1;
-								rsMajorSetup3.setMajorCount(String.valueOf(majorCount));
-								rsMajorSetupService.save(rsMajorSetup3);
+						if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup1)) {
+							jcd.setStatus("3");
+							rsJcdService.save(jcd);
+							continue;
+						}
+						if (Integer.valueOf(rsMajorSetup1.getMajorTotal()) - Integer.valueOf(rsMajorSetup1.getMajorCount()) > 0) {
+							ret = true;
+							int majorCount = Integer.valueOf(rsMajorSetup1.getMajorCount()) + 1;
+							rsMajorSetup1.setMajorCount(String.valueOf(majorCount));
+							rsMajorSetupService.save(rsMajorSetup1);
+						}else if(jcd.getZytj().equals("是")) {
+							
+							RsMajorSetup newMajorSetup2 = new RsMajorSetup();
+							newMajorSetup2.setMajorName(jcd.getZy2());
+							RsMajorSetup rsMajorSetup2 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup2);
+							if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup2)) {
+								jcd.setStatus("3");
+								rsJcdService.save(jcd);
+								continue;
+							}
+							if (Integer.valueOf(rsMajorSetup2.getMajorTotal())
+									- Integer.valueOf(rsMajorSetup2.getMajorCount()) > 0) {
+								ret = true;
+								int majorCount = Integer.valueOf(rsMajorSetup2.getMajorCount()) + 1;
+								rsMajorSetup2.setMajorCount(String.valueOf(majorCount));
+								rsMajorSetupService.save(rsMajorSetup2);
 							} else if (jcd.getZytj().equals("是")) {
-								RsMajorSetup newMajorSetup4 = new RsMajorSetup();
-								newMajorSetup4.setMajorName(jcd.getZy4());
-								RsMajorSetup rsMajorSetup4 = rsMajorSetupService
-										.getRsMajorSetupByMajorName(newMajorSetup4);
-								if (Integer.valueOf(rsMajorSetup4.getMajorTotal()) - Integer.valueOf(rsMajorSetup4.getMajorCount()) > 0) {
-									int majorCount = Integer.valueOf(rsMajorSetup4.getMajorCount()) + 1;
-									rsMajorSetup4.setMajorCount(String.valueOf(majorCount));
-									rsMajorSetupService.save(rsMajorSetup4);
+
+								RsMajorSetup newMajorSetup3 = new RsMajorSetup();
+								newMajorSetup3.setMajorName(jcd.getZy3());
+								RsMajorSetup rsMajorSetup3 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup3);
+								if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup3)) {
+									jcd.setStatus("3");
+									rsJcdService.save(jcd);
+									continue;
+								}
+								if (Integer.valueOf(rsMajorSetup3.getMajorTotal())- Integer.valueOf(rsMajorSetup3.getMajorCount()) > 0) {
+									ret = true;
+									int majorCount = Integer.valueOf(rsMajorSetup3.getMajorCount()) + 1;
+									rsMajorSetup3.setMajorCount(String.valueOf(majorCount));
+									rsMajorSetupService.save(rsMajorSetup3);
 								} else if (jcd.getZytj().equals("是")) {
-									RsMajorSetup newMajorSetup5 = new RsMajorSetup();
-									newMajorSetup5.setMajorName(jcd.getZy5());
-									RsMajorSetup rsMajorSetup5 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup5);
-									if (Integer.valueOf(rsMajorSetup5.getMajorTotal()) - Integer.valueOf(rsMajorSetup5.getMajorCount()) > 0) {
-										int majorCount = Integer.valueOf(rsMajorSetup5.getMajorCount()) + 1;
-										rsMajorSetup5.setMajorCount(String.valueOf(majorCount));
-										rsMajorSetupService.save(rsMajorSetup5);
+									RsMajorSetup newMajorSetup4 = new RsMajorSetup();
+									newMajorSetup4.setMajorName(jcd.getZy4());
+									RsMajorSetup rsMajorSetup4 = rsMajorSetupService
+											.getRsMajorSetupByMajorName(newMajorSetup4);
+									if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup4)) {
+										jcd.setStatus("3");
+										rsJcdService.save(jcd);
+										continue;
+									}
+									if (Integer.valueOf(rsMajorSetup4.getMajorTotal()) - Integer.valueOf(rsMajorSetup4.getMajorCount()) > 0) {
+										ret = true;
+										int majorCount = Integer.valueOf(rsMajorSetup4.getMajorCount()) + 1;
+										rsMajorSetup4.setMajorCount(String.valueOf(majorCount));
+										rsMajorSetupService.save(rsMajorSetup4);
+									} else if (jcd.getZytj().equals("是")) {
+										RsMajorSetup newMajorSetup5 = new RsMajorSetup();
+										newMajorSetup5.setMajorName(jcd.getZy5());
+										RsMajorSetup rsMajorSetup5 = rsMajorSetupService.getRsMajorSetupByMajorName(newMajorSetup5);
+										if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup5)) {
+											jcd.setStatus("3");
+											rsJcdService.save(jcd);
+											continue;
+										}
+										if (Integer.valueOf(rsMajorSetup5.getMajorTotal()) - Integer.valueOf(rsMajorSetup5.getMajorCount()) > 0) {
+											ret = true;
+											int majorCount = Integer.valueOf(rsMajorSetup5.getMajorCount()) + 1;
+											rsMajorSetup5.setMajorCount(String.valueOf(majorCount));
+											rsMajorSetupService.save(rsMajorSetup5);
+										}
 									}
 								}
 							}
 						}
+						if(ret) {
+							//已录取
+							jcd.setStatus("1");
+						}else {
+							//名额已满
+							jcd.setStatus("2");
+						}
+					
+					 */
+					if(handMajorSetup(jcd,1)) {
+						continue;
 					}
+				}else {
+					//分数过低
+					jcd.setStatus("4");
 				}
 				rsJcdService.save(jcd);
 			}
@@ -242,12 +244,42 @@ public class RsJcdController extends BaseController {
 			}
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条考生信息"+failureMsg);
 		} catch (Exception e) {
+			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
 		return "redirect:" + adminPath + "/out/jcd/rsJcd/list?repage";
 	}
 	
-	
+	private boolean handMajorSetup(RsJcd jcd,int index) {
+		String zy = (String) Reflections.getFieldValue(jcd, "zy".concat(String.valueOf(index)));
+		RsMajorSetup setup = new RsMajorSetup();
+		setup.setMajorName(zy);
+		RsMajorSetup majorSetup = rsMajorSetupService.getRsMajorSetupByMajorName(setup);
+		if(org.springframework.util.StringUtils.isEmpty(majorSetup)) {
+			jcd.setStatus("3");
+			rsJcdService.save(jcd);
+			return true;
+		}
+		if (Integer.valueOf(majorSetup.getMajorTotal())- Integer.valueOf(majorSetup.getMajorCount()) > 0) {
+			jcd.setStatus("1");
+			int majorCount = Integer.valueOf(majorSetup.getMajorCount()) + 1;
+			majorSetup.setMajorCount(String.valueOf(majorCount));
+			rsMajorSetupService.save(majorSetup);
+		} else {
+			index++;
+			if(index==6) {
+				jcd.setStatus("2");
+				return false;
+			}
+			if(jcd.getZytj().equals("是")) {
+				return handMajorSetup(jcd,index++);
+			}else {
+				jcd.setStatus("5");
+			}
+			
+		}
+		return false;
+	}
 	
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "import/template")
@@ -277,32 +309,46 @@ public class RsJcdController extends BaseController {
 	public String list(RsJcd rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
 		model.addAttribute("page", page);
+		model.addAttribute("status", rsJcd.getStatus());
+		model.addAttribute("zytj", rsJcd.getZytj());
 		return "modules/out/jcd/rsJcdList";
+	}
+	
+	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequestMapping("im")
+	public String im(RsJcd rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
+		model.addAttribute("page", page);
+		return "modules/out/jcd/im";
+	}
+	
+	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequestMapping(value="/status/{stauts}")
+	public String status(RsJcd rsJcd,@PathVariable("stauts") String stauts, HttpServletRequest request, HttpServletResponse response, Model model) {
+		rsJcd.setStatus(stauts);
+		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
+		model.addAttribute("page", page);
+		model.addAttribute("status", stauts);
+		return "modules/out/jcd/status";
 	}
 	
 	@RequiresPermissions("out:jcd:rsJcd:view")
 	@RequestMapping("in")
 	public String in(RsJcd rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
+		
 		model.addAttribute("page", page);
 		return "modules/out/jcd/rsJcdList";
 	}
 	
-	
+
 	@RequiresPermissions("out:jcd:rsJcd:view")
 	@RequestMapping("out")
 	public String out(RsJcd rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
+		rsJcd.setStatus("all");
 		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
 		model.addAttribute("page", page);
-		return "modules/out/jcd/rsJcdList";
-	}
-	
-	@RequiresPermissions("out:jcd:rsJcd:view")
-	@RequestMapping("low")
-	public String low(RsJcd rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsJcd> page = rsJcdService.findPage(new Page<RsJcd>(request, response), rsJcd); 
-		model.addAttribute("page", page);
-		return "modules/out/jcd/rsJcdList";
+		return "modules/out/jcd/out";
 	}
 
 	@RequiresPermissions("out:jcd:rsJcd:view")

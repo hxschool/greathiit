@@ -34,6 +34,12 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public List<User> findUserByOfficeId(User user);
+	/**
+	 * 一个寝室里面多少人
+	 * @param dormId
+	 * @return
+	 */
+	public List<User> findUserByUserPojo(User pojo);
 	
 	public List<User> findListByOfficeIdAndClazzId(@Param("officeId")String officeId,@Param("clazzId")String clazzId);
 	

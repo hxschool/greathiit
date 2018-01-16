@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -280,84 +281,6 @@ public class UcDormController extends BaseController {
 		}
 	}
 	
-	public  void main1(String[] args) {
-		int x = 7;
-		List<UcDorm> boyDorms = new ArrayList<UcDorm>();
-		for(int i=1;i<=6;i++) {
-			init(String.valueOf(i),boyDorms);
-		}
-		 Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {  
-	            @Override  
-	            public String groupby(Object obj) {  
-	            	UcDorm d = (UcDorm) obj;  
-	                return d.getDormFloor();
-	            }  
-	     });
-		 
-		 List<Integer> list = new ArrayList<Integer>();
-		 for(Map.Entry<String, List<UcDorm>> m:floorMap.entrySet()) {
-			 list.add(m.getValue().size());
-			 logger.info("当前楼层:{},当前楼层共有:{}寝室", m.getKey() , m.getValue().size());
-		 }
-		 int ret = binarysearchKey(list.toArray(new Integer[list.size()]),x);
-		 logger.info("需要分配床位为:{},其中{}趋近于分配条件.权重计算",x , ret);
-		 int index = list.indexOf(ret);
-		 List<UcDorm> resultList = floorMap.get(String.valueOf(index+1));
-		 logger.info("从{}楼层分配寝室,寝室信息:{}",String.valueOf(index+1) , resultList);
-		
-		 List<User> users = new ArrayList<User>();
-		 List<User> remainder = RandomListUtils.createRandomList(users,x);
-		 users.removeAll(remainder);
-		int k=0;
-		int y = users.size() - remainder.size();
-		loop1:for (UcDorm dorm : resultList) {
-			 logger.info("准备开始分配寝室,寝室信息:{}",dorm);
-			int total = Integer.valueOf(dorm.getTotal()) - Integer.valueOf(dorm.getCnt());
-			 logger.info("当前可分配入住人数:{}",total);
-			if(k==x) {
-				logger.info("分配结束,跳出循环",total);
-				break loop1;
-			}
-			if(total!=4) {
-				for (int i = 0; i < total; i++) {
-					User user = remainder.get(i);
-				}
-			}else {
-				//正常的list学生寝室学生处理
-				for (int i = 0; i < 4; i++) {
-					System.out.println("整除" + i);
-					User user = users.get(y);
-					y++;
-				}
-			}
-			continue loop1;
-		}
-		
-	}
-	
-
-	
-	public static void main(String[] args) {
-		
-		List<Integer> ls = new ArrayList<Integer>();
-		ls.add(1);
-		ls.add(2);
-		ls.add(3);
-		ls.add(4);
-		ls.add(5);
-		ls.add(6);
-		ls.add(7);
-		List<Integer> bb = RandomListUtils.createRandomList(ls,3);
-		
-		ls.removeAll(bb);
-		for(Integer i:bb) {
-			System.out.println(i);
-		}
-		for(Integer i:ls) {
-			System.out.println(i);
-		}
-	}
-	
 	
 	
 	
@@ -444,17 +367,7 @@ public class UcDormController extends BaseController {
 			}
 		}
 	}
-	
-	/**
-	 * 腾出操作页面
-	 * @param ucDorm
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "uninfo")
-	public String uninfo(UcDorm ucDorm, Model model) {
-		return "modules/dorm/unUcDormInfoForm";
-	}
+
 	/**
 	 * 按学号分配寝室
 	 * @param ucDorm
@@ -484,6 +397,7 @@ public class UcDormController extends BaseController {
 				UcDormBuild dormBuild=	ucDormService.get(dorm.getId()).getUcDormBuild();
 				map.put("responseCode", "9998");
 				map.put("responseMessage", "不可以分配寝室,当前学生已经入住"+dormBuild.getDormBuildName() + "栋"+dorm.getDormFloor()+"层"+dorm.getDormNumber()+"室");
+				map.put("result", tmp);
 				return map;
 		}
 		map.put("responseCode", "0000");
@@ -520,11 +434,87 @@ public class UcDormController extends BaseController {
 		return "modules/dorm/".concat(request.getParameter("studentDormType"));
 	}
 	
+	
+	
+	
 	@RequestMapping(value = "unstudentnumber")
 	public String unstudentnumber(UcDorm ucDorm,String studentNumber, Model model) {
+		return "modules/dorm/unUcDormStudentNumberForm";
+	}
+	
+	@RequestMapping(value = "flightDormByStudentNumber")
+	public String flightDormByStudentNumber(String studentNumber, HttpServletRequest request,Model model) {
+		User user = new User();
+		user.setNo(studentNumber);
+		user = systemService.getUser(user);
+		UcDorm ucDorm = user.getDorm();
+		int cnt = Integer.valueOf(ucDorm.getCnt())-1;
+		ucDorm.setCnt(String.valueOf(cnt));
+		user.setDorm(null);
+		ucDormService.save(ucDorm);
+		systemService.updateUserInfo(user);
+		model.addAttribute("message", "操作成功");
+		return "modules/dorm/".concat(request.getParameter("studentDormType"));
+	}
+	
+	
+	/**
+	 * 腾出操作页面
+	 * @param ucDorm
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value = "uninfo")
+	public String uninfo(UcDorm ucDorm, Model model) {
 		return "modules/dorm/unUcDormInfoForm";
 	}
 	
+	@RequestMapping(value = "flightDormByStudentNumbers")
+	public String flightDormByStudentNumbers(String[] studentNumber, HttpServletRequest request,Model model) {
+		
+		for(String s : studentNumber) {
+			User user = new User();
+			user.setNo(s);
+			user = systemService.getUser(user);
+			UcDorm ucDorm = ucDormService.get(user.getDorm());
+			int cnt = Integer.valueOf(ucDorm.getCnt())-1;
+			ucDorm.setCnt(String.valueOf(cnt));
+			user.setDorm(null);
+			systemService.updateUserInfo(user);
+			ucDormService.save(ucDorm);
+			
+		}
+		model.addAttribute("message", "操作成功");
+		return "modules/dorm/".concat(request.getParameter("studentDormType"));
+	}
+	
+	
+	@RequestMapping(value = "unclazz")
+	public String unclazz(Model model) {
+		return "modules/dorm/unUcDormClazzForm";
+	}
+	
+	
+	@RequestMapping(value = "flightDormByClazz")
+	public String flightDormByStudentNumbers(String clazzId, HttpServletRequest request,Model model) {
+		
+		User pojo = new User();
+		Office clazz = new Office();
+		clazz.setId(clazzId);
+		pojo.setClazz(clazz);
+		List<User> users = systemService.findUserByUserPojo(pojo);
+		for(User user : users) {
+			user = systemService.getUser(user);
+			UcDorm ucDorm = ucDormService.get(user.getDorm());
+			int cnt = Integer.valueOf(ucDorm.getCnt())-1;
+			ucDorm.setCnt(String.valueOf(cnt));
+			user.setDorm(null);
+			systemService.updateUserInfo(user);
+			ucDormService.save(ucDorm);
+		}
+		model.addAttribute("message", "操作成功");
+		return "modules/dorm/".concat(request.getParameter("studentDormType"));
+	}
 	
 	
 	@RequestMapping(value = "ajaxDorm")
@@ -546,5 +536,15 @@ public class UcDormController extends BaseController {
 		return systemService.findListByOfficeIdAndClazzId(officeId,clazzId);
 	}
 	
+	
+	@RequestMapping(value = "ajaxStudentByDorm")
+	@ResponseBody
+	public List<User> ajaxStudent(@RequestParam("dormId") String dormId) {
+		User user = new User();
+		UcDorm dorm = new UcDorm();
+		dorm.setId(dormId);
+		user.setDorm(dorm);
+		return systemService.findUserByUserPojo(user);
+	}
 	
 }

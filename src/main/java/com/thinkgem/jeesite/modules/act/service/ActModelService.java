@@ -172,6 +172,7 @@ public class ActModelService extends BaseService {
 	 * @param id
 	 * @return
 	 */
+	@Transactional(readOnly = false)
 	public void delete(String id) {
 		repositoryService.deleteModel(id);
 	}

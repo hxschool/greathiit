@@ -29,8 +29,8 @@
 <ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dorm/ucDorm/">按学号分配</a></li>
 	</ul><br/>
-	<form id="form" action="${ctx}/dorm/ucDorm/saveDorm" method="post" class="form-horizontal">
-		<input type="hidden" name="studentDormType" value="ucDormStudentNumberForm">
+	<form id="form" action="${ctx}/dorm/ucDorm/removeDorm" method="post" class="form-horizontal">
+		<input type="hidden" name="studentDormType" value="unUcDormStudentNumberForm">
 		<sys:message content="${message}"/>
 		
 
@@ -133,7 +133,6 @@
 							
 							if(data.responseCode=='0000'){
 								var user=data.result;
-								alert(user.sex);
 								$("#studentNumberMessage").html(data.responseMessage);
 								$("#ajax_studentNumber").val("0");
 							}

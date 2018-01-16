@@ -162,6 +162,22 @@
 	</select>
 	
 	
+	<select id="findUserByUserPojo" resultType="User" parameterType="String">
+		SELECT
+			<include refid="userColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+		FROM sys_user a
+		<include refid="userJoins"/><!-- 
+		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
+		WHERE 1=1 
+		
+		<if test="dorm != null and dorm.id != ''"> AND a.dorm_id = #{dorm.id}</if>
+		<if test="clazz != null and clazz.id != ''"> AND a.clazz_id = #{clazz.id} </if>
+		
+		 AND a.del_flag = #{DEL_FLAG_NORMAL}
+	</select>
+	
+	
 	<select id="findUserbyMobileOrStudentNumberOrMail" resultType="User" parameterType="User">
 		SELECT
 			<include refid="userColumns"/><!-- ,

@@ -121,7 +121,7 @@
 	
 	<update id="update">
 		UPDATE uc_dorm SET 	
-			dormbuild_id = #{dorm.ucDormBuild.id},
+			dormbuild_id = #{ucDormBuild.id},
 			dorm_number = #{dormNumber},
 			dorm_floor = #{dormFloor},
 			cnt = #{cnt},

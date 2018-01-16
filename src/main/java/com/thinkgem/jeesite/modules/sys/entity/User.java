@@ -84,7 +84,10 @@ public class User extends DataEntity<User> {
 	
 	public String getSex() {
 		if(!org.springframework.util.StringUtils.isEmpty(loginName)&&!org.springframework.util.StringUtils.isEmpty(userType)&&userType.equals("6")) {
-			return IdcardUtils.getGenderByIdCard(loginName);
+			if(IdcardUtils.validateIdCard18(loginName)) {
+				return IdcardUtils.getGenderByIdCard(loginName);
+			}
+			
 		}
 		return "";
 	}

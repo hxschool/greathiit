@@ -232,8 +232,12 @@ public class UcDormController extends BaseController {
 		List<Integer> list = new ArrayList<Integer>();
 		//这个地方有问题,不是计算list大小,计算可入住寝室人数
 		for (Map.Entry<String, List<UcDorm>> m : floorMap.entrySet()) {
+//			List<UcDorm> tmp = m.getValue();
+//			for(UcDorm tm:tmp) {
+//				list.add(Integer.valueOf(tm.getCnt()));
+//				logger.info("当前楼层:{},当前楼层共有:{}寝室", m.getKey(), m.getValue().size());
+//			}
 			list.add(m.getValue().size());
-			
 			logger.info("当前楼层:{},当前楼层共有:{}寝室", m.getKey(), m.getValue().size());
 		}
 		int ret = binarysearchKey(list.toArray(new Integer[list.size()]), users.size());
@@ -266,11 +270,11 @@ public class UcDormController extends BaseController {
 					User user = remainder.get(i);
 					user.setDorm(dorm);
 					ucDormService.addDorm(user);
+					y++;
 				}
 			} else {
 				// 正常的list学生寝室学生处理
 				for (int i = 0; i < 4; i++) {
-					System.out.println("整除" + i);
 					User user = users.get(y);
 					user.setDorm(dorm);
 					ucDormService.addDorm(user);
@@ -368,12 +372,6 @@ public class UcDormController extends BaseController {
 		}
 	}
 
-	/**
-	 * 按学号分配寝室
-	 * @param ucDorm
-	 * @param model
-	 * @return
-	 */
 	@RequestMapping(value = "ajaxStudentnumber")
 	@ResponseBody
 	public Map<String,Object> ajaxStudentnumber(String studentNumber, Model model) {
@@ -405,20 +403,23 @@ public class UcDormController extends BaseController {
 		map.put("result", tmp);
 		return map;
 	}
-	
+
+	/**
+	 * 按学号分配寝室
+	 * @param ucDorm
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "studentnumber")
 	public String studentnumber(UcDorm ucDorm,String studentNumber, Model model) {
 		return "modules/dorm/ucDormStudentNumberForm";
 	}
-	
-	
 	
 	@RequestMapping(value = "saveDorm")
 	public String saveDorm(String dorm,String studentNumber, HttpServletRequest request,Model model) {
 		User user = new User();
 		user.setNo(studentNumber);
 		user = systemService.getUser(user);
-		
 		
 		if(!org.springframework.util.StringUtils.isEmpty(user.getDorm())) {
 			UcDormBuild dormBuild=	user.getDorm().getUcDormBuild();
@@ -436,7 +437,13 @@ public class UcDormController extends BaseController {
 	
 	
 	
-	
+	/**
+	 * 按学号腾空寝室
+	 * @param ucDorm
+	 * @param studentNumber
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "unstudentnumber")
 	public String unstudentnumber(UcDorm ucDorm,String studentNumber, Model model) {
 		return "modules/dorm/unUcDormStudentNumberForm";

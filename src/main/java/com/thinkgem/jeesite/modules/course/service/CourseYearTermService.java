@@ -27,6 +27,7 @@ public class CourseYearTermService extends CrudService<CourseYearTermDao, Course
 	public CourseYearTerm get(String id) {
 		return super.get(id);
 	}
+
 	
 	public List<CourseYearTerm> findList(CourseYearTerm courseYearTerm) {
 		return super.findList(courseYearTerm);

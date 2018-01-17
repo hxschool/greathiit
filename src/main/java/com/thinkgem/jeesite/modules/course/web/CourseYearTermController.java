@@ -74,14 +74,13 @@ public class CourseYearTermController extends BaseController {
 
 	@RequiresPermissions("course:courseYearTerm:edit")
 	@RequestMapping(value = "save")
-	public String save(CourseYearTerm courseYearTerm, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, courseYearTerm)){
-			return form(courseYearTerm, model);
-		}
-		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
-			courseYearTerm = courseYearTermService.get(courseYearTerm);
-		}
+	public String save(String yearTerm, Model model, RedirectAttributes redirectAttributes) {
 		
+		CourseYearTerm courseYearTerm = courseYearTermService.get(yearTerm);
+		if(org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
+			courseYearTerm = new CourseYearTerm(); 
+		}
+		courseYearTerm.setYearTerm(yearTerm);
 		courseYearTermService.save(courseYearTerm);
 		
 		//学期初始化过程需要讲全部的教学楼以及班级添加到courseSchedule

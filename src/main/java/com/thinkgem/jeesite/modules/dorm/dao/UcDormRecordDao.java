@@ -10,7 +10,7 @@ import com.thinkgem.jeesite.modules.dorm.entity.UcDormRecord;
 /**
  * 查寝记录DAO接口
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2018-01-22
  */
 @MyBatisDao
 public interface UcDormRecordDao extends CrudDao<UcDormRecord> {

@@ -27,8 +27,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dorm/ucDormRecord/">查寝记录列表</a></li>
-		<li class="active"><a href="${ctx}/dorm/ucDormRecord/form?id=${ucDormRecord.id}">查寝记录<shiro:hasPermission name="dorm:ucDormRecord:edit">${not empty ucDormRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dorm:ucDormRecord:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/dorm/ucDormRecord/">缺勤记录列表</a></li>
+		<li class="active"><a href="${ctx}/dorm/ucDormRecord/form?id=${ucDormRecord.id}">缺勤记录<shiro:hasPermission name="dorm:ucDormRecord:edit">${not empty ucDormRecord.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="dorm:ucDormRecord:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="ucDormRecord" action="${ctx}/dorm/ucDormRecord/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>

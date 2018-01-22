@@ -25,7 +25,7 @@ import com.thinkgem.jeesite.modules.dorm.service.UcDormRecordService;
 /**
  * 查寝记录Controller
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2018-01-22
  */
 @Controller
 @RequestMapping(value = "${adminPath}/dorm/ucDormRecord")

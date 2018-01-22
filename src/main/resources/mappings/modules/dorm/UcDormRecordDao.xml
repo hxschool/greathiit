@@ -36,6 +36,24 @@
 		<include refid="ucDormRecordJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
+			</if>
+			<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+			<if test="dormBuildId != null and dormBuildId != ''">
+				AND a.dorm_build_id = #{dormBuildId}
+			</if>
+			<if test="dormId != null and dormId != ''">
+				AND a.dorm_id = #{dormId}
+			</if>
+			<if test="date != null and date != ''">
+				AND a.date = #{date}
+			</if>
+			<if test="detail != null and detail != ''">
+				AND a.detail = #{detail}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

@@ -12,7 +12,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 /**
  * 查寝记录Entity
  * @author 赵俊飞
- * @version 2017-11-24
+ * @version 2018-01-22
  */
 public class UcDormRecord extends DataEntity<UcDormRecord> {
 	

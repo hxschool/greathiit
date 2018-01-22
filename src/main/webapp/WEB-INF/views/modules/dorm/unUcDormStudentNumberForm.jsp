@@ -26,9 +26,7 @@
 	</script>
 </head>
 <body>
-<ul class="nav nav-tabs">
-		<li class="active"><a href="#">按学号腾出</a></li>
-	</ul><br/>
+	<br/>
 	<form id="form" action="${ctx}/dorm/ucDorm/flightDormByStudentNumber" method="post" class="form-horizontal">
 		<input type="hidden" name="studentDormType" value="unUcDormStudentNumberForm">
 		<sys:message content="${message}"/>
@@ -65,11 +63,9 @@
 					}, function(data) {
 							$("#studentNumberMessage").html("");
 							if(data.responseCode!='9998'){
-								$("#studentNumberMessage").html(data.responseMessage);
+								$("#studentNumberMessage").html("当前学号未查找到匹配寝室信息");
 								$("#ajax_studentNumber").val("0");
 							}
-							
-							
 							if(data.responseCode=='9998'){
 								var user=data.result;
 								

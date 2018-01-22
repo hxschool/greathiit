@@ -9,9 +9,7 @@
 
 
 <body>
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/dorm/ucDorm/">按学号分配</a></li>
-	</ul><br/>
+	<br/>
 	<form id="form" action="${ctx}/dorm/ucDorm/flightDormByStudentNumbers" method="post" class="form-horizontal">
 		<input type="hidden" name="studentDormType" value="unUcDormInfoForm">
 		<sys:message content="${message}"/>

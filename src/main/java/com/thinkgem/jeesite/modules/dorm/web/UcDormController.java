@@ -455,11 +455,16 @@ public class UcDormController extends BaseController {
 		user.setNo(studentNumber);
 		user = systemService.getUser(user);
 		UcDorm ucDorm = user.getDorm();
-		int cnt = Integer.valueOf(ucDorm.getCnt())-1;
-		ucDorm.setCnt(String.valueOf(cnt));
-		user.setDorm(null);
-		ucDormService.save(ucDorm);
-		systemService.updateUserInfo(user);
+		if(!org.springframework.util.StringUtils.isEmpty(ucDorm)) {
+			int cnt = 0;
+			if(!org.springframework.util.StringUtils.isEmpty(ucDorm.getCnt())&&!ucDorm.getCnt().equals("0")) {
+				cnt = Integer.valueOf(ucDorm.getCnt())-1;
+			}
+			ucDorm.setCnt(String.valueOf(cnt));
+			user.setDorm(null);
+			ucDormService.save(ucDorm);
+			systemService.updateUserInfo(user);
+		}
 		model.addAttribute("message", "操作成功");
 		return "modules/dorm/".concat(request.getParameter("studentDormType"));
 	}
@@ -484,11 +489,16 @@ public class UcDormController extends BaseController {
 			user.setNo(s);
 			user = systemService.getUser(user);
 			UcDorm ucDorm = ucDormService.get(user.getDorm());
-			int cnt = Integer.valueOf(ucDorm.getCnt())-1;
-			ucDorm.setCnt(String.valueOf(cnt));
-			user.setDorm(null);
-			systemService.updateUserInfo(user);
-			ucDormService.save(ucDorm);
+			if(!org.springframework.util.StringUtils.isEmpty(ucDorm)) {
+				int cnt = 0;
+				if(!org.springframework.util.StringUtils.isEmpty(ucDorm.getCnt())&&ucDorm.getCnt().equals("0")) {
+					 cnt = Integer.valueOf(ucDorm.getCnt())-1;
+				}
+				ucDorm.setCnt(String.valueOf(cnt));
+				user.setDorm(null);
+				systemService.updateUserInfo(user);
+				ucDormService.save(ucDorm);
+			}
 			
 		}
 		model.addAttribute("message", "操作成功");
@@ -512,12 +522,17 @@ public class UcDormController extends BaseController {
 		List<User> users = systemService.findUserByUserPojo(pojo);
 		for(User user : users) {
 			user = systemService.getUser(user);
-			UcDorm ucDorm = ucDormService.get(user.getDorm());
-			int cnt = Integer.valueOf(ucDorm.getCnt())-1;
-			ucDorm.setCnt(String.valueOf(cnt));
-			user.setDorm(null);
-			systemService.updateUserInfo(user);
-			ucDormService.save(ucDorm);
+			if(!org.springframework.util.StringUtils.isEmpty(user.getDorm())) {
+				UcDorm ucDorm = ucDormService.get(user.getDorm());
+				int cnt = 0;
+				if(!org.springframework.util.StringUtils.isEmpty(ucDorm.getCnt())&&ucDorm.getCnt().equals("0")) {
+					 cnt = Integer.valueOf(ucDorm.getCnt())-1;
+				}
+				ucDorm.setCnt(String.valueOf(cnt));
+				user.setDorm(null);
+				systemService.updateUserInfo(user);
+				ucDormService.save(ucDorm);
+			}
 		}
 		model.addAttribute("message", "操作成功");
 		return "modules/dorm/".concat(request.getParameter("studentDormType"));

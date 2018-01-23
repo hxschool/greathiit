@@ -160,7 +160,7 @@ td{
 
 							</select> &nbsp;&nbsp;&nbsp;&nbsp;机房:&nbsp;&nbsp; <select id="address"
 								class="address" onchange="change_address()"
-								style="width: 100px;">
+								style="width: 200px;">
 							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
 								; onclick="window_print()" ; name="win_print" ; id="win_print"
 								value="打印" class="button" />

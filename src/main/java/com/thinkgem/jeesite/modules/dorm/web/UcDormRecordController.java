@@ -21,6 +21,7 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDormRecord;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormRecordService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 查寝记录Controller
@@ -52,6 +53,22 @@ public class UcDormRecordController extends BaseController {
 		Page<UcDormRecord> page = ucDormRecordService.findPage(new Page<UcDormRecord>(request, response), ucDormRecord); 
 		model.addAttribute("page", page);
 		return "modules/dorm/ucDormRecordList";
+	}
+	
+	@RequiresPermissions("dorm:ucDormRecord:view")
+	@RequestMapping(value = "my")
+	public String my(UcDormRecord ucDormRecord, HttpServletRequest request, HttpServletResponse response, Model model) {
+		ucDormRecord.setStudentNumber(UserUtils.getUser().getNo());
+		Page<UcDormRecord> page = ucDormRecordService.findPage(new Page<UcDormRecord>(request, response), ucDormRecord);
+		model.addAttribute("page", page);
+		return "modules/dorm/myDormRecordList";
+	}
+	
+	@RequiresPermissions("dorm:ucDormRecord:view")
+	@RequestMapping(value = "detail")
+	public String detail(UcDormRecord ucDormRecord, Model model) {
+		model.addAttribute("ucDormRecord", ucDormRecord);
+		return "modules/dorm/ucDormRecordDetail";
 	}
 
 	@RequiresPermissions("dorm:ucDormRecord:view")

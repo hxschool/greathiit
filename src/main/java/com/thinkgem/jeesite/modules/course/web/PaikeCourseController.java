@@ -179,15 +179,14 @@ public class PaikeCourseController extends BaseController {
 				//科目号,理论不应该出现异常现象,不应该出现空指针现象
 				String courseNumber = courseSchedule.getCourseId();
 				String courseClass = courseSchedule.getCourseClass();
-				Course course = courseService.findListByCourse(courseNumber);
 				
-				ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 				
 				if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
 					ps.write("<div class=\"course_text\"></div>");
 					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
 				}else {
-					
+					Course course = courseService.findListByCourse(courseNumber);
+					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
 					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
 					String grade = courseClass.substring(0,4);

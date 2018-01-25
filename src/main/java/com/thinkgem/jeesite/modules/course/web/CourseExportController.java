@@ -6,7 +6,10 @@ package com.thinkgem.jeesite.modules.course.web;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
+import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
@@ -75,6 +80,8 @@ public class CourseExportController extends BaseController {
 	private CourseTeachingModeService courseTeachingModeService;
 	@Autowired
 	private CourseSpecificContentService courseSpecificContentService;
+	@Autowired
+	private CourseCalendarService courseCalendarService;
 	@Autowired
 	private SystemService systemService;
 	
@@ -155,21 +162,20 @@ public class CourseExportController extends BaseController {
 		for(CourseSchedule courseSchedule:courseSchedules) {
 			Row r = sheet.createRow($i);
 			Map<String,String> $col_a = GetTimeCol(courseSchedule.getTimeAdd());
-			
-			addCell(r, 0,'第' + $col_a.get("week") + "周 " + zhou($col_a.get("zhou")) + " " +  jie($col_a.get("jie")), 2);
+			int date = (Integer.valueOf($col_a.get("week")) - 1) * 7 + Integer.valueOf($col_a.get("zhou"));
+			addCell(r, 0,'第' + $col_a.get("week") + "周  " + addDate(date) + " ("+ zhou($col_a.get("zhou")) + ") " +  jie($col_a.get("jie")), 2);
 			String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
 			String root = courseSchedule.getTimeAdd().substring(7, 10);
 			addCell(r, 1,schoolRootMap.get(buildRootKey) + " " + root , 2);
 			
 			String courseClass = courseSchedule.getCourseClass();
-			if(!StringUtils.isEmpty(courseClass)&&courseClass.length()>7) {
-				courseClass = courseClass.substring(courseClass.length()-8);
-			}
-			addCell(r, 2,courseSchedule.getCourseId(), 2);
+			
+			Course course = courseService.findListByCourse(courseSchedule.getCourseId());
+			addCell(r, 2,course.getCursName(), 2);
 			addCell(r, 3,courseClass, 2);
 			addCell(r, 4,courseSchedule.getTips(), 2);
 			//添加相关数据信息
-			lessons.add(new Lesson($col_a.get("week"), zhou($col_a.get("zhou")),jie($col_a.get("jie")), schoolRootMap.get(buildRootKey) + " " + root, courseSchedule.getCourseId()))  ;
+			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;
 			
 			$i++;
 		}
@@ -195,7 +201,9 @@ public class CourseExportController extends BaseController {
 		}
 		
 		for(Lesson lesson :lessons ) {
-			System.out.println(lesson);
+			int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
+			Row r = sheet.getRow(rownum);
+			addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
 		}
 		wb.write(os);
 		os.flush();
@@ -247,11 +255,43 @@ public class CourseExportController extends BaseController {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println((byte)('A'));
-		System.out.println((char)(65));
-		String courseclass = "201420120140101";
-		System.out.println(courseclass.substring(courseclass.length()-8));;
+		 String today = "2013-12-14";  
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
+		 Date date = null;  
+		 try {  
+		     date = format.parse(today);  
+		 } catch (ParseException e) {  
+		     // TODO Auto-generated catch block  
+		     e.printStackTrace();  
+		 }  
+		   
+		 Calendar calendar = Calendar.getInstance();
+		 calendar.setTime(date);
+		 calendar.add(Calendar.DATE, 1);
+		 System.out.println(format.format(calendar.getTime()));
+		 
+		 System.out.println(Integer.valueOf("01"));
 	}
+	
+	
+	public String addDate(int day) {
+		 CourseCalendar courseCalendar = courseCalendarService.systemConfig();
+		 String today = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" +courseCalendar.getCalendarDay();
+		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
+		 Date date = null;  
+		 try {  
+		     date = format.parse(today);  
+		 } catch (ParseException e) {  
+		     // TODO Auto-generated catch block  
+		     e.printStackTrace();  
+		 }  
+		   
+		 Calendar calendar = Calendar.getInstance();
+		 calendar.setTime(date);
+		 calendar.add(Calendar.DATE, day - 1);
+		 return format.format(calendar.getTime());
+	}
+	
 	
 	
 	

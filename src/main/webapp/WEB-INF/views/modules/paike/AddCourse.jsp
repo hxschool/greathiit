@@ -197,7 +197,7 @@ td{
                    
             
             <!-- div层[排一个课]-->
-                    <div id="up"; style="display:none; width:400px; height:400px;">
+                    <div id="up"; style="display:none; width:400px; height:600px;">
                     <form action="" name="form" style="margin-left:30px; margin-top:50px;">
                         <p>
                         <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;<!-- |&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a> -->
@@ -205,7 +205,7 @@ td{
                         
 						<p>
 						
-						<div id="element_id">
+						<div id="element_id" style="width:440px;">
 						<p>
 							学院:&nbsp;&nbsp; <select name="school" id="school"
 								class="school" style="width:200px;">
@@ -219,24 +219,24 @@ td{
 								</select>
 								
 							<p>年级:&nbsp;&nbsp;
-	                        <select name="grade"  id="grade" class="grade" style="width:200px;">
+	                        <select name="grade"  id="grade" class="grade" style="width:200px;" >
 	                          <option value="" selected="selected">==请选择年级==</option>
 	                        </select>
+	                      
 							<p>
-								班级:&nbsp;&nbsp; <select name="w_class" class="w_class"
-									id="w_class" style="width:200px;">
-									<option value="" selected="selected">==请选择班级==</option>
-								</select>
+							<div style="width:370px;float:left;margin-bottom:10px">班级:&nbsp;&nbsp;
+								 <div id="w_test"></div></div>
+								
 						</div>
-						<div id="course_id">
-						<p>课程:&nbsp;&nbsp;
-                        <select name="course" id="course" class="course" style="width:200px;">
-                        <option value="" selected="selected">==请选择课程==</option>
-                        
-                        </select>
+						
+						<div id="course_id" style="width:370px;float:left">
+							<p>课程:&nbsp;&nbsp;
+	                        <select name="course" id="course" class="course" style="width:200px;">
+	                        <option value="" selected="selected">==请选择课程==</option>
+	                        </select>
                         </div>
                         <p>
-                        备注:&nbsp;&nbsp;<input type="text" name="tips"/>
+                     		   备注:&nbsp;&nbsp;<input type="text" name="tips"/>
                         <p>
                         <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
                         <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
@@ -580,13 +580,21 @@ function resure()
 	var grade_id = $("#grade").children('option:selected').val();
 	var school_id = $("#school").children('option:selected').val();
 	var major_id = $("#major").children('option:selected').val();
-	var class_id = $("#w_class").children('option:selected').val();
-	var student_id = grade_id+''+school_id+''+major_id+''+class_id;
+	//var class_id = $("#w_class").children('option:selected').val();
+	
+	var dropIds = new Array();
+	$("[name='classNumber'][checked]").each(function(){
+		if($(this).is(':checked')){
+			dropIds.push($(this).val());
+		}
+	})
+	//var student_id = grade_id+''+school_id+''+major_id+''+class_id;
+	var student_id = dropIds;
 	
 	var course_id =  $("#course").children('option:selected').val();
 	tips = document.form.tips.value;
 	time_add = document.form.time.value;
-
+	
 	if(school_id=="" && renxuanke_or_putongke)
 	{
 		alert("您需要选择学院");
@@ -599,9 +607,9 @@ function resure()
 	{
 		alert("您需要选择年级");
 	}
-	else if(class_id=="" && renxuanke_or_putongke)
+	else if(student_id=="" && renxuanke_or_putongke)
 	{
-		alert("您需要选择班级");
+		alert("您需要选择班级,至少选择一个");
 	}
 	else if(course_id=="")
 	{
@@ -694,11 +702,39 @@ $(document).ready(function()
 			
 			$('#element_id').cxSelect({ 
 				  url: '${ctx}/sys/office/treeClassLink',
-				  selects: ['school', 'major', 'grade', 'w_class'], 
+				  selects: ['school', 'major', 'grade'], 
 				  jsonName: 'name',
 				  jsonValue: 'value',
 				  jsonSub: 'sub'
 				}); 
+			
+			$('#grade').change(function(){
+				
+				var parnetId = $("#major").children('option:selected').val();
+				var grade = $("#grade").children('option:selected').val();
+				 console.log(parnetId);
+				 console.log(grade);
+				 $.ajax({
+					  url: '${ctx}/sys/office/ajaxClass',
+			          async: false,
+			          data: {
+			        	  parnetId: parnetId,
+			        	  grade: grade
+			          },
+			          success: function( data ) {
+			        	  $("#w_test").empty();
+			        	  if(data.length==0){
+			        		//  $("#dormMessage").css("color","red");
+		                	//  $("#dormMessage").html("当前寝室没有入住任何学员");
+			        	  }
+			        	  
+			        	  for(var i=0 ;i<data.length;i++){
+			                 $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' checked name='classNumber'/>"+data[i].name +"</div>");
+			                
+			           	  }
+			          }
+			        });
+			});
 			
 			$('#course_id').cxSelect({ 
 				  url: '${ctx}/course/paike/ajaxAllCourse',

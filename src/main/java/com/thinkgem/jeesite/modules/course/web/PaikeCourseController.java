@@ -15,6 +15,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -189,13 +190,31 @@ public class PaikeCourseController extends BaseController {
 					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
 					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
-					String grade = courseClass.substring(0,4);
-					String school = courseClass.substring(4,5);
-					String major = courseClass.substring(5,7);
-					String clazz = courseClass.substring(7);
-					Office company = officeService.get(school);
-					Office office = officeService.get(major);
-					ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
+//					String grade = courseClass.substring(0,4);
+//					String school = courseClass.substring(4,5);
+//					String major = courseClass.substring(5,7);
+//					String clazz = courseClass.substring(7);
+//					Office company = officeService.get(school);
+//					Office office = officeService.get(major);
+					//ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
+//					
+					String[] courseArray = courseClass.split(",");
+					StringBuilder sb = new StringBuilder();
+					for(String str:courseArray) {
+						Office clazz = officeService.get(str);
+						String officeId = str.substring(4,6);
+						Office office = officeService.get(officeId);
+						String company = "";
+						String major = "";
+						if(!StringUtils.isEmpty(office)) {
+							major = office.getName();
+							company = office.getParent().getName();
+						}
+						sb.append("<a title=\""+company + "," + major + "," + clazz.getName() + "\">"+str+"</a>");
+						sb.append(",");
+					}
+					sb.deleteCharAt(sb.length() - 1);
+					ps.write("<div class=\"course_text\">"+ sb.toString() +"</div>");
 				}
 				
 				

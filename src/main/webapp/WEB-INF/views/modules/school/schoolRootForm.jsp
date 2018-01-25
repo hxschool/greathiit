@@ -34,14 +34,14 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">数据值：</label>
+			<label class="control-label">楼号：</label>
 			<div class="controls">
 				<form:input path="value" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">标签名：</label>
+			<label class="control-label">名称：</label>
 			<div class="controls">
 				<form:input path="label" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
@@ -50,15 +50,26 @@
 		<div class="control-group">
 			<label class="control-label">类型：</label>
 			<div class="controls">
-				<form:input path="type" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:input path="type" htmlEscape="false" maxlength="100" class="input-xlarge required" value="school_root"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">description：</label>
+			<label class="control-label">描述：</label>
 			<div class="controls">
 				<form:input path="description" htmlEscape="false" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">所属教学楼：</label>
+			<div class="controls">
+				<select name="parent.id">
+				<option value="1" <c:if test="${schoolRoot.parent.id==1 }"> selected </c:if> >A栋</option>
+				<option value="2" <c:if test="${schoolRoot.parent.id==2 }"> selected </c:if> >B栋</option>
+				<option value="3" <c:if test="${schoolRoot.parent.id==3 }"> selected </c:if> >C栋</option>
+				</select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -69,12 +80,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">父级编号：</label>
-			<div class="controls">
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">remarks：</label>
+			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>

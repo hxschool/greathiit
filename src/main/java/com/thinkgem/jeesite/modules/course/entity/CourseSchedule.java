@@ -47,7 +47,7 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 		this.courseId = courseId;
 	}
 	
-	@Length(min=1, max=64, message="7个解析一个班级长度必须介于 1 和 64 之间")
+	@Length(min=1, max=2000, message="7个解析一个班级长度必须介于 1 和 2000之间")
 	public String getCourseClass() {
 		return courseClass;
 	}

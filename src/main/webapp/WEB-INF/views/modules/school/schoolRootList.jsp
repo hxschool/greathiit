@@ -33,12 +33,12 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>数据值</th>
-				<th>标签名</th>
+				<th>教室</th>
+				<th>名称</th>
 				<th>类型</th>
-				<th>description</th>
+				<th>描述</th>
 				<th>更新时间</th>
-				<th>remarks</th>
+				<th>备注</th>
 				<shiro:hasPermission name="school:schoolRoot:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -46,7 +46,7 @@
 		<c:forEach items="${page.list}" var="schoolRoot">
 			<tr>
 				<td><a href="${ctx}/school/schoolRoot/form?id=${schoolRoot.id}">
-					${schoolRoot.value}
+					 ${schoolRoot.value}
 				</a></td>
 				<td>
 					${schoolRoot.label}

@@ -260,4 +260,11 @@ public class OfficeController extends BaseController {
 		}
 		return treeLinks1;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "ajaxClass")
+	public List<Office> ajaxClass(@RequestParam(required=false,defaultValue="1") String parnetId,@RequestParam(required=false,defaultValue="2017") String grade, HttpRequest request, HttpServletResponse response) {
+		List<Office> list = officeService.findByParentIdAndYear(parnetId,grade);
+		return list;
+	}
 }

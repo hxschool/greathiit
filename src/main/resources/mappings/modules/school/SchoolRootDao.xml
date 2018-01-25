@@ -39,7 +39,7 @@
 		<include refid="schoolRootJoins"/>
 		where
 		a.del_flag = #{DEL_FLAG_NORMAL} 
-		  <if test="parent.id != null and parent.id!=''">  
+		  <if test="parent!= null and parent.id != null and parent.id!=''">  
           	and   a.parent_Id=#{parent.id}  
           </if>
 		<choose>

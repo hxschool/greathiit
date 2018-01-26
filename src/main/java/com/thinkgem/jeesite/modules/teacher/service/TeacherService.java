@@ -24,6 +24,10 @@ import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 public class TeacherService extends CrudService<TeacherDao, Teacher> {
 	@Autowired
 	private TeacherDao teacherDao;
+	
+	public List<Teacher> findListByYearTerm(String yearTerm) {
+		return teacherDao.findListByYearTerm(yearTerm);
+	}
 
 	public Teacher getTeacherByTeacherNumber(String teacherNumber) {
 		return teacherDao.getTeacherByTeacherNumber(teacherNumber);

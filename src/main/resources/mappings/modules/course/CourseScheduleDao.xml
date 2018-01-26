@@ -34,7 +34,17 @@
 		FROM course_schedule a
 		<include refid="courseScheduleJoins" />
 		WHERE a.time_add like CONCAT(#{yearTerm},'%')
-		AND a.course_class!='' AND a.course_id in (SELECT course_id FROM course WHERE teacher_number = #{teacherNumber}) ORDER BY a.time_add
+		AND a.course_class!='' AND a.course_id !='00000000' AND a.course_id in (SELECT id FROM course WHERE teacher_number = #{teacherNumber}) ORDER BY a.time_add
+	</select>
+	
+	
+	<select id="getCourseScheduleByYearTerm" resultType="CourseSchedule">
+		SELECT
+		<include refid="courseScheduleColumns" />
+		FROM course_schedule a
+		<include refid="courseScheduleJoins" />
+		WHERE a.time_add like CONCAT(#{yearTerm},'%')
+		AND a.course_class!='' AND a.course_id !='00000000' ORDER BY a.time_add
 	</select>
 	
 	

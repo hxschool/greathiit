@@ -439,31 +439,31 @@ comment '教学方式';
 
 
 
-create table course  ( 
-	id         	varchar(64) comment '编号'  not null,
-	curs_num       	varchar(255) comment '课程编号' not null,
-	curs_name      	varchar(255) comment '课程名称' not null,
-	curs_eng_name   	varchar(255) comment '英文名称' not null,
-	curs_major 	varchar(255) comment '专业' null,
-	curs_class_hour 	varchar(255) comment '学时' null,
-	curs_credit    	double comment '学分' null,
-	curs_curr_term  	varchar(255) comment '' null,
-	curs_intro     	varchar(255) comment '课程简介' null,
-	curs_note1     	varchar(255) comment '与相关课程的分工衔接' null,
-	curs_note2     	varchar(255) comment '其他说明'  null,
-	curs_pre_courses	varchar(255) comment '先修课程' null,
-	curs_property  	varchar(255) comment '课程性质' null,
-	curs_term      	varchar(255) comment '开设学期' null,
-	curs_type          	varchar(255) comment '课程类型' null,
-	
-	teacher_number     	varchar(64) comment '教师号' not null,
-	create_by  	varchar(64) comment '创建者'   null,
-	create_date	datetime comment '创建时间'   null,
-	update_by  	varchar(64) comment '更新者'  null,
-	update_date	datetime comment '更新时间'   null,
-	remarks    	varchar(2000) null,
-	del_flag   	char(1) comment '删除标记'  not null default '0',
-	primary key(id)
+
+CREATE TABLE course  ( 
+	id              	varchar(64) COMMENT '编号'  NOT NULL,
+	curs_num        	varchar(255) COMMENT '课程编号'  NOT NULL,
+	curs_name       	varchar(255) COMMENT '课程名称'  NOT NULL,
+	curs_eng_name   	varchar(255) COMMENT '英文名称'  NULL,
+	curs_major      	varchar(255) COMMENT '专业'  NULL,
+	curs_class_hour 	varchar(255) COMMENT '学时'  NULL,
+	curs_credit     	double COMMENT '学分'  NULL,
+	curs_curr_term  	varchar(255) NULL,
+	curs_intro      	varchar(255) COMMENT '课程简介'  NULL,
+	curs_note1      	varchar(255) COMMENT '与相关课程的分工衔接'  NULL,
+	curs_note2      	varchar(255) COMMENT '其他说明'  NULL,
+	curs_pre_courses	varchar(255) COMMENT '先修课程'  NULL,
+	curs_property   	varchar(255) COMMENT '课程性质'  NULL,
+	curs_term       	varchar(255) COMMENT '开设学期'  NULL,
+	curs_type       	varchar(255) COMMENT '课程类型'  NULL,
+	teacher_number  	varchar(64) COMMENT '教师号'  NOT NULL,
+	create_by       	varchar(64) COMMENT '创建者'  NULL,
+	create_date     	datetime COMMENT '创建时间'  NULL,
+	update_by       	varchar(64) COMMENT '更新者'  NULL,
+	update_date     	datetime COMMENT '更新时间'  NULL,
+	remarks         	varchar(2000) NULL,
+	del_flag        	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
 )
 comment '课程基本信息';
 
@@ -626,3 +626,7 @@ CREATE TABLE rs_zsjh  (
 
 
 
+CREATE INDEX course_teacher_number ON course (teacher_number);
+
+
+create index course_schedule_course_id ON course_schedule(course_id);

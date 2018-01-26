@@ -60,6 +60,12 @@
 	</select>
 	
 	
+	<select id="findListByYearTerm" resultType="Teacher">
+		SELECT 
+			<include refid="teacherColumns"/>
+		from teacher a where a.teacher_number in (select teacher_number   from course where id in (select course_id from course_schedule where sc_lock=2 and  course_class!='' AND course_id !='00000000' and time_add like CONCAT(#{yearTerm},'%'))) 
+	</select>
+	
 	
 	
 	<select id="findList" resultType="Teacher">

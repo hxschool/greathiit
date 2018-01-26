@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.teacher.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
@@ -18,4 +20,5 @@ import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 public interface TeacherDao extends CrudDao<Teacher> {
 	
 	public Teacher getTeacherByTeacherNumber(@Param("teacherNumber") String teacherNumber);
+	public List<Teacher> findListByYearTerm(@Param("yearTerm")String yearTerm);
 }

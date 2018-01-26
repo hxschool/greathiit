@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -18,6 +19,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.DataFormat;
@@ -54,6 +60,8 @@ import com.thinkgem.jeesite.modules.course.web.param.Lesson;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
 
 /**
  * 课程基本信息Controller
@@ -61,7 +69,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  * @version 2017-12-13
  */
 @Controller
-@RequestMapping(value = "${adminPath}/course/e")
+@RequestMapping(value = "${adminPath}/course/export")
 public class CourseExportController extends BaseController {
 
 	@Autowired
@@ -84,6 +92,8 @@ public class CourseExportController extends BaseController {
 	private CourseCalendarService courseCalendarService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private TeacherService teacherService;
 	
 	private SXSSFWorkbook  wb;
 	private Sheet sheet;
@@ -114,6 +124,69 @@ public class CourseExportController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/course/courseList";
 	}
+	
+	@RequestMapping(value = "allCourse")
+	public void allCourse(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException,InvalidFormatException {
+		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
+		String yearTerm = courseYearTerm.getYearTerm();
+		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
+		String $file_name = $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		response.setContentType("application/octet-stream;charset=utf-8"); 
+		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
+		OutputStream os = response.getOutputStream();
+		String fs = request.getSession().getServletContext().getRealPath("/resources/student/教师课表.xls");  
+	
+	 
+	    HSSFWorkbook  wb = new HSSFWorkbook(new FileInputStream(fs)); 
+		
+		List<Teacher> teachers = teacherService.findListByYearTerm(yearTerm);
+		Sheet sheet = wb.getSheetAt(0);
+		styles = createStyles(wb);
+		//从零开始默认第二行开始设置列Cell
+		Row row = sheet.getRow(1);
+		Map<String,Integer> indexMap = new HashMap<String,Integer>();
+		for(int i=0;i<teachers.size();i++) {
+			Teacher teacher  = teachers.get(i);
+			int celIndex = 3+i;
+			addCell(row, celIndex, teacher.getTchrName(), 3);
+			indexMap.put(teacher.getTeacher().getNo(),celIndex);
+		}
+		
+		for(int i=2;i<37;i++) {
+			Row rRow = sheet.getRow(i);
+			rRow.setHeight((short) 900);
+		}
+		
+		List<CourseSchedule> courseSchedules = courseScheduleService.getCourseScheduleByYearTerm(yearTerm);
+		for(CourseSchedule courseSchedule:courseSchedules) {
+			
+			String corseId = courseSchedule.getCourseId();
+			
+			Course course = courseService.get(corseId);
+			if(!org.springframework.util.StringUtils.isEmpty(course)&&indexMap.containsKey(course.getTeacher().getNo())) {
+				
+				int cIndex = indexMap.get(course.getTeacher().getNo());
+				Map<String,String> $col_a = GetTimeCol(courseSchedule.getTimeAdd());
+				String zhou = $col_a.get("zhou");
+				String jie  = $col_a.get("jie");
+				//设定索引行
+				int rowIndex = (Integer.valueOf(zhou) - 1) * 5 + 2 + Integer.valueOf(jie) - 1;
+				//获取到行信息
+				Row rRow = sheet.getRow(rowIndex);
+				rRow.setHeight((short) 900);
+				sheet.setColumnWidth((short) cIndex, (short) (6000));
+				
+				String root = courseSchedule.getTimeAdd().substring(7, 10);
+				String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
+				addCell(rRow, cIndex, course.getCursName() + "(" +course.getCursClassHour()+ " 学时) \r\n" + schoolRootMap.get(buildRootKey) + " " + root  + "\r\n" +  courseSchedule.getCourseClass(), 4);
+			}	
+		}
+		
+		wb.write(os);
+		os.flush();
+		os.close();
+		
+	}
 
 
 	@RequestMapping(value = "teacher")
@@ -121,6 +194,9 @@ public class CourseExportController extends BaseController {
 		User user = new User();
 		user.setNo(teacherNumber);
 		User teacher = UserUtils.getUser(user);
+		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
+			teacher = UserUtils.getUser();
+		}
 		PrintWriter pw = response.getWriter();
 		
 		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
@@ -170,7 +246,10 @@ public class CourseExportController extends BaseController {
 			
 			String courseClass = courseSchedule.getCourseClass();
 			
-			Course course = courseService.findListByCourse(courseSchedule.getCourseId());
+			Course course = courseService.get(courseSchedule.getCourseId());
+			if(org.springframework.util.StringUtils.isEmpty(course)) {
+				System.out.println(courseSchedule.getCourseId());
+			}
 			addCell(r, 2,course.getCursName(), 2);
 			addCell(r, 3,courseClass, 2);
 			addCell(r, 4,courseSchedule.getTips(), 2);
@@ -322,7 +401,7 @@ public class CourseExportController extends BaseController {
 			logger.info("Set cell value ["+row.getRowNum()+","+column+"] error: " + ex.toString());
 			cell.setCellValue(val.toString());
 		}
-		
+		style.setFillBackgroundColor(HSSFColor.AQUA.index);
 		cell.setCellStyle(style);
 		return cell;
 	}
@@ -366,7 +445,16 @@ public class CourseExportController extends BaseController {
 		
 		style = wb.createCellStyle();
 		style.cloneStyleFrom(styles.get("data"));
-		style.setAlignment(CellStyle.ALIGN_RIGHT);
+		style.setAlignment(CellStyle.ALIGN_CENTER);
+
+	  //设置背景颜色
+	    style.setFillForegroundColor(HSSFColor.ROSE.index);
+	    //solid 填充  foreground  前景色
+	    style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+	    dataFont.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+	    dataFont.setFontHeightInPoints((short) 10);
+	   
+		style.setFont(dataFont);
 		styles.put("data3", style);
 		
 		style = wb.createCellStyle();
@@ -374,8 +462,15 @@ public class CourseExportController extends BaseController {
 		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
 		titleFont = wb.createFont();
 		titleFont.setFontName("Arial");
-		titleFont.setFontHeightInPoints((short) 12);
-		titleFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		titleFont.setFontHeightInPoints((short) 10);
+		  
+		//style.setFillPattern(CellStyle.SOLID_FOREGROUND);  
+		style.setBorderBottom(CellStyle.BORDER_DOTTED); // 下边框  
+		style.setBorderLeft(CellStyle.BORDER_DOTTED);// 左边框  
+		style.setBorderTop(CellStyle.BORDER_DOTTED);// 上边框  
+		style.setBorderRight(CellStyle.BORDER_DOTTED);// 右边框  
+		
+		style.setWrapText(true);
 		style.setFont(titleFont);
 		styles.put("data4", style);
 

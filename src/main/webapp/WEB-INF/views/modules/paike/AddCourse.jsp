@@ -165,7 +165,7 @@ td{
 							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 						</div>
                     <p>
-                    <table width="87%;"; id="s_week"; height="550px;"; style="font-size:10px;";>
+                    <table id="s_week" style="font-size:10px;height:550px;">
                     <tr align="center" height="50px;">
                         <td></td>
                         <td>星期一</td>
@@ -197,7 +197,7 @@ td{
                    
             
             <!-- div层[排一个课]-->
-                    <div id="up"; style="display:none; width:400px; height:600px;">
+                    <div id="up" style="display:none; width:400px; height:600px;">
                     <form action="" name="form" style="margin-left:30px; margin-top:50px;">
                         <p>
                         <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;<!-- |&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a> -->
@@ -205,7 +205,7 @@ td{
                         
 						<p>
 						
-						<div id="element_id" style="width:440px;">
+						<div id="element_id" style="width:340px;">
 						<p>
 							学院:&nbsp;&nbsp; <select name="school" id="school"
 								class="school" style="width:200px;">
@@ -231,7 +231,7 @@ td{
 						
 						<div id="course_id" style="width:370px;float:left">
 							<p>课程:&nbsp;&nbsp;
-	                        <select name="course" id="course" class="course" style="width:200px;">
+	                        <select name="course" id="course" class="course" style="width:280px;">
 	                        <option value="" selected="selected">==请选择课程==</option>
 	                        </select>
                         </div>

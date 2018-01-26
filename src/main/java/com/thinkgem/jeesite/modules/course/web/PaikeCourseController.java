@@ -143,11 +143,6 @@ public class PaikeCourseController extends BaseController {
 	}
 	
 	
-	
-	
-	
-	
-	
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxDeleteLock")
 	@ResponseBody
@@ -178,26 +173,18 @@ public class PaikeCourseController extends BaseController {
 				
 			}else {
 				//科目号,理论不应该出现异常现象,不应该出现空指针现象
-				String courseNumber = courseSchedule.getCourseId();
-				String courseClass = courseSchedule.getCourseClass();
 				
+				String courseClass = courseSchedule.getCourseClass();
 				
 				if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
 					ps.write("<div class=\"course_text\"></div>");
 					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
 				}else {
-					Course course = courseService.findListByCourse(courseNumber);
+					Course course = courseService.get(courseSchedule.getCourseId());
 					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
 					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
-//					String grade = courseClass.substring(0,4);
-//					String school = courseClass.substring(4,5);
-//					String major = courseClass.substring(5,7);
-//					String clazz = courseClass.substring(7);
-//					Office company = officeService.get(school);
-//					Office office = officeService.get(major);
-					//ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
-//					
+		
 					String[] courseArray = courseClass.split(",");
 					StringBuilder sb = new StringBuilder();
 					for(String str:courseArray) {
@@ -285,10 +272,12 @@ public class PaikeCourseController extends BaseController {
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
 		for(Course course:list1) {
 			TreeLink treeLink = new TreeLink();
-			treeLink.setValue(course.getCursNum());
-			Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
-			treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
-			
+			treeLink.setValue(course.getId());
+			String teacherNumber = course.getTeacher().getNo();
+			Teacher teacher = teacherService.getTeacherByTeacherNumber(teacherNumber);
+			if(!StringUtils.isEmpty(teacher)) {
+				treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
+			}
 			treeLinks1.add(treeLink);
 			
 		}

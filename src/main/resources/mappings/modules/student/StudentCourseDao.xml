@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.student.dao.StudentCourseDao">
+    
+	<sql id="studentCourseColumns">
+		a.id AS "id",
+		a.class_eva_value AS "classEvaValue",
+		a.eva_value AS "evaValue",
+		a.exp_eva_value AS "expEvaValue",
+		a.fin_eva_value AS "finEvaValue",
+		a.mid_eva_value AS "midEvaValue",
+		a.school_year AS "schoolYear",
+		a.work_eva_value AS "workEvaValue",
+		a.course_id AS "courseId",
+		a.student_number AS "studentNumber",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="studentCourseJoins">
+	</sql>
+    
+    <select id="findListByTeacherIdAndClassIdAndCursType" resultType="StudentCourse">
+    select a.*,s.name as student_name,b.curs_type from student_course a left join course b on a.course_id=b.id left join student s on a.student_number=s.student_number
+ where 1=1
+	 <if test="clazzId != null and clazzId != ''">
+	 and 
+		 case length(student_number) 
+		  when 7 then 
+		 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
+		  when 8 then
+		 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
+		   when 10 then
+		   SUBSTRING(a.student_number,1,8)=#{clazzId}  
+		   when 12 then
+		  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
+		 end
+	 </if>
+  and b.teacher_number=#{teacherNumber}
+  AND b.curs_type = #{cursType}
+    </select>
+    
+    <select id="findListByStudentNumber" resultType="StudentCourse">
+    	SELECT
+		<include refid="studentCourseColumns" />
+		FROM student_course a
+		<include refid="studentCourseJoins" />
+		WHERE a.student_number = #{studentNumber} 
+     </select>
+    
+    
+	<select id="get" resultType="StudentCourse">
+		SELECT 
+			<include refid="studentCourseColumns"/>
+		FROM student_course a
+		<include refid="studentCourseJoins"/>
+		WHERE a.id = #{id}
+	</select>
+
+
+	<select id="findStudentCourseByStudentNumberAndCourseId"
+		resultType="StudentCourse">
+		SELECT
+		<include refid="studentCourseColumns" />
+		FROM student_course a
+		<include refid="studentCourseJoins" />
+		WHERE a.student_number = #{studentNumber} and course_id=#{courseId}
+	</select>
+	
+	
+	
+	
+	<select id="findList" resultType="StudentCourse">
+		SELECT 
+			<include refid="studentCourseColumns"/>
+		FROM student_course a
+		<include refid="studentCourseJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="classEvaValue != null and classEvaValue != ''">
+				AND a.class_eva_value = #{classEvaValue}
+			</if>
+			<if test="evaValue != null and evaValue != ''">
+				AND a.eva_value = #{evaValue}
+			</if>
+			<if test="expEvaValue != null and expEvaValue != ''">
+				AND a.exp_eva_value = #{expEvaValue}
+			</if>
+			<if test="finEvaValue != null and finEvaValue != ''">
+				AND a.fin_eva_value = #{finEvaValue}
+			</if>
+			<if test="midEvaValue != null and midEvaValue != ''">
+				AND a.mid_eva_value = #{midEvaValue}
+			</if>
+			<if test="schoolYear != null and schoolYear != ''">
+				AND a.school_year = #{schoolYear}
+			</if>
+			<if test="workEvaValue != null and workEvaValue != ''">
+				AND a.work_eva_value = #{workEvaValue}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="StudentCourse">
+		SELECT 
+			<include refid="studentCourseColumns"/>
+		FROM student_course a
+		<include refid="studentCourseJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO student_course(
+			id,
+			class_eva_value,
+			eva_value,
+			exp_eva_value,
+			fin_eva_value,
+			mid_eva_value,
+			school_year,
+			work_eva_value,
+			course_id,
+			student_number,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{classEvaValue},
+			#{evaValue},
+			#{expEvaValue},
+			#{finEvaValue},
+			#{midEvaValue},
+			#{schoolYear},
+			#{workEvaValue},
+			#{courseId},
+			#{studentNumber},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE student_course SET 	
+			class_eva_value = #{classEvaValue},
+			eva_value = #{evaValue},
+			exp_eva_value = #{expEvaValue},
+			fin_eva_value = #{finEvaValue},
+			mid_eva_value = #{midEvaValue},
+			school_year = #{schoolYear},
+			work_eva_value = #{workEvaValue},
+			course_id = #{courseId},
+			student_number = #{studentNumber},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE student_course SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

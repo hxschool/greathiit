@@ -24,8 +24,10 @@ import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 public class CourseService extends CrudService<CourseDao, Course> {
 	@Autowired
 	private CourseDao courseDao;
-	public Course findListByCourse(String courseNumber) {
-		return courseDao.findListByCourse(courseNumber);
+	public Course getCourseByCourseId(String courseId) {
+		Course course = new Course();
+		course.setId(courseId);
+		return courseDao.getCourse(course);
 	}
 	
 	public Course get(String id) {

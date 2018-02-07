@@ -232,9 +232,9 @@ public class PaikeCourseController extends BaseController {
 				
 			}else {
 				//科目号,理论不应该出现异常现象,不应该出现空指针现象
-				String courseNumber = courseSchedule.getCourseId();
+				String courseId = courseSchedule.getCourseId();
 				String courseClass = courseSchedule.getCourseClass();
-				Course course = courseService.findListByCourse(courseNumber);
+				Course course = courseService.getCourseByCourseId(courseId);
 				
 				ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 				

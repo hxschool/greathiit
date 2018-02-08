@@ -48,18 +48,19 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
+				
 				<form action="TeacherCourse_Modify_8_modifyNoteByCursId" method="post"
 					enctype="multipart/form-data" class="form-horizontal">
 					<div class="div-inf">
 						<div class="div-inf-title">（一）与相关课程的分工衔接</div>
 						<div class="div-inner-text">
-							<textarea name="course.cursNote1"><s:property value="course.cursNote1"/></textarea>
+							<textarea name="course.cursNote1">${course.cursNote1 }</textarea>
 						</div>
 					</div>
 					<div class="div-inf">
 						<div class="div-inf-title">（二）其他说明</div>
 						<div class="div-inner-text">
-							<textarea name="course.cursNote2"><s:property value="course.cursNote2"/></textarea>
+							<textarea name="course.cursNote2">${course.cursNote2 }</textarea>
 						</div>
 					</div>
 					<div class="div-btn">

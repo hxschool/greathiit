@@ -239,13 +239,118 @@ public class CourseController extends BaseController {
 	//课程查询
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacher_Management_1_selectTchrCourse")
-	public String selectTchrCourse(Course course, Model model) {
+	public String teacher_Management_1_selectTchrCourse(Course course, Model model) {
 		User teacher = UserUtils.getUser();
 		course.setTeacher(teacher);
 		List<Course> teachCourses = courseService.findList(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_1_selectTchrCourse";
 	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacher_Management_2_selectTchrCourse")
+	public String teacher_Management_2_selectTchrCourse(Course course, Model model) {
+		User teacher = UserUtils.getUser();
+		course.setTeacher(teacher);
+		List<Course> teachCourses = courseService.findList(course);
+		model.addAttribute("teachCourses", teachCourses);
+		return "modules/course/teacher/teacher_Management_2_selectTchrCourse";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourseModify")
+	public String teacherCourse_Modify_1_selectByCursId(String cursId, Model model) {
+		Course course = courseService.get(cursId);
+		model.addAttribute("course",course);
+		return "modules/course/modify/teacherCourseModify";
+	}
+	
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_1_selectBasicInfByCursId")
+	public String teacherCourse_Modify_1_selectBasicInfByCursId(Course course,  Model model) {
+		
+		return "modules/course/modify/teacherCourseModify1";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_2_selectTchingTargetByCursId")
+	public String teacherCourse_Modify_2_selectTchingTargetByCursId(Course course,  Model model) {
+		String courseId = course.getId();
+		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
+		courseTeachingtarget.setCourseId(courseId);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		return "modules/course/modify/teacherCourseModify2";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_3_selectSpeContentCursId")
+	public String teacherCourse_Modify_3_selectSpeContentCursId(Course course,  Model model) {
+		String courseId = course.getId();
+		CourseSpecificContent courseSpecificContent = new CourseSpecificContent();
+		courseSpecificContent.setCourseId(courseId);
+		List<CourseSpecificContent> csc = courseSpecificContentService.findList(courseSpecificContent);
+		model.addAttribute("csc",csc);
+		return "modules/course/modify/teacherCourseModify3";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_4_selectTchingModeByCursId")
+	public String teacherCourse_Modify_4_selectTchingModeByCursId(Course course,  Model model) {
+		String courseId = course.getId();
+		CourseTeachingMode courseTeachingMode = new CourseTeachingMode();
+		courseTeachingMode.setCourseId(courseId);
+		List<CourseTeachingMode> ctm = courseTeachingModeService.findList(courseTeachingMode);
+		model.addAttribute("ctm",ctm);
+		return "modules/course/modify/teacherCourseModify4";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_6_selectPerRuleByCursId")
+	public String teacherCourse_Modify_6_selectPerRuleByCursId(Course course,  Model model) {
+		String courseId = course.getId();
+		CourseCompositionRules rules = courseCompositionRulesService.getCourseCompositionRulesByCourseId(courseId);
+		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
+		courseTeachingtarget.setCourseId(courseId);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("rules",rules);
+		model.addAttribute("targets",targets);
+		return "modules/course/modify/teacherCourseModify6";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_7_selectBookByCursId")
+	public String teacherCourse_Modify_7_selectBookByCursId(Course course,  Model model) {
+		CourseMaterial courseMaterial = new CourseMaterial();
+		courseMaterial.setCourseId(course.getId());
+		courseMaterial.setCmType("1");
+		courseMaterialService.findList(courseMaterial);
+		model.addAttribute("cm",courseMaterialService.findList(courseMaterial));
+		courseMaterial.setCmType("2");
+		model.addAttribute("crb",courseMaterialService.findList(courseMaterial));
+		return "modules/course/modify/teacherCourseModify7";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_8_selectNoteByCursId")
+	public String teacherCourse_Modify_8_selectNoteByCursId(Course course,  Model model) {
+		
+		return "modules/course/modify/teacherCourseModify8";
+	}
+	
+	
+	
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacher_Management_3_selectTchrCourse")
+	public String teacher_Management_3_selectTchrCourse(Course course, Model model) {
+		User teacher = UserUtils.getUser();
+		course.setTeacher(teacher);
+		List<Course> teachCourses = courseService.findList(course);
+		model.addAttribute("teachCourses", teachCourses);
+		return "modules/course/teacher/teacher_Management_3_selectTchrCourse";
+	}
+	
 	//课程基本信息
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "courseDetail")

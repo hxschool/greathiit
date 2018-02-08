@@ -159,30 +159,30 @@
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-method">
-							<s:iterator value="ctm" var="c" status="s">
+							<c:forEach items="${ctm}" var="c" varStatus="s">
 								<section>
 									<div class="control-group">
 										<label class="control-label">序号：</label>
 										<div class="controls">
-											<label class="label-index"><s:property value="#s.index+1" /></label>
-										</div>
+											<label class="label-index">${s.index+1 }</label>
+									</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">课程内容：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#c.cursContent" />" class="input-long">
+											<input type="text" value="${c.cursContent }" class="input-long">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">学时：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#c.period" />" class="input-long">
+											<input type="text" value="${c.period }" class="input-long">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">教学方式：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#c.teacMethod" />" class="input-long">
+											<input type="text" value="${c.teacMethod }" class="input-long">
 										</div>
 									</div>
 									
@@ -192,7 +192,7 @@
 									</div>
 									<hr>
 								</section>
-							</s:iterator>
+							</c:forEach>
 						</div>
 						<div class="div-btn"><label class="btn" onclick="addFirstContent(this)">添加</label>
 							<input onclick="addName()" type="submit" value="提交" class="btn">
@@ -203,13 +203,6 @@
 
 		</div>
 	</div>
-	<script src="js/jquery1.12.1.js"></script>
-	<script src="js/bootstrap.js"></script>
-	<script>
-		$(function() {
-			$(".container").css("min-height",
-					$(document).height() - 90 - 88 + "px");//container的最小高度为“浏览器当前窗口文档的高度-header高度-footer高度”
-		});
-	</script>
+	
 </body>
 </html>

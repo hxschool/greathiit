@@ -47,76 +47,65 @@
 						<div class="control-group control-group-left">
 							<label class="control-label">课程编号：</label>
 							<div class="controls">
-								<input type="text" name="course.cursNum" value="<s:property value="course.cursNum"/>" class="input-isEmpty">
+								<input type="text" name="cursNum" value="${course.cursNum}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">课程名称：</label>
 							<div class="controls">
-								<input type="text" name="course.cursName" value="<s:property value="course.cursName"/>" class="input-isEmpty">
+								<input type="text" name="cursName" value="${course.cursName}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">英文名称：</label>
 							<div class="controls">
-								<input type="text" name="course.cursEngName" value="<s:property value="course.cursEngName"/>" class="input-isEmpty">
+								<input type="text" name="cursEngName" value="${course.cursEngName}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">学时：</label>
 							<div class="controls">
-								<input type="text" name="course.cursClassHour" value="<s:property value="course.cursClassHour"/>" id="input-hour" class="input-isEmpty">
+								<input type="text" name="cursClassHour" value="${course.cursClassHour}" id="input-hour" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">学分：</label>
 							<div class="controls">
-								<input type="text" name="course.cursCredit" value="<s:property value="course.cursCredit"/>" id="input-credit" class="input-isEmpty">
+								<input type="text" name="cursCredit" value="${course.cursCredit}" id="input-credit" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">课程性质：</label>
 							<div class="controls">
-							<input type="text" name="course.cursProperty" value="<s:property value="course.cursProperty"/>" class="input-isEmpty">
+							<input type="text" name="cursProperty" value="${course.cursProperty}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">适用专业：</label>
 							<div class="controls">
-								<input type="text" name="course.cursApplMajor" value="<s:property value="course.cursApplMajor"/>" class="input-isEmpty">
+								<input type="text" name="cursApplMajor" value="${course.cursMajor}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">开设学期：</label>
 							<div class="controls">
-								<input type="text" name="course.cursTerm" value="<s:property value="course.cursTerm"/>" id="input-term" class="input-isEmpty">
+								<input type="text" name="cursTerm" value="${course.cursTerm}" id="input-term" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">先修课程：</label>
 							<div class="controls">
-								<input type="text" name="course.cursPreCourses" value="<s:property value="course.cursPreCourses"/>" class="input-isEmpty">
+								<input type="text" name="cursPreCourses" value="${course.cursPreCourses}" class="input-isEmpty">
 							</div>
 						</div>
-						<div class="control-group control-group-left">
-							<label class="control-label">开课院系：</label>
-							<div class="controls">
-							<input id="department" style="display:none" value="<s:property value="course.dept.deptId"/>">
-							<select name="course.dept.deptId">
-									<s:iterator value="departments" var="d">
-										<option id="<s:property value="#d.deptId"/>" value="<s:property value="#d.deptId" />"><s:property value="#d.deptName" /></option>
-									</s:iterator>
-								</select>
-							</div>
-						</div>
+						
 						<div class="control-group control-group-left">
 							<label class="control-label">课程类型：</label>
 							<div class="controls">
-							<input id="cursType" style="display:none" value="<s:property value="course.type"/>">
-							<select name="course.type">
-										<option id="normal" value="normal">考试课程</option>
-										<option id="experiment" value="experiment">实验课程</option>
-										<option id="graduation-project" value="graduation-project">毕业设计</option>
+							<select name="cursType">
+										<option id="normal" value="normal" <c:if test="${course.cursType == 'normal' }"> selected </c:if> >考试课程</option>
+										<option id="experiment" value="experiment" <c:if test="${course.cursType == 'experiment' }"> selected </c:if> >实验课程</option>
+										<option id="graduation-project" value="graduation-project" <c:if test="${course.cursType == 'graduation-project' }"> selected </c:if> >毕业设计</option>
 								</select>
 							</div>
 						</div>
@@ -124,7 +113,7 @@
 					<div class="div-inf">
 						<div class="div-inf-title">课程简介</div>
 						<div class="div-inner-text">
-							<textarea name="course.cursIntro"><s:property value="course.cursIntro"/></textarea>
+							<textarea name="cursIntro">${course.cursIntro}</textarea>
 						</div>
 					</div>
 					<div class="div-btn">

@@ -64,6 +64,25 @@
 					<div class="div-detail">
 						<label>先修课程：</label> <label>${course.cursPreCourses}</label>
 					</div>
+					
+					<div class="div-detail">
+					<label>课程类型：</label> <label>
+					
+					
+					<c:choose>
+   <c:when test="${course.cursType=='normal'}"> 
+        考试课程
+   </c:when>
+  <c:when test="${course.cursType=='experiment'}"> 
+        实验课程
+   </c:when>
+   <c:when test="${course.cursType=='graduation-project'}"> 
+        毕业设计
+   </c:when>
+</c:choose>
+					${course.cursType}</label>	
+					</div>
+					
 					<div class="div-detail">
 						<label>开课单位：</label> <label>单位</label>
 					</div>

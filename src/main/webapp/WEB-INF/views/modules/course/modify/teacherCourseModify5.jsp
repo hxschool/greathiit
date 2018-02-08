@@ -52,21 +52,18 @@
 									</tr>
 								</thead>
 								<tbody>
-									<s:iterator value="indicatorPoints" status="s">
+									<c:forEach items="${indicatorPoints}" varStatus="s">
 										<tr>
 											<td><label
-												title="<s:property value="requirement[#s.index].graReqContent" />"><s:property
-														value="requirement[#s.index].graReqTitle" /></label></td>
-											<td class="indPointList"><s:iterator value="top"
-													id="inner">
+												title="${requirement[s.index].graReqContent}"> ${requirement[s.index].graReqTitle} </label></td>
+											<td class="indPointList"><c:forEach items="${top }" var="inner">
 													<label
-														title="<s:property value="#inner.indPointContent" />"><input
+														title="${inner.indPointContent }"><input
 														type="checkbox" name="indicatorPoint.indPointId"
-														value="<s:property value="#inner.indPointId"/>"> <s:property
-															value="#inner.indPointNum" /></label>
-												</s:iterator></td>
+														value="${inner.indPointId }"> ${inner.indPointNum }</label>
+												</c:forEach></td>
 										</tr>
-									</s:iterator>
+									</c:forEach>
 								</tbody>
 							</table>
 							<div class="div-btn">

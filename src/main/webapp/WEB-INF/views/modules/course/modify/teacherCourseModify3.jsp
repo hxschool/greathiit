@@ -232,71 +232,71 @@
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-content">
-							<s:iterator value="csc" var="c" status="s">
+							<c:forEach items="${csc }" var="c" varStatus="s">
 								<section>
 									<h5>
 										第
-										<s:property value="#s.index+1" />
+										${s.index+1 }
 										章
 									</h5>
 									<div class="control-group">
 										<label class="control-label">章节名称：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscChapter" />">
+												value="${c.cscChapter }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">学时：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscClassHour" />">
+												value="${c.cscClassHour }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">支撑目标：</label>
 										<div class="controls">
-												<s:iterator value="targets" var="t" status="s">
-													<label class='label-checkbox'><input class="checkbox" type="checkbox" value="教学目标<s:property value="#s.index+1"/>">教学目标
-														<s:property value="#s.index+1" /></label>
-												</s:iterator>
+												<c:forEach items="${targets }" var="t" varStatus="ss">
+													<label class='label-checkbox'><input class="checkbox" type="checkbox" value="教学目标${ss.index+1 }">教学目标
+														${ss.index+1 }</label>
+												</c:forEach>
 											<input type="text" class="hidden autoSelect"
-												value="<s:property value="#c.cscTarget" />">
+												value="${c.cscTarget }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">学习目的：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscGoal" />">
+												value="${c.cscGoal }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">基本要求：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscBasRequ" />">
+												value="${c.cscBasRequ }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">学习重点：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscStudyEmpha" />">
+												value="${c.cscStudyEmpha }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">学习难点：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscStudyDiffi" />">
+												value="${c.cscStudyDiffi }">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">课外作业及要求：</label>
 										<div class="controls">
 											<input type="text" class="input-long"
-												value="<s:property value="#c.cscHomework" />">
+												value="${c.cscHomework }">
 										</div>
 									</div>
 									<div class="div-btn">
@@ -305,7 +305,7 @@
 									</div>
 									<hr>
 								</section>
-							</s:iterator>
+							</c:forEach>
 						</div>
 						<div class="div-btn">
 							<label class="btn" onclick="addFirstContent()">添加</label> <input

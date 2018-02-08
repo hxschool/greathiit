@@ -42,15 +42,15 @@
 				<form action="TeacherCourse_Modify_2_modifyTargetByCursId" method="post"
 					enctype="multipart/form-data" class="form-horizontal" onsubmit="javascript:return isEmpty()">
 					<div class="div-inf" id="div-targets">
-					<s:iterator value="targets" var="t" status="s">
+					<c:forEach items="${targets }" var="t" varStatus="s">
 						<div class="control-group">
 							<label class="control-label"></label>
 							<div class="controls">
 								<input type="text" class="input-long target"
-								value="<s:property value="#t.tchTarContent"/>" /><label class="label-delete" onclick="deleteDiv(this)">删除</label>
+								value="${t.tchTarContent }" /><label class="label-delete" onclick="deleteDiv(this)">删除</label>
 							</div>
 						</div>
-						</s:iterator>
+						</c:forEach>
 					</div>
 					<div class="div-btn">
 						<label class="btn" onclick="addTarget()">添加</label>

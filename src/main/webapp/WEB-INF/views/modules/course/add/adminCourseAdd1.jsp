@@ -149,6 +149,18 @@
 						</div>
 						
 						<div class="control-group control-group-left">
+							<label class="control-label">课程类型：</label>
+							<div class="controls">
+							<select name="cursType">
+										<option id="normal" value="normal">考试课程</option>
+										<option id="experiment" value="experiment">实验课程</option>
+										<option id="graduation-project" value="graduation-project">毕业设计</option>
+								</select>
+							</div>
+						</div>
+						
+						
+						<div class="control-group control-group-left">
 							<label class="control-label">课程负责人：</label>
 							<div class="controls">
 								${fns:getUser().name}

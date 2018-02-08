@@ -139,19 +139,19 @@
 							课程教材<label class="a-add" onclick="addMaterialContent()">添加</label>
 						</div>
 						<div id="material">
-							<s:iterator value="cm" var="m">
+							<c:forEach items="${cm }" var="m">
 								<section>
 									<div class="control-group">
 										<label class="control-label">作者：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#m.cmAuthor" />"
+											<input type="text" value="${m.cmAuthor }"
 												class="input-long input-m">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">书名：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#m.cmName" />"
+											<input type="text" value="${m.cmName }"
 												class="input-long input-m">
 										</div>
 									</div>
@@ -159,7 +159,7 @@
 										<label class="control-label">出版社：</label>
 										<div class="controls">
 											<input type="text"
-												value="<s:property value="#m.cmPublisher" />"
+												value="${m.cmPublisher}"
 												class="input-long input-m">
 										</div>
 									</div>
@@ -167,7 +167,7 @@
 										<label class="control-label">出版年份：</label>
 										<div class="controls">
 											<input type="text"
-												value="<s:property value="#m.cmPubYear" />"
+												value="${m.cmPubYear }"
 												class="input-long input-m">
 										</div>
 									</div>
@@ -176,27 +176,27 @@
 									</div>
 									<hr>
 								</section>
-							</s:iterator>
+							</c:forEach>
 						</div>
 						<!-- 课程参考书目 -->
 						<div class="div-inf-title">
 							参考书目<label class="a-add" onclick="addRefBookContent()">添加</label>
 						</div>
 						<div id="refBook">
-							<s:iterator value="crb" var="c">
+							<c:forEach items="${crb}" var="c">
 								<section>
 									<div class="control-group">
 										<label class="control-label">作者：</label>
 										<div class="controls">
 											<input type="text"
-												value="<s:property value="#c.crbAuthor" />"
+												value="${c.cmAuthor }"
 												class="input-long input-rb">
 										</div>
 									</div>
 									<div class="control-group">
 										<label class="control-label">书名：</label>
 										<div class="controls">
-											<input type="text" value="<s:property value="#c.crbName" />"
+											<input type="text" value="${c.cmName }"
 												class="input-long input-rb">
 										</div>
 									</div>
@@ -204,7 +204,7 @@
 										<label class="control-label">出版社：</label>
 										<div class="controls">
 											<input type="text"
-												value="<s:property value="#c.crbPublisher" />"
+												value="${c.cmPublisher }"
 												class="input-long input-rb">
 										</div>
 									</div>
@@ -212,7 +212,7 @@
 										<label class="control-label">出版年份：</label>
 										<div class="controls">
 											<input type="text"
-												value="<s:property value="#c.crbPubYear" />"
+												value="${c.cmPubYear }"
 												class="input-long input-rb">
 										</div>
 									</div>
@@ -221,7 +221,7 @@
 									</div>
 									<hr>
 								</section>
-							</s:iterator>
+							</c:forEach>
 						</div>
 					</div>
 					<div class="div-btn">

@@ -45,11 +45,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	public Page<Course> findPage(Page<Course> page, Course course) {
 		return super.findPage(page, course);
 	}
-	
-	@Transactional(readOnly = false)
-	public void save(Course course) {
-		courseDao.insert(course);
-	}
+
 	
 	@Transactional(readOnly = false)
 	public void delete(Course course) {

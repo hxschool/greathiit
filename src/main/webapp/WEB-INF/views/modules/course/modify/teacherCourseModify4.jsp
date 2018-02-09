@@ -155,7 +155,7 @@
 				</div>
 				<form action="TeacherCourse_Modify_4_modifyTchModeByCursId" method="post"
 					class="form-horizontal">
-
+<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-method">

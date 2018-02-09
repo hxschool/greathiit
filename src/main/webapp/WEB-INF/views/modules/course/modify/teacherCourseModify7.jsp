@@ -134,6 +134,7 @@
 				</div>
 				<form action="TeacherCourse_Modify_7_modifyBookByCursId"
 					method="post" class="form-horizontal">
+					<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf">
 						<div class="div-inf-title">
 							课程教材<label class="a-add" onclick="addMaterialContent()">添加</label>

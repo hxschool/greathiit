@@ -101,82 +101,83 @@
 				<form action="TeacherCourse_Modify_9_modifyTargetValueByCursId"
 					method="post" enctype="multipart/form-data" class="form-horizontal"
 					onsubmit="javascript:return validate()">
+					<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf">
 						<div class="div-inf-title">设置评分标准</div>
 						<label class="title-per-rule">评分标准：</label>
 						<div class="div-per-rule">
-							<s:if test="course.type=='normal'">
+							<c:if test="${course.type=='normal' }">
 							课堂表现
-						</s:if>
-							<s:if test="course.type=='experiment'">
+						</c:if>
+							<c:if test="course.type=='experiment'">
 							协作答辩
-						</s:if>
-							<s:if test="course.type=='graduation-project'">
+						</c:if>
+							<c:if test="course.type=='graduation-project'">
 							中期
-						</s:if>
+						</c:if>
 							&nbsp;<input name="compositionRules.clazzPer" type="text"
 								id="input-cla"
-								value="<s:property value="compositionRules.clazzPer"/>" />&nbsp;%
+								value="${compositionRules.clazzPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<s:if test="course.type=='normal'">
+							<c:if test="course.type=='normal'">
 							平时作业
-						</s:if>
-							<s:if test="course.type=='experiment'">
+						</c:if>
+							<c:if test="course.type=='experiment'">
 							技术方案
-						</s:if>
-							<s:if test="course.type=='graduation-project'">
+						</c:if>
+							<c:if test="course.type=='graduation-project'">
 							软硬件验收
-						</s:if>
+						</c:if>
 							&nbsp;<input name="compositionRules.homeworkResultPer"
 								type="text" id="input-work"
-								value="<s:property value="compositionRules.homeworkResultPer"/>" />&nbsp;%
+								value="${compositionRules.homeworkResultPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<s:if test="course.type=='normal'">
+							<c:if test="course.type=='normal'">
 							实验成绩&nbsp;<input name="compositionRules.expResultPer" type="text"
 									id="input-exp"
-									value="<s:property value="compositionRules.expResultPer"/>" />&nbsp;%
-						</s:if>
-							<s:if test="course.type=='experiment'">
+									value="${compositionRules.expResultPer}" />&nbsp;%
+						</c:if>
+							<c:if test="course.type=='experiment'">
 								<input name="compositionRules.expResultPer" type="text"
 									id="input-exp" style="display:none"
 									value="0" />
-							</s:if>
-							<s:if test="course.type=='graduation-project'">
+							</c:if>
+							<c:if test="course.type=='graduation-project'">
 							翻译&nbsp;<input name="compositionRules.expResultPer" type="text"
 									id="input-exp"
-									value="<s:property value="compositionRules.expResultPer"/>" />&nbsp;%
-						</s:if>
+									value="${compositionRules.expResultPer}" />&nbsp;%
+						</c:if>
 
 						</div>
 						<div class="div-per-rule">
-							<s:if test="course.type=='normal'">
+							<c:if test="course.type=='normal'">
 							期中成绩
-						</s:if>
-							<s:if test="course.type=='experiment'">
+						</c:if>
+							<c:if test="course.type=='experiment'">
 							设计报告
-						</s:if>
-							<s:if test="course.type=='graduation-project'">
+						</c:if>
+							<c:if test="course.type=='graduation-project'">
 							论文
-						</s:if>
+						</c:if>
 							&nbsp;<input name="compositionRules.midTermPer" type="text"
 								id="input-mid"
-								value="<s:property value="compositionRules.midTermPer"/>" />&nbsp;%
+								value="${compositionRules.midTermPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<s:if test="course.type=='normal'">
+							<c:if test="course.type=='normal'">
 							期末成绩
-						</s:if>
-							<s:if test="course.type=='experiment'">
+						</c:if>
+							<c:if test="course.type=='experiment'">
 								查阅文献
-							</s:if>
-							<s:if test="course.type=='graduation-project'">
+							</c:if>
+							<c:if test="course.type=='graduation-project'">
 							答辩
-						</s:if>
+						</c:if>
 							&nbsp;<input name="compositionRules.finalExamPer" type="text"
 								id="input-fin"
-								value="<s:property value="compositionRules.finalExamPer"/>" />&nbsp;%
+								value="${compositionRules.finalExamPer}" />&nbsp;%
 						</div>
 					</div>
 					<div class="div-inf">
@@ -188,21 +189,21 @@
 									<tr>
 										<th class="hidden"></th>
 										<th class="width48">项目</th>
-										<s:if test="course.type=='normal'">
+										<c:if test="course.type=='normal'">
 											<th>课堂表现</th>
 											<th>平时作业</th>
 											<th>实验成绩</th>
 											<th>期中成绩</th>
 											<th>期末成绩</th>
-										</s:if>
-										<s:elseif test="course.type=='experiment'">
+										</c:if>
+										<s:elseif test="${course.type=='experiment' }">
 											<th>协作答辩</th>
 											<th>技术方案</th>
 											<th style="display:none"></th>
 											<th>设计报告</th>
 											<th>查阅文献</th>
 										</s:elseif>
-										<s:elseif test="course.type=='graduation-project'">
+										<s:elseif test="${course.type=='graduation-project' }">
 											<th>中期</th>
 											<th>软硬件验收</th>
 											<th>翻译</th>
@@ -212,33 +213,33 @@
 									</tr>
 								</thead>
 								<tbody>
-									<s:iterator value="targets" var="t" status="s">
+									<c:forEach items="${targets}" var="t" status="s">
 										<tr>
 											<td class="hidden"><input
-												name="targets[<s:property value="#s.index"/>].tchTargetId"
-												value="<s:property value="#t.tchTargetId"/>" /></td>
-											<td>目标<s:property value="#s.index+1" /></td>
+												name="targets[${s.index}].tchTargetId"
+												value="${t.tchTargetId}" /></td>
+											<td>目标${s.index+1 }</td>
 											<td><input
-												name="targets[<s:property value="#s.index"/>].tchtargetClassTargetValue"
+												name="targets[${s.index+1 }].tchtargetClassTargetValue"
 												class="border0 colClass"
-												value="<s:property value="#t.tchtargetClassTargetValue"/>" /></td>
+												value="${t.tchtargetClassTargetValue}" /></td>
 											<td><input
-												name="targets[<s:property value="#s.index"/>].tchtargetHomeworkTargetValue"
+												name="targets[${s.index+1 }].tchtargetHomeworkTargetValue"
 												class="border0 colWork"
-												value="<s:property value="#t.tchtargetHomeworkTargetValue"/>" /></td>
+												value="${t.tchtargetHomeworkTargetValue}" /></td>
 												<td class="td-exp"><input
-													name="targets[<s:property value="#s.index"/>].tchtargetExpTargetValue"
+													name="targets[${s.index+1 }].tchtargetExpTargetValue"
 													class="border0 colExp"
-													value="<s:property value="#t.tchtargetExpTargetValue"/>" /></td>
+													value="${t.tchtargetExpTargetValue}" /></td>
 											<td><input
-												name="targets[<s:property value="#s.index"/>].tchtargetMidTargetValue"
+												name="targets[${s.index+1 }].tchtargetMidTargetValue"
 												class="border0 colMid"
-												value="<s:property value="#t.tchtargetMidTargetValue"/>" /></td>
+												value="${t.tchtargetMidTargetValue}" /></td>
 											<td><input class="border0 colFin"
-												name="targets[<s:property value="#s.index"/>].tchtargetFinTargetValue"
-												value="<s:property value="#t.tchtargetFinTargetValue"/>" /></td>
+												name="targets[${s.index+1 }].tchtargetFinTargetValue"
+												value="${t.tchtargetFinTargetValue}" /></td>
 										</tr>
-									</s:iterator>
+									</c:forEach>
 								</tbody>
 							</table>
 						</div>

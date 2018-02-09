@@ -57,7 +57,7 @@
 		div2.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div3 = document.createElement("div");
 		div3.setAttribute("class", "control-group");
-		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><s:iterator value='targets' var='t' status='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标<s:property value='#s.index+1'/>'>教学目标<s:property value='#s.index+1' /></label></s:iterator><input type='text' class='hidden' value='<s:property value='#c.cscTarget' />'></div>";
+		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='text' class='hidden' value='${c.cscTarget}'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
 		div4.innerHTML += "<label class='control-label'>学习目的：</label><div class='controls'><input type='text' class='input-long'></div>";
@@ -119,7 +119,7 @@
 		div2.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div3 = document.createElement("div");
 		div3.setAttribute("class", "control-group");
-		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><s:iterator value='targets' var='t' status='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标<s:property value='#s.index+1'/>'>教学目标<s:property value='#s.index+1' /></label></s:iterator><input type='text' class='hidden' value='<s:property value='#c.cscTarget' />'></div>";
+		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='text' class='hidden' value='${c.cscTarget}'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
 		div4.innerHTML += "<label class='control-label'>学习目的：</label><div class='controls'><input type='text' class='input-long'></div>";
@@ -229,6 +229,7 @@
 				</div>
 				<form action="TeacherCourse_Modify_3_modifySpcConByCursId"
 					method="post" class="form-horizontal">
+					<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-content">

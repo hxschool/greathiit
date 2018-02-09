@@ -27,6 +27,58 @@
 	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/common.css" />
 <link rel="stylesheet"
 	href="${ctxStatic}/modules/teacher/admin.css" />
+<script type="text/javascript">
+
+	var msg = "${message}";
+	if (msg != "") {
+		alert(msg);
+	}
+	
+	$(function(){
+		number();
+	});
+	
+	function number(){
+		var label = document.getElementsByClassName("control-label");
+		for(var i=0;i<label.length;i++){
+			label[i].innerHTML = "教学目标"+(i+1)+":";
+		}
+	}
+	
+	function isEmpty(){
+		var inputs = document.getElementsByTagName("input");
+		for(var i=0;i<inputs.length;i++){
+			var value=inputs[i].value;
+			if(value==""){
+				alert("输入框不能为空");
+				inputs[i].focus();
+				return false;
+			}
+		}
+	}
+	
+	function deleteDiv(label){
+		var div = label.parentNode.parentNode;
+		div.remove();
+		number();
+	}
+	
+	function addName(){
+		var inputs = document.getElementsByClassName("target");
+		for(var i=0;i<inputs.length;i++){
+			inputs[i].setAttribute("name","targets["+i+"].tchTarContent");
+		}
+	}
+	var i = ${targets.size() }
+	function addTarget(){
+		i++;
+		var div = document.createElement("div");
+		div.setAttribute("class", "control-group");
+		div.innerHTML += "<label class='control-label'></label><div class='controls'><input type='text' name='targets["+(i-1)+"].tchtargetContent'  class='input-long'><label class='label-delete' onclick='deleteDiv(this)'>删除</label></div>";
+		document.getElementById("div-targets").appendChild(div);
+		number();
+	}
+</script>	
 </head>
 
 <body>
@@ -39,15 +91,16 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_2_modifyTargetByCursId" method="post"
+				<form action="teacherCourse_Modify_2_modifyTargetByCursId" method="post"
 					enctype="multipart/form-data" class="form-horizontal" onsubmit="javascript:return isEmpty()">
+					<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf" id="div-targets">
 					<c:forEach items="${targets }" var="t" varStatus="s">
 						<div class="control-group">
 							<label class="control-label"></label>
 							<div class="controls">
 								<input type="text" class="input-long target"
-								value="${t.tchTarContent }" /><label class="label-delete" onclick="deleteDiv(this)">删除</label>
+								value="${t.tchtargetContent }" /><label class="label-delete" onclick="deleteDiv(this)">删除</label>
 							</div>
 						</div>
 						</c:forEach>

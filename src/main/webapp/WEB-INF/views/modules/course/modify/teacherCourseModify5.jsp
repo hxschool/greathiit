@@ -44,6 +44,7 @@
 					<div class="div-curs-plan">
 						<form action="TeacherCourse_Modify_10_selectTargetAndPointById"
 							method="post">
+							<input type="hidden" name="courseId" value="${course.id}">
 							<table class="table table-bordered table-condensed">
 								<thead>
 									<tr>

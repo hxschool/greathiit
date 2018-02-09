@@ -123,6 +123,10 @@ public class CourseController extends BaseController {
 		String courseId = systemService.getSequence("serialNo10");
 		try {
 			logger.info("新增课程基本信息,课程信息:{}",course);
+			if(StringUtils.isEmpty(course.getCursCredit())) {
+				course.setCursCredit("100");
+			}
+			course.setIsNewRecord(true);
 			course.setId(courseId);
 			course.setTeacher(UserUtils.getUser());
 			courseService.save(course);
@@ -257,6 +261,8 @@ public class CourseController extends BaseController {
 		return "modules/course/teacher/teacher_Management_2_selectTchrCourse";
 	}
 	
+	/*课程修改-----------------------------------------------------------------------------------------*/
+	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourseModify")
 	public String teacherCourse_Modify_1_selectByCursId(String cursId, Model model) {
@@ -274,14 +280,40 @@ public class CourseController extends BaseController {
 	}
 	
 	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_1_updateCursBasicInf")
+	public String teacherCourse_Modify_1_updateCursBasicInf(Course course, Model model) {
+		courseService.save(course);
+		model.addAttribute("course",course);
+		model.addAttribute("message","更新成功");
+		return "modules/course/modify/teacherCourseModify1";
+	}
+	
+	
+	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_2_selectTchingTargetByCursId")
 	public String teacherCourse_Modify_2_selectTchingTargetByCursId(Course course,  Model model) {
 		String courseId = course.getId();
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
 		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("targets", targets);
 		return "modules/course/modify/teacherCourseModify2";
 	}
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_2_modifyTargetByCursId")
+	public String teacherCourse_Modify_2_modifyTargetByCursId(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		
+		for(CourseTeachingtarget courseTeachingtarget:courseRequestParam.getTargets()) {
+			courseTeachingtarget.setCourseId(courseId);
+			courseTeachingtargetService.save(courseTeachingtarget);
+		}
+		model.addAttribute("courseId",courseId);
+		model.addAttribute("targets", courseRequestParam.getTargets());
+		addMessage(model,"修改课程教学目标成功");
+		return "modules/course/modify/teacherCourseModify2";
+	}
+	
+	
 	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_3_selectSpeContentCursId")
@@ -295,6 +327,22 @@ public class CourseController extends BaseController {
 	}
 	
 	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_3_modifyTargetByCursId")
+	public String teacherCourse_Modify_3_modifyTargetByCursId(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		
+		for(CourseSpecificContent courseSpecificContent:courseRequestParam.getCsc()) {
+			courseSpecificContent.setCourseId(courseId);
+			courseSpecificContentService.save(courseSpecificContent);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"操作成功");
+		model.addAttribute("csc", courseRequestParam.getCsc());
+	
+		return "modules/course/modify/teacherCourseModify3";
+	}
+	
+	
+	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_4_selectTchingModeByCursId")
 	public String teacherCourse_Modify_4_selectTchingModeByCursId(Course course,  Model model) {
 		String courseId = course.getId();
@@ -304,6 +352,21 @@ public class CourseController extends BaseController {
 		model.addAttribute("ctm",ctm);
 		return "modules/course/modify/teacherCourseModify4";
 	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_4_modifyTargetByCursId")
+	public String teacherCourse_Modify_4_modifyTargetByCursId(String courseId,CourseRequestParam courseRequestParam,Model model) {
+		for(CourseTeachingMode courseTeachingMode:courseRequestParam.getCtm()) {
+			courseTeachingMode.setCourseId(courseId);
+			courseTeachingModeService.save(courseTeachingMode);
+		}
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"添加课程教学方式成功");
+		model.addAttribute("ctm", courseRequestParam.getCtm());
+	
+		return "modules/course/modify/teacherCourseModify4";
+	}
+	
 	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_6_selectPerRuleByCursId")

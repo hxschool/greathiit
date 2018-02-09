@@ -55,6 +55,21 @@
 											<label>${item.cursCredit}/${item.cursClassHour}</label><br />
 											<h6>课程性质：</h6>
 											<label>${item.cursProperty}</label><br />
+											<h6>课程类型：</h6>
+											<label>
+											<c:choose>
+   <c:when test="${item.cursType=='normal'}"> 
+       考试课程
+   </c:when>
+      <c:when test="${item.cursType=='experiment'}"> 
+       实验课程
+   </c:when>
+      <c:when test="${item.cursType=='graduation-project'}"> 
+       毕业设计
+   </c:when>
+</c:choose>
+											
+											</label><br />
 											<h6>开设学期：</h6>
 											<label>${item.cursTerm}</label>
 											<div class="div-curs-detail-inf a">

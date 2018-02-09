@@ -27,6 +27,12 @@
 	<link rel="stylesheet" href="${ctxStatic}/modules/teacher/common.css" />
 <link rel="stylesheet"
 	href="${ctxStatic}/modules/teacher/admin.css" />
+		<script type="text/javascript">
+	var msg = "${message}";
+	if (msg != "") {
+		alert(msg);
+	}
+	</script>
 </head>
 
 <body>
@@ -40,14 +46,15 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_1_updateCursBasicInf" method="post"
+				<form action="teacherCourse_Modify_1_updateCursBasicInf" method="post"
 					enctype="multipart/form-data" class="form-horizontal" onsubmit="javascript:return isEmpty()">
+					<input type="hidden" name="id" value="${course.id}" class="input-isEmpty">
 					<div class="div-inf">
 						<div class="div-inf-title">基本信息</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">课程编号：</label>
 							<div class="controls">
-								<input type="text" name="cursNum" value="${course.cursNum}" class="input-isEmpty">
+								<input type="text" name="cursNum" value="${course.cursNum}" class="input-isEmpty" readonly="readonly">
 							</div>
 						</div>
 						<div class="control-group control-group-left">
@@ -83,7 +90,7 @@
 						<div class="control-group control-group-left">
 							<label class="control-label">适用专业：</label>
 							<div class="controls">
-								<input type="text" name="cursApplMajor" value="${course.cursMajor}" class="input-isEmpty">
+								<input type="text" name="cursMajor" value="${course.cursMajor}" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">

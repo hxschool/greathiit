@@ -31,11 +31,11 @@
 
 	
 <script type="text/javascript">
-	var msg = "${requestScope.Message}";
+	var msg = "${message}";
 	if (msg != "") {
 		alert(msg);
 	}
-<%request.removeAttribute("Message");%>
+
 	//显示后将request里的Message清空，防止回退时重复显示。
 	function deleteContent(label) {
 		var div = label.parentNode.parentNode;
@@ -57,7 +57,7 @@
 		div2.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div3 = document.createElement("div");
 		div3.setAttribute("class", "control-group");
-		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='text' class='hidden' value='${c.cscTarget}'></div>";
+		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='hidden' class='hidden' value='${c.cscTarget}'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
 		div4.innerHTML += "<label class='control-label'>学习目的：</label><div class='controls'><input type='text' class='input-long'></div>";
@@ -72,7 +72,7 @@
 		div7.innerHTML += "<label class='control-label'>学习难点：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div8 = document.createElement("div");
 		div8.setAttribute("class", "control-group");
-		div8.innerHTML += "<label class='control-label'>课外作业及要求：</label><div class='controls'><input type='text' class='input-long'></div>";
+		div8.innerHTML += "<label class='control-label'>课外作业及要求：</label><div class='controls'><input type='text' class='input-long'><input type='hidden' class='input-long'></div>";
 		var div9 = document.createElement("div");
 		div9.setAttribute("class", "div-btn");
 		var label1 = document.createElement("label");
@@ -119,7 +119,7 @@
 		div2.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div3 = document.createElement("div");
 		div3.setAttribute("class", "control-group");
-		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='text' class='hidden' value='${c.cscTarget}'></div>";
+		div3.innerHTML += "<label class='control-label'>支撑目标：</label><div class='controls'><c:forEach items='${targets}' var='t' varStatus='s'><label class='label-checkbox'><input class='checkbox' type='checkbox' value='教学目标${s.index+1}'>教学目标${s.index+1}</label></c:forEach><input type='hidden' class='hidden' value='${c.cscTarget}'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
 		div4.innerHTML += "<label class='control-label'>学习目的：</label><div class='controls'><input type='text' class='input-long'></div>";
@@ -134,7 +134,7 @@
 		div7.innerHTML += "<label class='control-label'>学习难点：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div8 = document.createElement("div");
 		div8.setAttribute("class", "control-group");
-		div8.innerHTML += "<label class='control-label'>课外作业及要求：</label><div class='controls'><input type='text' class='input-long'></div>";
+		div8.innerHTML += "<label class='control-label'>课外作业及要求：</label><div class='controls'><input type='text' class='input-long'></div><input type='hidden' class='input-long'>";
 		var div9 = document.createElement("div");
 		div9.setAttribute("class", "div-btn");
 		var label1 = document.createElement("label");
@@ -179,22 +179,21 @@
 	function addName() {//提交表单之前为每一个input添加name属性
 		var input = document.getElementsByClassName("input-long");
 		var checkbox = document.getElementsByClassName("checkbox");
-		var n = checkbox.length/(input.length / 7);//该课程有几个目标
-		for (var j = 0; j < (input.length / 7); j++) {
-			input[j * 7 + 0].setAttribute("name", "csc[" + j + "].cscChapter");
-			input[j * 7 + 1]
+		var n = checkbox.length/(input.length / 8);//该课程有几个目标
+		for (var j = 0; j < (input.length / 8); j++) {
+			input[j * 8 + 0].setAttribute("name", "csc[" + j + "].cscChapter");
+			input[j * 8 + 1]
 					.setAttribute("name", "csc[" + j + "].cscClassHour");
 			for(var i=0;i<n;i++){
 					checkbox[j * n + i].setAttribute("name", "csc[" + j + "].cscTarget");
 			}
 			
-			input[j * 7 + 2].setAttribute("name", "csc[" + j + "].cscGoal");
-			input[j * 7 + 3].setAttribute("name", "csc[" + j + "].cscBasRequ");
-			input[j * 7 + 4].setAttribute("name", "csc[" + j
-					+ "].cscStudyEmpha");
-			input[j * 7 + 5].setAttribute("name", "csc[" + j
-					+ "].cscStudyDiffi");
-			input[j * 7 + 6].setAttribute("name", "csc[" + j + "].cscHomework");
+			input[j * 8 + 2].setAttribute("name", "csc[" + j + "].cscGoal");
+			input[j * 8 + 3].setAttribute("name", "csc[" + j + "].cscBasRequ");
+			input[j * 8 + 4].setAttribute("name", "csc[" + j + "].cscStudyEmpha");
+			input[j * 8 + 5].setAttribute("name", "csc[" + j+ "].cscStudyDiffi");
+			input[j * 8 + 6].setAttribute("name", "csc[" + j + "].cscHomework");
+			input[j * 8 + 7].setAttribute("name", "csc[" + j + "].id");
 		}
 	}
 	
@@ -227,13 +226,15 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_3_modifySpcConByCursId"
+				<form action="teacherCourse_Modify_3_modifyTargetByCursId"
 					method="post" class="form-horizontal">
-					<input type="hidden" name="courseId" value="${course.id}">
+					<input type="hidden" name="courseId" value="${courseId}">
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-content">
 							<c:forEach items="${csc }" var="c" varStatus="s">
+							
+								
 								<section>
 									<h5>
 										第
@@ -243,7 +244,7 @@
 									<div class="control-group">
 										<label class="control-label">章节名称：</label>
 										<div class="controls">
-											<input type="text" class="input-long"
+											<input type="text"  class="input-long"
 												value="${c.cscChapter }">
 										</div>
 									</div>
@@ -261,7 +262,7 @@
 													<label class='label-checkbox'><input class="checkbox" type="checkbox" value="教学目标${ss.index+1 }">教学目标
 														${ss.index+1 }</label>
 												</c:forEach>
-											<input type="text" class="hidden autoSelect"
+											<input type="hidden" class="hidden autoSelect"
 												value="${c.cscTarget }">
 										</div>
 									</div>
@@ -298,6 +299,9 @@
 										<div class="controls">
 											<input type="text" class="input-long"
 												value="${c.cscHomework }">
+												
+												<input type="hidden" class="input-long"
+												value="${c.id }">
 										</div>
 									</div>
 									<div class="div-btn">
@@ -306,6 +310,7 @@
 									</div>
 									<hr>
 								</section>
+								
 							</c:forEach>
 						</div>
 						<div class="div-btn">

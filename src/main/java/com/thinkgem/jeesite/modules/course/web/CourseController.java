@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -284,6 +286,7 @@ public class CourseController extends BaseController {
 	public String teacherCourse_Modify_1_updateCursBasicInf(Course course, Model model) {
 		courseService.save(course);
 		model.addAttribute("course",course);
+		model.addAttribute("courseId",course.getId());
 		model.addAttribute("message","更新成功");
 		return "modules/course/modify/teacherCourseModify1";
 	}
@@ -296,6 +299,7 @@ public class CourseController extends BaseController {
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
 		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("courseId",courseId);
 		model.addAttribute("targets", targets);
 		return "modules/course/modify/teacherCourseModify2";
 	}
@@ -322,7 +326,13 @@ public class CourseController extends BaseController {
 		CourseSpecificContent courseSpecificContent = new CourseSpecificContent();
 		courseSpecificContent.setCourseId(courseId);
 		List<CourseSpecificContent> csc = courseSpecificContentService.findList(courseSpecificContent);
+		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
+		courseTeachingtarget.setCourseId(courseId);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("courseId", courseId);
+		model.addAttribute("targets", targets);
 		model.addAttribute("csc",csc);
+		
 		return "modules/course/modify/teacherCourseModify3";
 	}
 	
@@ -334,6 +344,11 @@ public class CourseController extends BaseController {
 			courseSpecificContent.setCourseId(courseId);
 			courseSpecificContentService.save(courseSpecificContent);
 		}
+		
+		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
+		courseTeachingtarget.setCourseId(courseId);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("targets", targets);
 		model.addAttribute("courseId",courseId);
 		addMessage(model,"操作成功");
 		model.addAttribute("csc", courseRequestParam.getCsc());
@@ -350,6 +365,7 @@ public class CourseController extends BaseController {
 		courseTeachingMode.setCourseId(courseId);
 		List<CourseTeachingMode> ctm = courseTeachingModeService.findList(courseTeachingMode);
 		model.addAttribute("ctm",ctm);
+		model.addAttribute("courseId",courseId);
 		return "modules/course/modify/teacherCourseModify4";
 	}
 	
@@ -363,10 +379,9 @@ public class CourseController extends BaseController {
 		model.addAttribute("courseId",courseId);
 		addMessage(model,"添加课程教学方式成功");
 		model.addAttribute("ctm", courseRequestParam.getCtm());
-	
 		return "modules/course/modify/teacherCourseModify4";
 	}
-	
+
 	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_6_selectPerRuleByCursId")
@@ -376,6 +391,7 @@ public class CourseController extends BaseController {
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
 		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("courseId",courseId);
 		model.addAttribute("rules",rules);
 		model.addAttribute("targets",targets);
 		return "modules/course/modify/teacherCourseModify6";
@@ -388,6 +404,7 @@ public class CourseController extends BaseController {
 		courseMaterial.setCourseId(course.getId());
 		courseMaterial.setCmType("1");
 		courseMaterialService.findList(courseMaterial);
+		model.addAttribute("courseId",course.getId());
 		model.addAttribute("cm",courseMaterialService.findList(courseMaterial));
 		courseMaterial.setCmType("2");
 		model.addAttribute("crb",courseMaterialService.findList(courseMaterial));
@@ -395,9 +412,56 @@ public class CourseController extends BaseController {
 	}
 	
 	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_7_modifyBookByCursId")
+	public String teacherCourse_Modify_7_modifyBookByCursId(String courseId,CourseRequestParam courseRequestParam,  Model model) {
+		if (!org.springframework.util.StringUtils.isEmpty(courseRequestParam.getCm())) {
+
+			for (CourseMaterial courseMaterial : courseRequestParam.getCm()) {
+				courseMaterial.setCmType("1");
+				courseMaterial.setCourseId(courseId);
+				courseMaterialService.save(courseMaterial);
+			}
+			
+		}
+		if (!org.springframework.util.StringUtils.isEmpty(courseRequestParam.getCrb())) {
+			for (CourseMaterial courseMaterial : courseRequestParam.getCrb()) {
+				courseMaterial.setCmType("2");
+				courseMaterial.setCourseId(courseId);
+				courseMaterialService.save(courseMaterial);
+			}
+		}
+		
+		
+		model.addAttribute("courseId",courseId);
+		addMessage(model,"操作成功");
+		
+		CourseMaterial courseMaterial = new CourseMaterial();
+		courseMaterial.setCourseId(courseId);
+		courseMaterial.setCmType("1");
+		courseMaterialService.findList(courseMaterial);
+		model.addAttribute("courseId",courseId);
+		model.addAttribute("cm",courseMaterialService.findList(courseMaterial));
+		courseMaterial.setCmType("2");
+		model.addAttribute("crb",courseMaterialService.findList(courseMaterial));
+		
+		
+		return "modules/course/modify/teacherCourseModify7";
+	}
+	
+	
+	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourse_Modify_8_selectNoteByCursId")
 	public String teacherCourse_Modify_8_selectNoteByCursId(Course course,  Model model) {
-		
+		model.addAttribute("course",course);
+		return "modules/course/modify/teacherCourseModify8";
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_8_modifyNoteByCursId")
+	public String teacherCourse_Modify_8_modifyNoteByCursId(Course course,  Model model) {
+		courseService.save(course);
+		model.addAttribute("course",course);
+		addMessage(model,"操作成功");
 		return "modules/course/modify/teacherCourseModify8";
 	}
 	

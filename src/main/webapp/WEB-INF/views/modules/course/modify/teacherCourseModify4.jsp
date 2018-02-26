@@ -28,11 +28,10 @@
 <link rel="stylesheet"
 	href="${ctxStatic}/modules/teacher/admin.css" />
 <script type="text/javascript">
-	var msg = "${requestScope.Message}";
+	var msg = "${message}";
 	if (msg != "") {
 		alert(msg);
 	}
-<%request.removeAttribute("Message");%> //显示后将request里的Message清空，防止回退时重复显示。
 	function deleteContent(label) {
 		var section = label.parentNode.parentNode;
 		section.remove();
@@ -54,7 +53,7 @@
 		div3.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
-		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='text' class='input-long'></div>";
+		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='text' class='input-long'><input type='hidden' class='input-long'></div>";
 		var div5 = document.createElement("div");
 		div5.setAttribute("class", "div-btn");
 		var label1 = document.createElement("label");
@@ -97,7 +96,7 @@
 		div3.innerHTML += "<label class='control-label'>学时：</label><div class='controls'><input type='text' class='input-long'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
-		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='text' class='input-long'></div>";
+		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='text' class='input-long'><input type='hidden' class='input-long'></div>";
 		var div5 = document.createElement("div");
 		div5.setAttribute("class", "div-btn");
 		var label1 = document.createElement("label");
@@ -135,10 +134,11 @@
 	
 	function addName(){//提交表单之前为每一个input添加name属性
 		var input = document.getElementsByClassName("input-long");
-		for(var j=0;j<(input.length/3);j++){
-			input[j*3+0].setAttribute("name","ctm["+j+"].cursContent");
-			input[j*3+1].setAttribute("name","ctm["+j+"].period");
-			input[j*3+2].setAttribute("name","ctm["+j+"].teacMethod");
+		for(var j=0;j<(input.length/4);j++){
+			input[j*4+0].setAttribute("name","ctm["+j+"].cursContent");
+			input[j*4+1].setAttribute("name","ctm["+j+"].period");
+			input[j*4+2].setAttribute("name","ctm["+j+"].teacMethod");
+			input[j*4+3].setAttribute("name","ctm["+j+"].id");
 		}
 	}
 </script>
@@ -153,13 +153,15 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_4_modifyTchModeByCursId" method="post"
+				<form action="teacherCourse_Modify_4_modifyTargetByCursId" method="post"
 					class="form-horizontal">
-<input type="hidden" name="courseId" value="${course.id}">
+<input type="hidden" name="courseId" value="${courseId}">
+
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-method">
 							<c:forEach items="${ctm}" var="c" varStatus="s">
+								
 								<section>
 									<div class="control-group">
 										<label class="control-label">序号：</label>
@@ -182,7 +184,7 @@
 									<div class="control-group">
 										<label class="control-label">教学方式：</label>
 										<div class="controls">
-											<input type="text" value="${c.teacMethod }" class="input-long">
+											<input type="text" value="${c.teacMethod }" class="input-long"><input type="hidden" value="${c.id }" class="input-long">
 										</div>
 									</div>
 									

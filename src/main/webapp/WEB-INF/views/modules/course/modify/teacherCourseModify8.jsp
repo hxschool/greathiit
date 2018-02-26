@@ -30,11 +30,10 @@
 
 
 <script type="text/javascript">
-	var msg = "${requestScope.Message}";
+	var msg = "${message}";
 	if (msg != "") {
 		alert(msg);
 	}
-	<% request.removeAttribute("Message");%>//显示后将request里的Message清空，防止回退时重复显示。
 </script>
 </head>
 
@@ -49,19 +48,19 @@
 					</h6>
 				</div>
 				
-				<form action="TeacherCourse_Modify_8_modifyNoteByCursId" method="post"
+				<form action="teacherCourse_Modify_8_modifyNoteByCursId" method="post"
 					enctype="multipart/form-data" class="form-horizontal">
-					<input type="hidden" name="courseId" value="${course.id}">
+					<input type="hidden" name="id" value="${course.id}">
 					<div class="div-inf">
 						<div class="div-inf-title">（一）与相关课程的分工衔接</div>
 						<div class="div-inner-text">
-							<textarea name="course.cursNote1">${course.cursNote1 }</textarea>
+							<textarea name="cursNote1">${course.cursNote1 }</textarea>
 						</div>
 					</div>
 					<div class="div-inf">
 						<div class="div-inf-title">（二）其他说明</div>
 						<div class="div-inner-text">
-							<textarea name="course.cursNote2">${course.cursNote2 }</textarea>
+							<textarea name="cursNote2">${course.cursNote2 }</textarea>
 						</div>
 					</div>
 					<div class="div-btn">

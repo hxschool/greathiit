@@ -28,11 +28,11 @@
 <link rel="stylesheet"
 	href="${ctxStatic}/modules/teacher/admin.css" />
 <script type="text/javascript">
-	var msg = "${requestScope.Message}";
+	var msg = "${message}";
 	if (msg != "") {
 		alert(msg);
 	}
-<%request.removeAttribute("Message");%>
+
 	//显示后将request里的Message清空，防止回退时重复显示。
 	function deleteContent(label) {
 		var section = label.parentNode.parentNode;
@@ -50,7 +50,7 @@
 		div3.innerHTML += "<label class='control-label'>出版社：</label><div class='controls'><input type='text' class='input-long input-m'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
-		div4.innerHTML += "<label class='control-label'>出版年份：</label><div class='controls'><input type='text' class='input-long input-m'></div>";
+		div4.innerHTML += "<label class='control-label'>出版年份：</label><div class='controls'><input type='text' class='input-long input-m'> <input type='hidden' class='input-long input-m'> </div>";
 		var div5 = document.createElement("div");
 		div5.setAttribute("class", "div-btn");
 		var label2 = document.createElement("label");
@@ -83,7 +83,7 @@
 		div3.innerHTML += "<label class='control-label'>出版社：</label><div class='controls'><input type='text' class='input-long input-rb'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
-		div4.innerHTML += "<label class='control-label'>出版年份：</label><div class='controls'><input type='text' class='input-long input-rb'></div>";
+		div4.innerHTML += "<label class='control-label'>出版年份：</label><div class='controls'><input type='text' class='input-long input-rb'> <input type='hidden' class='input-long input-rb'> </div>";
 		var div5 = document.createElement("div");
 		div5.setAttribute("class", "div-btn");
 		var label2 = document.createElement("label");
@@ -106,19 +106,21 @@
 	}
 	function addName() {//提交表单之前为每一个input添加name属性
 		var input1 = document.getElementsByClassName("input-m");
-		for (var i = 0; i < (input1.length / 4); i++) {
-			input1[i * 4 + 0].setAttribute("name", "cm[" + i + "].cmAuthor");
-			input1[i * 4 + 1].setAttribute("name", "cm[" + i + "].cmName");
-			input1[i * 4 + 2].setAttribute("name", "cm[" + i + "].cmPublisher");
-			input1[i * 4 + 3].setAttribute("name", "cm[" + i + "].cmPubYear");
+		for (var i = 0; i < (input1.length / 5); i++) {
+			input1[i * 5 + 0].setAttribute("name", "cm[" + i + "].cmAuthor");
+			input1[i * 5 + 1].setAttribute("name", "cm[" + i + "].cmName");
+			input1[i * 5 + 2].setAttribute("name", "cm[" + i + "].cmPublisher");
+			input1[i * 5 + 3].setAttribute("name", "cm[" + i + "].cmPubYear");
+			input1[i * 5 + 4].setAttribute("name", "cm[" + i + "].id");
 		}
 		var input2 = document.getElementsByClassName("input-rb");
-		for (var j = 0; j < (input2.length / 4); j++) {
-			input2[j * 4 + 0].setAttribute("name", "crb[" + j + "].crbAuthor");
-			input2[j * 4 + 1].setAttribute("name", "crb[" + j + "].crbName");
-			input2[j * 4 + 2].setAttribute("name", "crb[" + j
-					+ "].crbPublisher");
-			input2[j * 4 + 3].setAttribute("name", "crb[" + j + "].crbPubYear");
+		for (var j = 0; j < (input2.length / 5); j++) {
+			input2[j * 5 + 0].setAttribute("name", "crb[" + j + "].cmAuthor");
+			input2[j * 5 + 1].setAttribute("name", "crb[" + j + "].cmName");
+			input2[j * 5 + 2].setAttribute("name", "crb[" + j
+					+ "].cmPublisher");
+			input2[j * 5 + 3].setAttribute("name", "crb[" + j + "].cmPubYear");
+			input2[j * 5 + 4].setAttribute("name", "crb[" + j + "].id");
 		}
 	}
 </script>
@@ -132,9 +134,9 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_7_modifyBookByCursId"
+				<form action="teacherCourse_Modify_7_modifyBookByCursId"
 					method="post" class="form-horizontal">
-					<input type="hidden" name="courseId" value="${course.id}">
+					<input type="hidden" name="courseId" value="${courseId}">
 					<div class="div-inf">
 						<div class="div-inf-title">
 							课程教材<label class="a-add" onclick="addMaterialContent()">添加</label>
@@ -169,6 +171,11 @@
 										<div class="controls">
 											<input type="text"
 												value="${m.cmPubYear }"
+												class="input-long input-m">
+												
+												
+												<input type="hidden"
+												value="${m.id }"
 												class="input-long input-m">
 										</div>
 									</div>
@@ -214,6 +221,11 @@
 										<div class="controls">
 											<input type="text"
 												value="${c.cmPubYear }"
+												class="input-long input-rb">
+												
+												
+												<input type="hidden"
+												value="${c.id }"
 												class="input-long input-rb">
 										</div>
 									</div>

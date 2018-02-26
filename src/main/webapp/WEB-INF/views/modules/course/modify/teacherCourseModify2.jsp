@@ -64,10 +64,10 @@
 	}
 	
 	function addName(){
-		var inputs = document.getElementsByClassName("target");
-		for(var i=0;i<inputs.length;i++){
-			inputs[i].setAttribute("name","targets["+i+"].tchTarContent");
-		}
+		//var inputs = document.getElementsByClassName("target");
+		//for(var i=0;i<inputs.length;i++){
+		//	inputs[i].setAttribute("name","targets["+i+"].tchtargetContent");
+		//}
 	}
 	var i = ${targets.size() }
 	function addTarget(){
@@ -93,13 +93,15 @@
 				</div>
 				<form action="teacherCourse_Modify_2_modifyTargetByCursId" method="post"
 					enctype="multipart/form-data" class="form-horizontal" onsubmit="javascript:return isEmpty()">
-					<input type="hidden" name="courseId" value="${course.id}">
+					<input type="hidden" name="courseId" value="${courseId}">
 					<div class="div-inf" id="div-targets">
 					<c:forEach items="${targets }" var="t" varStatus="s">
 						<div class="control-group">
 							<label class="control-label"></label>
 							<div class="controls">
-								<input type="text" class="input-long target"
+								<input type="hidden" name="targets[${s.index}].id" class="input-long target"
+								value="${t.id }" />
+								<input type="text" name="targets[${s.index}].tchtargetContent" class="input-long target"
 								value="${t.tchtargetContent }" /><label class="label-delete" onclick="deleteDiv(this)">删除</label>
 							</div>
 						</div>

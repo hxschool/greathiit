@@ -13,7 +13,8 @@ public class CourseRequestParam {
 	private List<CourseTeachingMode> ctm;
 	
 	private List<CourseMaterial> crb;
-
+	private List<CourseMaterial> cm;
+	
 	public List<CourseTeachingtarget> getTargets() {
 		return targets;
 	}
@@ -23,6 +24,14 @@ public class CourseRequestParam {
 	}
 	
 	
+
+	public List<CourseMaterial> getCm() {
+		return cm;
+	}
+
+	public void setCm(List<CourseMaterial> cm) {
+		this.cm = cm;
+	}
 
 	public List<CourseMaterial> getCrb() {
 		return crb;

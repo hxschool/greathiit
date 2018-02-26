@@ -59,9 +59,9 @@
 											<label>${item.cursTerm}</label>
 											<div class="div-curs-detail-inf a">
 											<a
-													href="TeacherCourse_Modify_9_selectTarByCursId?cursId=${item.id}">课程目标评价</a>&nbsp;&nbsp;
+													href="teacherCourse_Modify_9_selectTarByCursId?cursId=${item.id}">课程目标评价</a>&nbsp;&nbsp;
 												<a
-													href="TeacherCourse_Modify_5_selectAllPoints?cursId=${item.id}">毕业要求评价</a>&nbsp;&nbsp;
+													href="teacherCourse_Modify_5_selectAllPoints?cursId=${item.id}">毕业要求评价</a>&nbsp;&nbsp;
 											</div>
 										</section>
 									</c:forEach>

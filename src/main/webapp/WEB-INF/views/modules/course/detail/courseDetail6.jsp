@@ -59,7 +59,8 @@
 							<c:if test="${course.cursType=='graduation-project' }">
 							答辩
 						</c:if>
-						${rules.finalExamPer }%，
+						
+						${rules.finalExamper}%，
 						 <c:if test="${course.cursType=='normal'}">
 							课堂表现
 						</c:if>

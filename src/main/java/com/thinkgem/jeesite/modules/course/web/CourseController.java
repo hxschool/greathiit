@@ -3,8 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -465,7 +463,42 @@ public class CourseController extends BaseController {
 		return "modules/course/modify/teacherCourseModify8";
 	}
 	
+	/*课程目标评价开始-----------------------------------------------------------------------------------------*/
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_9_selectTarByCursId")
+	public String teacherCourse_Modify_9_selectTarByCursId(String cursId, Model model) {
+		Course course = courseService.get(cursId);
+		String courseId = course.getId();
+		CourseCompositionRules courseCompositionRules = courseCompositionRulesService.getCourseCompositionRulesByCourseId(courseId);
+		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
+		courseTeachingtarget.setCourseId(courseId);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		model.addAttribute("targets", targets);
+		model.addAttribute("course",course);
+		model.addAttribute("courseCompositionRules",courseCompositionRules);
+		
+		return "modules/course/modify/teacherCourseModify9";
+	}
 	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_9_modifyTargetValueByCursId")
+	public String teacherCourse_Modify_9_modifyTargetValueByCursId(String courseId,CourseCompositionRules courseCompositionRules,CourseRequestParam courseRequestParam , Model model) {
+		Course course = courseService.get(courseId);
+		for(CourseTeachingtarget courseTeachingtarget:courseRequestParam.getTargets()) {
+			courseTeachingtarget.setCourseId(courseId);
+			courseTeachingtargetService.save(courseTeachingtarget);
+		}
+		model.addAttribute("course",course);
+		return "modules/course/modify/teacherCourseModify9";
+	}
+	
+	/*毕业要求评价  -----------------------------------------------------------------------------------------*/
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "teacherCourse_Modify_5_selectAllPoints")
+	public String teacherCourse_Modify_5_selectAllPoints(Course course,  Model model) {
+		model.addAttribute("course",course);
+		return "modules/course/modify/teacherCourseModify9";
+	}
 	
 	
 	@RequiresPermissions("course:course:view")

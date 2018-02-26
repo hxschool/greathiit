@@ -28,11 +28,11 @@
 <link rel="stylesheet"
 	href="${ctxStatic}/modules/teacher/admin.css" />
 <script type="text/javascript">
-	var msg = "${requestScope.Message}";
+	var msg = "${message}";
 	if (msg != "") {
 		alert(msg);
 	}
-<%request.removeAttribute("Message");%>
+
 	//显示后将request里的Message清空，防止回退时重复显示。
 
 	var input = document.getElementsByTagName("input");
@@ -98,86 +98,87 @@
 						<a href="#">课程列表</a><img class="image-path-2" src="${ctxStatic}/modules/img/zhexian.jpg"/>${course.cursName}
 					</h6>
 				</div>
-				<form action="TeacherCourse_Modify_9_modifyTargetValueByCursId"
+				<form action="teacherCourse_Modify_9_modifyTargetValueByCursId"
 					method="post" enctype="multipart/form-data" class="form-horizontal"
 					onsubmit="javascript:return validate()">
 					<input type="hidden" name="courseId" value="${course.id}">
 					<div class="div-inf">
 						<div class="div-inf-title">设置评分标准</div>
+						
 						<label class="title-per-rule">评分标准：</label>
 						<div class="div-per-rule">
-							<c:if test="${course.type=='normal' }">
+							<c:if test="${course.cursType=='normal' }">
 							课堂表现
 						</c:if>
-							<c:if test="course.type=='experiment'">
+							<c:if test="course.cursType=='experiment'">
 							协作答辩
 						</c:if>
-							<c:if test="course.type=='graduation-project'">
+							<c:if test="course.cursType=='graduation-project'">
 							中期
 						</c:if>
-							&nbsp;<input name="compositionRules.clazzPer" type="text"
+							&nbsp;<input name="clazzPer" type="text"
 								id="input-cla"
-								value="${compositionRules.clazzPer}" />&nbsp;%
+								value="${courseCompositionRules.clazzPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<c:if test="course.type=='normal'">
+							<c:if test="course.cursType=='normal'">
 							平时作业
 						</c:if>
-							<c:if test="course.type=='experiment'">
+							<c:if test="course.cursType=='experiment'">
 							技术方案
 						</c:if>
-							<c:if test="course.type=='graduation-project'">
+							<c:if test="course.cursType=='graduation-project'">
 							软硬件验收
 						</c:if>
-							&nbsp;<input name="compositionRules.homeworkResultPer"
+							&nbsp;<input name="homeworkResultPer"
 								type="text" id="input-work"
-								value="${compositionRules.homeworkResultPer}" />&nbsp;%
+								value="${courseCompositionRules.homeworkResultPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<c:if test="course.type=='normal'">
-							实验成绩&nbsp;<input name="compositionRules.expResultPer" type="text"
+							<c:if test="course.cursType=='normal'">
+							实验成绩&nbsp;<input name="expResultPer" type="text"
 									id="input-exp"
-									value="${compositionRules.expResultPer}" />&nbsp;%
+									value="${courseCompositionRules.expResultPer}" />&nbsp;%
 						</c:if>
-							<c:if test="course.type=='experiment'">
-								<input name="compositionRules.expResultPer" type="text"
+							<c:if test="course.cursType=='experiment'">
+								<input name="expResultPer" type="text"
 									id="input-exp" style="display:none"
 									value="0" />
 							</c:if>
-							<c:if test="course.type=='graduation-project'">
-							翻译&nbsp;<input name="compositionRules.expResultPer" type="text"
+							<c:if test="course.cursType=='graduation-project'">
+							翻译&nbsp;<input name="expResultPer" type="text"
 									id="input-exp"
-									value="${compositionRules.expResultPer}" />&nbsp;%
+									value="${courseCompositionRules.expResultPer}" />&nbsp;%
 						</c:if>
 
 						</div>
 						<div class="div-per-rule">
-							<c:if test="course.type=='normal'">
+							<c:if test="course.cursType=='normal'">
 							期中成绩
 						</c:if>
-							<c:if test="course.type=='experiment'">
+							<c:if test="course.cursType=='experiment'">
 							设计报告
 						</c:if>
-							<c:if test="course.type=='graduation-project'">
+							<c:if test="course.cursType=='graduation-project'">
 							论文
 						</c:if>
-							&nbsp;<input name="compositionRules.midTermPer" type="text"
+							&nbsp;<input name="midTermPer" type="text"
 								id="input-mid"
-								value="${compositionRules.midTermPer}" />&nbsp;%
+								value="${courseCompositionRules.midTermPer}" />&nbsp;%
 						</div>
 						<div class="div-per-rule">
-							<c:if test="course.type=='normal'">
+							<c:if test="course.cursType=='normal'">
 							期末成绩
 						</c:if>
-							<c:if test="course.type=='experiment'">
+							<c:if test="course.cursType=='experiment'">
 								查阅文献
 							</c:if>
-							<c:if test="course.type=='graduation-project'">
+							<c:if test="course.cursType=='graduation-project'">
 							答辩
 						</c:if>
-							&nbsp;<input name="compositionRules.finalExamPer" type="text"
+							&nbsp;<input name="finalExamper" type="text"
 								id="input-fin"
-								value="${compositionRules.finalExamPer}" />&nbsp;%
+								value="${courseCompositionRules.finalExamper}" />&nbsp;%
 						</div>
 					</div>
 					<div class="div-inf">
@@ -189,55 +190,62 @@
 									<tr>
 										<th class="hidden"></th>
 										<th class="width48">项目</th>
-										<c:if test="course.type=='normal'">
+										<c:if test="course.cursType=='normal'">
 											<th>课堂表现</th>
 											<th>平时作业</th>
 											<th>实验成绩</th>
 											<th>期中成绩</th>
 											<th>期末成绩</th>
 										</c:if>
-										<s:elseif test="${course.type=='experiment' }">
+										<c:if test="${course.cursType=='experiment' }">
 											<th>协作答辩</th>
 											<th>技术方案</th>
 											<th style="display:none"></th>
 											<th>设计报告</th>
 											<th>查阅文献</th>
-										</s:elseif>
-										<s:elseif test="${course.type=='graduation-project' }">
+										</c:if>
+										<c:if test="${course.cursType=='graduation-project' }">
 											<th>中期</th>
 											<th>软硬件验收</th>
 											<th>翻译</th>
 											<th>论文</th>
 											<th>答辩</th>
-										</s:elseif>
+										</c:if>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${targets}" var="t" status="s">
+									<c:forEach items="${targets}" var="t" varStatus="s">
 										<tr>
 											<td class="hidden"><input
-												name="targets[${s.index}].tchTargetId"
-												value="${t.tchTargetId}" /></td>
+												name="targets[${s.index}].id"
+												value="${t.id}" />
+												
+												<input
+												name="targets[${s.index}].tchtargetContent"
+												value="${t.tchtargetContent}" />
+												</td>
 											<td>目标${s.index+1 }</td>
 											<td><input
-												name="targets[${s.index+1 }].tchtargetClassTargetValue"
+												name="targets[${s.index }].tchtargetClassTargetValue"
 												class="border0 colClass"
 												value="${t.tchtargetClassTargetValue}" /></td>
 											<td><input
-												name="targets[${s.index+1 }].tchtargetHomeworkTargetValue"
+												name="targets[${s.index }].tchtargetHomeworkTargetValue"
 												class="border0 colWork"
 												value="${t.tchtargetHomeworkTargetValue}" /></td>
 												<td class="td-exp"><input
-													name="targets[${s.index+1 }].tchtargetExpTargetValue"
+													name="targets[${s.index }].tchtargetExpTargetValue"
 													class="border0 colExp"
 													value="${t.tchtargetExpTargetValue}" /></td>
 											<td><input
-												name="targets[${s.index+1 }].tchtargetMidTargetValue"
+												name="targets[${s.index }].tchtargetMidTargetValue"
 												class="border0 colMid"
 												value="${t.tchtargetMidTargetValue}" /></td>
-											<td><input class="border0 colFin"
-												name="targets[${s.index+1 }].tchtargetFinTargetValue"
-												value="${t.tchtargetFinTargetValue}" /></td>
+												<c:if test="${course.cursType=='experiment' }">
+													<td style="display:none"><input class="border0 colFin"
+														name="targets[${s.index }].tchtargetFinTargetValue"
+														value="${t.tchtargetFinTargetValue}" /></td>
+												</c:if>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -253,6 +261,6 @@
 		</div>
 	</div>
 	
-	<label id="cursType" class="hidden">${course.curType }</label>
+	<label id="cursType" class="hidden">${course.cursType }</label>
 </body>
 </html>

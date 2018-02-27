@@ -49,7 +49,7 @@
 							<div class="div-tchr-basic-inf-1">
 								<div class="div-tchr-basic-inf-1-1">出生年月</div>
 								<div class="div-tchr-basic-inf-1-2">
-									${teacher.tchrBirthday }</div>
+									<fmt:formatDate value="${teacher.tchrBirthday}" /></div>
 							</div>
 							<div class="div-tchr-basic-inf-1">
 								<div class="div-tchr-basic-inf-1-1">最高学位</div>

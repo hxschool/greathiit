@@ -52,7 +52,7 @@
 		var birthday = document.getElementById("tchrBirthday").value;
 		if (birthday.trim() == "")
 			return true;
-		var r = birthday.match(/^(\d{1,2})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+		var r = birthday.match(/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
 		if (r == null) {
 			alert("请输入格式正确的日期\n\r日期格式：yy-mm-dd\n\r例    如：68-12-25\n\r");
 			return false;
@@ -103,7 +103,7 @@
 								<label class="control-label">出生年月</label>
 								<div class="controls">
 									<input type="text" name="tchrBirthday"
-										id="tchrBirthday" value="${teacher.tchrBirthday}">
+										id="tchrBirthday" value="<fmt:formatDate value="${teacher.tchrBirthday}" />">
 								</div>
 							</div>
 							<div class="control-group">

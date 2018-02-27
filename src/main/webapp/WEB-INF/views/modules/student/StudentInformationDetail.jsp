@@ -35,7 +35,7 @@
 								<td>性别</td>
 								<td>${student.gender}</td>
 								<td>生日</td>
-								<td>${student.birthday}</td>
+								<td><fmt:formatDate value="${student.birthday}" /></td>
 							</tr>
 							<tr>
 								<td>籍贯</td>

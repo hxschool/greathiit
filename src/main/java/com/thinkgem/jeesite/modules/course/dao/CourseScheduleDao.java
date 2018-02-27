@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 
 /**
  * 计划教室DAO接口
@@ -27,4 +28,6 @@ public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
 	public List<CourseSchedule> getCourseScheduleByYearTermAndTeacherNumber(@Param("yearTerm")String yearTerm,@Param("teacherNumber")String teacherNumber);
 	
 	public List<CourseSchedule> findListByStudentNumber(@Param("studentNumber")String studentNumber);
+	
+	public List<CourseScheduleExt> getCourseScheduleExt(@Param("cursTerm") String cursTerm,@Param("courseClass") String courseClass, @Param("teacherNumber") String teacherNumber);
 }

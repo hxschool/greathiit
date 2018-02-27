@@ -44,7 +44,7 @@
 								<div class="div-tchr-course">
 
 								
-									
+									<c:if test="${teachCourses.size()==0}">暂无课程,请新增课程信息</c:if>
 									<c:forEach var="item" items="${teachCourses}" varStatus="status">
 										<section class="div-curs">
 											<h6>课程名称：</h6>

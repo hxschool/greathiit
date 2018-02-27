@@ -41,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
@@ -99,12 +100,7 @@ public class CourseExportController extends BaseController {
 	private Sheet sheet;
 	private Map<String, CellStyle> styles;
 	
-	private static Map<String,String> schoolRootMap = new HashMap();
-	{
-		schoolRootMap.put("01", "A栋");
-		schoolRootMap.put("02", "B栋");
-		schoolRootMap.put("03", "C栋");
-	}
+	
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
 		Course entity = null;
@@ -166,7 +162,7 @@ public class CourseExportController extends BaseController {
 			if(!org.springframework.util.StringUtils.isEmpty(course)&&indexMap.containsKey(course.getTeacher().getNo())) {
 				
 				int cIndex = indexMap.get(course.getTeacher().getNo());
-				Map<String,String> $col_a = GetTimeCol(courseSchedule.getTimeAdd());
+				Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
 				String zhou = $col_a.get("zhou");
 				String jie  = $col_a.get("jie");
 				//设定索引行
@@ -178,7 +174,7 @@ public class CourseExportController extends BaseController {
 				
 				String root = courseSchedule.getTimeAdd().substring(7, 10);
 				String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
-				addCell(rRow, cIndex, course.getCursName() + "(" +course.getCursClassHour()+ " 学时) \r\n" + schoolRootMap.get(buildRootKey) + " " + root  + "\r\n" +  courseSchedule.getCourseClass(), 4);
+				addCell(rRow, cIndex, course.getCursName() + "(" +course.getCursClassHour()+ " 学时) \r\n" + CourseUtil.schoolRootMap.get(buildRootKey) + " " + root  + "\r\n" +  courseSchedule.getCourseClass(), 4);
 			}	
 		}
 		
@@ -237,12 +233,14 @@ public class CourseExportController extends BaseController {
 		List<Lesson> lessons = new ArrayList<Lesson>();
 		for(CourseSchedule courseSchedule:courseSchedules) {
 			Row r = sheet.createRow($i);
-			Map<String,String> $col_a = GetTimeCol(courseSchedule.getTimeAdd());
+			Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
 			int date = (Integer.valueOf($col_a.get("week")) - 1) * 7 + Integer.valueOf($col_a.get("zhou"));
-			addCell(r, 0,'第' + $col_a.get("week") + "周  " + addDate(date) + " ("+ zhou($col_a.get("zhou")) + ") " +  jie($col_a.get("jie")), 2);
+			CourseCalendar courseCalendar = courseCalendarService.systemConfig();
+			String today = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" + courseCalendar.getCalendarDay();
+			addCell(r, 0,'第' + $col_a.get("week") + "周  " + CourseUtil.addDate(today,date) + " ("+ CourseUtil.zhou($col_a.get("zhou")) + ") " +  CourseUtil.jie($col_a.get("jie")), 2);
 			String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
 			String root = courseSchedule.getTimeAdd().substring(7, 10);
-			addCell(r, 1,schoolRootMap.get(buildRootKey) + " " + root , 2);
+			addCell(r, 1,CourseUtil.schoolRootMap.get(buildRootKey) + " " + root , 2);
 			
 			String courseClass = courseSchedule.getCourseClass();
 			
@@ -254,7 +252,7 @@ public class CourseExportController extends BaseController {
 			addCell(r, 3,courseClass, 2);
 			addCell(r, 4,courseSchedule.getTips(), 2);
 			//添加相关数据信息
-			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;
+			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), CourseUtil.schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;
 			
 			$i++;
 		}
@@ -288,50 +286,7 @@ public class CourseExportController extends BaseController {
 		os.flush();
 		os.close();
 	}
-	
-	
-	
-	
-	public String jie(String $j)
-	{
-	        if($j.equals("1"))
-	                return "1-2节";
-	        if($j.equals("2"))
-	                return "3-4节";
-	        if($j.equals("3"))
-	                return "5-6节";
-	        if($j.equals("4"))
-	                return "7-8节";
-	        if($j.equals("5"))
-	                return "9-10节";
-			return $j;
-	}
-	//返回周
-	public String zhou(String $z)
-	{
-	        if($z.equals("1"))
-	                return "周一";
-	        if($z.equals("2"))
-	                return "周二";
-	        if($z.equals("3"))
-	                return "周三";
-	        if($z.equals("4"))
-	                return "周四";
-	        if($z.equals("5"))
-	                return "周五";
-	        if($z.equals("6"))
-	                return "周六";
-	        if($z.equals("7"))
-	                return "周日";
-			return $z;
-	}
-	public Map<String,String> GetTimeCol(String $time_add){
-	    Map<String,String> $time = new HashMap<String,String>();
-	    $time.put("week", $time_add.substring(10, 12));
-	    $time.put("jie", $time_add.substring(12, 13));
-	    $time.put("zhou", $time_add.substring(13, 14));
-	    return $time;
-	}
+
 	
 	public static void main(String[] args) {
 		 String today = "2013-12-14";  
@@ -351,27 +306,6 @@ public class CourseExportController extends BaseController {
 		 
 		 System.out.println(Integer.valueOf("01"));
 	}
-	
-	
-	public String addDate(int day) {
-		 CourseCalendar courseCalendar = courseCalendarService.systemConfig();
-		 String today = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" +courseCalendar.getCalendarDay();
-		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
-		 Date date = null;  
-		 try {  
-		     date = format.parse(today);  
-		 } catch (ParseException e) {  
-		     // TODO Auto-generated catch block  
-		     e.printStackTrace();  
-		 }  
-		   
-		 Calendar calendar = Calendar.getInstance();
-		 calendar.setTime(date);
-		 calendar.add(Calendar.DATE, day - 1);
-		 return format.format(calendar.getTime());
-	}
-	
-	
 	
 	
 	public Cell addCell(Row row, int column, Object val, int align){
@@ -475,6 +409,26 @@ public class CourseExportController extends BaseController {
 		styles.put("data4", style);
 
 		return styles;
+	}
+
+	@RequestMapping(value = "getCourseScheduleExt")
+	public String getCourseScheduleExt(String yearTrem,String courseClass,String teacherName, Model model) {
+		//return courseScheduleService.getCourseScheduleExt(yearTrem, courseClass, teacherName);
+		String teacherNumber = "";
+		if(!org.springframework.util.StringUtils.isEmpty(teacherName)) {
+			Teacher teacher = new Teacher();
+			teacher.setTchrName(teacherName);
+			List<Teacher> teachers = teacherService.findList(teacher);
+			StringBuffer sb = new StringBuffer();
+			for(Teacher t:teachers) {
+			      sb.append(t.getTeacher().getNo());
+		          sb.append(",");
+			}
+			teacherNumber = sb.substring(0, sb.length() - ",".length());
+		}
+		
+		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(yearTrem, courseClass, teacherNumber));
+		return "modules/course/courseScheduleExt";
 	}
 	
 	@RequestMapping(value = "student")

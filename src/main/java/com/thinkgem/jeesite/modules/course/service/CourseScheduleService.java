@@ -13,6 +13,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 
 /**
  * 计划教室Service
@@ -24,6 +25,13 @@ import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 public class CourseScheduleService extends CrudService<CourseScheduleDao, CourseSchedule> {
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
+	
+	public List<CourseScheduleExt> getCourseScheduleExt(String yearTrem,String courseClass,String teacherName){
+	
+		return courseScheduleDao.getCourseScheduleExt( yearTrem, courseClass, teacherName);
+		
+	}
+	
 	public CourseSchedule get(String id) {
 		return super.get(id);
 	}

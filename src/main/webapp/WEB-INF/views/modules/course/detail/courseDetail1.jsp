@@ -80,7 +80,7 @@
         毕业设计
    </c:when>
 </c:choose>
-					${course.cursType}</label>	
+					</label>	
 					</div>
 					
 					<div class="div-detail">

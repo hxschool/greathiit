@@ -75,6 +75,9 @@
 		<include refid="teacherJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="tchrName!=null and tchrName!=''">  
+			and a.tchr_name = #{tchrName}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

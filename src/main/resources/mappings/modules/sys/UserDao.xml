@@ -101,7 +101,7 @@
     	cu2.name AS "company.deputyPerson.name",
     	ou.id AS "office.primaryPerson.id",
     	ou.name AS "office.primaryPerson.name",
-    	
+    	cl.id AS "clazz.id",
     	cl.name AS "clazz.name",
     	cl.parent_id AS "clazz.parent.id",
     	cl.parent_ids AS "clazz.parentIds",

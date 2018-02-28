@@ -355,14 +355,14 @@ public class CourseExportController extends BaseController {
 			String root = courseSchedule.getTimeAdd().substring(7, 10);
 			addCell(r, 1,CourseUtil.schoolRootMap.get(buildRootKey) + " " + root , 2);
 			
-			String courseClass = courseSchedule.getCourseClass();
+			//String courseClass = courseSchedule.getCourseClass();
 			
 			Course course = courseService.get(courseSchedule.getCourseId());
 			if(org.springframework.util.StringUtils.isEmpty(course)) {
 				System.out.println(courseSchedule.getCourseId());
 			}
 			addCell(r, 2,course.getCursName(), 2);
-			addCell(r, 3,courseClass, 2);
+			addCell(r, 3,clazz, 2);
 			addCell(r, 4,courseSchedule.getTips(), 2);
 			//添加相关数据信息
 			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), CourseUtil.schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;

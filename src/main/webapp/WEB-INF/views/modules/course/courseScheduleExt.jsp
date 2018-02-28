@@ -21,9 +21,10 @@
 				}); 
 		});
 		function up_Inquiry(){
-			layer.confirm('请输入教师名:<input name="teacherName" id="teacherName"/>', {
+			layer.confirm('<form  id="teacherForm" action="${ctx}/course/export/getCourseScheduleExt" method="post" >请输入教师名:<input name="teacherName" id="teacherName"/></form>', {
 				  btn: ['搜索','关闭'],
 				  yes: function(index, layero){
+					  $("#teacherForm").submit();
 					  layer.close(index);
 					  },
 					  no: function(index, layero){
@@ -39,13 +40,13 @@
 	
 	
 	<sys:message content="${message}"/>
-	<form id="searchForm" action="${ctx}/sys/log/" method="post" class="breadcrumb form-search">
+	<form id="searchForm" action="${ctx}/course/export/getCourseScheduleExt" method="post" class="breadcrumb form-search">
 		
 		<div id="element_id">
 			<label>学院：</label><select class="province input-medium"><option>请选择</option></select>
 			<label>专业：</label><select id="city" class="city input-medium"><option>请选择</option></select>
 			<label>年级：</label><select id="clazz" class="clazz input-medium" ><option>请选择</option></select>
-			<label>班级：</label><select id="area" class="area input-medium" name="clazzId"><option>请选择</option></select>
+			<label>班级：</label><select id="area" class="area input-medium" name="courseClass"><option>请选择</option></select>
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			 <input type="button" class="btn btn-primary" value="按教师查询" onclick="up_Inquiry()" class="button"/>
 		</div>

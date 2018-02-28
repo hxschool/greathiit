@@ -24,7 +24,7 @@
 	
 	<select id="getCourseScheduleExt" resultType="com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt">
 		select <include refid="courseScheduleColumns"/>,b.curs_name as cursName,c.tchr_name as tchrName from course_schedule a left join course b on a.course_id=b.id left join teacher c on b.teacher_number=c.teacher_number
-where a.sc_lock!=1 
+			where a.sc_lock!=1 
  		  <if test="courseClass!=null and courseClass!=''">  
           and   a.course_class in (#{courseClass})
           </if>  
@@ -34,6 +34,17 @@ where a.sc_lock!=1
            <if test="cursTerm!=null and cursTerm!=''">  
           and   c.curs_term=#{cursTerm}  
           </if> 
+
+	</select>
+    
+    
+    <select id="getCourseScheduleByRoot" resultType="com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt">
+		select <include refid="courseScheduleColumns"/>,b.curs_name as cursName,c.tchr_name as tchrName from course_schedule a left join course b on a.course_id=b.id left join teacher c on b.teacher_number=c.teacher_number
+			where a.sc_lock!=1 
+			<if test="root!=null and root!=''">  
+			 and substring(time_add,6,5)=${root}
+			</if> 
+ 		  
 
 	</select>
     

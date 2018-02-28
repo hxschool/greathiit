@@ -56,6 +56,8 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.course.web.param.Lesson;
+import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
+import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -94,6 +96,8 @@ public class CourseExportController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private SchoolRootService schoolRootService;
 	
 	private SXSSFWorkbook  wb;
 	private Sheet sheet;
@@ -407,6 +411,206 @@ public class CourseExportController extends BaseController {
 		os.close();
 	}
 	
+	
+	@RequestMapping(value = "root")
+	public void root(String school,String address, HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		PrintWriter pw = response.getWriter();
+		if(org.springframework.util.StringUtils.isEmpty(school)||org.springframework.util.StringUtils.isEmpty(address)) {
+			pw.write("<script>alert(\"抱歉，提交数据异常\")</script>");
+			pw.flush();
+			pw.close();
+			return;
+		}
+		
+		String id = school.concat(address);
+		
+		SchoolRoot schoolRoot = schoolRootService.get(id);
+		
+		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
+		String yearTerm = courseYearTerm.getYearTerm();
+		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
+
+		String exportName = schoolRoot.getLabel();
+		
+		String $file_name = exportName + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		response.setContentType("application/octet-stream;charset=utf-8"); 
+		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
+		OutputStream os = response.getOutputStream();
+		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleByRoot(yearTerm, id);
+		SXSSFWorkbook  wb = new SXSSFWorkbook();
+		Sheet sheet = wb.createSheet("Export");
+		Row row = sheet.createRow(0);
+		styles = createStyles(wb);
+		//姓名
+		addCell(row, 0,"教室", 4);
+		addCell(row, 1,exportName, 2);
+		//标题相关
+		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
+		sheet.addMergedRegion(cra);  
+		
+		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		
+		Row row1 = sheet.createRow(1);
+		addCell(row1, 0,"时间", 2);
+		addCell(row1, 1,"地点", 2);
+		addCell(row1, 2,"课程", 2);
+		addCell(row1, 3,"班级", 2);
+		addCell(row1, 4,"备注", 2);
+		int $i=2;
+		
+		List<Lesson> lessons = new ArrayList<Lesson>();
+		for(CourseScheduleExt courseSchedule:courseSchedules) {
+			Row r = sheet.createRow($i);
+			Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
+			int date = (Integer.valueOf($col_a.get("week")) - 1) * 7 + Integer.valueOf($col_a.get("zhou"));
+			CourseCalendar courseCalendar = courseCalendarService.systemConfig();
+			String today = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" + courseCalendar.getCalendarDay();
+			addCell(r, 0,'第' + $col_a.get("week") + "周  " + CourseUtil.addDate(today,date) + " ("+ CourseUtil.zhou($col_a.get("zhou")) + ") " +  CourseUtil.jie($col_a.get("jie")), 2);
+			String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
+			String root = courseSchedule.getTimeAdd().substring(7, 10);
+			addCell(r, 1,CourseUtil.schoolRootMap.get(buildRootKey) + " " + root , 2);
+			
+			String courseClass = courseSchedule.getCourseClass();
+			
+			Course course = courseService.get(courseSchedule.getCourseId());
+			if(org.springframework.util.StringUtils.isEmpty(course)) {
+				System.out.println(courseSchedule.getCourseId());
+			}
+			addCell(r, 2,course.getCursName(), 2);
+			addCell(r, 3,courseClass, 2);
+			addCell(r, 4,courseSchedule.getTips(), 2);
+			//添加相关数据信息
+			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), CourseUtil.schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;
+			
+			$i++;
+		}
+		$i = $i+2;
+		Row kc = sheet.createRow($i);
+		addCell(kc, 0,exportName , 2);
+		addCell(kc, 1,"星期一" , 2);
+		addCell(kc, 2,"星期二" , 2);
+		addCell(kc, 3,"星期三" , 2);
+		addCell(kc, 4,"星期四" , 2);
+		addCell(kc, 5,"星期五" , 2);
+		addCell(kc, 6,"星期六" , 2);
+		addCell(kc, 7,"星期日" , 2);
+		//构建左侧列
+		++$i;
+		int  $lesson_sheet_base_row = $i;
+		
+		for(int i=1;i<=5;i++) {
+			int k = i*2;
+			Row kj = sheet.createRow($i);
+			addCell(kj, 0, (k - 1) + "-" + k + "节", 2);
+			$i++;
+		}
+		
+		for(Lesson lesson :lessons ) {
+			int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
+			Row r = sheet.getRow(rownum);
+			addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+		}
+		wb.write(os);
+		os.flush();
+		os.close();
+	}
+	
+	
+	@RequestMapping(value = "allRoot")
+	public void allRoot( HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		PrintWriter pw = response.getWriter();
+		
+		
+		
+		
+		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
+		String yearTerm = courseYearTerm.getYearTerm();
+		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
+
+		String exportName = "全部教室";
+		
+		String $file_name = exportName + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		response.setContentType("application/octet-stream;charset=utf-8"); 
+		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
+		OutputStream os = response.getOutputStream();
+		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleByRoot(yearTerm, null);
+		SXSSFWorkbook  wb = new SXSSFWorkbook();
+		Sheet sheet = wb.createSheet("Export");
+		Row row = sheet.createRow(0);
+		styles = createStyles(wb);
+		//姓名
+		addCell(row, 0,"教室", 4);
+		addCell(row, 1,exportName, 2);
+		//标题相关
+		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
+		sheet.addMergedRegion(cra);  
+		
+		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		
+		Row row1 = sheet.createRow(1);
+		addCell(row1, 0,"时间", 2);
+		addCell(row1, 1,"地点", 2);
+		addCell(row1, 2,"课程", 2);
+		addCell(row1, 3,"班级", 2);
+		addCell(row1, 4,"备注", 2);
+		int $i=2;
+		
+		List<Lesson> lessons = new ArrayList<Lesson>();
+		for(CourseScheduleExt courseSchedule:courseSchedules) {
+			Row r = sheet.createRow($i);
+			Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
+			int date = (Integer.valueOf($col_a.get("week")) - 1) * 7 + Integer.valueOf($col_a.get("zhou"));
+			CourseCalendar courseCalendar = courseCalendarService.systemConfig();
+			String today = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" + courseCalendar.getCalendarDay();
+			addCell(r, 0,'第' + $col_a.get("week") + "周  " + CourseUtil.addDate(today,date) + " ("+ CourseUtil.zhou($col_a.get("zhou")) + ") " +  CourseUtil.jie($col_a.get("jie")), 2);
+			String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
+			String root = courseSchedule.getTimeAdd().substring(7, 10);
+			addCell(r, 1,CourseUtil.schoolRootMap.get(buildRootKey) + " " + root , 2);
+			
+			String courseClass = courseSchedule.getCourseClass();
+			
+			Course course = courseService.get(courseSchedule.getCourseId());
+			if(org.springframework.util.StringUtils.isEmpty(course)) {
+				System.out.println(courseSchedule.getCourseId());
+			}
+			addCell(r, 2,course.getCursName(), 2);
+			addCell(r, 3,courseClass, 2);
+			addCell(r, 4,courseSchedule.getTips(), 2);
+			//添加相关数据信息
+			lessons.add(new Lesson($col_a.get("week"), $col_a.get("zhou"),$col_a.get("jie"), CourseUtil.schoolRootMap.get(buildRootKey) + " " + root, course.getCursName()))  ;
+			
+			$i++;
+		}
+		$i = $i+2;
+		Row kc = sheet.createRow($i);
+		addCell(kc, 0,exportName , 2);
+		addCell(kc, 1,"星期一" , 2);
+		addCell(kc, 2,"星期二" , 2);
+		addCell(kc, 3,"星期三" , 2);
+		addCell(kc, 4,"星期四" , 2);
+		addCell(kc, 5,"星期五" , 2);
+		addCell(kc, 6,"星期六" , 2);
+		addCell(kc, 7,"星期日" , 2);
+		//构建左侧列
+		++$i;
+		int  $lesson_sheet_base_row = $i;
+		
+		for(int i=1;i<=5;i++) {
+			int k = i*2;
+			Row kj = sheet.createRow($i);
+			addCell(kj, 0, (k - 1) + "-" + k + "节", 2);
+			$i++;
+		}
+		
+		for(Lesson lesson :lessons ) {
+			int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
+			Row r = sheet.getRow(rownum);
+			addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+		}
+		wb.write(os);
+		os.flush();
+		os.close();
+	}
 
 
 	
@@ -536,6 +740,13 @@ public class CourseExportController extends BaseController {
 		
 		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(cursTerm, courseClass, teacherNumber));
 		return "modules/course/courseScheduleExt";
+	}
+	
+	
+	@RequestMapping(value = "data_dump")
+	public String data_dump(Model model) {
+		model.addAttribute("teachers", teacherService.getAllCourseTeacher());
+		return "modules/course/courseScheduleDump";
 	}
 
 }

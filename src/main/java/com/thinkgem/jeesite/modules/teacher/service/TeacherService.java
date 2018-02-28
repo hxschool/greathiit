@@ -25,6 +25,9 @@ public class TeacherService extends CrudService<TeacherDao, Teacher> {
 	@Autowired
 	private TeacherDao teacherDao;
 	
+	public List<Teacher> getAllCourseTeacher() {
+		return teacherDao.getAllCourseTeacher();
+	}
 	public List<Teacher> findListByYearTerm(String yearTerm) {
 		return teacherDao.findListByYearTerm(yearTerm);
 	}

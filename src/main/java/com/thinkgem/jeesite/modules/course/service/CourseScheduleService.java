@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.course.service;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +27,13 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
 	
-	public List<CourseScheduleExt> getCourseScheduleExt(String yearTrem,Integer courseClass,String teacherNumber){
-		return courseScheduleDao.getCourseScheduleExt( yearTrem, courseClass, teacherNumber);
+	public List<CourseScheduleExt> getCourseScheduleExt(String yearTerm,Integer courseClass,String teacherNumber){
+		return courseScheduleDao.getCourseScheduleExt( yearTerm, courseClass, teacherNumber);
 		
+	}
+	
+	public List<CourseScheduleExt> getCourseScheduleByRoot(String yearTerm,String root){
+		return courseScheduleDao.getCourseScheduleByRoot(yearTerm,root);
 	}
 	
 	public CourseSchedule get(String id) {

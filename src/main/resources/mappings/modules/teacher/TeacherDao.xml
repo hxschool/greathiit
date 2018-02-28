@@ -50,6 +50,12 @@
 		 
 	</select>
 	
+	<select id="getAllCourseTeacher" resultType="Teacher">
+		select <include refid="teacherColumns"/> from teacher a where a.teacher_number in (select distinct teacher_number from course)
+	</select>
+	
+	
+	
 	<select id="getTeacherByTeacherNumber" resultType="Teacher">
 		SELECT 
 			<include refid="teacherColumns"/>

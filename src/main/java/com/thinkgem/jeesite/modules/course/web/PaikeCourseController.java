@@ -25,6 +25,7 @@ import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -221,45 +222,49 @@ public class PaikeCourseController extends BaseController {
 		
 		User student = UserUtils.getUser();
 		
-		List<CourseSchedule> courseSchedules = courseScheduleService.findListByStudentNumber(student.getNo());
-		for(CourseSchedule courseSchedule:courseSchedules) {
-			ps.write(courseSchedule.getScLock());
-			if(courseSchedule.getScLock().equals("1")) {
-				ps.write("<div class=\"course_text\">教师:</div>");
-				ps.write("<div class=\"course_text\">课程:</div>");
-				ps.write("<div class=\"course_text\"></div>");
-				ps.write("<div class=\"course_text\">备注:</div>");
-				
-			}else {
-				//科目号,理论不应该出现异常现象,不应该出现空指针现象
-				String courseId = courseSchedule.getCourseId();
-				String courseClass = courseSchedule.getCourseClass();
-				Course course = courseService.getCourseByCourseId(courseId);
-				
-				ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
-				
-				if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
+		Office clazz = student.getClazz();
+		if(!StringUtils.isEmpty(clazz)) {
+			List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(null,Integer.valueOf(student.getClazz().getId()),null);
+			for(CourseScheduleExt courseSchedule:courseSchedules) {
+				ps.write(courseSchedule.getScLock());
+				if(courseSchedule.getScLock().equals("1")) {
+					ps.write("<div class=\"course_text\">教师:</div>");
+					ps.write("<div class=\"course_text\">课程:</div>");
 					ps.write("<div class=\"course_text\"></div>");
-					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
-				}else {
+					ps.write("<div class=\"course_text\">备注:</div>");
 					
-					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
-					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
-					String grade = courseClass.substring(0,4);
-					String school = courseClass.substring(4,5);
-					String major = courseClass.substring(5,7);
-					String clazz = courseClass.substring(7);
-					Office company = officeService.get(school);
-					Office office = officeService.get(major);
-					ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+clazz +"</div>");
+				}else {
+					//科目号,理论不应该出现异常现象,不应该出现空指针现象
+					String courseId = courseSchedule.getCourseId();
+					String courseClass = courseSchedule.getCourseClass();
+					Course course = courseService.getCourseByCourseId(courseId);
+					
+					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
+					
+					if(courseSchedule.getScLock().equals("0")||courseClass.length()<7) {
+						ps.write("<div class=\"course_text\"></div>");
+						ps.write("<div class=\"course_text\">"+courseClass+"</div>");
+					}else {
+						
+						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+						ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
+						String grade = courseClass.substring(0,4);
+						String school = courseClass.substring(4,5);
+						String major = courseClass.substring(5,7);
+						String c = courseClass.substring(7);
+						Office company = officeService.get(school);
+						Office office = officeService.get(major);
+						ps.write("<div class=\"course_text\">"+company.getName()+ " " + office.getName() + " "+c +"</div>");
+					}
+					
+					ps.write("<div class=\"course_text\">备注:"+courseSchedule.getTips()+"</div>");
+					
 				}
-				
-				ps.write("<div class=\"course_text\">备注:"+courseSchedule.getTips()+"</div>");
-				
+				ps.write("@");
 			}
-			ps.write("@");
 		}
 		ps.flush();
+		ps.close();
 	}
 	
 	

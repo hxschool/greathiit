@@ -26,9 +26,8 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
 	
-	public List<CourseScheduleExt> getCourseScheduleExt(String yearTrem,Integer courseClass,String teacherName){
-	
-		return courseScheduleDao.getCourseScheduleExt( yearTrem, courseClass, teacherName);
+	public List<CourseScheduleExt> getCourseScheduleExt(String yearTrem,Integer courseClass,String teacherNumber){
+		return courseScheduleDao.getCourseScheduleExt( yearTrem, courseClass, teacherNumber);
 		
 	}
 	
@@ -48,10 +47,6 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 		return courseScheduleDao.getByAddTime(timeAdd);
 	}
 	
-	
-	public List<CourseSchedule> findListByStudentNumber(String studentNumber) {
-		return courseScheduleDao.findListByStudentNumber(studentNumber);
-	}
 	
 	public List<CourseSchedule> findListByTimeAdd(String timeAdd) {
 		return courseScheduleDao.findListByTimeAdd(timeAdd);

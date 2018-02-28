@@ -119,7 +119,14 @@ public class CourseExportController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/course/courseList";
 	}
-	
+	/**
+	 * 导出全部教师数据
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @throws IOException
+	 * @throws InvalidFormatException
+	 */
 	@RequestMapping(value = "allCourse")
 	public void allCourse(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException,InvalidFormatException {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
@@ -508,7 +515,12 @@ public class CourseExportController extends BaseController {
 
 	@RequestMapping(value = "getCourseScheduleExt")
 	public String getCourseScheduleExt(String cursTerm,Integer courseClass,String teacherName, Model model) {
-		//return courseScheduleService.getCourseScheduleExt(cursTerm, courseClass, teacherName);
+		
+		if(org.springframework.util.StringUtils.isEmpty(courseClass)&&org.springframework.util.StringUtils.isEmpty(teacherName)) {
+			model.addAttribute("courseScheduleExt", new ArrayList<CourseScheduleExt>());
+			return "modules/course/courseScheduleExt";
+		}
+		
 		String teacherNumber = "";
 		if(!org.springframework.util.StringUtils.isEmpty(teacherName)) {
 			Teacher teacher = new Teacher();

@@ -518,10 +518,6 @@ public class CourseExportController extends BaseController {
 	
 	@RequestMapping(value = "allRoot")
 	public void allRoot( HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
-		PrintWriter pw = response.getWriter();
-		
-		
-		
 		
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
 		String yearTerm = courseYearTerm.getYearTerm();

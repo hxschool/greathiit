@@ -631,8 +631,13 @@ function resure()
 			{
 				alert("添加成功");
 				document.form.add.value="继续添加"
+				var r=confirm("确认同步课程信息(异步处理)");
+				if(r){
+				  	 // $.post("batchCourse",{time_add:time_add,course_id:course_id,student_id:student_id,tips:tips},function(result){
+					    
+					 // });
+				}
 				chuancan(time_add.substr(0,12));
-				
 			}
 			else if(msg=='2')
 			{
@@ -729,8 +734,11 @@ $(document).ready(function()
 			        	  }
 			        	  
 			        	  for(var i=0 ;i<data.length;i++){
-			                 $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' checked name='classNumber'/>"+data[i].name +"</div>");
-			                
+			        		  if(i==0){
+			        			  $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' checked name='classNumber'/>"+data[i].name +"</div>");
+			        		  }else{
+			        			  $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' name='classNumber'/>"+data[i].name +"</div>");
+			        		  }
 			           	  }
 			          }
 			        });

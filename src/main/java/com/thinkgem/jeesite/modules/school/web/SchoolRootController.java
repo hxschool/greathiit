@@ -24,8 +24,12 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.school.entity.SchoolCourse;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
+import com.thinkgem.jeesite.modules.school.service.SchoolCourseService;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 
 /**
@@ -39,6 +43,8 @@ public class SchoolRootController extends BaseController {
 
 	@Autowired
 	private SchoolRootService schoolRootService;
+	@Autowired
+	private SchoolCourseService schoolCourseService;
 	
 	@ModelAttribute
 	public SchoolRoot get(@RequestParam(required=false) String id) {
@@ -98,6 +104,19 @@ public class SchoolRootController extends BaseController {
 			treeLink.setValue(school1.getValue());
 			treeLink.setName(school1.getLabel());
 			List<SchoolRoot> list2 = schoolRootService.findByParentId(school1.getId());
+			User user = UserUtils.getUser();
+			if(!user.getId().equals("1")) {
+				SchoolCourse schoolCourse = new SchoolCourse();
+				schoolCourse.setCurrentUser(user);
+				List<SchoolCourse> schoolCourses = schoolCourseService.findList(schoolCourse);
+				List<SchoolRoot> schoolRoots = new ArrayList<SchoolRoot>();
+				for(SchoolCourse sc : schoolCourses) {
+					schoolRoots.add(sc.getSchoolRoot());
+				}
+				list2.retainAll(schoolRoots);
+			}
+			
+			
 			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();
 			for(SchoolRoot schoolRoot2:list2) {
 				TreeLink treeLink2 = new TreeLink();
@@ -111,4 +130,40 @@ public class SchoolRootController extends BaseController {
 		}
 		return treeLinks1;
 	}
+	
+	public static void main(String[] args) {
+		List l1 = new ArrayList();
+		l1.add("1");
+		l1.add("2");
+		List l2 = new ArrayList();
+		l2.add("1");
+		l1.retainAll(l2);
+		System.out.println(l1);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "treeLinkId")
+	public List<TreeLink> treeLinkId( HttpRequest request, HttpServletResponse response) {
+		
+		List<SchoolRoot> list1 = schoolRootService.findByParentId("0");
+		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
+		for(SchoolRoot school1:list1) {
+			TreeLink treeLink = new TreeLink();
+			treeLink.setValue(school1.getId());
+			treeLink.setName(school1.getLabel());
+			List<SchoolRoot> list2 = schoolRootService.findByParentId(school1.getId());
+			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();
+			for(SchoolRoot schoolRoot2:list2) {
+				TreeLink treeLink2 = new TreeLink();
+				treeLink2.setValue(schoolRoot2.getId());
+				treeLink2.setName(schoolRoot2.getLabel());
+				treeLinks2.add(treeLink2);
+			}
+			treeLink.setSub(treeLinks2);
+			treeLinks1.add(treeLink);
+			
+		}
+		return treeLinks1;
+	}
+	
 }

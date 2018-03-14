@@ -657,3 +657,19 @@ create table student_course  (
 )
 
 ;
+
+
+CREATE TABLE school_course  ( 
+	id            	varchar(64) COMMENT '编号'  NOT NULL,
+	office_id     	varchar(64) COMMENT '学院编码'  NOT NULL,
+	school_root_id    	varchar(64) COMMENT '教室编码'  NOT NULL,
+	create_by     	varchar(64) COMMENT '创建者'  NOT NULL,
+	create_date   	datetime COMMENT '创建时间'  NOT NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NOT NULL,
+	update_date   	datetime COMMENT '更新时间'  NOT NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '学院教室管理' 
+;

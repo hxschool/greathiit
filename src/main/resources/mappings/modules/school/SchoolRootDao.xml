@@ -62,6 +62,7 @@
 		  <if test="parentId != null and parentId!=''">  
           	and  a.parent_Id=#{parentId}  
           </if>
+          
 		<choose>
 			
 			<otherwise>

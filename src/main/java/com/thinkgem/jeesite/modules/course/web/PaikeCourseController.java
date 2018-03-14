@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aliyuncs.http.HttpRequest;
+import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
@@ -76,12 +77,33 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddLock")
 	@ResponseBody
-	public String addlock(String time_add,String tips, Model model) {
-		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
-		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
-			courseSchedule.setScLock("0");
-			courseSchedule.setTips(tips);
-			courseScheduleService.save(courseSchedule);
+	public String addlock(String time_add,String tips,int w, Model model) {
+		
+		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
+		if(StringUtils.isEmpty(w)||w==0) {
+			w = s;
+		}
+		boolean flag = false;
+		for(;s<=w;s++) {
+			String week="";
+			if(s<=9) {
+				week = "0".concat(String.valueOf(s));
+			}else {
+				week =  String.valueOf(s);
+			}
+			String zhou = time_add.substring(12);
+			
+			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+			CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+			if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+				courseSchedule.setScLock("0");
+				courseSchedule.setTips(tips);
+				courseScheduleService.save(courseSchedule);
+				flag = true;
+			}
+		}
+		
+		if(flag) {
 			return "1";
 		}
 		return "0";
@@ -115,16 +137,38 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddCourse")
 	@ResponseBody
-	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips, Model model) {
-		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
-		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
-			courseSchedule.setScLock("2");
-			courseSchedule.setCourseClass(student_id);
-			courseSchedule.setCourseId(course_id);
-			courseSchedule.setTips(tips);
-			courseScheduleService.save(courseSchedule);
+	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips,int w, Model model) {
+		
+		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
+		if(StringUtils.isEmpty(w)||w==0) {
+			w = s;
+		}
+		boolean flag = false;
+		for(;s<=w;s++) {
+			String week="";
+			if(s<=9) {
+				week = "0".concat(String.valueOf(s));
+			}else {
+				week =  String.valueOf(s);
+			}
+			String zhou = time_add.substring(12);
+			
+			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+			CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+			if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+				courseSchedule.setScLock("2");
+				courseSchedule.setCourseClass(student_id);
+				courseSchedule.setCourseId(course_id);
+				courseSchedule.setTips(tips);
+				courseScheduleService.save(courseSchedule);
+				flag = true;
+			}
+		}
+		
+		if(flag) {
 			return "1";
 		}
+		
 		return "0";
 	}
 	
@@ -132,7 +176,7 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxDeleteCourse")
 	@ResponseBody
-	public String ajaxDeleteCourse(String time_add, Model model) {
+	public String ajaxDeleteCourse(String time_add,String week, Model model) {
 		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
 		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("0")) {
 			courseSchedule.setScLock("1");

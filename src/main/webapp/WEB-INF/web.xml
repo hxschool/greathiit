@@ -76,6 +76,11 @@
 		<url-pattern>/f/*</url-pattern>
 	</filter-mapping>
 	
+	<filter-mapping>
+		<filter-name>sitemeshFilter</filter-name>
+		<url-pattern>/route/*</url-pattern>
+	</filter-mapping>
+	
 	<!-- MVC Servlet -->
 	<servlet>
 		<servlet-name>springServlet</servlet-name>

@@ -159,7 +159,7 @@ td{
 								name="h_school" id="h_school" class="h_school"
 								onchange="change()" style="width: 100px;">
 
-							</select> &nbsp;&nbsp;&nbsp;&nbsp;机房:&nbsp;&nbsp; <select id="address"
+							</select> &nbsp;&nbsp;&nbsp;&nbsp;教室:&nbsp;&nbsp; <select id="address"
 								class="address" onchange="change_address()"
 								style="width: 200px;">
 							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 

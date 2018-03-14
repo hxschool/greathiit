@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 
 public class CourseUtil {
@@ -61,6 +63,30 @@ public class CourseUtil {
 	    $time.put("jie", $time_add.substring(12, 13));
 	    $time.put("zhou", $time_add.substring(13, 14));
 	    return $time;
+	}
+	
+	public static void main(String[] args) {
+		String time_add = "20181023020146";
+		int w = 20;
+		
+		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
+		if(StringUtils.isEmpty(w)||w==0) {
+			w = s;
+		}
+		
+		for(;s<=w;s++) {
+			String week="";
+			if(s<=9) {
+				week = "0".concat(String.valueOf(s));
+			}else {
+				week =  String.valueOf(s);
+			}
+			String zhou = time_add.substring(12);
+			
+			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+			System.out.println(time_add);
+			System.out.println(week);
+		}
 	}
 	
 	public static String addDate(String today,int day) {

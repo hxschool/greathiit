@@ -231,11 +231,15 @@ td{
 						
 						<div id="course_id" style="width:370px;float:left">
 							<p>课程:&nbsp;&nbsp;
-	                        <select name="course" id="course" class="course" style="width:280px;">
+	                        <select name="course" id="course" class="course" style="width:280px">
 	                        <option value="" selected="selected">==请选择课程==</option>
 	                        </select>
                         </div>
+                       
                         <p>
+                        	 周期:&nbsp;&nbsp;<select name="w" id="select_id" style="width:280px"></select>
+                        </p>
+                         <p>
                      		   备注:&nbsp;&nbsp;<input type="text" name="tips"/>
                         <p>
                         <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
@@ -498,7 +502,29 @@ function paike(time,row,cell)
 		var temp = document.getElementById("s_week");
 		time_add = time+''+row+''+cell;
 		document.form.time.value = time_add;//给存储时间地址ID赋值
-		//alert(time_add);
+		
+		  var optionString = "";
+		 
+		  var  week_select = $("#week_select").children('option:selected').val();
+		  
+           for(var i=week_select; i<=20; i++){ //遍历，动态赋值
+        	   if(i<=9){
+        		   if(i==week_select){
+        			   i = week_select;
+        		   }else{
+        			   i = "0"+i;
+        		   }
+        		   optionString +="<option  value=\""+i+"\"";  
+                   optionString += ">"+i+"</option>";  //动态添加数据  
+        	   }else{
+        		   optionString +="<option  value=\""+i+"\"";  
+                   optionString += ">"+i+"</option>";  //动态添加数据  
+        	   }
+               
+           }   
+       		$("#select_id").append(optionString);
+          
+		
 		
 			$('#mask').css({'zIndex':'5'});
 			$('#mask').animate({'opacity':'0.5'},200);
@@ -583,7 +609,7 @@ function resure()
 	//var class_id = $("#w_class").children('option:selected').val();
 	
 	var dropIds = new Array();
-	$("[name='classNumber'][checked]").each(function(){
+	$("[name='classNumber']").each(function(){
 		if($(this).is(':checked')){
 			dropIds.push($(this).val());
 		}
@@ -593,6 +619,7 @@ function resure()
 	
 	var course_id =  $("#course").children('option:selected').val();
 	tips = document.form.tips.value;
+	var w = document.form.w.value;
 	time_add = document.form.time.value;
 	
 	if(school_id=="" && renxuanke_or_putongke)
@@ -623,7 +650,7 @@ function resure()
 	$.ajax({
    		type: "POST",
   		url: "ajaxAddCourse",
-  	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips,
+  	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips+"&w="+w,
    		success: function(msg)
 		{
 			//alert(msg);
@@ -631,12 +658,6 @@ function resure()
 			{
 				alert("添加成功");
 				document.form.add.value="继续添加"
-				var r=confirm("确认同步课程信息(异步处理)");
-				if(r){
-				  	 // $.post("batchCourse",{time_add:time_add,course_id:course_id,student_id:student_id,tips:tips},function(result){
-					    
-					 // });
-				}
 				chuancan(time_add.substr(0,12));
 			}
 			else if(msg=='2')
@@ -734,11 +755,7 @@ $(document).ready(function()
 			        	  }
 			        	  
 			        	  for(var i=0 ;i<data.length;i++){
-			        		  if(i==0){
-			        			  $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' checked name='classNumber'/>"+data[i].name +"</div>");
-			        		  }else{
-			        			  $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' name='classNumber'/>"+data[i].name +"</div>");
-			        		  }
+			        		  $("#w_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' name='classNumber'/>"+data[i].name +"</div>");
 			           	  }
 			          }
 			        });

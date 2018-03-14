@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aliyuncs.http.HttpRequest;
@@ -77,7 +78,7 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddLock")
 	@ResponseBody
-	public String addlock(String time_add,String tips,int w, Model model) {
+	public String addlock(String time_add,String tips,@RequestParam(value="w",required=false,defaultValue="0")int w, Model model) {
 		
 		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
 		if(StringUtils.isEmpty(w)||w==0) {
@@ -137,7 +138,7 @@ public class PaikeCourseController extends BaseController {
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "ajaxAddCourse")
 	@ResponseBody
-	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips,int w, Model model) {
+	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips,@RequestParam(value="w",required=false,defaultValue="0")int w, Model model) {
 		
 		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
 		if(StringUtils.isEmpty(w)||w==0) {
@@ -232,7 +233,9 @@ public class PaikeCourseController extends BaseController {
 		
 					String[] courseArray = courseClass.split(",");
 					StringBuilder sb = new StringBuilder();
-					for(String str:courseArray) {
+					for(int i=0;i<courseArray.length;i++) {
+						
+						String str = courseArray[i];
 						Office clazz = officeService.get(str);
 						String officeId = str.substring(4,6);
 						Office office = officeService.get(officeId);
@@ -242,8 +245,13 @@ public class PaikeCourseController extends BaseController {
 							major = office.getName();
 							company = office.getParent().getName();
 						}
-						sb.append("<a title=\""+company + "," + major + "," + clazz.getName() + "\">"+str+"</a>");
-						sb.append(",");
+						sb.append("<a title=\""+company + "," + major + "," + clazz.getName() + "\">"+clazz.getName()+"</a>");
+						if(i%2==1) {
+							sb.append("<br>");
+						}else {
+							sb.append(",");
+						}
+						
 					}
 					sb.deleteCharAt(sb.length() - 1);
 					ps.write("<div class=\"course_text\">"+ sb.toString() +"</div>");

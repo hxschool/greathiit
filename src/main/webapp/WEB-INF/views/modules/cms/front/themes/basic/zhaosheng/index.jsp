@@ -110,8 +110,8 @@ alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
 		
 		<p class="text-s16">
 		<a href="http://www.hxci.com.cn/zy/"
-												class="btn btn-info btn-sm ">查看招生简章</a> <a
-												href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a>
+												class="btn btn-info btn-sm ">查看招生简章</a> <!-- <a
+												href="skip_Jieguo" class="btn btn-success btn-sm">查看报考结果</a> -->
 											</p>
 		</div>
 

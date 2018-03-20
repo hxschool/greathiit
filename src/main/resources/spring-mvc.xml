@@ -87,7 +87,8 @@
 		<mvc:interceptor>  
            <mvc:mapping path="/**"/>  
            <bean class="com.thinkgem.jeesite.common.web.SameUrlDataInterceptor"/>  
-       </mvc:interceptor>
+       </mvc:interceptor> 
+		
 		<mvc:interceptor>
 			<mvc:mapping path="${adminPath}/**" />
 			<mvc:exclude-mapping path="${adminPath}/"/>

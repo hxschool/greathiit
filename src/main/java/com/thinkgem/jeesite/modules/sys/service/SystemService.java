@@ -75,6 +75,11 @@ public class SystemService extends BaseService implements InitializingBean {
 	public long exist(User user) {
 		return userDao.exist(user);
 	}
+	
+	
+	public User getUserByNameAndIdCard(User user) {
+		return userDao.getUserByNameAndIdCard(user);
+	}
 	/**
 	 * 获取用户
 	 * @param id

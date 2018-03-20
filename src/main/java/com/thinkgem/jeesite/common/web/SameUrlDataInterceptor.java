@@ -1,5 +1,6 @@
 package com.thinkgem.jeesite.common.web;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,23 +17,33 @@ import com.thinkgem.jeesite.common.mapper.JsonMapper;
 
 public class SameUrlDataInterceptor  extends HandlerInterceptorAdapter{  
       
-      @Override  
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {  
-            if (handler instanceof HandlerMethod) {  
-                HandlerMethod handlerMethod = (HandlerMethod) handler;  
-                Method method = handlerMethod.getMethod();  
-                SameUrlData annotation = method.getAnnotation(SameUrlData.class);  
-                if (annotation != null) {  
-                    if(repeatDataValidator(request))//如果重复相同数据  
-                        return false;  
-                    else   
-                        return true;  
-                }  
-                return true;  
-            } else {  
-                return super.preHandle(request, response, handler);  
-            }  
-        }  
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		if (handler instanceof HandlerMethod) {
+			HandlerMethod handlerMethod = (HandlerMethod) handler;
+			Method method = handlerMethod.getMethod();
+			SameUrlData annotation = method.getAnnotation(SameUrlData.class);
+			if (annotation != null) {
+				if (repeatDataValidator(request)) {
+					response.setHeader("Content-type", "text/html;charset=UTF-8");
+			        response.setCharacterEncoding("utf-8");
+					PrintWriter out = response.getWriter();
+		            out.print("请不要重复提交表单");
+		            out.flush();
+		            out.close();
+					return false;
+				} else {
+					return true;
+				}
+
+			}
+			return true;
+		} else {
+			return super.preHandle(request, response, handler);
+		}
+	}
+
     /** 
      * 验证同一个url数据是否相同提交  ,相同返回true 
      * @param httpServletRequest 

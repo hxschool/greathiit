@@ -83,3 +83,35 @@ set a.parent_id=b.id
 
 
 update sys_office set parent_ids=concat(left(parent_ids,6),parent_id,',')  where type=4 and grade=4
+;
+
+
+select * from sys_user where no in (select h from old_user where h is not null)
+
+
+INSERT INTO sys_user(id, company_id, office_id, clazz_id, dorm_id, login_name, password, no, name, email, phone, mobile, user_type, photo, login_ip, login_date, login_flag, create_by, create_date, update_by, update_date, remarks, del_flag, account_no) 
+	VALUES('', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '2018-3-19 17:56:52', '', '', '2018-3-19 17:56:52', '', '2018-3-19 17:56:52', '', '', '')
+GO
+
+
+INSERT INTO sys_user(id, company_id, office_id, clazz_id, dorm_id, login_name, password, no, name, email, phone, mobile, user_type, photo, login_ip, login_date, login_flag, create_by, create_date, update_by, update_date, remarks, del_flag, account_no) 
+
+SELECT replace(UUID(),'-',''), i, 1, null, null, f, '0482a9c778894e9cc1b6afa4361f43406f1479dc69cd3303f43db174', h, b, g, f, f, 9, '','127.0.0.2', '2018-3-19 17:56:52', '', '', '2018-3-19 17:56:52', '', '2018-3-19 17:56:52', '', '', ''
+	FROM old_user where h is not null
+GO
+
+select replace(UUID(),'-','')
+
+select * from old_user where h is not null
+
+select * from sys_user where no='010101'
+
+
+
+
+
+
+
+
+
+

@@ -21,6 +21,9 @@ public interface UserDao extends CrudDao<User> {
 	
 	public User findUserbyMobileOrStudentNumberOrMail(@Param("loginname")String loginname);
 
+	
+	
+	public User getUserByNameAndIdCard(User user);
 	/**
 	 * 根据登录名称查询用户
 	 * @param loginName

@@ -257,7 +257,7 @@ public class FrontController extends BaseController{
 		user.setPhone(mobile);
 		user.setEmail(email);
 		user.setPassword(SystemService.entryptPassword(password));
-		Role role = new Role("6");
+		Role role = new Role("99");
 		List<Role> rs = new ArrayList<Role>();
 		rs.add(role);
 		user.setRole(role);

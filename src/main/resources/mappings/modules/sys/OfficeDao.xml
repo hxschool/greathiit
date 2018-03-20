@@ -46,7 +46,11 @@
 			<include refid="officeColumns"/>
 		FROM sys_office a
 		<include refid="officeJoins"/>
-		WHERE a.id = #{id}
+		WHERE 1=1
+		
+		<if test="id!=null and id!=''">and a.id = #{id}</if>
+		<if test="name!=null and name!=''">and a.name = #{name}</if>
+		
 	</select>
 	
 	<select id="findList" resultType="Office">

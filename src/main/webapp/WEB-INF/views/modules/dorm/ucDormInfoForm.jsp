@@ -66,7 +66,19 @@
 						<span id="dormMessage"></span>
 					</div>
 				</div>
-				
+
+				<div class="control-group">
+					<label class="control-label">床位：</label>
+					<div class="controls">
+						<select name="bed">
+							<option value="a">1</option>
+							<option value="b">2</option>
+							<option value="c">3</option>
+							<option value="d">4</option>
+						</select> &nbsp;&nbsp;&nbsp;<span id="bedMessage" style="color: red"></span>
+					</div>
+				</div>
+
 			</div>
 
 		</div>

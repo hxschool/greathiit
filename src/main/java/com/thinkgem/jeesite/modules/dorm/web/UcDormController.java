@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -29,6 +28,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.CommonUtils;
 import com.thinkgem.jeesite.common.utils.CommonUtils.GroupBy;
 import com.thinkgem.jeesite.common.utils.RandomListUtils;
+import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
@@ -47,6 +47,9 @@ import com.thinkgem.jeesite.modules.sys.service.SystemService;
 @RequestMapping(value = "${adminPath}/dorm/ucDorm")
 public class UcDormController extends BaseController {
 
+	
+	private String[] chuangwei = {"a","b","c","d"};
+	
 	@Autowired
 	private UcDormService ucDormService;
 	
@@ -269,14 +272,27 @@ public class UcDormController extends BaseController {
 				for (int i = 0; i < total; i++) {
 					User user = remainder.get(i);
 					user.setDorm(dorm);
+					//添加床位信息
+					for(String cw:chuangwei) {
+						if(org.springframework.util.StringUtils.isEmpty(Reflections.getFieldValue(dorm, cw))) {
+							Reflections.setFieldValue(dorm, cw, user.getId());
+							ucDormService.save(dorm);
+						}
+					}
+					
 					ucDormService.addDorm(user);
 					y++;
 				}
 			} else {
 				// 正常的list学生寝室学生处理
 				for (int i = 0; i < 4; i++) {
+					String cw = chuangwei[i];
 					User user = users.get(y);
 					user.setDorm(dorm);
+					//添加床位信息
+					Reflections.setFieldValue(dorm, cw, user.getId());
+					ucDormService.save(dorm);
+					
 					ucDormService.addDorm(user);
 					y++;
 				}
@@ -416,7 +432,7 @@ public class UcDormController extends BaseController {
 	}
 	
 	@RequestMapping(value = "saveDorm")
-	public String saveDorm(String dorm,String studentNumber, HttpServletRequest request,Model model) {
+	public String saveDorm(String dorm,String studentNumber,String bed, HttpServletRequest request,Model model) {
 		User user = new User();
 		user.setNo(studentNumber);
 		user = systemService.getUser(user);
@@ -427,6 +443,15 @@ public class UcDormController extends BaseController {
 			return "modules/dorm/".concat(request.getParameter("studentDormType"));
 		}
 		UcDorm ucDorm = ucDormService.get(dorm);
+		if(!StringUtils.isEmpty(bed)) {
+			Object object = Reflections.getFieldValue(ucDorm, bed);
+			if(object!=null||!object.toString().equals("")) {
+				model.addAttribute("message", "操作失败,当前床位已经分配给其他学员");
+				return "modules/dorm/".concat(request.getParameter("studentDormType"));
+			}
+			//添加床位信息
+			Reflections.setFieldValue(ucDorm, bed, user.getId());
+		}
 		user.setDorm(ucDorm);
 		ucDormService.addDorm(user);
 		
@@ -461,6 +486,17 @@ public class UcDormController extends BaseController {
 				cnt = Integer.valueOf(ucDorm.getCnt())-1;
 			}
 			ucDorm.setCnt(String.valueOf(cnt));
+			//清空床位操作
+			for(String s : chuangwei) {
+				Object object = Reflections.getFieldValue(ucDorm, s);
+				if(!org.springframework.util.StringUtils.isEmpty(object)) {
+					if(user.getId().equals(object.toString())) {
+						Reflections.setFieldValue(ucDorm, s, null);
+					}
+				}
+			}
+			
+			
 			user.setDorm(null);
 			ucDormService.save(ucDorm);
 			systemService.updateUserInfo(user);
@@ -493,6 +529,15 @@ public class UcDormController extends BaseController {
 				int cnt = 0;
 				if(!org.springframework.util.StringUtils.isEmpty(ucDorm.getCnt())&&ucDorm.getCnt().equals("0")) {
 					 cnt = Integer.valueOf(ucDorm.getCnt())-1;
+					 //床位信息
+					for (String cw : chuangwei) {
+						Object object = Reflections.getFieldValue(ucDorm, cw);
+						if (!org.springframework.util.StringUtils.isEmpty(object)) {
+							if (user.getId().equals(object.toString())) {
+								Reflections.setFieldValue(ucDorm, cw, null);
+							}
+						}
+					}
 				}
 				ucDorm.setCnt(String.valueOf(cnt));
 				user.setDorm(null);

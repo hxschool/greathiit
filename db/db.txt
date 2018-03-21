@@ -673,3 +673,27 @@ CREATE TABLE school_course  (
 )
 COMMENT = '学院教室管理' 
 ;
+
+
+DROP TABLE IF EXISTS `uc_dorm_repair`;
+
+CREATE TABLE uc_dorm_repair  ( 
+	id            	int(11) AUTO_INCREMENT NOT NULL,
+	user_id       	varchar(64) NOT NULL,
+	operation_id  	varchar(64) COMMENT '操作人'  NULL,
+	dorm_id       	varchar(64) COMMENT '寝室信息'  NULL,
+	repair_phone  	varchar(20) COMMENT '联系电话'  NULL,
+	repair_title	varchar(2000) COMMENT '报修主题'  NULL,
+	repair_content	varchar(2000) COMMENT '报修描述'  NULL,
+	repair_replace	varchar(2000) COMMENT '维修完结描述'  NULL,
+	repair_type   	int(11) COMMENT '报修类型'  NULL DEFAULT '0',
+	repair_state  	int(11) COMMENT '报修状态'  NULL DEFAULT '0',
+	create_by     	varchar(64) COMMENT '创建者'  NULL,
+	create_date   	datetime COMMENT '创建时间'  NULL,
+	update_by     	varchar(64) COMMENT '更新者'  NULL,
+	update_date   	datetime COMMENT '更新时间'  NULL,
+	remarks       	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag      	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+;

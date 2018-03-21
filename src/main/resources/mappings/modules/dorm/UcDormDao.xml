@@ -9,6 +9,10 @@
 		a.cnt AS "cnt",
 		a.total AS "total",
 		a.master AS "master",
+		a.a AS "a",
+		a.b AS "b",
+		a.c AS "c",
+		a.d AS "d",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -40,7 +44,7 @@
 		<include refid="ucDormJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="ucDormBuild != null and ucDormBuild != ''">
+			<if test="ucDormBuild != null and ucDormBuild != '' and ucDormBuild.id !=null and ucDormBuild.id !=''">
 				AND a.dormbuild_id = #{ucDormBuild.id}
 			</if>
 			<if test="dormNumber != null and dormNumber != ''">
@@ -57,6 +61,18 @@
 			</if>
 			<if test="master != null and master != ''">
 				AND a.master = #{master}
+			</if>
+			<if test="a != null and a != ''">
+				AND a.a = #{a}
+			</if>
+			<if test="b != null and b != ''">
+				AND a.b = #{b}
+			</if>
+			<if test="c != null and c != ''">
+				AND a.c = #{c}
+			</if>
+			<if test="d != null and d != ''">
+				AND a.d = #{d}
 			</if>
 		</where>
 		<choose>
@@ -89,13 +105,16 @@
 	
 	<insert id="insert">
 		INSERT INTO uc_dorm(
-			id,
 			dormbuild_id,
 			dorm_number,
 			dorm_floor,
 			cnt,
 			total,
 			master,
+			a,
+			b,
+			c,
+			d,
 			create_by,
 			create_date,
 			update_by,
@@ -103,13 +122,16 @@
 			remarks,
 			del_flag
 		) VALUES (
-			#{id},
-			#{dorm.ucDormBuild.id},
+			#{ucDormBuild.id},
 			#{dormNumber},
 			#{dormFloor},
 			#{cnt},
 			#{total},
 			#{master},
+			#{a},
+			#{b},
+			#{c},
+			#{d},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -127,6 +149,10 @@
 			cnt = #{cnt},
 			total = #{total},
 			master = #{master},
+			a = #{a},
+			b = #{b},
+			c = #{c},
+			d = #{d},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

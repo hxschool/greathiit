@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.dorm.dao.UcDormRepairDao">
+    
+	<sql id="ucDormRepairColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.operation_id AS "operationId",
+		c.dormbuild_id AS "dorm.ucDormBuild.id",
+		c.dorm_number AS "dorm.dormNumber",
+		c.dorm_floor AS "dorm.dormFloor",
+		
+		a.repair_phone AS "repairPhone",
+		a.repair_title AS "repairTitle",
+		a.repair_content AS "repairContent",
+		a.repair_replace AS "repairReplace",
+		a.repair_type AS "repairType",
+		a.repair_state AS "repairState",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u2.name AS "user.name",
+		u2.name AS "operation.name"
+	</sql>
+	
+	<sql id="ucDormRepairJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id and a.operation_id=u2.id left join uc_Dorm c on c.id=a.dorm_id 
+	</sql>
+    
+	<select id="get" resultType="UcDormRepair">
+		SELECT 
+			<include refid="ucDormRepairColumns"/>
+		FROM uc_dorm_repair a
+		<include refid="ucDormRepairJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="UcDormRepair">
+		SELECT 
+			<include refid="ucDormRepairColumns"/>
+		FROM uc_dorm_repair a
+		<include refid="ucDormRepairJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="UcDormRepair">
+		SELECT 
+			<include refid="ucDormRepairColumns"/>
+		FROM uc_dorm_repair a
+		<include refid="ucDormRepairJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO uc_dorm_repair(
+			user_id,
+			operation_id,
+			dorm_id,
+			repair_phone,
+			repair_title,
+			repair_content,
+			repair_replace,
+			repair_type,
+			repair_state,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{user.id},
+			#{operation.id},
+			#{dorm.id},
+			#{repairPhone},
+			#{repairTitle},
+			#{repairContent},
+			#{repairReplace},
+			#{repairType},
+			#{repairState},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE uc_dorm_repair SET 	
+			user_id = #{user.id},
+			operation_id = #{operation.id},
+			dorm_id = #{dorm.id},
+			repair_phone = #{repairPhone},
+			repair_title = #{repairTitle},
+			repair_content = #{repairContent},
+			repair_replace = #{repairReplace},
+			repair_type = #{repairType},
+			repair_state = #{repairState},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE uc_dorm_repair SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

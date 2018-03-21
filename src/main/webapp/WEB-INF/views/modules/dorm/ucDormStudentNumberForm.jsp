@@ -29,8 +29,8 @@
 <ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dorm/ucDorm/">按学号分配</a></li>
 	</ul><br/>
-	<form id="form" action="${ctx}/dorm/ucDorm/removeDorm" method="post" class="form-horizontal">
-		<input type="hidden" name="studentDormType" value="unUcDormStudentNumberForm">
+	<form id="form" action="${ctx}/dorm/ucDorm/saveDorm" method="post" class="form-horizontal">
+		<input type="hidden" name="studentDormType" value="ucDormStudentNumberForm">
 		<sys:message content="${message}"/>
 		
 
@@ -55,7 +55,17 @@
 				</div>
 				
 			</div>
-
+			<div class="control-group">
+				<label class="control-label">床位：</label>
+				<div class="controls">
+				<select name="bed">
+				<option value="a">1</option>
+				<option value="b">2</option>
+				<option value="c">3</option>
+				<option value="d">4</option>
+				</select> &nbsp;&nbsp;&nbsp;<span id="bedMessage" style="color:red"></span>
+				</div>
+			</div>
 			
 			<div class="control-group">
 				<label class="control-label">学号：</label>

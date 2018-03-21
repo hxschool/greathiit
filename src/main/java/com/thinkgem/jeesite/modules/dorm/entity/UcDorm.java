@@ -23,6 +23,10 @@ public class UcDorm extends DataEntity<UcDorm> implements Comparable<UcDorm>{
 	private String cnt;		// 总人数
 	private String total;		// 总人数
 	private String master;		// 寝室长
+	private String a;
+	private String b;
+	private String c;
+	private String d;
 	
 	public UcDorm() {
 		super();
@@ -84,6 +88,40 @@ public class UcDorm extends DataEntity<UcDorm> implements Comparable<UcDorm>{
 		this.master = master;
 	}
 	
+	
+	
+	public String getA() {
+		return a;
+	}
+
+	public void setA(String a) {
+		this.a = a;
+	}
+
+	public String getB() {
+		return b;
+	}
+
+	public void setB(String b) {
+		this.b = b;
+	}
+
+	public String getC() {
+		return c;
+	}
+
+	public void setC(String c) {
+		this.c = c;
+	}
+
+	public String getD() {
+		return d;
+	}
+
+	public void setD(String d) {
+		this.d = d;
+	}
+
 	@Override  
     public int compareTo(UcDorm o) {
         return Integer.valueOf(this.total)-Integer.valueOf(this.cnt);

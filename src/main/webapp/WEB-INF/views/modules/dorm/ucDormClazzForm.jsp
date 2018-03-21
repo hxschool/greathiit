@@ -66,10 +66,10 @@
 		</div>
 
 		<div class="form-actions">
-		<input type="text" id="ajax_boy_total"> 
-		<input type="text" id="ajax_gril_total">
-		<input type="text" id="ajax_total" value="1"> 
-		<input type="text" id="ajax_studentNumber" value="1"> 
+		<input type="hidden" id="ajax_boy_total"> 
+		<input type="hidden" id="ajax_gril_total">
+		<input type="hidden" id="ajax_total" value="1"> 
+		<input type="hidden" id="ajax_studentNumber" value="1"> 
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>

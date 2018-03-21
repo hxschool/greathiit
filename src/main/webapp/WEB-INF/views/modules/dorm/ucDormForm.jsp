@@ -36,7 +36,7 @@
 		<div class="control-group">
 			<label class="control-label">公寓号：</label>
 			<div class="controls">
-				<form:input path="dormbuildId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="ucDormBuild.id" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -76,6 +76,38 @@
 				<form:input path="master" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
+		
+		<div class="control-group">
+			<label class="control-label">1：</label>
+			<div class="controls">
+				<form:input path="a" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		
+		
+		<div class="control-group">
+			<label class="control-label">2：</label>
+			<div class="controls">
+				<form:input path="b" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		
+		
+		<div class="control-group">
+			<label class="control-label">3：</label>
+			<div class="controls">
+				<form:input path="c" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		
+		
+		<div class="control-group">
+			<label class="control-label">4：</label>
+			<div class="controls">
+				<form:input path="d" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+			</div>
+		</div>
+		
 		<div class="control-group">
 			<label class="control-label">备注信息：</label>
 			<div class="controls">

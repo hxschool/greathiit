@@ -22,12 +22,11 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		u2.name AS "user.name",
-		u2.name AS "operation.name"
+		u2.name AS "user.name"
 	</sql>
 	
 	<sql id="ucDormRepairJoins">
-		LEFT JOIN sys_user u2 ON u2.id = a.user_id and a.operation_id=u2.id left join uc_Dorm c on c.id=a.dorm_id 
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id  left join uc_Dorm c on c.id=a.dorm_id 
 	</sql>
     
 	<select id="get" resultType="UcDormRepair">
@@ -77,7 +76,6 @@
 	<insert id="insert">
 		INSERT INTO uc_dorm_repair(
 			user_id,
-			operation_id,
 			dorm_id,
 			repair_phone,
 			repair_title,
@@ -93,7 +91,6 @@
 			del_flag
 		) VALUES (
 			#{user.id},
-			#{operation.id},
 			#{dorm.id},
 			#{repairPhone},
 			#{repairTitle},
@@ -113,7 +110,7 @@
 	<update id="update">
 		UPDATE uc_dorm_repair SET 	
 			user_id = #{user.id},
-			operation_id = #{operation.id},
+			operation_id = #{operationId},
 			dorm_id = #{dorm.id},
 			repair_phone = #{repairPhone},
 			repair_title = #{repairTitle},

@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDorm;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDormRepair;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormRepairService;
+import com.thinkgem.jeesite.modules.dorm.service.UcDormService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -37,7 +39,8 @@ public class UcDormRepairController extends BaseController {
 
 	@Autowired
 	private UcDormRepairService ucDormRepairService;
-	
+	@Autowired
+	private UcDormService ucDormService;
 	@ModelAttribute
 	public UcDormRepair get(@RequestParam(required=false) String id) {
 		UcDormRepair entity = null;
@@ -50,7 +53,7 @@ public class UcDormRepairController extends BaseController {
 		return entity;
 	}
 	
-	//@RequiresPermissions("dorm:ucDormRepair:view")
+	@RequiresPermissions("dorm:ucDormRepair:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(UcDormRepair ucDormRepair, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<UcDormRepair> page = ucDormRepairService.findPage(new Page<UcDormRepair>(request, response), ucDormRepair); 
@@ -58,14 +61,14 @@ public class UcDormRepairController extends BaseController {
 		return "modules/dorm/ucDormRepairList";
 	}
 
-	//@RequiresPermissions("dorm:ucDormRepair:view")
+	@RequiresPermissions("dorm:ucDormRepair:view")
 	@RequestMapping(value = "form")
 	public String form(UcDormRepair ucDormRepair, Model model) {
 		model.addAttribute("ucDormRepair", ucDormRepair);
 		return "modules/dorm/ucDormRepairForm";
 	}
 
-	//@RequiresPermissions("dorm:ucDormRepair:edit")
+	@RequiresPermissions("dorm:ucDormRepair:edit")
 	@RequestMapping(value = "save")
 	public String save(UcDormRepair ucDormRepair, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, ucDormRepair)){
@@ -76,7 +79,7 @@ public class UcDormRepairController extends BaseController {
 			ucDormRepair.setUser(user);
 			UcDorm dorm = user.getDorm();
 			if(!org.springframework.util.StringUtils.isEmpty(dorm)) {
-				ucDormRepair.setDorm(dorm);
+				ucDormRepair.setDorm(ucDormService.get(dorm));
 			}
 		}
 		
@@ -97,7 +100,7 @@ public class UcDormRepairController extends BaseController {
 		}
 		
 		User operation = UserUtils.getUser();
-		ucDormRepair.setOperation(operation);
+		ucDormRepair.setOperationId(operation.getId());
 		
 		logger.info("新建维修单,维修信息:{}",ucDormRepair);
 		ucDormRepairService.save(ucDormRepair);
@@ -105,7 +108,7 @@ public class UcDormRepairController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/dorm/ucDormRepair/?repage";
 	}
 	
-	//@RequiresPermissions("dorm:ucDormRepair:edit")
+	@RequiresPermissions("dorm:ucDormRepair:edit")
 	@RequestMapping(value = "delete")
 	public String delete(UcDormRepair ucDormRepair, RedirectAttributes redirectAttributes) {
 		ucDormRepairService.delete(ucDormRepair);

@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/dorm/ucDormRepair/">报修管理列表</a></li>
-		<shiro:hasPermission name="dorm:ucDormRepair:edit"><li><a href="${ctx}/dorm/ucDormRepair/form">报修管理添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="dorm:ucDormRepair:edit"><li><a href="${ctx}/dorm/ucDormRepair/form">我要报修</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucDormRepair" action="${ctx}/dorm/ucDormRepair/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -64,7 +64,7 @@
 					${fns:getDictLabel(ucDormRepair.repairState, 'repair_state', 0)}
 				</td>
 				<td>
-					${ucDormRepair.operation.name}
+					${fns:getUserById(ucDormRepair.operationId).name}
 				</td>
 				<td>
 					${ucDormRepair.repairReplace}
@@ -75,13 +75,15 @@
 					${ucDormRepair.remarks}
 				</td>
 				<td>
-				
-				
-					<a href="${ctx}/dorm/ucDormRepair/jiedan?id=${ucDormRepair.id}&repairState=2">接单</a>
-					<a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">修改</a>
+					<c:if test="${ucDormRepair.repairState==1}">
+						<a href="${ctx}/dorm/ucDormRepair/jiedan?id=${ucDormRepair.id}&repairState=2">接单</a>
+					</c:if>
+					<c:if test="${ucDormRepair.repairState==2}">
+					<a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">操作</a>
+					</c:if>
 					<shiro:hasPermission name="dorm:ucDormRepair:edit"><td>
     				
-					<a href="${ctx}/dorm/ucDormRepair/delete?id=${ucDormRepair.id}" onclick="return confirmx('确认要删除该报修管理吗？', this.href)">删除</a>
+					<!-- <a href="${ctx}/dorm/ucDormRepair/delete?id=${ucDormRepair.id}" onclick="return confirmx('确认要删除该报修管理吗？', this.href)">删除</a> -->
 				</shiro:hasPermission>
 				</td>
 			</tr>

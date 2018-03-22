@@ -40,30 +40,67 @@
 				<sys:ckfinder input="nameImage" type="images" uploadPath="/photo" selectMultiple="false" maxWidth="100" maxHeight="100"/>
 			</div>
 		</div>
+		<div id="element_id">
+		
 		<div class="control-group">
 			<label class="control-label">所属学院:</label>
 			<div class="controls">
 				<label class="lbl">${user.company.name}</label>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">所属专业:</label>
-			<div class="controls">
-				<label class="lbl">${user.office.name}</label>
+
+			<div class="control-group">
+				<label class="control-label">所属专业:</label>
+				<div class="controls">
+				<c:choose>
+				   <c:when test="${user.office.name!=null&&user.office.name!=''}"> 
+					<label class="lbl">${user.office.name}</label>
+					 </c:when>
+				   <c:otherwise>
+					学院：<select class="province input-medium"><option>请选择</option></select>
+					专业：<select id="city" class="city input-medium"><option>请选择</option></select>
+					</c:otherwise>
+				</c:choose>
+					
+				</div>
 			</div>
-		</div>
-		
-		<div class="control-group">
+
+			<div class="control-group">
 			<label class="control-label">所属班级:</label>
 			<div class="controls">
-				<label class="lbl">${user.clazz.name}</label>
+			<c:choose>
+				   <c:when test="${user.clazz.name!=null&&user.clazz.name!=''}"> 
+					<label class="lbl">${user.clazz.name}</label>
+					 </c:when>
+				   <c:otherwise>
+				年级：<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
+				班级：<select id="area" class="area input-medium" name="clazzId"><option>请选择</option></select> 
+					
+				</c:otherwise>
+				</c:choose>
 			</div>
 		</div>
+		</div>
 		
-			<div class="control-group">
+		<div class="control-group">
 			<label class="control-label">所在寝室:</label>
 			<div class="controls">
-				<label class="lbl">所在${user.dorm.ucDormBuild.dormBuildNo }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室</label>
+			<div id="dormBuild_id">
+				<c:choose>
+				   <c:when test="${user.dorm!=null}"> 
+				        	<label class="lbl">所在${user.dorm.ucDormBuild.dormBuildNo }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室</label>
+				   </c:when>
+				   <c:otherwise>
+							公寓：<select class="dormBuild input-medium"><option>请选择</option></select> 寝室 ：<select id="dorm" class="dorm input-medium" name="dormId"
+						required="required"><option>请选择</option></select>
+						床位： 1 <input type="radio" name="chuangwei"  value="a" checked> 2 <input type="radio" name="chuangwei"  value="b" > 3 <input type="radio" name="chuangwei"  value="c" > 4 <input type="radio" name="chuangwei"  value="d" >
+						
+				   </c:otherwise>
+				</c:choose>
+				
+			</div>	
+				
+				
 			</div>
 		</div>
 		
@@ -126,5 +163,25 @@
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
 		</div>
 	</form:form>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			
+			$('#dormBuild_id').cxSelect({ 
+				  url: '${ctx}/dorm/ucDormBuild/treeLink',
+				  selects: ['dormBuild', 'dorm'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
+			
+			$('#element_id').cxSelect({ 
+				  url: '${ctx}/sys/office/treeClassLink',
+				  selects: ['province', 'city','clazz', 'area'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
+		});
+		</script>
 </body>
 </html>

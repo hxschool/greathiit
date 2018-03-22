@@ -18,7 +18,7 @@ public class UcDormRepair extends DataEntity<UcDormRepair> {
 	
 	private static final long serialVersionUID = 1L;
 	private User user;		// user_id
-	private User operation;		// operation_id
+	private String operationId;		// operation_id
 	private UcDorm dorm;		// 寝室信息
 	private String repairPhone;		// 联系电话
 	private String repairTitle;		// 报修描述
@@ -43,12 +43,13 @@ public class UcDormRepair extends DataEntity<UcDormRepair> {
 		this.user = user;
 	}
 	
-	public User getOperation() {
-		return operation;
+	
+	public String getOperationId() {
+		return operationId;
 	}
 
-	public void setOperation(User operation) {
-		this.operation = operation;
+	public void setOperationId(String operationId) {
+		this.operationId = operationId;
 	}
 
 	public UcDorm getDorm() {

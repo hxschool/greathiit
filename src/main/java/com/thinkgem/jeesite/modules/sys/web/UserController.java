@@ -28,6 +28,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
@@ -37,6 +38,7 @@ import com.thinkgem.jeesite.modules.dorm.service.UcDormService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -53,6 +55,8 @@ public class UserController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private UcDormService ucDormService;
+	@Autowired
+	private OfficeService officeService;
 	
 	@ModelAttribute
 	public User get(@RequestParam(required=false) String id) {
@@ -277,17 +281,50 @@ public class UserController extends BaseController {
 	 */
 	@RequiresPermissions("user")
 	@RequestMapping(value = "info")
-	public String info(User user, HttpServletResponse response, Model model) {
+	public String info(User user,@RequestParam(value="clazzId", required=false) String clazzId,@RequestParam(value="dormId", required=false) String dormId,@RequestParam(value="chuangwei", required=false) String chuangwei,HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes attributes) {
 		User currentUser = UserUtils.getUser();
-		
-		UcDorm dorm = ucDormService.get(currentUser.getDorm());
-		currentUser.setDorm(dorm);
+		if(request.getMethod().toUpperCase().equals("POST")) {
+			if(org.springframework.util.StringUtils.isEmpty(currentUser.getDorm())&&org.springframework.util.StringUtils.isEmpty(dormId)) {
+				attributes.addFlashAttribute("message", "请初始化相关寝室信息");
+				return "redirect:" + adminPath + "/sys/user/info?repage";
+			}
+			if(org.springframework.util.StringUtils.isEmpty(currentUser.getClazz())&&org.springframework.util.StringUtils.isEmpty(clazzId)) {
+				attributes.addFlashAttribute("message", "请初始化相关班级信息");
+				return "redirect:" + adminPath + "/sys/user/info?repage";
+			}
+			if(!org.springframework.util.StringUtils.isEmpty(dormId)) {
+				UcDorm dorm = ucDormService.get(dormId);
+				int total = Integer.valueOf(dorm.getTotal());
+				int cnt = Integer.valueOf(dorm.getCnt());
+				if(total-cnt<=0) {
+					attributes.addFlashAttribute("message", "该寝室没有可分配资源,如有疑问请联系管理员. qq:773152 ");
+					return "redirect:" + adminPath + "/sys/user/info?repage";
+				}
+				Object object = Reflections.getFieldValue(dorm, chuangwei);
+				if(!org.springframework.util.StringUtils.isEmpty(object)&&object.toString().equals(user.getId())) {
+					attributes.addFlashAttribute("message", "当前床位已被分配,请选择其他床位,或者联系管理员. qq:773152 ");
+					return "redirect:" + adminPath + "/sys/user/info?repage";
+				}
+				Reflections.setFieldValue(dorm, chuangwei, currentUser.getId());
+				currentUser.setDorm(dorm);
+				cnt = cnt + 1;
+				dorm.setCnt(String.valueOf(cnt));
+				ucDormService.save(dorm);
+			}
+			
+			if(!org.springframework.util.StringUtils.isEmpty(clazzId)) {
+				Office officeTemp = new Office();
+				officeTemp.setId(clazzId);
+				Office clazz = officeService.get(officeTemp);
+				Office office = officeService.get(clazz.getParent());
+				Office company = officeService.get(office.getParent());
+				currentUser.setCompany(company);
+				currentUser.setOffice(office);
+				currentUser.setClazz(clazz);
+			}
+		}
 		
 		if (StringUtils.isNotBlank(user.getName())){
-			if(Global.isDemoMode()){
-				model.addAttribute("message", "演示模式，不允许操作！");
-				return "modules/sys/userInfo";
-			}
 			currentUser.setEmail(user.getEmail());
 			currentUser.setPhone(user.getPhone());
 			currentUser.setMobile(user.getMobile());

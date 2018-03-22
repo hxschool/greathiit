@@ -33,7 +33,7 @@
 	<form:form id="inputForm" modelAttribute="ucDormRepair" action="${ctx}/dorm/ucDormRepair/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		
+		<c:if test="${ucDormRepair.id !=null }">
 		<div class="control-group">
 			<label class="control-label">维修信息：</label>
 			<div class="controls">
@@ -44,7 +44,7 @@
 		</div>
 		
 		
-		<c:if test="${ucDormRepair.id !=null }">
+		
 		
 			<div class="control-group">
 				<label class="control-label">操作类型：</label>

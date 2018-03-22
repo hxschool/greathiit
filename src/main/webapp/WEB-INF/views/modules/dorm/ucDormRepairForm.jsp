@@ -2,19 +2,19 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>æŠ¥ä¿®ç®¡ç†ç®¡ç†</title>
+	<title>±¨ĞŞ¹ÜÀí¹ÜÀí</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
-					loading('æ­£åœ¨æäº¤ï¼Œè¯·ç¨ç­‰...');
+					loading('ÕıÔÚÌá½»£¬ÇëÉÔµÈ...');
 					form.submit();
 				},
 				errorContainer: "#messageBox",
 				errorPlacement: function(error, element) {
-					$("#messageBox").text("è¾“å…¥æœ‰è¯¯ï¼Œè¯·å…ˆæ›´æ­£ã€‚");
+					$("#messageBox").text("ÊäÈëÓĞÎó£¬ÇëÏÈ¸üÕı¡£");
 					if (element.is(":checkbox")||element.is(":radio")||element.parent().is(".input-append")){
 						error.appendTo(element.parent().parent());
 					} else {
@@ -27,19 +27,19 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/dorm/ucDormRepair/">æŠ¥ä¿®ç®¡ç†åˆ—è¡¨</a></li>
-		<li class="active"><a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">æŠ¥ä¿®ç®¡ç†<shiro:hasPermission name="dorm:ucDormRepair:edit">${not empty ucDormRepair.id?'ä¿®æ”¹':'æ·»åŠ '}</shiro:hasPermission><shiro:lacksPermission name="dorm:ucDormRepair:edit">æŸ¥çœ‹</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/dorm/ucDormRepair/">±¨ĞŞ¹ÜÀíÁĞ±í</a></li>
+		<li class="active"><a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">±¨ĞŞ¹ÜÀí<shiro:hasPermission name="dorm:ucDormRepair:edit">${not empty ucDormRepair.id?'ĞŞ¸Ä':'Ìí¼Ó'}</shiro:hasPermission><shiro:lacksPermission name="dorm:ucDormRepair:edit">²é¿´</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="ucDormRepair" action="${ctx}/dorm/ucDormRepair/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<c:if test="${ucDormRepair.id !=null }">
 		<div class="control-group">
-			<label class="control-label">ç»´ä¿®ä¿¡æ¯ï¼š</label>
+			<label class="control-label">Î¬ĞŞĞÅÏ¢£º</label>
 			<div class="controls">
-				æŠ¥ä¿®äºº:${ucDormRepair.user.name}<br>
-				æŠ¥ä¿®æ—¶é—´:<fmt:formatDate value="${ucDormRepair.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/><br>
-				 ä½ç½®åæ ‡:${ucDormRepair.dorm.ucDormBuild.id}æ ‹${ucDormRepair.dorm.dormFloor}å±‚${ucDormRepair.dorm.dormNumber}
+				±¨ĞŞÈË:${ucDormRepair.user.name}<br>
+				±¨ĞŞÊ±¼ä:<fmt:formatDate value="${ucDormRepair.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/><br>
+				 Î»ÖÃ×ø±ê:${ucDormRepair.dorm.ucDormBuild.id}¶°${ucDormRepair.dorm.dormFloor}²ã${ucDormRepair.dorm.dormNumber}
 			</div>
 		</div>
 		
@@ -47,10 +47,10 @@
 		
 		
 			<div class="control-group">
-				<label class="control-label">æ“ä½œç±»å‹ï¼š</label>
+				<label class="control-label">²Ù×÷ÀàĞÍ£º</label>
 				<div class="controls">
 					<form:select path="repairState" class="input-xlarge">
-						<form:option value="" label="é»˜è®¤"/>
+						<form:option value="" label="Ä¬ÈÏ"/>
 						<form:options items="${fns:getDictList('repair_state')}" itemLabel="label" itemValue="value" htmlEscape="false" />
 					</form:select>
 				</div>
@@ -59,43 +59,43 @@
 		
 		
 		<div class="control-group">
-			<label class="control-label">æŠ¥ä¿®ç±»å‹ï¼š</label>
+			<label class="control-label">±¨ĞŞÀàĞÍ£º</label>
 			<div class="controls">
 				<form:select path="repairType" class="input-xlarge">
-					<form:option value="" label="é»˜è®¤"/>
+					<form:option value="" label="Ä¬ÈÏ"/>
 					<form:options items="${fns:getDictList('repair_type')}" itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label">æŠ¥ä¿®ä¸»é¢˜ï¼š</label>
+			<label class="control-label">±¨ĞŞÖ÷Ìâ£º</label>
 			<div class="controls">
 				<form:input path="repairTitle" htmlEscape="false" maxlength="200" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">æŠ¥ä¿®æè¿°ï¼š</label>
+			<label class="control-label">±¨ĞŞÃèÊö£º</label>
 			<div class="controls">
 				<form:input path="repairContent" htmlEscape="false" maxlength="2000" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">è”ç³»ç”µè¯ï¼š</label>
+			<label class="control-label">ÁªÏµµç»°£º</label>
 			<div class="controls">
 				<form:input path="repairPhone" htmlEscape="false" maxlength="20" class="input-xlarge "/>
 			</div>
 		</div>
 		
 		<div class="control-group">
-			<label class="control-label">å¤‡æ³¨ä¿¡æ¯ï¼š</label>
+			<label class="control-label">±¸×¢ĞÅÏ¢£º</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4" maxlength="255" class="input-xxlarge "/>
 			</div>
 		</div>
 		<c:if test="${ucDormRepair.id !=null }">
 			<div class="control-group">
-				<label class="control-label">ä¿®å¤å›å¤ä¿¡æ¯ï¼š</label>
+				<label class="control-label">ĞŞ¸´»Ø¸´ĞÅÏ¢£º</label>
 				<div class="controls">
 					<form:textarea path="repairReplace" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
 				</div>
@@ -103,8 +103,8 @@
 		</c:if>
 		
 		<div class="form-actions">
-			<input id="btnSubmit" class="btn btn-primary" type="submit" value="ä¿ å­˜"/>&nbsp;
-			<input id="btnCancel" class="btn" type="button" value="è¿” å›" onclick="history.go(-1)"/>
+			<input id="btnSubmit" class="btn btn-primary" type="submit" value="±£ ´æ"/>&nbsp;
+			<input id="btnCancel" class="btn" type="button" value="·µ »Ø" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
 </body>

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>æŠ¥ä¿®ç®¡ç†ç®¡ç†</title>
+	<title>±¨ĞŞ¹ÜÀí¹ÜÀí</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -18,14 +18,14 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/dorm/ucDormRepair/">æŠ¥ä¿®ç®¡ç†åˆ—è¡¨</a></li>
-		<shiro:hasPermission name="dorm:ucDormRepair:edit"><li><a href="${ctx}/dorm/ucDormRepair/form">æˆ‘è¦æŠ¥ä¿®</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/dorm/ucDormRepair/">±¨ĞŞ¹ÜÀíÁĞ±í</a></li>
+		<shiro:hasPermission name="dorm:ucDormRepair:edit"><li><a href="${ctx}/dorm/ucDormRepair/form">ÎÒÒª±¨ĞŞ</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucDormRepair" action="${ctx}/dorm/ucDormRepair/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="æŸ¥è¯¢"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="²éÑ¯"/></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -33,18 +33,18 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>æŠ¥ä¿®ç±»å‹</th>
-				<th>æŠ¥ä¿®ä¸»é¢˜</th>
-				<th>æŠ¥ä¿®å†…å®¹</th>
-				<th>æŠ¥ä¿®äºº</th>
-				<th>æŠ¥ä¿®æ—¶é—´</th>
-				<th>åæ ‡</th>
-				<th>æŠ¥ä¿®çŠ¶æ€</th>
-				<th>ç»´ä¿®äºº</th>
-				<th>ç»´ä¿®å›å¤</th>
-				<th>å¤‡æ³¨</th>
-				<th>æ“ä½œ</th>
-				<shiro:hasPermission name="dorm:ucDormRepair:edit"><th>æ“ä½œ</th></shiro:hasPermission>
+				<th>±¨ĞŞÀàĞÍ</th>
+				<th>±¨ĞŞÖ÷Ìâ</th>
+				<th>±¨ĞŞÄÚÈİ</th>
+				<th>±¨ĞŞÈË</th>
+				<th>±¨ĞŞÊ±¼ä</th>
+				<th>×ø±ê</th>
+				<th>±¨ĞŞ×´Ì¬</th>
+				<th>Î¬ĞŞÈË</th>
+				<th>Î¬ĞŞ»Ø¸´</th>
+				<th>±¸×¢</th>
+				<th>²Ù×÷</th>
+				<shiro:hasPermission name="dorm:ucDormRepair:edit"><th>²Ù×÷</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,7 +58,7 @@
 				</td>
 				<td><fmt:formatDate value="${ucDormRepair.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 				<td>
-					${ucDormRepair.dorm.ucDormBuild.id}æ ‹${ucDormRepair.dorm.dormFloor}å±‚${ucDormRepair.dorm.dormNumber}
+					${ucDormRepair.dorm.ucDormBuild.id}¶°${ucDormRepair.dorm.dormFloor}²ã${ucDormRepair.dorm.dormNumber}
 				</td>
 				<td>
 					${fns:getDictLabel(ucDormRepair.repairState, 'repair_state', 0)}
@@ -76,14 +76,14 @@
 				</td>
 				<td>
 					<c:if test="${ucDormRepair.repairState==1}">
-						<a href="${ctx}/dorm/ucDormRepair/jiedan?id=${ucDormRepair.id}&repairState=2">æ¥å•</a>
+						<a href="${ctx}/dorm/ucDormRepair/jiedan?id=${ucDormRepair.id}&repairState=2">½Óµ¥</a>
 					</c:if>
 					<c:if test="${ucDormRepair.repairState==2}">
-					<a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">æ“ä½œ</a>
+					<a href="${ctx}/dorm/ucDormRepair/form?id=${ucDormRepair.id}">²Ù×÷</a>
 					</c:if>
 					<shiro:hasPermission name="dorm:ucDormRepair:edit"><td>
     				
-					<!-- <a href="${ctx}/dorm/ucDormRepair/delete?id=${ucDormRepair.id}" onclick="return confirmx('ç¡®è®¤è¦åˆ é™¤è¯¥æŠ¥ä¿®ç®¡ç†å—ï¼Ÿ', this.href)">åˆ é™¤</a> -->
+					<!-- <a href="${ctx}/dorm/ucDormRepair/delete?id=${ucDormRepair.id}" onclick="return confirmx('È·ÈÏÒªÉ¾³ı¸Ã±¨ĞŞ¹ÜÀíÂğ£¿', this.href)">É¾³ı</a> -->
 				</shiro:hasPermission>
 				</td>
 			</tr>

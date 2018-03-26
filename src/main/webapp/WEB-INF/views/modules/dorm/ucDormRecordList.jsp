@@ -57,7 +57,7 @@
 				<th>学号</th>
 				<th>姓名</th>
 				<th>寝室</th>
-				<th>缺勤原因</th>
+				<th>状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
 				<shiro:hasPermission name="dorm:ucDormRecord:edit"><th>操作</th></shiro:hasPermission>
@@ -80,8 +80,11 @@
 				</td>
 				
 				<td>
-					${ucDormRecord.detail}
-				</td>
+					<c:if test="${ucDormRecord.detail==0}">未考勤</c:if> <c:if
+							test="${ucDormRecord.detail==1}">正常</c:if> <c:if
+							test="${ucDormRecord.detail==2}"><font color="red">缺勤</font></c:if> <c:if
+							test="${ucDormRecord.detail==3}"><font color="green">请假</font></c:if>
+					</td>
 				<td><a href="${ctx}/dorm/ucDormRecord/form?id=${ucDormRecord.id}">
 					<fmt:formatDate value="${ucDormRecord.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</a></td>

@@ -697,3 +697,18 @@ CREATE TABLE uc_dorm_repair  (
 	PRIMARY KEY(id)
 )
 ;
+
+
+CREATE TABLE work_config_date   ( 
+	id              	varchar(64) COMMENT '编号'  NOT NULL,
+	config_date        	varchar(255) COMMENT '考勤日期'  NOT NULL,
+	create_by       	varchar(64) COMMENT '创建者'  NULL,
+	create_date     	datetime COMMENT '创建时间'  NULL,
+	update_by       	varchar(64) COMMENT '更新者'  NULL,
+	update_date     	datetime COMMENT '更新时间'  NULL,
+	remarks         	varchar(2000) NULL,
+	del_flag        	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+)
+COMMENT = '考勤配置信息' 
+;

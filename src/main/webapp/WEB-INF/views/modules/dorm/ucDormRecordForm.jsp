@@ -49,7 +49,7 @@
 		<div class="control-group">
 			<label class="control-label">楼号：</label>
 			<div class="controls">
-				<form:input path="ucDormBuild.id" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="dormBuildId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -67,9 +67,16 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">详情：</label>
+			<label class="control-label">状态：</label>
 			<div class="controls">
-				<form:input path="detail" htmlEscape="false" maxlength="50" class="input-xlarge "/>
+			
+				<select name="detail" class="input-xlarge ">
+				<option value="0" <c:if test="${ucDormRecord.detail==0 }"> selected</c:if> >未考勤</option>
+				<option value="1"  <c:if test="${ucDormRecord.detail==1 }"> selected</c:if>>已考勤</option>
+				<option value="2"  <c:if test="${ucDormRecord.detail==2 }"> selected</c:if>>缺勤</option>
+				<option value="3"  <c:if test="${ucDormRecord.detail==3 }"> selected</c:if>>请假</option>
+				
+				</select>
 			</div>
 		</div>
 		<div class="control-group">

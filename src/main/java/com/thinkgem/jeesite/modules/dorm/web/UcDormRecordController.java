@@ -39,7 +39,9 @@ public class UcDormRecordController extends BaseController {
 	public UcDormRecord get(@RequestParam(required=false) String id) {
 		UcDormRecord entity = null;
 		if (StringUtils.isNotBlank(id)){
-			entity = ucDormRecordService.get(id);
+			UcDormRecord  ucDormRecord = new  UcDormRecord();
+			ucDormRecord.setId(id);
+			entity = ucDormRecordService.get(ucDormRecord);
 		}
 		if (entity == null){
 			entity = new UcDormRecord();

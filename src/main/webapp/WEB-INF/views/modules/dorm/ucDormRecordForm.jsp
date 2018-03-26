@@ -49,7 +49,7 @@
 		<div class="control-group">
 			<label class="control-label">楼号：</label>
 			<div class="controls">
-				<form:input path="ucDormBuild.id" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="dormBuildId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">

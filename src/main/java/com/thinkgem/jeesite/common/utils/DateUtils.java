@@ -4,7 +4,10 @@
 package com.thinkgem.jeesite.common.utils;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -172,6 +175,22 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
 	}
 	
+	public static List<Date> dateSplit(Date start, Date end)
+		       throws Exception {
+		   if (!start.before(end))
+		       throw new Exception("开始时间应该在结束时间之后");
+		   Long spi = end.getTime() - start.getTime();
+		   Long step = spi / (24 * 60 * 60 * 1000);// 相隔天数
+
+
+		   List<Date> dateList = new ArrayList<Date>();
+		   dateList.add(end);
+		   for (int i = 1; i <= step; i++) {
+		       dateList.add(new Date(dateList.get(i - 1).getTime()
+		               - (24 * 60 * 60 * 1000)));// 比上一天减一
+		   }
+		   return dateList;
+		}
 	/**
 	 * @param args
 	 * @throws ParseException
@@ -181,5 +200,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 //		System.out.println(getDate("yyyy年MM月dd日 E"));
 //		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
 //		System.out.println(time/(24*60*60*1000));
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date start = sdf.parse("2016-01-01");//开始时间
+        java.util.Date end = sdf.parse("2016-12-31");//结束时间
+        try {
+			List<Date> lists = dateSplit(start, end);
+			for(Date date:lists) {
+				System.out.println(formatDate(date));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 }

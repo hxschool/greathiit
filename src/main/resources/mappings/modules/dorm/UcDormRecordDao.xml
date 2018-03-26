@@ -26,7 +26,16 @@
 			<include refid="ucDormRecordColumns"/>
 		FROM uc_dorm_record a
 		<include refid="ucDormRecordJoins"/>
-		WHERE a.id = #{id}
+		WHERE 1=1 
+		<if test="id != null and id != ''">
+		and a.id = #{id}
+		</if>
+		<if test="studentNumber != null and studentNumber != ''">
+		and a.student_number = #{studentNumber}
+		</if>
+		<if test="date != null and date != ''">
+		and a.date = #{date}
+		</if>
 	</select>
 	
 	<select id="findList" resultType="UcDormRecord">

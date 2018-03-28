@@ -8,39 +8,40 @@
 </head>
 <body>
 
-
+    <div class="weui-tab">
+      <div class="weui-tab__bd">
 	
 
 	<c:if test="${tab=='tab1'}">
-		<div id="tab1"
-			class="weui-tab__bd-item <c:if test="${tab=='tab1'}"> weui-tab__bd-item--active</c:if> ">
+		<div class="weui-tab__bd-item <c:if test="${tab=='tab1'}"> weui-tab__bd-item--active</c:if> ">
 			<header class='demos-header'>
 				<h1 class="demos-title">考勤</h1>
 			</header>
 
-			<div class='demos-content-padded'>
-				<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1A"
-					class="weui-btn weui-btn_primary">1A</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1B"
-					class="weui-btn weui-btn_primary">1B</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2A"
-					class="weui-btn weui-btn_primary">2A</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2B"
-					class="weui-btn weui-btn_primary">2B</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=3"
-					class="weui-btn weui-btn_warn">3</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=4"
-					class="weui-btn weui-btn_warn">4</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5A"
-					class="weui-btn weui-btn_primary">5A</a> <a
-					href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5B"
-					class="weui-btn weui-btn_primary">5B</a>
+				<div class='demos-content-padded'>
+					<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1A"
+						class="weui-btn weui-btn_primary">1A</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1B"
+						class="weui-btn weui-btn_primary">1B</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2A"
+						class="weui-btn weui-btn_primary">2A</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2B"
+						class="weui-btn weui-btn_primary">2B</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=3"
+						class="weui-btn weui-btn_warn">3</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=4"
+						class="weui-btn weui-btn_warn">4</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5A"
+						class="weui-btn weui-btn_primary">5A</a> <a
+						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5B"
+						class="weui-btn weui-btn_primary">5B</a>
+				</div>
 			</div>
 	</c:if>
-	</div>
+	
 	<c:if test="${tab=='tab2'}">
 
-			<div id="tab2"
+			<div 
 			class="weui-tab__bd-item <c:if test="${tab=='tab2'}"> weui-tab__bd-item--active</c:if> ">
 			<header class='demos-header'>
 				<h1 class="demos-title">缺勤信息</h1>
@@ -68,7 +69,7 @@
 		</div>
 	</c:if>
 	<c:if test="${tab=='tab3'}">
-		<div id="tab3"
+		<div 
 			class="weui-tab__bd-item <c:if test="${tab=='tab3'}"> weui-tab__bd-item--active</c:if> ">
 			<header class='demos-header'>
 				<h1 class="demos-title">请假信息</h1>
@@ -94,14 +95,14 @@
 		</div>
 	</c:if>
 	<c:if test="${tab=='tab4'}">
-		<div id="tab4"
+		<div
 			class="weui-tab__bd-item <c:if test="${tab=='tab4'}"> weui-tab__bd-item--active</c:if> ">
 			<h1>开发中</h1>
 		</div>
 	</c:if>
 
 
-
+</div>
 
 
 	<div class="weui-tabbar">
@@ -113,7 +114,7 @@
    <c:otherwise>
      class="weui-tabbar__item"
    </c:otherwise>
-</c:choose>>
+</c:choose> >
 			<span class="weui-badge"
 			style="position: absolute; top: -.4em; right: 1em;">8</span>
 			<div class="weui-tabbar__icon">
@@ -129,7 +130,7 @@
    <c:otherwise>
      class="weui-tabbar__item"
    </c:otherwise>
-</c:choose>>
+</c:choose> >
 			<div class="weui-tabbar__icon">
 				<img src="${ctxStatic}/jquery-weui/images/icon_nav_msg.png" alt="">
 			</div>
@@ -142,7 +143,7 @@
    <c:otherwise>
      class="weui-tabbar__item"
    </c:otherwise>
-</c:choose>>
+</c:choose> >
 			<div class="weui-tabbar__icon">
 				<img src="${ctxStatic}/jquery-weui/images/icon_nav_article.png"
 					alt="">
@@ -156,7 +157,7 @@
    <c:otherwise>
      class="weui-tabbar__item"
    </c:otherwise>
-</c:choose>>
+</c:choose> >
 			<div class="weui-tabbar__icon">
 				<img src="${ctxStatic}/jquery-weui/images/icon_nav_cell.png" alt="">
 			</div>
@@ -165,5 +166,6 @@
 
 	</div>
 
+</div>
 </body>
 </html>

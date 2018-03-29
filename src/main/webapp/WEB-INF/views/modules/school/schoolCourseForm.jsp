@@ -46,14 +46,14 @@
 		<div class="control-group">
 			<label class="control-label">选择教学楼：</label>
 			<div class="controls">
-			<select class="h_school" style="width: 100px;"></select><span class="help-inline"><font color="red">*</font> </span>
+			<select class="h_school" style="width: 200px;"></select><span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		
 		<div class="control-group">
 			<label class="control-label">选择教室：</label>
 			<div class="controls">
-				<select id="address" class="address" name="schoolRoots"  style="width: 200px;" multiple="true"> </select>
+				<select id="address" class="address" name="schoolRoots"  style="width: 400px;" multiple="multiple"> </select>
 				<span class="help-inline"><font color="red">只能针对一个教学楼添加教室,如跨教学楼需要再次操作</font> </span>
 			</div>
 		</div>

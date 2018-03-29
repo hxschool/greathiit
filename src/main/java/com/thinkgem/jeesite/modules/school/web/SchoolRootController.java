@@ -58,6 +58,7 @@ public class SchoolRootController extends BaseController {
 		return entity;
 	}
 	
+	
 	@RequiresPermissions("school:schoolRoot:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(SchoolRoot schoolRoot, HttpServletRequest request, HttpServletResponse response, Model model) {

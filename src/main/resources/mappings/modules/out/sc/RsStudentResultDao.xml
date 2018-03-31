@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.out.sc.dao.RsStudentResultDao">
+    
+	<sql id="rsStudentResultColumns">
+		a.id AS "id",
+		a.hc_form_bkh AS "hcFormBkh",
+		a.hc_form_xm AS "hcFormXm",
+		a.hc_form_sfzh AS "hcFormSfzh",
+		a.hc_form_yuwen AS "hcFormYuwen",
+		a.hc_form_shuxue AS "hcFormShuxue",
+		a.hc_form_zonghe AS "hcFormZonghe",
+		a.hc_form_cj AS "hcFormCj",
+		a.hc_form_status AS "hcFormStatus"
+	</sql>
+	
+	<sql id="rsStudentResultJoins">
+	</sql>
+    
+	<select id="get" resultType="RsStudentResult">
+		SELECT 
+			<include refid="rsStudentResultColumns"/>
+		FROM rs_student_result a
+		<include refid="rsStudentResultJoins"/>
+		WHERE 1=1
+		<if test="hcFormXm != null and hcFormXm != ''">
+			AND a.hc_form_xm = #{hcFormXm}
+		</if>
+		<if test="hcFormSfzh != null and hcFormSfzh != ''">
+			AND a.hc_form_sfzh = #{hcFormSfzh}
+		</if>
+		<if test="id != null and id != ''">
+			AND a.id = #{id}
+		</if>
+		
+	</select>
+	
+	<select id="findList" resultType="RsStudentResult">
+		SELECT 
+			<include refid="rsStudentResultColumns"/>
+		FROM rs_student_result a
+		<include refid="rsStudentResultJoins"/>
+		<where>
+			
+			<if test="hcFormBkh != null and hcFormBkh != ''">
+				AND a.hc_form_bkh = #{hcFormBkh}
+			</if>
+			<if test="hcFormXm != null and hcFormXm != ''">
+				AND a.hc_form_xm = #{hcFormXm}
+			</if>
+			<if test="hcFormSfzh != null and hcFormSfzh != ''">
+				AND a.hc_form_sfzh = #{hcFormSfzh}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RsStudentResult">
+		SELECT 
+			<include refid="rsStudentResultColumns"/>
+		FROM rs_student_result a
+		<include refid="rsStudentResultJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rs_student_result(
+			id,
+			hc_form_bkh,
+			hc_form_xm,
+			hc_form_sfzh,
+			hc_form_yuwen,
+			hc_form_shuxue,
+			hc_form_zonghe,
+			hc_form_cj,
+			hc_form_status
+		) VALUES (
+			#{id},
+			#{hcFormBkh},
+			#{hcFormXm},
+			#{hcFormSfzh},
+			#{hcFormYuwen},
+			#{hcFormShuxue},
+			#{hcFormZonghe},
+			#{hcFormCj},
+			#{hcFormStatus}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rs_student_result SET 	
+			hc_form_bkh = #{hcFormBkh},
+			hc_form_xm = #{hcFormXm},
+			hc_form_sfzh = #{hcFormSfzh},
+			hc_form_yuwen = #{hcFormYuwen},
+			hc_form_shuxue = #{hcFormShuxue},
+			hc_form_zonghe = #{hcFormZonghe},
+			hc_form_cj = #{hcFormCj},
+			hc_form_status = #{hcFormStatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM rs_student_result
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

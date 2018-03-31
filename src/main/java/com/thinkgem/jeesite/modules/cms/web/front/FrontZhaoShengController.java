@@ -3,9 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.cms.web.front;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +23,8 @@ import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
+import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
+import com.thinkgem.jeesite.modules.out.sc.service.RsStudentResultService;
 import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
 import com.thinkgem.jeesite.modules.out.system.service.SystemStudentService;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
@@ -46,6 +45,9 @@ public class FrontZhaoShengController extends BaseController{
 	private SystemService systemService;
 	@Autowired
 	private SystemStudentService systemStudentService;
+	@Autowired
+	private RsStudentResultService rsStudentResultService;
+	
 	/**
 	 * 网站首页
 	 */
@@ -71,7 +73,6 @@ public class FrontZhaoShengController extends BaseController{
 		
 		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheck".concat(module);
 	}
-	
 
 
 	@SameUrlData
@@ -221,6 +222,25 @@ public class FrontZhaoShengController extends BaseController{
 		
 		SystemStudent systemStudent = systemStudentService.getByUsernameAndIdCard(username, idCardNumber);
 		
+		RsStudentResult rsStudentResult = new RsStudentResult();
+		rsStudentResult.setHcFormXm(username);
+		rsStudentResult.setHcFormSfzh(idCardNumber);
+		RsStudentResult entity = rsStudentResultService.get(rsStudentResult);
+		if(!StringUtils.isEmpty(entity)) {
+			
+			if(!StringUtils.isEmpty(systemStudent)&&!StringUtils.isEmpty(systemStudent.getHcFormCj())){
+				model.addAttribute("systemStudent", systemStudent);
+				model.addAttribute("message", "已出成绩,等待录取中");
+				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckChengji";
+				
+			}
+			
+			model.addAttribute("systemStudent", entity);
+			model.addAttribute("message", "省成绩已出,等待录取中");
+			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckResult";
+		}
+		
+		
 		if(StringUtils.isEmpty(systemStudent)){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");
 			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
@@ -237,7 +257,12 @@ public class FrontZhaoShengController extends BaseController{
 		}else if (ret.equals("2")){
 			model.addAttribute("message", "报考失败,请联系报考教师");
 		}else{
+			
 			model.addAttribute("systemStudent", systemStudent);
+			if(!StringUtils.isEmpty(systemStudent.getHcFormCj())) {
+				model.addAttribute("message", "已出成绩,等待录取中");
+				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckChengji";
+			}
 			model.addAttribute("message", "信息审核中");
 			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckZhaoSheng";
 		}

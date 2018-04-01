@@ -72,7 +72,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">成绩：</label>
+			<label class="control-label">总分：</label>
 			<div class="controls">
 				<form:input path="hcFormCj" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>

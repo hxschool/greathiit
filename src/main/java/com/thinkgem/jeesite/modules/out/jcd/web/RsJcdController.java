@@ -288,7 +288,7 @@ public class RsJcdController extends BaseController {
             String fileName = "用户数据导入模板.xlsx";
     		List<RsJcd> list = Lists.newArrayList(); 
     		
-    		new ExportExcel("用户数据", RsJcd.class, 2).setDataList(list).write(response, fileName).dispose();
+    		new ExportExcel("成绩单数据", RsJcd.class, 2).setDataList(list).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());

@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.out.sc.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 省成绩Entity
@@ -33,6 +34,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 
 	@Length(min=0, max=64, message="报考号长度必须介于 0 和 64 之间")
+	@ExcelField(title="报考号", align=2, sort=0)
 	public String getHcFormBkh() {
 		return hcFormBkh;
 	}
@@ -42,6 +44,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 	
 	@Length(min=1, max=64, message="姓名长度必须介于 1 和 64 之间")
+	@ExcelField(title="姓名", align=2, sort=1)
 	public String getHcFormXm() {
 		return hcFormXm;
 	}
@@ -51,6 +54,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 	
 	@Length(min=1, max=64, message="身份证号长度必须介于 1 和 64 之间")
+	@ExcelField(title="身份证号", align=2, sort=2)
 	public String getHcFormSfzh() {
 		return hcFormSfzh;
 	}
@@ -60,6 +64,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 	
 	@Length(min=0, max=64, message="语文长度必须介于 0 和 64 之间")
+	@ExcelField(title="语文", align=2, sort=3)
 	public String getHcFormYuwen() {
 		return hcFormYuwen;
 	}
@@ -69,6 +74,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 	
 	@Length(min=0, max=64, message="数学长度必须介于 0 和 64 之间")
+	@ExcelField(title="数学", align=2, sort=4)
 	public String getHcFormShuxue() {
 		return hcFormShuxue;
 	}
@@ -78,6 +84,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	}
 	
 	@Length(min=0, max=64, message="职业技能长度必须介于 0 和 64 之间")
+	@ExcelField(title="职业技能", align=2, sort=5)
 	public String getHcFormZonghe() {
 		return hcFormZonghe;
 	}
@@ -86,7 +93,8 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 		this.hcFormZonghe = hcFormZonghe;
 	}
 	
-	@Length(min=0, max=64, message="成绩长度必须介于 0 和 64 之间")
+	@Length(min=0, max=64, message="总分长度必须介于 0 和 64 之间")
+	@ExcelField(title="总分", align=2, sort=6)
 	public String getHcFormCj() {
 		return hcFormCj;
 	}

@@ -230,13 +230,13 @@ public class FrontZhaoShengController extends BaseController{
 			
 			if(!StringUtils.isEmpty(systemStudent)&&!StringUtils.isEmpty(systemStudent.getHcFormCj())){
 				model.addAttribute("systemStudent", systemStudent);
-				model.addAttribute("message", "已出成绩,等待录取中");
+				model.addAttribute("message", "单招考试成绩已发布，录取结果于2018年4月15日后发布");
 				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckChengji";
 				
 			}
 			
 			model.addAttribute("systemStudent", entity);
-			model.addAttribute("message", "省成绩已出,等待录取中");
+			model.addAttribute("message", "单招考试成绩已发布，录取结果于2018年4月15日后发布");
 			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckResult";
 		}
 		

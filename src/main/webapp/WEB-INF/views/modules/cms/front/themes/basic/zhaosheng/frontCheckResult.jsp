@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>个人成绩(省)</title>
+<title>单招考试成绩</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年哈尔滨信息工程学院单招报名申请表</h3>
+						<h3>2018年高职（专科）单独招生成绩查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
@@ -88,7 +88,7 @@
 												style="display: block;">
 												<ul class="wizard-steps">
 													<li class="active" style="min-width: 50%; max-width: 50%;">
-														<span class="step">1</span> <span class="title">核对考试成绩(省)</span>
+														<span class="step">1</span> <span class="title">单招成绩发布</span>
 													</li>
 
 
@@ -117,7 +117,7 @@
 													
 														<div class="control-group ">
 
-															<label for="name" class="control-label">省报考号</label>
+															<label for="name" class="control-label">考生号</label>
 															<div class="controls">
 
 																<input type="text" name="hcFormBkh" value="${systemStudent.hcFormBkh }" style="border: 0px;"/>
@@ -141,7 +141,7 @@
 
 														<div class="control-group ">
 
-															<label class="control-label">身份证件号</label>
+															<label class="control-label">身份证号</label>
 
 
 															<div class="controls">

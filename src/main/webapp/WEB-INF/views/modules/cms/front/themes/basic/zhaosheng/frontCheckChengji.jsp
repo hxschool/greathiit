@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年哈尔滨信息工程学院单招报名申请表</h3>
+						<h3>2018年哈尔滨信息工程学院单招成绩查询</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
@@ -176,7 +176,7 @@
 														
 														<div class="control-group ">
 
-															<label class="control-label">职业技能（职业适应性）测试</label>
+															<label class="control-label ">职业技能</label>
 
 
 															<div class="controls">

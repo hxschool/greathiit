@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年哈尔滨信息工程学院单招报名申请表</h3>
+						<h3>2018年哈尔滨信息工程学院单招成绩查询</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal">

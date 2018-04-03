@@ -117,7 +117,7 @@ public class RsStudentResultController extends BaseController {
 
 	}
 	
-	@RequiresPermissions("out:sc:rsStudentResult:view")
+	//@RequiresPermissions("out:sc:rsStudentResult:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(RsStudentResult rsStudentResult, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsStudentResult> page = rsStudentResultService.findPage(new Page<RsStudentResult>(request, response), rsStudentResult); 
@@ -125,14 +125,14 @@ public class RsStudentResultController extends BaseController {
 		return "modules/out/sc/rsStudentResultList";
 	}
 
-	@RequiresPermissions("out:sc:rsStudentResult:view")
+	//@RequiresPermissions("out:sc:rsStudentResult:view")
 	@RequestMapping(value = "form")
 	public String form(RsStudentResult rsStudentResult, Model model) {
 		model.addAttribute("rsStudentResult", rsStudentResult);
 		return "modules/out/sc/rsStudentResultForm";
 	}
 
-	@RequiresPermissions("out:sc:rsStudentResult:edit")
+	//@RequiresPermissions("out:sc:rsStudentResult:edit")
 	@RequestMapping(value = "save")
 	public String save(RsStudentResult rsStudentResult, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, rsStudentResult)){
@@ -143,7 +143,7 @@ public class RsStudentResultController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/out/sc/rsStudentResult/?repage";
 	}
 	
-	@RequiresPermissions("out:sc:rsStudentResult:edit")
+//	@RequiresPermissions("out:sc:rsStudentResult:edit")
 	@RequestMapping(value = "delete")
 	public String delete(RsStudentResult rsStudentResult, RedirectAttributes redirectAttributes) {
 		rsStudentResultService.delete(rsStudentResult);

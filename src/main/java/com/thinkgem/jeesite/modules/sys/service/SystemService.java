@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -92,6 +91,10 @@ public class SystemService extends BaseService implements InitializingBean {
 		return UserUtils.getUser(user);
 	}
 
+	
+	public User getCasByLoginName(String loginname) {
+		return userDao.getCasByLoginName(loginname);
+	}
 	/**
 	 * 根据登录名获取用户
 	 * @param loginName

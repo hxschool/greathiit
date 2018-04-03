@@ -56,8 +56,8 @@ public class CasLoginRealm extends CasRealm {
 			// 回传ticket到服务端验证，验证通过就进入下一行，可以获取登录后的相关信息，否则直接抛异常，即验证不通过
 			Assertion casAssertion = ticketValidator.validate(ticket, getCasService());
 			AttributePrincipal casPrincipal = casAssertion.getPrincipal();
-			String userId = casPrincipal.getName();
-			User user = getSystemService().getUserByLoginName(userId);
+			String loginname = casPrincipal.getName();
+			User user = getSystemService().getCasByLoginName(loginname);
 			if (user != null) {
 				Principal p = new Principal(user, false);
 				PrincipalCollection principalCollection = new SimplePrincipalCollection(p, getName());

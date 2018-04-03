@@ -155,6 +155,19 @@
 		WHERE a.name = #{name} AND a.login_name = #{loginName}
 	</select>
 	
+	<!-- 根据登录名查询用户 -->
+	<select id="getCasByLoginName" resultType="User" parameterType="User">
+		SELECT
+			<include refid="userColumns"/><!-- ,
+			ro.office_id AS "roleList.officeList.id" -->
+		FROM sys_user a
+		<include refid="userJoins"/><!-- 
+		LEFT JOIN sys_role_office ro ON ro.role_id = r.id -->
+		WHERE (a.login_name=#{loginname} or a.no=#{loginname} or a.phone=#{loginname} or a.email=#{loginname})
+		
+		 AND a.del_flag = 0
+	</select>
+	
 	
 	<!-- 根据登录名查询用户 -->
 	<select id="getByLoginName" resultType="User" parameterType="User">

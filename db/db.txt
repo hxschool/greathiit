@@ -712,3 +712,18 @@ CREATE TABLE work_config_date   (
 )
 COMMENT = '考勤配置信息' 
 ;
+
+
+
+INSERT INTO sys_user(id, company_id, office_id, clazz_id, dorm_id, login_name, password, no, name, email, phone, mobile, user_type, photo, login_ip, login_date, login_flag, create_by, create_date, update_by, update_date, remarks, del_flag, account_no) 
+	
+select  
+replace(uuid(),'-','') as id, '2' as  company_id, '01' as  office_id, class_number as  clazz_id, '', id_card, '5134c615390718faba7d8804620ed6ffdc17779dae70183f21c8944e' as password, student_number as no , username as name, '', '', '', '6', '', '127.0.0.3', '2018-4-10 13:51:44', '', '1', '2018-4-10 13:51:44', '1', '2018-4-10 13:51:44', '', '0', ''
+
+from 
+
+uc_student_bak
+;
+select * from uc_student_bak limit 1
+
+;

@@ -117,7 +117,7 @@ public class RsStudentResultController extends BaseController {
 
 	}
 	
-	//@RequiresPermissions("out:sc:rsStudentResult:view")
+	@RequiresPermissions("out:sc:rsStudentResult:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(RsStudentResult rsStudentResult, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsStudentResult> page = rsStudentResultService.findPage(new Page<RsStudentResult>(request, response), rsStudentResult); 
@@ -125,7 +125,7 @@ public class RsStudentResultController extends BaseController {
 		return "modules/out/sc/rsStudentResultList";
 	}
 
-	//@RequiresPermissions("out:sc:rsStudentResult:view")
+	@RequiresPermissions("out:sc:rsStudentResult:view")
 	@RequestMapping(value = "form")
 	public String form(RsStudentResult rsStudentResult, Model model) {
 		model.addAttribute("rsStudentResult", rsStudentResult);

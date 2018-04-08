@@ -1,0 +1,76 @@
+    <!DOCTYPE html>  
+    <head>  
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+        <title>multiselect2</title>  
+          
+        <link rel="stylesheet" href="bootstrap.min.css" type="text/css"/>  
+        <link rel="stylesheet" href="bootstrap-multiselect.css" type="text/css"/>  
+          
+        <script type="text/javascript" src="static/jquery/jquery-1.8.3.js"></script>  
+        <script type="text/javascript" src="static/bootstrap/2.3.1/js/bootstrap.min.js"></script>  
+        <script type="text/javascript" src="static/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>  
+      
+    </head>  
+    <body>  
+        <form action="#"  class="form-inline" >  
+            <div class="form-group ">  
+                <div class="input-group">  
+                  <div class="input-group-addon fontsize12">品牌</div>  
+                  <select class="form-control"  id="brand" name="brand">  
+                        <option value="">---请选择---</option>  
+                  </select>  
+                </div>  
+            </div>  
+            <div class="form-group" >  
+                <div class="input-group">  
+                  <div class="input-group-addon ">车系</div>  
+                          <select class="form-control" id="series"  name="series">  
+                            <option>--请选择--</option>  
+                          </select>  
+                </div>  
+            </div>          
+        </form>  
+    <script type="text/javascript">  
+        $(function(){  
+        	$.ajax({
+		          url: "/api/ajaxRoles",
+		          async: false,
+		          success: function( data ) {
+		        	  var str = "";  
+		                for (var i = 0; i < data.length; i++){  
+		                	var role = data[i];
+		                    str += '<option value="'+role.id+'">'+role.name+'</option>';    
+		                }  
+		                $("#brand").html(str);  
+		          }
+         	 });
+        	
+            $(document).on("change", "#brand", function() {  
+                GetSeriesByBrand($("#brand").val());  
+            });   
+        });  
+        // 品牌改变车系列表改变  
+        function GetSeriesByBrand(brand) {  
+            if(!$("#series").attr('multiple')){  
+                $("#series").attr('multiple','multiple');//添加属性  
+                $('#series').multiselect();  
+            }  
+            
+            $.ajax({
+		          url: "/api/ajaxUser",
+		          async: false,
+		          data: {"roleId": "11"},
+		          success: function( data ) {
+		        	  var str = "";  
+		                for (var i = 0; i < data.length; i++){  
+		                	var role = data[i];
+		                    str += '<option value="'+role.id+'">'+role.name+'</option>';    
+		                }  
+		                $("#series").html(str); 
+		                $('#series').multiselect('rebuild');  
+		          }
+       	  });
+        }  
+    </script>  
+    </body>  
+    </html>  

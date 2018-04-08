@@ -1,15 +1,17 @@
 package com.thinkgem.jeesite.modules.api.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +25,7 @@ import com.greathiit.common.util.SecureUtil;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.api.service.ApiService;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysAppconfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
@@ -39,6 +42,8 @@ public class ApiController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private SysAppconfigService sysAppconfigService;
+	 
+	
 	@RequestMapping(value = "getStudentNumber")
 	@ResponseBody
 	public Map<String, Object> getStudentNumber(String username,String idCard) {
@@ -137,4 +142,26 @@ public class ApiController extends BaseController {
 	}
 
 	
+	@ResponseBody
+	@RequestMapping(value = "ajaxRoles")
+	public List<Role> ajaxRoles(HttpServletRequest request, HttpServletResponse response) {
+
+		List<Role> list1 = systemService.findAllRoles();
+		List<Role> ret = new ArrayList<Role>();
+		for (Role r : list1) {
+			if (Integer.valueOf(r.getId()) > 10 && Integer.valueOf(r.getId()) < 99) {
+				Role role = new Role();
+				role.setId(r.getId());
+				role.setName(r.getName());
+				ret.add(role);
+			}
+		}
+		return ret;
+	}
+	@ResponseBody
+	@RequestMapping(value = "ajaxUser")
+	public List<User> ajaxUser(HttpServletRequest request, HttpServletResponse response) {
+		String roleId = request.getParameter("roleId");
+		return systemService.findUserByRoleId(roleId);
+	}
 }

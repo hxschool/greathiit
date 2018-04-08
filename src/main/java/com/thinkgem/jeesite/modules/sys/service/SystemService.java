@@ -489,6 +489,21 @@ public class SystemService extends BaseService implements InitializingBean {
 			}
 		}
 	}
+	/**
+	 * 根据角色获取用户信息
+	 * @param roleId
+	 * @return
+	 */
+	public  List<User> findUserByRoleId(String roleId){
+		return  userDao.findUserByRoleId(roleId);
+	}
+	/**
+	 * 获取全部角色信息
+	 * @return
+	 */
+	public List<Role> findAllRoles(){
+		return  roleDao.findAllList(new Role());
+	}
 	
 	private void saveActivitiGroup(Role role) {
 		if (!Global.isSynActivitiIndetity()){

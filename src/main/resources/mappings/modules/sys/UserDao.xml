@@ -145,6 +145,12 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="findUserByRoleId" resultType="User">
+		SELECT
+			a.id,a.name,a.no
+		FROM sys_user a where exists(select * from sys_user_role b where a.id=b.user_id and b.role_id=#{roleId}) 
+	</select>
+	
 	<select id="getUserByNameAndIdCard" resultType="User">
 		SELECT
 			<include refid="userColumns"/><!-- ,

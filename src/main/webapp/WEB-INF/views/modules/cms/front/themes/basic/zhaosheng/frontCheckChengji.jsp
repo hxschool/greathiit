@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年哈尔滨信息工程学院单招成绩查询</h3>
+						<h3>2018年单招录取查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
@@ -117,6 +117,15 @@
 
 														<div class="control-group ">
 
+															<label for="name" class="control-label">录取专业</label>
+															<div class="controls">
+
+																<input type="text" name="hcFormCj" value="${fns:getDictLabel(systemStudent.hcFormStatus, 'rs_student_result_status', '')}" style="border: 0px;"/>
+
+															</div>
+														</div>
+														<div class="control-group ">
+
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
@@ -124,6 +133,8 @@
 
 															</div>
 														</div>
+														
+														
 
 
 														<div class="control-group ">

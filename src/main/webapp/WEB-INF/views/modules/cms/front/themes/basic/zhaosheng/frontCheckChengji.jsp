@@ -78,7 +78,7 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>报告结果查询</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">

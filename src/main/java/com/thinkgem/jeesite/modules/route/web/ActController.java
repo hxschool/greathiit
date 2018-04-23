@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,39 +35,44 @@ public class ActController {
 	private OfficeService officeService;
 	
 	@RequestMapping
-	@ResponseBody
 	@SameUrlData
-	public Map<String,String> actUser(ActUser actUser) {
+	public String actUser(ActUser actUser,Model model) {
 		
-		Map<String,String> resultMap = new HashMap<String,String>();
 		
 		if(StringUtils.isEmpty(actUser.getCode())||!actUser.getCode().toLowerCase().equals("hxci")) {
-			resultMap.put("responseCode", "99999999");
-			resultMap.put("responseMessage", "口令信息不合法");
-			return resultMap;
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "口令信息不合法");
+			
 		}
 		
 		if(StringUtils.isEmpty(actUser.getName())||StringUtils.isEmpty(actUser.getIdcard())) {
-			resultMap.put("responseCode", "99999999");
-			resultMap.put("responseMessage", "姓名或身份证不允许为空");
-			return resultMap;
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "姓名或身份证不允许为空");
+			return "modules/route/success";
 		}
 		if(StringUtils.isEmpty(actUser.getDept())) {
-			resultMap.put("responseCode", "99999999");
-			resultMap.put("responseMessage", "部门不允许为空");
-			return resultMap;
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "部门不允许为空");
+			return "modules/route/success";
 		}
 		
-		if(StringUtils.isEmpty(actUser.getPhone())) {
-			resultMap.put("responseCode", "99999999");
-			resultMap.put("responseMessage", "手机号不允许为空");
-			return resultMap;
+		if(StringUtils.isEmpty(actUser.getMobile())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "手机号不允许为空");
+			return "modules/route/success";
 		}
 		if(StringUtils.isEmpty(actUser.getEmail())) {
-			resultMap.put("responseCode", "99999999");
-			resultMap.put("responseMessage", "email不允许为空");
-			return resultMap;
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "email不允许为空");
+			return "modules/route/success";
 		}
+		
+		if(StringUtils.isEmpty(actUser.getRole())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "类型不允许为空(正式/外聘)");
+			return "modules/route/success";
+		}
+		
 		
 		if(!StringUtils.isEmpty(actUser.getNo())) {
 			User tmp = new User();
@@ -74,10 +80,10 @@ public class ActController {
 			User u = systemService.getUser(tmp);
 			if(!StringUtils.isEmpty(u)) {
 				if(u.getName().equals(actUser.getName())&&u.getLoginName().equals(actUser.getIdcard())) {
-					resultMap.put("responseCode", "00000000");
-					resultMap.put("responseMessage", "操作成功,请记住教师编号("+ actUser.getNo()+")");
-					resultMap.put("responseResult", actUser.getNo());
-					return resultMap;
+					model.addAttribute("responseCode", "00000000");
+					model.addAttribute("responseMessage", "操作成功,请记住教师编号("+ actUser.getNo()+")");
+					model.addAttribute("responseResult", actUser.getNo());
+					return "modules/route/success";
 				}
 			}
 			
@@ -87,15 +93,28 @@ public class ActController {
 		tmp.setLoginName(actUser.getIdcard());
 		User entity = systemService.getUserByNameAndIdCard(tmp);
 		if(!StringUtils.isEmpty(entity)) {
-			resultMap.put("responseCode", "00000000");
-			resultMap.put("responseMessage", "操作成功,请记住教师编号("+entity.getNo()+")");
-			resultMap.put("responseResult", entity.getNo());
-			return resultMap;
+			model.addAttribute("responseCode", "00000000");
+			model.addAttribute("responseMessage", "操作成功,请记住教师编号("+entity.getNo()+")");
+			model.addAttribute("responseResult", entity.getNo());
+			return "modules/route/success";
 		}
 
 		
 		String key = actUser.getDept();
-		String no = rec(key);
+		
+		String serialNo = systemService.getSequence("serialNo3");
+		Role r = systemService.getRole(key);
+
+		Office pojo = new Office();
+		pojo.setName(r.getName());
+		Office office = officeService.get(pojo);
+		
+		deptId = "00";
+		if (!StringUtils.isEmpty(office)) {
+			deptId = office.getId();
+		}
+		serialNo = serialNo.substring(serialNo.length()-4);
+		String no = actUser.getRole().concat(actUser.getDept()).concat(serialNo);
 		
 		User user = new User();
 		user.setNo(no);
@@ -134,12 +153,12 @@ public class ActController {
 		systemService.saveUser(user);
 		
 		
-		resultMap.put("responseCode", "00000000");
-		resultMap.put("responseMessage", "交易成功");
-		resultMap.put("responseResult", no);
+		model.addAttribute("responseCode", "00000000");
+		model.addAttribute("responseMessage", "交易成功");
+		model.addAttribute("responseResult", no);
 		//resultMap.put("responseCode", "99999999");
 		//resultMap.put("responseMessage", "系统异常分法提交参数");
-		return resultMap;
+		return "modules/route/success";
 	}
 
 	

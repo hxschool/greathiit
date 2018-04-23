@@ -2,6 +2,7 @@ package com.thinkgem.jeesite.modules.route.web;
 
 public class ActUser {
 	private String no;
+	private String role;
 	private String name;
 	private String idcard;
 	private String mobile;
@@ -17,6 +18,13 @@ public class ActUser {
 	}
 	public void setNo(String no) {
 		this.no = no;
+	}
+	
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
 	}
 	public String getName() {
 		return name;

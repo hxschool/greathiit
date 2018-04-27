@@ -33,6 +33,126 @@ public class ActController {
 	@Autowired
 	private OfficeService officeService;
 	
+	@RequestMapping("apply")
+	public String apply(ActUser actUser,Model model) {
+		return "modules/route/apply";
+	}
+	
+	@RequestMapping("save")
+	@SameUrlData
+	public String submitUser(ActUser actUser,Model model) {
+		
+		if(StringUtils.isEmpty(actUser.getCode())||!actUser.getCode().toLowerCase().equals("hxci")) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "口令信息不合法");
+			return "modules/route/apply";
+			
+		}
+		if(StringUtils.isEmpty(actUser.getUserType())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "职称不允许为空");
+			return "modules/route/apply";
+		}
+		if(StringUtils.isEmpty(actUser.getName())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "姓名不允许为空");
+			return "modules/route/apply";
+		}
+		if(StringUtils.isEmpty(actUser.getDept())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "部门不允许为空");
+			return "modules/route/apply";
+		}
+		
+		if(StringUtils.isEmpty(actUser.getRole())) {
+			model.addAttribute("responseCode", "99999999");
+			model.addAttribute("responseMessage", "类型不允许为空(正式/外聘)");
+			return "modules/route/apply";
+		}
+		
+		User tmp = new User();
+		tmp.setName(actUser.getName());
+		tmp.setLoginName(actUser.getIdcard());
+		User entity = systemService.getUserByNameAndIdCard(tmp);
+		if(!StringUtils.isEmpty(entity)) {
+
+			model.addAttribute("responseCode", entity.getNo());
+			model.addAttribute("responseMessage", "交易成功");
+			model.addAttribute("responseResult", entity.getName());
+			
+			
+			return "modules/route/applyOk";
+		}
+		
+		String serialType = actUser.getRole().concat(actUser.getDept());
+		
+		String serialNo = systemService.getSequence(serialType);
+		
+		if(StringUtils.isEmpty(serialNo)) {
+			String ret = "10";
+			systemService.insertSequence(serialType, ret, 2);
+			serialNo = systemService.getSequence(serialType);
+		}
+		
+		Role r = systemService.getRole(actUser.getDept());
+
+		Office pojo = new Office();
+		pojo.setName(r.getName());
+		Office office = officeService.get(pojo);
+		
+		deptId = "00";
+		if (!StringUtils.isEmpty(office)) {
+			deptId = office.getId();
+		}
+		serialNo = serialNo.substring(serialNo.length()-2);
+		String no = actUser.getRole().concat(actUser.getDept()).concat(serialNo);
+		
+		User user = new User();
+		user.setNo(no);
+		user.setName(actUser.getName());
+		user.setLoginName(no);
+		user.setMobile(actUser.getMobile());
+		user.setPhone(actUser.getPhone());
+		user.setEmail(actUser.getEmail());
+		String password = "888888";
+		user.setPassword(SystemService.entryptPassword(password));
+		Role role = new Role(actUser.getDept());
+		List<Role> rs = new ArrayList<Role>();
+		rs.add(role);
+		user.setRole(role);
+		user.setRoleList(rs);
+		user.setLoginFlag("1");
+		user.setUserType(actUser.getUserType());
+		user.setCompany(new Office("1"));
+		if(deptId.equals("00")) {
+			deptId = "1";
+		}
+		user.setOffice(new Office("1"));
+		
+		User u = UserUtils.get("1");
+		user.setCreateBy(u);
+		user.setCreateDate(new Date());
+		user.setDelFlag("0");
+		user.setUpdateBy(u);
+		user.setUpdateDate(new Date());
+		user.setRemarks("认证教师信息");
+		if(Global.getConfig("virtualAccount").equals("true")){
+			//开通虚拟账户系统
+			String accountNo = "1";
+			user.setAccountNo(accountNo);
+		}
+		systemService.saveUser(user);
+		
+		
+		model.addAttribute("responseCode", no);
+		model.addAttribute("responseMessage", "交易成功");
+		model.addAttribute("responseResult", user.getName());
+		
+		
+		return "modules/route/applyOk";
+	}
+	
+	
 	@RequestMapping
 	@SameUrlData
 	public String actUser(ActUser actUser,Model model) {

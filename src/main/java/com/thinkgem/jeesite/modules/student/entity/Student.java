@@ -3,13 +3,17 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
-import org.hibernate.validator.constraints.Length;
 import java.util.Date;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.thinkgem.jeesite.modules.sys.entity.User;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 学生信息Entity
@@ -37,6 +41,9 @@ public class Student extends DataEntity<Student> {
 	private String nativePlace;		// 户口所在地
 	private String studentLength;		// 学制
 	private User student;		// 用户号
+	private Office clazz;		// 班级编号
+	
+	private List<String> clazzNumbers;//数组查询添加
 	
 	public Student() {
 		super();
@@ -44,6 +51,23 @@ public class Student extends DataEntity<Student> {
 
 	public Student(String id){
 		super(id);
+	}
+	
+
+	public List<String> getClazzNumbers() {
+		return clazzNumbers;
+	}
+
+	public void setClazzNumbers(List<String> clazzNumbers) {
+		this.clazzNumbers = clazzNumbers;
+	}
+
+	public Office getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Office clazz) {
+		this.clazz = clazz;
 	}
 
 	@Length(min=0, max=255, message="姓名长度必须介于 0 和 255 之间")

@@ -27,10 +27,13 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		cl.id as "clazz.id",
+		cl.name as "clazz.name"
 	</sql>
 	
 	<sql id="studentJoins">
+		LEFT JOIN sys_office cl ON cl.id = a.clazz_id 
 	</sql>
     
 	<select id="get" resultType="Student">
@@ -62,6 +65,18 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			
+			<if test="clazzNumbers != null ">
+				and cl.id is not null 	
+			</if>
+			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
+				
+				and a.clazz_id IN 
+				<foreach item="st" collection="clazzNumbers" index="idx" open="(" separator="," close=")">
+					#{st}
+				</foreach>
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -94,6 +109,7 @@
 	<insert id="insert">
 		INSERT INTO student(
 			id,
+			clazz_id,
 			name,
 			id_card,
 			birthday,
@@ -120,6 +136,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{clazz.id},
 			#{name},
 			#{idCard},
 			#{birthday},
@@ -149,6 +166,7 @@
 	
 	<update id="update">
 		UPDATE student SET 	
+			clazz_id = #{clazz.id},
 			name = #{name},
 			id_card = #{idCard},
 			birthday = #{birthday},

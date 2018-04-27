@@ -23,7 +23,7 @@ import com.thinkgem.jeesite.modules.uc.dr.entity.UcPerson;
 import com.thinkgem.jeesite.modules.uc.dr.service.UcPersonService;
 
 /**
- * 学院基本信息Controller
+ * 学员基本信息Controller
  * @author 赵俊飞
  * @version 2017-11-25
  */

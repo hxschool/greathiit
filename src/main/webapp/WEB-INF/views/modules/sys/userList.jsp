@@ -111,6 +111,7 @@
 				<th>所属学院</th>
 				<th>所属专业</th>
 				<th class="sort-column login_name">用户类型</th>
+				<th class="sort-column name">学号/教师号</th>
 				<th class="sort-column login_name">登录名</th>
 				<th class="sort-column name">姓名</th>
 				<th>电话</th>
@@ -131,6 +132,7 @@
 					
 					</td>
 					<td><a href="${ctx}/sys/user/form?id=${user.id}">${user.loginName}</a></td>
+					<td>${user.no}</td>
 					<td>${user.name}</td>
 					<td>${user.phone}</td>
 					<td>${user.mobile}</td>

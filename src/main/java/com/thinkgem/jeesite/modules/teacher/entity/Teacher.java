@@ -28,7 +28,6 @@ public class Teacher extends DataEntity<Teacher> {
 	private String tchrIdcard;		// 身份证号
 	private String tchrGender;		// 性别
 	private String tchrNation;		// 民族
-	private String tchrSchNum;
 	private String tchrPolitical;		// 政治面貌
 	private String tchrMajor;		// 专业
 	private String tchrGraduateSchool;		// 毕业院校
@@ -207,17 +206,6 @@ public class Teacher extends DataEntity<Teacher> {
 	public void setTchrTitle(String tchrTitle) {
 		this.tchrTitle = tchrTitle;
 	}
-	
-	
-	
-	public String getTchrSchNum() {
-		return tchrSchNum;
-	}
-
-	public void setTchrSchNum(String tchrSchNum) {
-		this.tchrSchNum = tchrSchNum;
-	}
-
 	@NotNull(message="教师号不能为空")
 	public User getTeacher() {
 		return teacher;

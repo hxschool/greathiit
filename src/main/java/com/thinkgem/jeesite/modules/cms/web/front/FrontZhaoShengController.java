@@ -14,13 +14,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.annotation.SameUrlData;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
 import com.thinkgem.jeesite.common.utils.AccountValidatorUtil;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackQueryAPI;
+import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackResponse;
+import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackTraces;
 import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
+import com.thinkgem.jeesite.modules.out.ems.service.RsStudentEmsService;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
 import com.thinkgem.jeesite.modules.out.rs.service.RsStudentService;
 import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
@@ -47,6 +53,8 @@ public class FrontZhaoShengController extends BaseController{
 	private SystemStudentService systemStudentService;
 	@Autowired
 	private RsStudentResultService rsStudentResultService;
+	@Autowired
+	private RsStudentEmsService rsStudentEmsService;
 	
 	/**
 	 * 网站首页
@@ -216,8 +224,38 @@ public class FrontZhaoShengController extends BaseController{
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "身份证件号不允许为空");
 			return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
 		}
-		
-		
+		String operation = request.getParameter("operation");
+		if(!StringUtils.isEmpty(operation)) {
+			//查询ems成绩信息
+			RsStudentEms studentEms = rsStudentEmsService.getByUsernameAndIdCard(username, idCardNumber);
+			
+			if(!StringUtils.isEmpty(studentEms)&&operation.equals("ems")) {
+				
+				KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
+				StringBuffer sb = new StringBuffer();
+				try {
+					String result = api.getOrderTracesByJson("EMS", studentEms.getHcFormEms());
+					System.out.print(result);
+					Gson gson = new Gson();
+					KdniaoTrackResponse kniaoTrackResponse = gson.fromJson(result, KdniaoTrackResponse.class);
+					for(KdniaoTrackTraces kdniaoTrackTraces:kniaoTrackResponse.getTraces()) {
+						sb.append(kdniaoTrackTraces.getAcceptTime());
+						sb.append("<br>");
+						sb.append(kdniaoTrackTraces.getAcceptStation());
+						sb.append("<br>");
+						sb.append("--------------------------------------------------------------------------------------------");
+						sb.append("<br>");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				model.addAttribute("ems", sb.toString());
+				model.addAttribute("systemStudent", studentEms);
+				model.addAttribute("message", "查询成功");
+				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckEmsResult";
+			}
+			
+		}
 		
 		
 		SystemStudent systemStudent = systemStudentService.getByUsernameAndIdCard(username, idCardNumber);

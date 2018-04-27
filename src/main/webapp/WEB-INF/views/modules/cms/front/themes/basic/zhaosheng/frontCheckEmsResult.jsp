@@ -88,7 +88,7 @@
 												style="display: block;">
 												<ul class="wizard-steps">
 													<li class="active" style="min-width: 50%; max-width: 50%;">
-														<span class="step">1</span> <span class="title">单招成绩发布</span>
+														<span class="step">1</span> <span class="title">快递结果查询</span>
 													</li>
 
 
@@ -170,10 +170,40 @@
 														
 														<div class="control-group ">
 
+															<label class="control-label">收件地址</label>
+
+
+															<div class="controls" style="margin-top:5px;">
+
+
+																${systemStudent.hcFormDz}
+
+															</div>
+															
+														</div>
+														
+														
+														<div class="control-group ">
+
+															<label class="control-label">收件人</label>
+
+
+															<div class="controls"  style="margin-top:5px;">
+
+
+																${systemStudent.hcFormSjf}
+
+															</div>
+															
+														</div>
+														
+														
+														<div class="control-group ">
+
 															<label class="control-label">快递信息</label>
 
 
-															<div class="controls">
+															<div class="controls"  style="margin-top:5px;">
 ${ems }
 
 															

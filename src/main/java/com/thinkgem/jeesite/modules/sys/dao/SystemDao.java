@@ -16,4 +16,5 @@ import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 public interface SystemDao  {
 	String getRsStudentId();
 	String getSequence(@Param("serialNo") String serialNo);
+	void insertSequence(@Param("type") String serialType,@Param("no") String serialNo,@Param("length") int length);
 }

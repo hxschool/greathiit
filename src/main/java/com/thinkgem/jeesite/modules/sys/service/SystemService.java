@@ -614,6 +614,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	public String getSequence(String serialNo){
 		return systemDao.getSequence(serialNo);
 	}
+	@Transactional(readOnly = false)
+	public void insertSequence(String serialType,String serialNo,int length){
+		 systemDao.insertSequence(serialType, serialNo, length);
+	}
 	
 	///////////////// Synchronized to the Activiti end //////////////////
 	

@@ -9,6 +9,18 @@
     <select id="getSequence" resultType="String" parameterType="string" >
     select getSequence('${serialNo}') 
   </select>
+  
+  <insert id="insertSequence">
+		INSERT INTO sys_sequence(
+			seq_type, 
+			seq_no, 
+			seq_length
+		) VALUES (
+			#{type}, 
+			#{no}, 
+			#{length}
+		)
+	</insert>
 
   
 </mapper>

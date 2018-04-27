@@ -11,8 +11,16 @@ public class ActUser {
 	private String address;
 	private String dept;
 	private String code;
+	private String userType;
 	
 	
+	
+	public String getUserType() {
+		return userType;
+	}
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
 	public String getNo() {
 		return no;
 	}

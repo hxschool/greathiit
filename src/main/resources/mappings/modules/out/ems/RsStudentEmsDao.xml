@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.out.ems.dao.RsStudentEmsDao">
+    
+	<sql id="rsStudentEmsColumns">
+		a.id AS "id",
+		a.hc_form_ems AS "hcFormEms",
+		a.hc_form_bkh AS "hcFormBkh",
+		a.hc_form_xm AS "hcFormXm",
+		a.hc_form_sfzh AS "hcFormSfzh",
+		a.hc_form_dz AS "hcFormDz",
+		a.hc_form_sjf AS "hcFormSjf",
+		a.hc_form_remarks AS "hcFormRemarks",
+		a.hc_form_status AS "hcFormStatus"
+	</sql>
+	
+	<sql id="rsStudentEmsJoins">
+	</sql>
+	
+	<select id="getByUsernameAndIdCard" resultType="RsStudentEms">
+		SELECT 
+			<include refid="rsStudentEmsColumns"/>
+		FROM rs_student_ems a
+		<include refid="rsStudentEmsJoins"/>
+		WHERE a.hc_form_xm = #{username} and a.hc_form_sfzh = #{idCard}
+	</select>
+    
+	<select id="get" resultType="RsStudentEms">
+		SELECT 
+			<include refid="rsStudentEmsColumns"/>
+		FROM rs_student_ems a
+		<include refid="rsStudentEmsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="RsStudentEms">
+		SELECT 
+			<include refid="rsStudentEmsColumns"/>
+		FROM rs_student_ems a
+		<include refid="rsStudentEmsJoins"/>
+		<where>
+			
+			<if test="hcFormEms != null and hcFormEms != ''">
+				AND a.hc_form_ems = #{hcFormEms}
+			</if>
+			<if test="hcFormBkh != null and hcFormBkh != ''">
+				AND a.hc_form_bkh = #{hcFormBkh}
+			</if>
+			<if test="hcFormXm != null and hcFormXm != ''">
+				AND a.hc_form_xm = #{hcFormXm}
+			</if>
+			<if test="hcFormSfzh != null and hcFormSfzh != ''">
+				AND a.hc_form_sfzh = #{hcFormSfzh}
+			</if>
+			<if test="hcFormDz != null and hcFormDz != ''">
+				AND a.hc_form_dz = #{hcFormDz}
+			</if>
+			<if test="hcFormSjf != null and hcFormSjf != ''">
+				AND a.hc_form_sjf = #{hcFormSjf}
+			</if>
+			<if test="hcFormStatus != null and hcFormStatus != ''">
+				AND a.hc_form_status = #{hcFormStatus}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RsStudentEms">
+		SELECT 
+			<include refid="rsStudentEmsColumns"/>
+		FROM rs_student_ems a
+		<include refid="rsStudentEmsJoins"/>
+		<where>
+			
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO rs_student_ems(
+			id,
+			hc_form_ems,
+			hc_form_bkh,
+			hc_form_xm,
+			hc_form_sfzh,
+			hc_form_dz,
+			hc_form_sjf,
+			hc_form_remarks,
+			hc_form_status
+		) VALUES (
+			#{id},
+			#{hcFormEms},
+			#{hcFormBkh},
+			#{hcFormXm},
+			#{hcFormSfzh},
+			#{hcFormDz},
+			#{hcFormSjf},
+			#{hcFormRemarks},
+			#{hcFormStatus}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE rs_student_ems SET 	
+			hc_form_ems = #{hcFormEms},
+			hc_form_bkh = #{hcFormBkh},
+			hc_form_xm = #{hcFormXm},
+			hc_form_sfzh = #{hcFormSfzh},
+			hc_form_dz = #{hcFormDz},
+			hc_form_sjf = #{hcFormSjf},
+			hc_form_remarks = #{hcFormRemarks},
+			hc_form_status = #{hcFormStatus}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM rs_student_ems
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

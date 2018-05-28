@@ -1,0 +1,133 @@
+@charset "utf-8";
+/* CSS Document */
+@font-face {
+    font-family: mb;
+    src: url(../font/叶根友毛笔行书.ttf);
+}@font-face {
+    font-family: fz;
+    src: url(../font/FZJZJW.TTF);
+}@font-face {
+    font-family:zy;
+    src: url(../font/百度综艺字体.ttf);
+}@font-face {
+    font-family: lt;
+    src: url(../font/LTCH.TTF);
+}@font-face {
+    font-family: ys;
+    src: url(../font/汉真广标艺术字体.ttf);
+}
+* {
+    margin:0;
+    padding:0;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+body {
+    font-family: "微软雅黑", "宋体", Arial;
+    line-height: 1.5em;
+    border-top: 5px solid #415da9;
+}
+ul, ol {
+    list-style-type:none;
+}
+a{
+    text-decoration:none;
+}
+.f_l{
+    float: left;
+}
+.f_r{
+    float: right;
+}
+.o_h{
+    overflow: hidden;
+}
+.o_a{
+    overflow: auto;
+}
+.bold{
+    font-weight: bold;
+}
+.blue{
+    color: #317ed7;
+}
+.red{
+    color: #e52b16;
+}
+.orange{
+    color:#e8a929 ;
+}
+.p-l-10{
+    padding-left: 10px;
+}
+.p-l-20{
+    padding-left: 20px;
+}
+/*页首*/
+header{
+    width: 100%;
+    border-top: 5px solid #ffac52;
+    background: url("../image/nav_bottom_bg.gif") repeat-x bottom;
+}
+#top,#f-list{
+    width: 980px;
+    margin: 0 auto;
+}
+#top{
+    position: relative;
+}
+#top #logo{
+    height: 120px;
+    background: url("../image/logo.png") no-repeat left center;
+    padding-left: 460px;
+    color: #4778ca;
+    font-size: 54px;
+    line-height: 120px;
+    text-shadow: 3px 3px 5px #9d9d9d;
+    font-weight: bold;
+    font-family: mb;
+}
+#top #hxci{
+    border-left: 2px solid #415da9;
+    padding-left: 5px;
+    position: absolute;
+    right: 10px;
+    top: 60px;
+    font-size: 18px;
+    line-height: 1em;
+}
+#top #hxci p:nth-child(2){
+    font-size: 12px;
+    padding-top: 5px;
+}
+nav ul li{                                                                   /*导航*/
+    float: left;
+    position: relative;
+}
+nav ul li a{
+    display: block;
+    text-align: center;
+    width: 120px;
+    padding: 10px;
+    font-size: 18px;
+}
+nav ul a:link,nav ul a:visited{
+    color: #4778ca;
+}
+nav ul a:hover{
+    background: #4778ca;
+    color: #fff;
+}
+
+/*页尾*/
+footer{
+    /*background: url("../image/footer-bg.jpg") repeat-x;*/
+    background: #415da9;
+    width: 100%;
+    height: 70px;
+    color: #fff;
+    text-align: center;
+    line-height: 70px;
+}
+

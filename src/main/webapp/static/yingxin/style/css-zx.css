@@ -1,0 +1,84 @@
+nav li:nth-child(7) a:link,nav li:nth-child(7) a:visited{
+    background: #4778ca;
+    color: #fff;
+}
+main{
+    width: 100%;/*
+    background: #bdc3c7;
+    background: url("../image/wsdl-bg.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;*/
+}
+main #hd{                                                                  /*主内容*/
+    padding: 30px 0 50px;
+    margin: 0 auto;
+    width: 80%;
+    min-width: 1024px;
+}
+#hd aside{                                                  /*左侧边栏*/
+    width: 30%;
+    height: 855px;
+    margin-right: -20px;
+    position: relative;
+}
+#hd aside .lyzx{
+    position: absolute;
+    background: #f5f5ff url("../image/fanye.png") no-repeat right center;
+    width: 100%;
+    min-width:306px;
+    height: 350px;
+    padding: 20px 40px 30px 20px;
+    z-index: 99;
+}
+#hd aside dt{
+    font-size: 24px;
+    color: #4778ca;
+    font-family: lt;
+}
+#hd aside .lyzx dd{
+    line-height: 50px;
+    height: 50px;
+    margin:20px;
+    position: relative;
+    background: #ffe4bc;
+    text-align: center;
+    color: #fff;
+}
+#hd aside .lyzx dd a{
+    width: 100%;
+    display: inline-block;
+}
+#hd aside .lyzx span{
+    display: inline-block;
+    width: 20px;
+    height: 50px;
+    position: absolute;
+    right: 0;
+    background: #ffae6e;
+}
+#hd aside .lyzx div{
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    background: rgba(255, 255, 255, .75);
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#hd aside .lyzx dd:hover div{
+    opacity: 0;
+}
+#hd aside .lyzx a{
+    position: relative;
+    z-index: 999;
+}
+#hd aside .lyzx a:link,aside .lyzx a:visited{
+    color: #708789;
+}
+#hd article{                                                       /*右侧内容区*/
+    width: 70%;
+    min-width: 718px;
+    background: #f5f5ff ;
+    position: relative;
+    padding: 20px 20px 20px 40px;
+}

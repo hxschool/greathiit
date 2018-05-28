@@ -49,7 +49,7 @@
 		<c:forEach items="${page.list}" var="teacherClass">
 			<tr>
 				<td>
-				${teacherClass.clazz.id}
+				<a href="${ctx}/teacher/teacherClass/student?clazz.id=${teacherClass.clazz.id}">${teacherClass.clazz.id}</a>
 				</td>
 				<td>
 				${teacherClass.clazz.name}

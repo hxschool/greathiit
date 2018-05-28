@@ -1,0 +1,120 @@
+nav li:nth-child(3) a:link,nav li:nth-child(3) a:visited{
+    background: #4778ca;
+    color: #fff;
+}
+
+main{
+    width: 100%;
+    background: url("../image/rxxz-bg.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+main:before{
+    content: "";
+    width: 100%;
+    display: block;
+    height: 1109px;
+    background-color: rgba(239, 239, 239, 0.25);
+    position: absolute;
+}
+main:hover:before{
+    opacity: 0;
+    animation: bg 1s 1;
+}
+@keyframes bg {
+    0%{opacity: .9;}
+    100%{opacity: 0;}
+}
+main #hd{                                                                  /*主内容*/
+    width: 980px;
+    margin: 0 auto;
+    padding: 80px 0 50px;
+    position: relative;
+}
+
+main #hd .place{                                                           /*当前位置*/
+    background: url(../image/fangzi.png) no-repeat 10px -2px,url("../image/bg.jpg") repeat-x;
+    height: 36px;
+    color: #333;
+    line-height: 36px;
+    padding-left: 45px;
+}
+main #hd .place li{
+    float: left;
+}
+main #hd .place a:link,main #hd .place a:visited{
+    color: #333;
+}main #hd .place a:hover{
+    color: #e86f26;
+ }
+main #hd .place li:last-child a:link,main #hd .place li:last-child a:visited{
+    color: #e86f26;
+}
+main #hd .all{                                                               /*全部列表*/
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #9d9d9d;
+    padding: 30px;
+}
+main #hd .all li{
+    width: 400px;
+    height: 200px;
+    background: url("../image/dl-bg.png") no-repeat right center;
+    background-color: #ec5800;
+    float: left;
+    margin: 20px 0 0 40px;
+    padding: 20px;
+}
+main #hd .all li:nth-child(2){
+    background-color: #70ad47;
+}
+main #hd .all li:nth-child(3){
+    background-color: #f2c40f;
+}
+main #hd .all li:nth-child(4){
+    background-color: #8d82af;
+}
+main #hd .all li:nth-child(5){
+    background-color: #2ecb70;
+}
+main #hd .all li:nth-child(6){
+    background-color: #e95a30;
+}
+main #hd .all li:nth-child(7){
+    background-color: #faa900;
+}
+main #hd .all li:nth-child(8){
+    background-color: #02c0d6;
+}
+main #hd .all dt{
+    float: left;
+    color: #fff;
+    line-height: 160px;
+    font-size: 24px;
+}
+main #hd .all dd{
+    padding-left: 90px;
+}
+main #hd .all dd:nth-child(2) a{
+    font-weight: bold;
+    color: #4778ca;
+    font-size: 22px;
+}
+main #hd .all dd:nth-child(2) a:link,main #hd .all dd:nth-child(2) a:visited{
+    color: #4778ca;
+}
+main #hd .all dd:nth-child(2) a:hover{
+    text-decoration: underline;
+    color: #e8a929;
+}
+main #hd .all dd:nth-child(3){
+    color: #525252;
+    text-indent: 2em;
+    padding-top: 10px;
+}
+main #hd .all dd:nth-child(4) a{
+    color: #444;
+}
+main #hd .all dd:nth-child(4) a:hover{
+    color: #4778ca;
+}
+

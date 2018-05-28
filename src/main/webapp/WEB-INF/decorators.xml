@@ -9,4 +9,8 @@
 	<decorator name="cms_default_basic" page="modules/cms/front/themes/basic/layouts/default.jsp" />
 	<decorator name="cms_default_weixin" page="modules/cms/front/themes/weixin/layouts/default.jsp" />
 	
+	<!-- 迎新系统 -->
+	<decorator name="yingxin_default_basic" page="modules/yingxin/themes/basic/layouts/default.jsp" />
+
+	
 </decorators>

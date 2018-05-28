@@ -1,0 +1,105 @@
+#hd aside .lyzx dd:nth-child(5) div{
+    opacity: 0;
+}
+#hd article{
+    background:#f5f5ff url(../image/lyb-bg2.png) no-repeat right bottom;
+}
+#hd article #tel{
+    animation: small 1s 1;                                    /*动画-变大*/
+}
+@keyframes small{
+    from{
+        transform: scale(.1);
+    }
+    to{
+        transform:none;
+    }
+}
+
+#hd #tel h1{                                                         /*联系我*/
+    color: #4778ca;
+    font-size: 36px;
+    padding-bottom:20px;
+    font-family: lt;
+    margin: 20px 0;
+}
+#tel section{                                                       /*电话格式*/
+    text-align: center;
+    line-height: 1.5em;
+    padding: 0 30px 30px 30px;
+    position: relative;
+    width: 50%;
+    float: left;
+    color: #4b687e;
+}
+#tel section h3{                                                   /*教务处*/
+    writing-mode:lr-tb;
+    background: rgba(245, 245, 255, 0.81);
+    border: 1px solid #75b2d3;
+    width: 60px;
+    height: 360px;
+    font-size: 26px;
+    text-align: center;
+    line-height: 1.5em;
+    padding: 117px 5px 0;
+}
+#tel section ul{                                                  /*老师 号码结构*/
+    position: absolute;
+    top: 0px;
+    left: 90px;
+}
+#tel section li{
+    position: absolute;
+    top: 0;
+}
+#tel section li:nth-child(2){
+    position: absolute;
+    top: 120px;
+}
+#tel section li:nth-child(3){
+    position: absolute;
+    top: 240px;
+}
+#tel section li dt{                                                  /*老师*/
+    writing-mode:lr-tb;
+    width: 40px;
+    height: 120px;
+    padding: 24px 5px 0;
+    background: rgba(245, 245, 255, 0.81);
+    border: 1px solid #75b2d3;
+}
+#tel section ul li dl dd{
+    height: 50px;
+    width: 177px;
+}
+#tel section li dl .hm{                                                  /*号码*/
+    writing-mode:lr-tb;
+    width: 40px;
+    height: 120px;
+    background: rgba(245, 245, 255, 0.81);
+    position: absolute;
+    top: 0;
+    left: 40px;
+}
+#tel section li dl .hm span{
+    display: block;
+    height: 60px;
+    padding: 5px;
+    border: 1px solid #75b2d3;
+}
+#tel section li dl .number{                                                   /*数字*/
+    color: #fff;
+    position: absolute;
+    top: 0;
+    left: 80px;
+}
+#tel section li dl .number dd{                                               /*数字颜色*/
+    line-height:50px ;
+    background: rgba(139, 179, 255, 0.8);
+    margin: 5px 0;
+}
+#tel section li dl .number dd:nth-child(2){/*
+    background: rgba(255, 174, 110, 0.8);*/
+    margin-top: 10px;
+}
+

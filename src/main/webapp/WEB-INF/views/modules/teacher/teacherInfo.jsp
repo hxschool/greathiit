@@ -98,7 +98,7 @@
 							</div>
 						</div>
 						<div class="div-tchr-basic-inf-right">
-							<img src="tchrImg/${teacher.tchrSchNum}"
+							<img src="tchrImg/${teacher.teacher.no}"
 								class="img-polaroid img-head">
 						</div>
 					</div>

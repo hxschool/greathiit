@@ -1,0 +1,102 @@
+.bold{
+    font-weight: bold;
+}
+nav li:nth-child(3) a:link,nav li:nth-child(3) a:visited{
+    background: #4778ca;
+    color: #fff;
+}
+main{
+    width: 100%;
+    background: url("../image/wsdl-bg.jpg") no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    color: #333;
+}
+main #hd{                                                                  /*主内容*/
+     width: 980px;
+     margin: 0 auto;
+    padding: 80px 0 50px;
+     z-index: 9999;
+     position: relative;
+ }
+
+main #hd h1 span{
+    display: inline-block;
+    border-top: 3px solid #546d79;
+    width: 100px;
+    padding-top: 10px;
+}
+main #hd .place{                                                             /*当前位置*/
+    background: url(../image/fangzi.png) no-repeat 10px -2px,url("../image/bg.jpg") repeat-x;
+    height: 36px;
+    color: #333;
+    line-height: 36px;
+    padding-left: 45px;
+}
+main #hd .place li{
+    float: left;
+}
+main #hd .place a:link,main #hd .place a:visited{
+    color: #333;
+}main #hd .place a:hover{
+     color: #e86f26;
+ }
+main #hd .place li:last-child a:link,main #hd .place li:last-child a:visited{
+    color: #e86f26;
+}
+
+main #hd article{                                                               /*文章*/
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #9d9d9d;
+    padding: 50px;
+    line-height: 2em;
+}
+main #hd article h2{
+    text-align: center;
+}
+main #hd article center{
+    padding: 20px 0 10px;
+}
+main #hd article p{
+    text-indent: 2em;
+}
+main #hd article h3{
+    padding: 20px 0;
+}
+main #hd article h5{
+    padding: 20px 0;
+    font-size: 16px;
+}
+main #hd article h3:nth-child(3){
+    text-indent: 2em;
+}
+main #hd article .list1{
+    position: absolute;
+    bottom: 190px;
+    right: 65px;
+}
+main #hd article .list2{
+    position: absolute;
+    bottom: 160px;
+    right: 65px;
+}
+main #hd article .line{
+    padding-top: 80px;
+    font-weight: bold;
+}
+main #hd  .line a{
+    font-weight: 500;
+}
+main #hd  .line a:link,main #hd .line a:visited{
+    color: #333;
+}
+main #hd article .line a:hover{
+    color: #4778ca;
+}
+
+
+
+
+
+
+

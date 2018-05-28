@@ -1,0 +1,99 @@
+#hd aside{
+    height: 698px;
+}
+#hd aside .lyzx dd:nth-child(4) div{
+    opacity: 0;
+}
+#hd article{
+    color: #444;
+    background: #f5f5ff url(../image/lyb-bg1.png) no-repeat right bottom;
+}
+#hd article form{                                           /*动画，表单*/
+    animation: small 1s 1;
+    position: relative;
+    padding-bottom: 310px;
+}
+@keyframes small{
+    from{
+        transform: scale(.1)
+    }
+    to{
+        transform:none;
+    }
+}
+#hd article form dt{                                             /*联系我*/
+    color: #4778ca;
+    font-size: 28px;
+    padding:20px;
+    font-family: lt;
+    margin: 20px 0;
+}
+#hd article form dd{
+    padding-top: 10px;
+    text-indent: 2em;
+}
+#hd article dl label{
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+    text-align: right;
+}
+#hd article dl span{
+    font-size: 13px;
+    padding: 10px 20px 0;
+    display: inline-block;
+}
+#hd article input{
+    width: 250px;
+    height: 30px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom:1px solid #89a3a3;
+    background: rgba(255, 255, 255, .0);
+    color: #444;
+}
+#hd article dl select{
+    background: rgba(255,255,255,.0);
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom:1px solid #89a3a3;
+    height: 30px;
+    color: #444;
+}
+#hd article .dhs{                                                  /*留言内容*/
+    position: relative;
+}
+#hd article .dhs label{
+    position: absolute;
+    top: 10px;
+    left: 33px;
+}
+#hd article .dhs textarea{
+    position: absolute;
+    left: 188px;
+    top: 10px;
+    width: 400px;
+    height: 200px;
+    border: 1px solid #89a3a3;
+    background: rgba(245, 245, 255, 0.85);
+}
+#hd article .login{                                             /*提交按钮*/
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -200px;
+}
+#hd article .login input{
+    width: 80px;
+    height: 30px;
+    background: #4778ca;
+    margin: 20px 30px;
+    color: #fff;
+}
+#hd article .login input:hover{
+    border: 1px solid #ffac52;
+    background: #ffac52;
+    color: #fff;
+}

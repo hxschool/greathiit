@@ -10,8 +10,7 @@
 <meta name="keywords"
 	content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.keywords}" />
 	    <link rel="stylesheet" href="${ctxStatic }/yingxin/style/top-bottom.css" type="text/css"/>
-    <link rel="stylesheet" href="${ctxStatic }/yingxin/style/css-nr-bdxz.css" type="text/css"/>
-    <link rel="stylesheet" href="${ctxStatic }/yingxin/style/lrtk.css" type="text/css"/>
+    <link rel="stylesheet" href="${ctxStatic }/yingxin/style/css-wsdl.css" type="text/css"/>
 </head>
 <body>
 

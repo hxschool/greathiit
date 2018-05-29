@@ -1,10 +1,7 @@
 .bold{
     font-weight: bold;
 }
-nav li:nth-child(3) a:link,nav li:nth-child(3) a:visited{
-    background: #4778ca;
-    color: #fff;
-}
+
 main{
     width: 100%;
     background: url("../image/wsdl-bg.jpg") no-repeat;

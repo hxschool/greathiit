@@ -58,25 +58,19 @@
 				<dt>新生指南</dt>
 				<div class="layer">
 					<c:forEach items="${articles}" var="article">
-
 						<dd>
 							<a href="yingxin/view-${article.category.id}-${article.id}${urlSuffix}">${fns:abbr(article.title,96)} </a>
 						</dd>
 					</c:forEach>
-
-
 				</div>
 			</dl>
 		</li>
 	</ul>
 	<ul class="m-yqlj o_h">
 		<li>校内友情链接</li>
-		<li><a href="http://www.hxci.com.cn/">哈尔滨信息工程学院</a></li>
-		<li><a href="#">哈尔滨华夏中等专业学校</a></li>
-		<li><a href="#">黑龙江省招生考试信息港</a></li>
-		<li><a href="#">教务处</a></li>
-		<li><a href="#">学生处</a></li>
-		<li><a href="#">图书馆</a></li>
+		<c:forEach items="${links}" var="link">
+		<li><a href="${link.href }">${link.title }</a></li>
+		</c:forEach>
 	</ul>
 </body>
 </html>

@@ -1,4 +1,4 @@
-nav li:nth-child(1) a:link,nav li:nth-child(1) a:visited{
+.navbgcolor{
     background: #4778ca;
     color: #fff;
 }

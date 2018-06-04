@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.recruit.dao.student.RecruitStudentDao">
+    
+	<sql id="recruitStudentColumns">
+		a.id AS "id",
+		a.exa_number AS "exaNumber",
+		a.middle_school AS "middleSchool",
+		a.location AS "location",
+		a.notice_number AS "noticeNumber",
+		a.province AS "province",
+		a.leven AS "leven",
+		a.company_name AS "companyName",
+		a.company_id AS "company.id",
+		a.office_name AS "officeName",
+		a.office_id AS "office.id",
+		a.username AS "username",
+		a.gender AS "gender",
+		a.birthday AS "birthday",
+		a.id_card AS "idCard",
+		a.political AS "political",
+		a.nation AS "nation",
+		a.exa_category AS "exaCategory",
+		a.hokou_address AS "hokouAddress",
+		a.home_address AS "homeAddress",
+		a.zip_code AS "zipCode",
+		a.phone AS "phone",
+		a.addressee AS "addressee",
+		a.is_change AS "isChange",
+		a.yuwen AS "yuwen",
+		a.shuxue AS "shuxue",
+		a.waiyu AS "waiyu",
+		a.zonghe AS "zonghe",
+		a.techang AS "techang",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		o11.name AS "office.name"
+	</sql>
+	
+	<sql id="recruitStudentJoins">
+		LEFT JOIN sys_office o11 ON o11.id = a.office_id
+		LEFT JOIN sys_office o12 ON o12.id = a.company_id
+	</sql>
+    
+	<select id="get" resultType="RecruitStudent">
+		SELECT 
+			<include refid="recruitStudentColumns"/>
+		FROM recruit_student a
+		<include refid="recruitStudentJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getRecruitStudent" resultType="RecruitStudent">
+		SELECT 
+			<include refid="recruitStudentColumns"/>
+		FROM recruit_student a
+		<include refid="recruitStudentJoins"/>
+		WHERE a.id_card = #{idCard}
+	</select>
+	
+	<select id="findList" resultType="RecruitStudent">
+		SELECT 
+			<include refid="recruitStudentColumns"/>
+		FROM recruit_student a
+		<include refid="recruitStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+			<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+			<if test="gender != null and gender != ''">
+				AND a.gender = #{gender}
+			</if>
+			<if test="birthday != null and birthday != ''">
+				AND a.birthday = #{birthday}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="RecruitStudent">
+		SELECT 
+			<include refid="recruitStudentColumns"/>
+		FROM recruit_student a
+		<include refid="recruitStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO recruit_student(
+			id,
+			exa_number,
+			middle_school,
+			location,
+			notice_number,
+			province,
+			leven,
+			company_name,
+			company_id,
+			office_name,
+			office_id,
+			username,
+			gender,
+			birthday,
+			id_card,
+			political,
+			nation,
+			exa_category,
+			hokou_address,
+			home_address,
+			zip_code,
+			phone,
+			addressee,
+			is_change,
+			yuwen,
+			shuxue,
+			waiyu,
+			zonghe,
+			techang,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{exaNumber},
+			#{middleSchool},
+			#{location},
+			#{noticeNumber},
+			#{province},
+			#{leven},
+			#{companyName},
+			#{company.id},
+			#{officeName},
+			#{office.id},
+			#{username},
+			#{gender},
+			#{birthday},
+			#{idCard},
+			#{political},
+			#{nation},
+			#{exaCategory},
+			#{hokouAddress},
+			#{homeAddress},
+			#{zipCode},
+			#{phone},
+			#{addressee},
+			#{isChange},
+			#{yuwen},
+			#{shuxue},
+			#{waiyu},
+			#{zonghe},
+			#{techang},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE recruit_student SET 	
+			id = #{id},
+			exa_number = #{exaNumber},
+			middle_school = #{middleSchool},
+			location = #{location},
+			notice_number = #{noticeNumber},
+			province = #{province},
+			leven = #{leven},
+			company_name = #{companyName},
+			company_id = #{company.id},
+			office_name = #{officeName},
+			office_id = #{office.id},
+			username = #{username},
+			gender = #{gender},
+			birthday = #{birthday},
+			id_card = #{idCard},
+			political = #{political},
+			nation = #{nation},
+			exa_category = #{exaCategory},
+			hokou_address = #{hokouAddress},
+			home_address = #{homeAddress},
+			zip_code = #{zipCode},
+			phone = #{phone},
+			addressee = #{addressee},
+			is_change = #{isChange},
+			yuwen = #{yuwen},
+			shuxue = #{shuxue},
+			waiyu = #{waiyu},
+			zonghe = #{zonghe},
+			techang = #{techang},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE recruit_student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

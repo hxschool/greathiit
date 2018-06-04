@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.sys.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.TreeDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -16,6 +18,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
  */
 @MyBatisDao
 public interface OfficeDao extends TreeDao<Office> {
+	Office getOfficeByName(@Param("name")String name);
 	List<Office> findByParentId(Office office);
 	public List<Office> findByParentIdGroupByYear(Office office);
 	public List<Office> findByParentIdAndYear(Office office);

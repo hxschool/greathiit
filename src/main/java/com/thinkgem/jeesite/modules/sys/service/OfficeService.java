@@ -25,6 +25,11 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Autowired
 	private OfficeDao officeDao;
+	
+	public Office getOfficeByName(String name) {
+		return officeDao.getOfficeByName(name);
+	}
+	
 	public List<Office> findAll(){
 		return UserUtils.getOfficeList();
 	}

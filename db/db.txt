@@ -726,4 +726,60 @@ uc_student_bak
 ;
 select * from uc_student_bak limit 1
 
+
+
+
+CREATE TABLE  recruit_student   ( 
+	id             	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
+	exa_number     	varchar(64) COMMENT '考试号'  NOT NULL,
+    middle_school  	varchar(64) COMMENT '毕业中学名称	'  NULL,
+	location       	varchar(64) COMMENT '生源所在地'  NULL,
+	notice_number       	varchar(64) COMMENT '录取通知书编号'  NULL,
+	province       	varchar(64) COMMENT '省份'  NULL,
+	leven       	varchar(64) COMMENT '层次(本科/高职单招)'  NULL,
+	company_name  	varchar(64) COMMENT '院系'  NULL,
+	company_id  	varchar(64) COMMENT '院系编码'  NULL,
+	office_name  	varchar(64) COMMENT '专业'  NULL,
+	office_id  	varchar(64) COMMENT '专业编码'  NULL,
+	username       	varchar(64) COMMENT '真实姓名'  NOT NULL,
+	gender         	varchar(64) COMMENT '性别'  NOT NULL,
+	birthday       	varchar(14) COMMENT '出生日期'  NULL,
+	id_card        	varchar(18) COMMENT '身份证号码'  NOT NULL,
+	political      	varchar(18) COMMENT '政治面貌'  NULL,
+	nation         	varchar(18) COMMENT '民族'  NULL,
+	exa_category 	varchar(18) COMMENT '考生类别'  NULL,.
+	hokou_address 	varchar(200) COMMENT '户口所在地区'  NULL,	
+	home_address 	varchar(200) COMMENT '家庭地址'  NULL,
+	zip_code 	varchar(10) COMMENT '邮政编码'  NULL,
+	phone 	varchar(20) COMMENT '联系电话'  NULL,
+	addressee 	varchar(20) COMMENT '收件人'  NULL,
+	is_change 	varchar(20) COMMENT '是否服从定向调剂'  NULL,
+	yuwen double(5,2) default 0 COMMENT '语文',
+    shuxue double(5,2) default 0 COMMENT '数学',
+    waiyu double(5,2) default 0 COMMENT '外语',
+    zonghe double(5,2) default 0 COMMENT '综合',
+    techang double(5,2) default 0 COMMENT '特长',
+    status         	varchar(64) COMMENT '状态'  NULL,
+    create_by      	varchar(64) COMMENT '创建者'  NULL,
+	create_date    	datetime COMMENT '创建时间'  NULL,
+	update_by      	varchar(64) COMMENT '更新者'  NULL,
+	update_date    	datetime COMMENT '更新时间'  NULL,
+	remarks        	varchar(255) COMMENT '备注信息'  NULL,
+	del_flag       	char(1) COMMENT '删除标记'  NOT NULL DEFAULT '0',
+	PRIMARY KEY(id)
+	)
+		
+COMMENT '统招数据标准导入'
 ;
+
+
+
+INSERT INTO sys_user(id, company_id, office_id, clazz_id, dorm_id, login_name, password, no, name, email, phone, mobile, user_type, photo, login_ip, login_date, login_flag, create_by, create_date, update_by, update_date, remarks, del_flag, account_no) 
+select  
+replace(uuid(),'-','') as id, '1' as  company_id, '01' as  office_id, '', '', '', '5134c615390718faba7d8804620ed6ffdc17779dae70183f21c8944e' as password, 
+case when `no`  is null then 教师号 ELSE no end, 姓名 as name, 电子邮箱 as email, 手机电话 as phone, 办公电话 mobile, '63', '', '127.0.0.99', '2018-4-10 13:51:44', '', '1', '2018-4-10 13:51:44', '1', '2018-4-10 13:51:44', '', '0', ''
+
+from teacher_temp 
+
+where 姓名 not in (select name from sys_user)
+

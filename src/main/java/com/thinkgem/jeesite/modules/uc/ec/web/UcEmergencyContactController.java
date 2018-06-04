@@ -17,8 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.ec.entity.UcEmergencyContact;
 import com.thinkgem.jeesite.modules.uc.ec.service.UcEmergencyContactService;
 
@@ -49,6 +51,13 @@ public class UcEmergencyContactController extends BaseController {
 	@RequiresPermissions("uc:ec:ucEmergencyContact:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(UcEmergencyContact ucEmergencyContact, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(user.getRoleIdList().size()==1) {
+			String roleId = user.getRoleIdList().get(0);
+			if(roleId.equals("99")) {
+				ucEmergencyContact.setStudentNumber(user.getNo());
+			}
+		}
 		Page<UcEmergencyContact> page = ucEmergencyContactService.findPage(new Page<UcEmergencyContact>(request, response), ucEmergencyContact); 
 		model.addAttribute("page", page);
 		return "modules/uc/ec/ucEmergencyContactList";
@@ -66,6 +75,13 @@ public class UcEmergencyContactController extends BaseController {
 	public String save(UcEmergencyContact ucEmergencyContact, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, ucEmergencyContact)){
 			return form(ucEmergencyContact, model);
+		}
+		User user = UserUtils.getUser();
+		if(user.getRoleIdList().size()==1) {
+			String roleId = user.getRoleIdList().get(0);
+			if(roleId.equals("99")) {
+				ucEmergencyContact.setStudentNumber(user.getNo());
+			}
 		}
 		ucEmergencyContactService.save(ucEmergencyContact);
 		addMessage(redirectAttributes, "保存社交通讯录成功");

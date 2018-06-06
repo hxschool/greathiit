@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.payment.dao.trade.TraderecordDao">
+    
+	<sql id="traderecordColumns">
+		a.trd_id AS "id",
+		a.trd_pay_amount AS "payAmount",
+		a.trd_pay_time AS "payTime",
+		a.trd_error_code AS "errorCode",
+		a.trd_error_msg AS "errorMsg",
+		a.trd_start_time AS "startTime",
+		a.trd_expire_time AS "expireTime",
+		a.trd_code_url AS "codeUrl",
+		a.trd_notify_url AS "notifyUrl",
+		a.trd_extra AS "extra",
+		a.trd_subject AS "subject",
+		a.trd_detail AS "detail",
+		a.trd_channel AS "channel",
+		a.trd_status AS "status",
+		a.trd_userno AS "user.name",
+		a.trd_user_ip AS "userIp",
+		a.trd_id_card AS "idCard",
+		a.trd_create_by AS "createBy",
+		a.trd_create_date AS "createDate",
+		a.trd_update_by AS "updateBy",
+		a.trd_update_date AS "updateDate",
+		a.trd_remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="traderecordJoins">
+	</sql>
+    
+	<select id="get" resultType="Traderecord">
+		SELECT 
+			<include refid="traderecordColumns"/>
+		FROM trd_traderecord a
+		<include refid="traderecordJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Traderecord">
+		SELECT 
+			<include refid="traderecordColumns"/>
+		FROM trd_traderecord a
+		<include refid="traderecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="payAmount != null and payAmount != ''">
+				AND a.trd_pay_amount = #{payAmount}
+			</if>
+			<if test="payTime != null and payTime != ''">
+				AND a.trd_pay_time = #{payTime}
+			</if>
+			<if test="errorCode != null and errorCode != ''">
+				AND a.trd_error_code = #{errorCode}
+			</if>
+			<if test="errorMsg != null and errorMsg != ''">
+				AND a.trd_error_msg = #{errorMsg}
+			</if>
+			<if test="notifyUrl != null and notifyUrl != ''">
+				AND a.trd_notify_url = #{notifyUrl}
+			</if>
+			<if test="extra != null and extra != ''">
+				AND a.trd_extra = #{extra}
+			</if>
+			<if test="subject != null and subject != ''">
+				AND a.trd_subject = #{subject}
+			</if>
+			<if test="detail != null and detail != ''">
+				AND a.trd_detail = #{detail}
+			</if>
+			<if test="channel != null and channel != ''">
+				AND a.trd_channel = #{channel}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.trd_status = #{status}
+			</if>
+			<if test="user != null and user.name != null and user.name != ''">
+				AND a.trd_userno = #{user.name}
+			</if>
+			<if test="userIp != null and userIp != ''">
+				AND a.trd_user_ip = #{userIp}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.trd_id_card = #{idCard}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Traderecord">
+		SELECT 
+			<include refid="traderecordColumns"/>
+		FROM trd_traderecord a
+		<include refid="traderecordJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO trd_traderecord(
+			trd_id,
+			trd_pay_amount,
+			trd_pay_time,
+			trd_error_code,
+			trd_error_msg,
+			trd_start_time,
+			trd_expire_time,
+			trd_code_url,
+			trd_notify_url,
+			trd_extra,
+			trd_subject,
+			trd_detail,
+			trd_channel,
+			trd_status,
+			trd_userno,
+			trd_user_ip,
+			trd_id_card,
+			trd_create_by,
+			trd_create_date,
+			trd_update_by,
+			trd_update_date,
+			trd_remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{payAmount},
+			#{payTime},
+			#{errorCode},
+			#{errorMsg},
+			#{startTime},
+			#{expireTime},
+			#{codeUrl},
+			#{notifyUrl},
+			#{extra},
+			#{subject},
+			#{detail},
+			#{channel},
+			#{status},
+			#{user.name},
+			#{userIp},
+			#{idCard},
+			#{createBy},
+			#{createDate},
+			#{updateBy},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE trd_traderecord SET 	
+			trd_id = #{id},
+			trd_pay_amount = #{payAmount},
+			trd_pay_time = #{payTime},
+			trd_error_code = #{errorCode},
+			trd_error_msg = #{errorMsg},
+			trd_start_time = #{startTime},
+			trd_expire_time = #{expireTime},
+			trd_code_url = #{codeUrl},
+			trd_notify_url = #{notifyUrl},
+			trd_extra = #{extra},
+			trd_subject = #{subject},
+			trd_detail = #{detail},
+			trd_channel = #{channel},
+			trd_status = #{status},
+			trd_userno = #{user.name},
+			trd_user_ip = #{userIp},
+			trd_id_card = #{idCard},
+			trd_create_by = #{createBy},
+			trd_create_date = #{createDate},
+			trd_update_by = #{updateBy},
+			trd_update_date = #{updateDate},
+			trd_remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE trd_traderecord SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

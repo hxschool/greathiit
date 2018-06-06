@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.payment.dao.order.OrderDao">
+    
+	<sql id="orderColumns">
+		a.id AS "id",
+		a.trade_id AS "traderecord.id",
+		a.pay_id AS "payId",
+		a.pay_title AS "payTitle",
+		a.pay_remark AS "payRemark",
+		a.pay_amount AS "payAmount",
+		a.pay_time AS "payTime",
+		a.error_code AS "errorCode",
+		a.error_msg AS "errorMsg",
+		a.status AS "status",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="orderJoins">
+		LEFT JOIN trd_traderecord b ON b.id = a.trade_id
+	</sql>
+    
+	<select id="get" resultType="Order">
+		SELECT 
+			<include refid="orderColumns"/>
+		FROM trd_order a
+		<include refid="orderJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Order">
+		SELECT 
+			<include refid="orderColumns"/>
+		FROM trd_order a
+		<include refid="orderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="traderecord != null and traderecord.id != null and traderecord.id != ''">
+				AND a.trade_id = #{traderecord.id}
+			</if>
+			<if test="payId != null and payId != ''">
+				AND a.pay_id = #{payId}
+			</if>
+			<if test="payTitle != null and payTitle != ''">
+				AND a.pay_title = #{payTitle}
+			</if>
+			<if test="payRemark != null and payRemark != ''">
+				AND a.pay_remark = #{payRemark}
+			</if>
+			<if test="payAmount != null and payAmount != ''">
+				AND a.pay_amount = #{payAmount}
+			</if>
+			<if test="payTime != null and payTime != ''">
+				AND a.pay_time = #{payTime}
+			</if>
+			<if test="errorCode != null and errorCode != ''">
+				AND a.error_code = #{errorCode}
+			</if>
+			<if test="errorMsg != null and errorMsg != ''">
+				AND a.error_msg = #{errorMsg}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Order">
+		SELECT 
+			<include refid="orderColumns"/>
+		FROM trd_order a
+		<include refid="orderJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO trd_order(
+			id,
+			trade_id,
+			pay_id,
+			pay_title,
+			pay_remark,
+			pay_amount,
+			pay_time,
+			error_code,
+			error_msg,
+			status,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{traderecord.id},
+			#{payId},
+			#{payTitle},
+			#{payRemark},
+			#{payAmount},
+			#{payTime},
+			#{errorCode},
+			#{errorMsg},
+			#{status},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE trd_order SET 	
+			trade_id = #{traderecord.id},
+			pay_id = #{payId},
+			pay_title = #{payTitle},
+			pay_remark = #{payRemark},
+			pay_amount = #{payAmount},
+			pay_time = #{payTime},
+			error_code = #{errorCode},
+			error_msg = #{errorMsg},
+			status = #{status},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE trd_order SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

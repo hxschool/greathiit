@@ -137,9 +137,15 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-	<!-- https://mvnrepository.com/artifact/org.vaadin.addons/qrcode -->
-	<!-- google生成二维码的依赖包 -->
-	<!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+	
+	<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+<dependency>
+    <groupId>com.alipay.sdk</groupId>
+    <artifactId>alipay-sdk-java</artifactId>
+    <version>3.0.0</version>
+</dependency>
+
+
 	<dependency>
 		<groupId>com.google.zxing</groupId>
 		<artifactId>core</artifactId>

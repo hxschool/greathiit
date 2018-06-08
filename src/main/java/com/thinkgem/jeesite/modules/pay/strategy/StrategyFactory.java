@@ -1,10 +1,10 @@
-package com.thinkgem.jeesite.modules.payment.pay.strategy;
+package com.thinkgem.jeesite.modules.pay.strategy;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thinkgem.jeesite.modules.payment.pay.PayStrategy;
-import com.thinkgem.jeesite.modules.payment.pay.enums.PayType;
+import com.thinkgem.jeesite.modules.pay.PayStrategy;
+import com.thinkgem.jeesite.modules.pay.enums.PayType;
 
 public class StrategyFactory {
 

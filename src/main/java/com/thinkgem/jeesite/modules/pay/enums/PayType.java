@@ -1,4 +1,4 @@
-package com.thinkgem.jeesite.modules.payment.pay.enums;
+package com.thinkgem.jeesite.modules.pay.enums;
 
 
 

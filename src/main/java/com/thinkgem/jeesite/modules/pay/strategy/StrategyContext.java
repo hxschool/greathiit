@@ -1,9 +1,9 @@
-package com.thinkgem.jeesite.modules.payment.pay.strategy;
+package com.thinkgem.jeesite.modules.pay.strategy;
 
 import java.util.Map;
 
-import com.thinkgem.jeesite.modules.payment.pay.PayStrategy;
-import com.thinkgem.jeesite.modules.payment.pay.enums.PayType;
+import com.thinkgem.jeesite.modules.pay.PayStrategy;
+import com.thinkgem.jeesite.modules.pay.enums.PayType;
 
 /**
  * 支付策略上下文
@@ -22,6 +22,11 @@ public class StrategyContext {
     public String generatePayParams(PayType payType, Map<String, Object> params) {
         payStrategy = StrategyFactory.getInstance().creator(payType.value());
         return payStrategy.generatePayParams(payType, params);
+    }
+    
+    public String callbackParams(PayType payType, Map<String, String> params) {
+        payStrategy = StrategyFactory.getInstance().creator(payType.value());
+        return payStrategy.callbackParams(payType, params);
     }
 
 }

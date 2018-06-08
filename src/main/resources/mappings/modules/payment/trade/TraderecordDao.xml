@@ -36,7 +36,7 @@
 			<include refid="traderecordColumns"/>
 		FROM trd_traderecord a
 		<include refid="traderecordJoins"/>
-		WHERE a.id = #{id}
+		WHERE a.trd_id = #{id}
 	</select>
 	
 	<select id="findList" resultType="Traderecord">
@@ -188,13 +188,13 @@
 			trd_update_by = #{updateBy},
 			trd_update_date = #{updateDate},
 			trd_remarks = #{remarks}
-		WHERE id = #{id}
+		WHERE trd_id = #{id}
 	</update>
 	
 	<update id="delete">
 		UPDATE trd_traderecord SET 
 			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
+		WHERE trd_id = #{id}
 	</update>
 	
 </mapper>

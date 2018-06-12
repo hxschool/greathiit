@@ -40,7 +40,7 @@ public class Traderecord extends DataEntity<Traderecord> {
 	private User user;		// 用户
 	private String userIp;		// 客户端IP
 	private String idCard;		// 身份证
-    private List<Order> orders = Lists.newArrayList();;
+    private List<Order> orders = Lists.newArrayList();
     
 	public List<Order> getOrders() {
 		return orders;

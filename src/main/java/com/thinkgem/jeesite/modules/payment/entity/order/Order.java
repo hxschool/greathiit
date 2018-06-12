@@ -5,11 +5,13 @@ package com.thinkgem.jeesite.modules.payment.entity.order;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 交易明细Entity
@@ -27,6 +29,7 @@ public class Order extends DataEntity<Order> {
 	private Date payTime;		// 支付时间
 	private String errorCode;		// 错误码
 	private String errorMsg;		// 错误描述
+	private User user;		// 用户
 	private String status;		// 状态
 	
 	public Order() {
@@ -107,6 +110,15 @@ public class Order extends DataEntity<Order> {
 		this.errorMsg = errorMsg;
 	}
 	
+	
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@Length(min=1, max=2, message="状态长度必须介于 1 和 2 之间")
 	public String getStatus() {
 		return status;
@@ -115,5 +127,8 @@ public class Order extends DataEntity<Order> {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
 }

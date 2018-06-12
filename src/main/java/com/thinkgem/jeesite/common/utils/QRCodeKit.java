@@ -28,8 +28,8 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
 public class QRCodeKit {
 	public static final String QRCODE_DEFAULT_CHARSET = "UTF-8";
-	public static final int QRCODE_DEFAULT_HEIGHT = 150;
-	public static final int QRCODE_DEFAULT_WIDTH = 150;
+	public static final int QRCODE_DEFAULT_HEIGHT = 300;
+	public static final int QRCODE_DEFAULT_WIDTH = 300;
 	private static final int BLACK = 0xFF000000;
 	private static final int WHITE = 0xFFFFFFFF;
 
@@ -71,9 +71,9 @@ public class QRCodeKit {
 				"搜索工具\r\n" + 
 				"";
 		System.out.println(QRCodeKit.class.getResource("").getFile() );
-		File logoFile = new File(QRCodeKit.class.getResource("").getFile() + "logo.png");
+		File logoFile = new File( "logo.png");
 		BufferedImage image = QRCodeKit.createQRCodeWithLogo(data, logoFile);
-		ImageIO.write(image, "png", new File("result7.png"));
+		ImageIO.write(image, "png", new File("D:/result7.png"));
 		System.out.println("done");
 	}
 
@@ -102,6 +102,7 @@ public class QRCodeKit {
 		Map hint = new HashMap();
 		hint.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 		hint.put(EncodeHintType.CHARACTER_SET, charset);
+		hint.put(EncodeHintType.MARGIN, 1);
 		return createQRCode(data, charset, hint, width, height);
 	}
 
@@ -168,6 +169,7 @@ public class QRCodeKit {
 		Map hint = new HashMap();
 		hint.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 		hint.put(EncodeHintType.CHARACTER_SET, charset);
+		hint.put(EncodeHintType.MARGIN, 1);
 		return createQRCodeWithLogo(data, charset, hint, width, height, logoFile);
 	}
 

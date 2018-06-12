@@ -34,6 +34,11 @@
         	return false;
         }
 	</script>
+	<style type="text/css">
+	.chengji
+	 {width:26px; height:22px; border:1px solid #F00; margin-right:-1px; float: left;  }
+	
+	</style>
 </head>
 <body>
 <div id="importBox" class="hide">
@@ -85,13 +90,26 @@
 		<thead>
 			<tr>
 				<th>考试号</th>
+				<th>姓名</th>
+				<th>性别</th>
+				<th>出生日期</th>
+				<th>身份号</th>
+				<th>
+				<div class="chengji" style="margin-left: -1px;">数学</div>
+				<div class="chengji">语文</div>
+				<div class="chengji">外语</div>
+				<div class="chengji">综合</div>
+				<div class="chengji">总分</div>
+				</th>
+				<th>录取学院</th>
+				<th>录取专业</th>
+				<th>联系电话</th>
+				<!-- <th>毕业中学名称</th>
 				<th>毕业中学名称</th>
 				<th>生源所在地</th>
-				<th>录取通知书编号</th>
+				<th>录取通知书编号</th> -->
 				<th>省份</th>
 				<th>状态</th>
-				<th>更新时间</th>
-				<th>备注信息</th>
 				<shiro:hasPermission name="recruit:student:recruitStudent:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -101,27 +119,64 @@
 				<td><a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">
 					${recruitStudent.exaNumber}
 				</a></td>
+				
 				<td>
+					${recruitStudent.username}
+				</td>
+				
+				<td>
+					${recruitStudent.gender}
+				</td>
+				
+				<td>
+					${recruitStudent.birthday}
+				</td>
+				
+				
+				<td>
+					${recruitStudent.idCard}
+				</td>
+				
+				<td>
+				<div class="chengji" style="margin-left: -1px;"> ${recruitStudent.shuxue}</div>
+				<div class="chengji" > ${recruitStudent.yuwen}</div>
+				<div class="chengji"> ${recruitStudent.waiyu}</div>
+				<div class="chengji"> ${recruitStudent.zonghe}</div>
+				<div class="chengji"> ${recruitStudent.techang}</div>
+				</td>
+				
+			
+				
+				<td>
+					${recruitStudent.companyName}
+				</td>
+				
+				<td>
+					${recruitStudent.officeName}
+				</td>
+				
+				<td>
+					${recruitStudent.phone}
+				</td>
+				
+				<!-- <td>
 					${recruitStudent.middleSchool}
 				</td>
 				<td>
-					${recruitStudent.location}
+					
+					${fn:substring(recruitStudent.location, 0, 16)}
 				</td>
 				<td>
 					${recruitStudent.noticeNumber}
-				</td>
+				</td> -->
 				<td>
 					${recruitStudent.province}
 				</td>
 				<td>
 					${recruitStudent.status}
 				</td>
-				<td>
-					<fmt:formatDate value="${recruitStudent.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${recruitStudent.remarks}
-				</td>
+				
+			
 				<shiro:hasPermission name="recruit:student:recruitStudent:edit"><td>
     				<a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">修改</a>
 					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${recruitStudent.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">删除</a>

@@ -2,10 +2,16 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
+
 	<title>统招数据管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$("#inputSubmit").click(function(){
+				layer.msg('持续更新中.', function(){
+					//关闭后的操作
+					});
+			})
 			//$("#name").focus();
 			$("#inputForm").validate({
 				submitHandler: function(form){
@@ -24,18 +30,24 @@
 			});
 		});
 	</script>
+	
 </head>
 <body>
-	
-	<form:form id="inputForm" modelAttribute="recruitStudent" action="${ctx}/recruit/student/recruitStudent/baodao" method="post" class="form-horizontal">
-		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
-		
+
+
+		<sys:message content="${message}" />
+
 		<div class="form-actions">
-		
-			<input id="btnSubmit" class="btn btn-primary" type="submit" value="我要报到"/>
-		
+			<a href="${ctx}/payment"
+				class="button button-block button-rounded button-glow  button-caution  button-primary  button-large ">在线缴费</a>
+				  <br>
+				<a id="inputSubmit"
+				class="button button-block button-rounded button-glow  button-raised  button-primary  button-large ">完善个人信息</a>
 		</div>
-	</form:form>
+
+
+
+	
+
 </body>
 </html>

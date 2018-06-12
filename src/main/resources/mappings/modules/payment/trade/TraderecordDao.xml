@@ -17,7 +17,7 @@
 		a.trd_detail AS "detail",
 		a.trd_channel AS "channel",
 		a.trd_status AS "status",
-		a.trd_userno AS "user.name",
+		a.trd_userno AS "user.id",
 		a.trd_user_ip AS "userIp",
 		a.trd_id_card AS "idCard",
 		a.trd_create_by AS "createBy",
@@ -76,8 +76,8 @@
 			<if test="status != null and status != ''">
 				AND a.trd_status = #{status}
 			</if>
-			<if test="user != null and user.name != null and user.name != ''">
-				AND a.trd_userno = #{user.name}
+			<if test="user != null and user.id != null and user.id != ''">
+				AND a.trd_userno = #{user.id}
 			</if>
 			<if test="userIp != null and userIp != ''">
 				AND a.trd_user_ip = #{userIp}
@@ -152,7 +152,7 @@
 			#{detail},
 			#{channel},
 			#{status},
-			#{user.name},
+			#{user.id},
 			#{userIp},
 			#{idCard},
 			#{createBy},
@@ -180,7 +180,6 @@
 			trd_detail = #{detail},
 			trd_channel = #{channel},
 			trd_status = #{status},
-			trd_userno = #{user.name},
 			trd_user_ip = #{userIp},
 			trd_id_card = #{idCard},
 			trd_create_by = #{createBy},

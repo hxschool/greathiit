@@ -41,11 +41,14 @@ public class QRCodeController {
 		} else {
 			if (ua.contains("Alipay")) {
 				payType = PayType.ALIPAY_APP;
+				params.put("outTradeNo", traderecord.getId());
 				params.put("totalAmount", traderecord.getPayAmount());
 				params.put("subject", traderecord.getSubject());
 				
 			} else if (ua.contains("MicroMessenger")) {
 				payType = PayType.WECHAT_APP;
+				
+				params.put("out_trade_no",traderecord.getId());
 				params.put("total_fee", traderecord.getPayAmount());
 				params.put("body", traderecord.getSubject());
 				params.put("spbill_create_ip", IPUtil.getIpAddr(request));
@@ -55,9 +58,6 @@ public class QRCodeController {
 		traderecord.setChannel(String.valueOf(payType.value()));
 		traderecordService.insertTraderecord(traderecord);
 		StrategyContext strategyContext = new StrategyContext();
-
-		
-		
 		String location = strategyContext.generatePayParams(payType, params);
 		
 		if(!StringUtils.isEmpty(location)) {

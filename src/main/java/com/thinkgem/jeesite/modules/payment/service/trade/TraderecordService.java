@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.payment.dao.order.OrderDao;
 import com.thinkgem.jeesite.modules.payment.dao.trade.TraderecordDao;
 import com.thinkgem.jeesite.modules.payment.entity.order.Order;
@@ -26,24 +27,18 @@ import com.thinkgem.jeesite.modules.sys.dao.SystemDao;
 @Transactional(readOnly = true)
 public class TraderecordService extends CrudService<TraderecordDao, Traderecord> {
 	@Autowired
-	private SystemDao systemDao;
-	@Autowired
 	private OrderDao orderDao;
 	public Traderecord get(String id) {
 		return super.get(id);
 	}
 	@Transactional(readOnly = false)
 	public void insertTraderecord(Traderecord traderecord) {
-		String payId = "T".concat(systemDao.getSequence("serialNo14"));
 		traderecord.setIsNewRecord(true);
-		traderecord.setId(payId);
-		traderecord.setStatus("00");
+		traderecord.setStatus(GlobalConstants.TRADESTATUS_PAY);
 		super.save(traderecord);
 		List<Order> orders = traderecord.getOrders();
 		for(Order order:orders) {
-			String orderId = "O".concat(systemDao.getSequence("serialNo14"));
 			order.setTraderecord(traderecord);
-			order.setId(orderId);
 			orderDao.insert(order);
 		}
 	}

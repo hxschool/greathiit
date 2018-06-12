@@ -52,8 +52,19 @@
 			<include refid="recruitStudentColumns"/>
 		FROM recruit_student a
 		<include refid="recruitStudentJoins"/>
-		WHERE a.id = #{id}
+		WHERE 1=1
+		<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+		<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+		<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
 	</select>
+	
+	
 	
 	<select id="getRecruitStudent" resultType="RecruitStudent">
 		SELECT 
@@ -119,7 +130,6 @@
 	
 	<insert id="insert">
 		INSERT INTO recruit_student(
-			id,
 			exa_number,
 			middle_school,
 			location,
@@ -156,7 +166,6 @@
 			remarks,
 			del_flag
 		) VALUES (
-			#{id},
 			#{exaNumber},
 			#{middleSchool},
 			#{location},

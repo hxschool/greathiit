@@ -12,6 +12,7 @@
 		a.pay_time AS "payTime",
 		a.error_code AS "errorCode",
 		a.error_msg AS "errorMsg",
+		a.userno AS "user.id",
 		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -22,7 +23,7 @@
 	</sql>
 	
 	<sql id="orderJoins">
-		LEFT JOIN trd_traderecord b ON b.id = a.trade_id
+		LEFT JOIN trd_traderecord b ON b.trd_id = a.trade_id
 	</sql>
     
 	<select id="get" resultType="Order">
@@ -30,7 +31,22 @@
 			<include refid="orderColumns"/>
 		FROM trd_order a
 		<include refid="orderJoins"/>
-		WHERE a.id = #{id}
+		WHERE 1=1
+			<if test="id != null and id != ''">
+				AND a.id = #{id}
+			</if>
+			<if test="traderecord != null and traderecord.id != null and traderecord.id != ''">
+				AND a.trade_id = #{traderecord.id}
+			</if>
+			<if test="payId != null and payId != ''">
+				AND a.pay_id = #{payId}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			<if test="user!=null and user.id != null and user.id != ''">
+				AND a.userno = #{user.id}
+			</if>
 	</select>
 	
 	<select id="findList" resultType="Order">
@@ -66,6 +82,9 @@
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
+			</if>
+			<if test="user!=null and user.id != null and user.id != ''">
+				AND a.userno = #{user.id}
 			</if>
 		</where>
 		<choose>
@@ -107,6 +126,7 @@
 			pay_time,
 			error_code,
 			error_msg,
+			userno,
 			status,
 			create_by,
 			create_date,
@@ -124,6 +144,7 @@
 			#{payTime},
 			#{errorCode},
 			#{errorMsg},
+			#{user.id},
 			#{status},
 			#{createBy.id},
 			#{createDate},
@@ -144,6 +165,7 @@
 			pay_time = #{payTime},
 			error_code = #{errorCode},
 			error_msg = #{errorMsg},
+			userno = #{user.id},
 			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,18 +17,22 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
 import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -42,6 +47,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @RequestMapping(value = "${adminPath}/recruit/student/recruitStudent")
 public class RecruitStudentController extends BaseController {
 
+	
 	@Autowired
 	private RecruitStudentService recruitStudentService;
 	
@@ -63,8 +69,24 @@ public class RecruitStudentController extends BaseController {
 	}
 	//@RequiresPermissions("recruit:student:recruitStudent:view")
 	@RequestMapping
-	public String index(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
-		return "modules/recruit/student/recruitStudentIndex";
+	public String router(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		recruitStudent.setIdCard(user.getLoginName());
+		RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
+		if(!org.springframework.util.StringUtils.isEmpty(pojo)&&!org.springframework.util.StringUtils.isEmpty(pojo.getStatus())) {
+			if(pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO)) {
+				return "modules/recruit/student/recruitStudentBaodao";
+			}else if(pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS)) {
+				return "modules/recruit/student/recruitStudentBaodaoSuccess";
+			}else if(pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC)) {
+				return "redirect:"+Global.getAdminPath()+"/payment/recruitStudent/success.html";
+			}else if(pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_FAIL)) {
+				return "redirect:"+Global.getAdminPath()+"/payment/recruitStudent/fail.html";
+			}else {
+				return "modules/recruit/student/recruitStudentError";
+			}
+		}
+		return "modules/recruit/student/recruitStudentBaodao";
 	}
 	
 	//@RequiresPermissions("recruit:student:recruitStudent:view")
@@ -80,6 +102,15 @@ public class RecruitStudentController extends BaseController {
 	public String form(RecruitStudent recruitStudent, Model model) {
 		model.addAttribute("recruitStudent", recruitStudent);
 		return "modules/recruit/student/recruitStudentForm";
+	}
+	
+	@RequestMapping(value = "checkUsernameAndIdcard")
+	@ResponseBody
+	public RecruitStudent checkUsernameAndIdcard(RecruitStudent recruitStudent, Model model) {
+		if(!org.springframework.util.StringUtils.isEmpty(recruitStudent)&&!org.springframework.util.StringUtils.isEmpty(recruitStudent.getId())) {
+			return recruitStudent;
+		}
+		return null;
 	}
 
 	//@RequiresPermissions("recruit:student:recruitStudent:edit")
@@ -101,11 +132,11 @@ public class RecruitStudentController extends BaseController {
 		RecruitStudent recruitStudent = new RecruitStudent();
 		recruitStudent.setIdCard(user.getLoginName());
 		RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
-		pojo.setStatus("01");
+		pojo.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS);
 		recruitStudentService.save(pojo);
 		addMessage(redirectAttributes, "报到成功.接下来可以进行修改个人信息,或在线缴费");
 		model.addAttribute("recruitStudent", pojo);
-		return "modules/recruit/student/recruitStudentFirst";
+		return "modules/recruit/student/recruitStudentBaodaoSuccess";
 	}
 	
 	//@RequiresPermissions("recruit:student:recruitStudent:edit")
@@ -116,7 +147,19 @@ public class RecruitStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
 	}
 	
-	
+	@RequiresPermissions("sys:user:view")
+    @RequestMapping(value = "import/template")
+    public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "统招数据导入模板.xlsx";
+    		List<RecruitStudent> list = Lists.newArrayList(); list.add(new RecruitStudent());
+    		new ExportExcel("统招数据", RecruitStudent.class, 2).setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
+    }
 	/**
 	 * 导入用户数据
 	 * @param file
@@ -156,18 +199,29 @@ public class RecruitStudentController extends BaseController {
 							}
 						}
 						//初始化数据导入
-						recruitStudent.setStatus("00");
+						recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO);
+						
 						
 						recruitStudentService.save(recruitStudent);
 						String idCard = recruitStudent.getIdCard();
-						user.setAccountNo("");
-						user.setName(recruitStudent.getUsername());
-						user.setLoginName(idCard);
-						String password = systemService.entryptPassword(idCard.substring(idCard.length()-6));
-						user.setPassword(password);
-						user.setLoginIp("0.0.0.0");
-						user.setDelFlag("0");
-						systemService.saveUser(user);
+						User entity = UserUtils.getByLoginName(idCard);
+						if(org.springframework.util.StringUtils.isEmpty(entity)) {
+							user.setAccountNo("");
+							user.setName(recruitStudent.getUsername());
+							user.setLoginName(idCard);
+							String password = systemService.entryptPassword(idCard.substring(idCard.length()-6));
+							user.setPassword(password);
+							user.setLoginIp("0.0.0.0");
+							user.setDelFlag("0");
+							user.setRemarks("0.0");
+							String tongzhao = "迎新生";
+							Role role = systemService.getRoleByName(tongzhao);
+							List<Role> roleList = Lists.newArrayList();
+							roleList.add(role);
+							user.setRoleList(roleList);
+							systemService.saveUser(user);
+						}
+						
 						successNum++;
 					}else{
 						failureMsg.append("<br/>身份证号: "+recruitStudent.getIdCard()+" 已存在; ");
@@ -193,5 +247,7 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
     }
+    
+    
 
 }

@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.pay.strategy;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -17,9 +18,11 @@ import com.alipay.api.domain.AlipayTradePrecreateModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.utils.PropertiesLoader;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.modules.callback.constants.AlipayTradeStatus;
 import com.thinkgem.jeesite.modules.callback.result.AlipayResult;
 import com.thinkgem.jeesite.modules.pay.GlobalConstants;
@@ -29,6 +32,12 @@ import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
 import com.thinkgem.jeesite.modules.payment.service.order.OrderService;
 import com.thinkgem.jeesite.modules.payment.service.trade.TraderecordService;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
+import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.DictService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 
 public class AlipayStrategy implements PayStrategy {
@@ -96,18 +105,63 @@ public class AlipayStrategy implements PayStrategy {
 		                        	 Traderecord traderecord = traderecordService.get(alipayResult.getOut_trade_no());
 		                        	 if(traderecord.getStatus().equals(GlobalConstants.TRADESTATUS_PAY)) {
 		                        		 traderecord.setStatus(GlobalConstants.TRADESTATUS_SUC);
+		                        		 traderecord.setPayTime(new Date());
 		                        		 traderecordService.save(traderecord);
-		                        		 List<Order> orders = traderecord.getOrders();
+		                        		 
 		                        		 OrderService orderService = SpringContextHolder.getBean(OrderService.class);
+		                        		 Order tradeOrder = new Order();
+		                        		 tradeOrder.setTraderecord(traderecord);
+		                        		 List<Order> orders =  orderService.findList(tradeOrder);
+		                        		 List<String> list1 = Lists.newArrayList();
 		                        		 for(Order order:orders) {
+		                        			 logger.info("准备更新订单:{}",order);
 		                        			 order.setStatus(GlobalConstants.TRADESTATUS_SUC);
 		                        			 orderService.save(order);
 		                        		 }
+		                        		
+		                        		
+											User user = UserUtils.get(traderecord.getUser().getId());
+											Dict dict = new Dict();
+											dict.setType("payment_type");
+											DictService dictService = SpringContextHolder.getBean(DictService.class);
+											List<Dict> dicts = dictService.findList(dict);
+		
+											for (Dict d : dicts) {
+												if (!StringUtils.isEmpty(user.getNo())) {
+													String year = StudentUtil.getCircles(user.getNo());
+													if (year.equals(d.getRemarks())) {
+														list1.add(d.getId());
+													}
+												} else {
+													list1.add(d.getId());
+												}
+											}
+											 List<String> list0 = Lists.newArrayList();
+			                        		 Order order = new Order();
+			                        		 order.setUser(user);
+			                        		 order.setStatus(GlobalConstants.TRADESTATUS_SUC);
+			                        		 List<Order> orderList = orderService.findList(order);
+			                        		 for(Order o:orderList) {
+			                        			 list0.add(o.getPayId());
+			                        		 }
+											boolean ret = list0.containsAll(list1) && list1.containsAll(list0);
+		
+											if (ret) {
+												logger.info("准备更新学生缴费信息状态...全部费用已经完成缴费");
+												RecruitStudentService recruitStudentService = SpringContextHolder.getBean(RecruitStudentService.class);
+												RecruitStudent recruitStudent = new RecruitStudent();
+												recruitStudent.setIdCard(user.getLoginName());
+												recruitStudent = recruitStudentService.get(recruitStudent);
+												recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC);
+												recruitStudentService.save(recruitStudent);
+											}
 		                        	 }
 
 		                        } catch (Exception e) {
 		                            logger.error("支付宝回调业务处理报错,params:" + resultJson, e);
 		                        }
+		                        
+		                        
 		                    } else {
 		                        logger.error("没有处理支付宝回调业务，支付宝交易状态：{},params:{}",alipayResult.getTrade_status(),resultJson);
 		                    }
@@ -133,8 +187,9 @@ public class AlipayStrategy implements PayStrategy {
        
 
         // 2、判断total_amount是否确实为该订单的实际金额（即商户订单创建时的金额），
-        long total_amount = new BigDecimal(params.get("total_amount")).multiply(new BigDecimal(100)).longValue();       
-        if (total_amount != Long.valueOf(traderecord.getPayAmount())) {
+        long total_amount = new BigDecimal(params.get("total_amount")).multiply(new BigDecimal(100)).longValue(); 
+        long pay_amount = new BigDecimal(traderecord.getPayAmount()).multiply(new BigDecimal(100)).longValue(); 
+        if (total_amount != pay_amount) {
             throw new AlipayApiException("error total_amount");
         }
         // 3、校验通知中的seller_id（或者seller_email)是否为out_trade_no这笔单据的对应的操作方（有的时候，一个商户可能有多个seller_id/seller_email），

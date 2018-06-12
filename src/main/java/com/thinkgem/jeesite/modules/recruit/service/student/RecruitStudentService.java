@@ -22,6 +22,13 @@ import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
 @Service
 @Transactional(readOnly = true)
 public class RecruitStudentService extends CrudService<RecruitStudentDao, RecruitStudent> {
+	
+	public static final String RECRUIT_STUDENT_STATUS_BAODAO="00";//初始化
+	public static final String RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS="01";//学院已报道
+	public static final String RECRUIT_STUDENT_STATUS_PAY="10";//
+	public static final String RECRUIT_STUDENT_STATUS_PAY_SUCC="20";//缴费成功
+	public static final String RECRUIT_STUDENT_STATUS_PAY_FAIL="30";//缴费失败
+	
 	@Autowired
 	private RecruitStudentDao recruitStudentDao;
 	

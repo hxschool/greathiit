@@ -25,8 +25,37 @@ public class StudentUtil {
 		
 		return "";
 	}
+	
+	public static String getCircles(String studentNumber) {
+		if(StringUtils.isEmpty(studentNumber)) {
+			return "";
+		}
+		if(studentNumber.length()==6) {
+			return "20" + studentNumber.substring(0, 2);
+		}
+		if(studentNumber.length()==7) {
+			return "20" + studentNumber.substring(0, 2);
+		}
+		
+		if(studentNumber.length()==8) {
+			return "20" + studentNumber.substring(0, 2) ;
+		}
+		
+		if(studentNumber.length()==10) {
+			return studentNumber.substring(0, 4);
+		}
+		
+		if(studentNumber.length()==12) {
+			return studentNumber.substring(0, 4);
+		}
+		if(studentNumber.length()==13) {
+			return studentNumber.substring(0, 4);
+		}
+		return "";
+	}
+	
 	public static void main(String[] args) {
-		String s = getClassId("201501210325");
+		String s = getCircles("15211001");
 		System.out.println("s:"+s);
 	}
 }

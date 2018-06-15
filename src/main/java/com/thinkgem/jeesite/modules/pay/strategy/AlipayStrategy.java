@@ -40,7 +40,7 @@ import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 
-public class AlipayStrategy implements PayStrategy {
+public class AlipayStrategy extends TradeStrategy implements PayStrategy {
     private static Logger logger = LoggerFactory.getLogger(AlipayStrategy.class);
 	private static String APP_ID = "2016091400512924";
 	private static String APP_PRIVATE_KEY="MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCwKn56xSqTecAfifTvd/eAX+Vdy+72U5Kz0P5wH/+8FFO9mZv3r0sQiilDpVKJhYL824VZHeUp0QnqGekIch0ZM+O0Bvu4prTKMql4wWa+uM5/pxfJ4ijgG8aIsvDlNmcSWQPIvxJ+xLEaZKmimbA+JL6vl3+31i6UlgBIo3rfyLwdWcy1AqkhqGx+sx1bAyoD/H1ariQK+LDNLv14ry8Z9sWnvPfRPvi/KH4YP9Udeam0H/gYAyMB9uT3J5xVcM/UuMQTnX0MmthZtdq9oB3oO7inAzfTWOqPcr2Lj8RF4NRlqvPAHhXuP0ZqJJWk682YyvEJnCVW+PgJQPDqm9f/AgMBAAECggEAXDqzIwVsp+8a9agdUu4E5vHNvJCTF+VjLb8iJoOqOMaPnPj53e+pJgyfU+oOzy7WCBnJs4FiQ8VMIoLULPbJYzN2Z/8r9F1a0204qp7ecsWAXvaVDr3X1pTUGSdN1ULpLYLq50OZpELH0eCXqyg5TB+isX1ogU+h7Wqm1WC5aMToQlyMkXIoSgrK6x48sYjIeRkykqblIRVyPM7fbtWDXcDE2VQZjdZ1kWA+I9udbi2497ZxBotQxrVVx865xkYYhEvWXBZ4Eor0wdlcdwDQfiixRYp8+faCGNK2XtT12ccWOVmrrWml+QJwKtmVuRx0fG6H5/e7sEdOTdJe0HTKqQKBgQDvE+Xx/dHrVBNEWru63uIyPRVnEeL2s68hRQd7aOCmO6rfUCdnxRQ97tYOrkExmyeL9fHFiWtp13vaeH3rnDYEEQDVzzpFzMJQlJ8/QJPhHB5I4KMfV4r3+gAzZbdzrJYkJCBs64k2/kRZz17LY7xoNyu1SgVxNcVqgKNmHI7uHQKBgQC8oqG2EP65R7TUaXdHJhzosP3gOrYBA6xZ/wCceA/gxhdp2CuZoMz4QA3qXaX1605ADbS5Zxkigos+NQChhIhN2NS37ZQEof1g+SitDKDcNI4TGRleDjvR+8Vwbr7cFlOPT8zZSHkt+eDJVWDQWF+EHV39jk2MquHdGyPiGCZzywKBgHmtq+uU3mEiQkgY0dETHRaqphj2LoiW/Pw20M8LmsKgPaA4gEW9NUcsJoAESiQALol6XFnITgXpaRzRFG107Lz3FnC7bpIV25P9gGtF5727fOJkikEqYg1BjRabn1ndLfEo/ePRoN1/XbRD6aAkm8CCy9kR2mE7F8XTwNX4lPo1AoGBAIEgWs5E5/lw6ooU//+GSXfH4KHjzr73Ar5AXuy9CzF0qIZd4cqyVl0BjAUIwhiLUO9r8nCP8Ja9AhA9PAdUr/GKImMdkJtzP/1n0b5TzLGwkCjmn4TQ/YYKcOc8CA6kgeKyX6nFgJ5GVOe9OB6mwAuyBqsRBGjseNxgPboBiiDtAoGAfi6OUVzhQwJDMbAPmRjpphWY60pqC4kzU0uWeAoCZ+CFE2lZo31ijImQBhJXzJVyYLPdhOshMx6BkCy6yJuD8eQDfzksB+ATv1syFkLfMwHtF3dECxWxq1D51U+NHsLIO79zA20NQhjW6BYeUY3VzLX7b4SNZxSMRN3CAIbHrDo=";
@@ -100,68 +100,8 @@ public class AlipayStrategy implements PayStrategy {
 			                logger.info("支付宝回调签名认证成功");
 			                if (alipayResult.getTrade_status().equals(AlipayTradeStatus.TRADE_SUCCESS)
 		                            || alipayResult.getTrade_status().equals(AlipayTradeStatus.TRADE_FINISHED)) {
-		                        try {
-		                        	 TraderecordService traderecordService = SpringContextHolder.getBean(TraderecordService.class);
-		                        	 Traderecord traderecord = traderecordService.get(alipayResult.getOut_trade_no());
-		                        	 if(traderecord.getStatus().equals(GlobalConstants.TRADESTATUS_PAY)) {
-		                        		 traderecord.setStatus(GlobalConstants.TRADESTATUS_SUC);
-		                        		 traderecord.setPayTime(new Date());
-		                        		 traderecordService.save(traderecord);
-		                        		 
-		                        		 OrderService orderService = SpringContextHolder.getBean(OrderService.class);
-		                        		 Order tradeOrder = new Order();
-		                        		 tradeOrder.setTraderecord(traderecord);
-		                        		 List<Order> orders =  orderService.findList(tradeOrder);
-		                        		 List<String> list1 = Lists.newArrayList();
-		                        		 for(Order order:orders) {
-		                        			 logger.info("准备更新订单:{}",order);
-		                        			 order.setStatus(GlobalConstants.TRADESTATUS_SUC);
-		                        			 orderService.save(order);
-		                        		 }
-		                        		
-		                        		
-											User user = UserUtils.get(traderecord.getUser().getId());
-											Dict dict = new Dict();
-											dict.setType("payment_type");
-											DictService dictService = SpringContextHolder.getBean(DictService.class);
-											List<Dict> dicts = dictService.findList(dict);
-		
-											for (Dict d : dicts) {
-												if (!StringUtils.isEmpty(user.getNo())) {
-													String year = StudentUtil.getCircles(user.getNo());
-													if (year.equals(d.getRemarks())) {
-														list1.add(d.getId());
-													}
-												} else {
-													list1.add(d.getId());
-												}
-											}
-											 List<String> list0 = Lists.newArrayList();
-			                        		 Order order = new Order();
-			                        		 order.setUser(user);
-			                        		 order.setStatus(GlobalConstants.TRADESTATUS_SUC);
-			                        		 List<Order> orderList = orderService.findList(order);
-			                        		 for(Order o:orderList) {
-			                        			 list0.add(o.getPayId());
-			                        		 }
-											boolean ret = list0.containsAll(list1) && list1.containsAll(list0);
-		
-											if (ret) {
-												logger.info("准备更新学生缴费信息状态...全部费用已经完成缴费");
-												RecruitStudentService recruitStudentService = SpringContextHolder.getBean(RecruitStudentService.class);
-												RecruitStudent recruitStudent = new RecruitStudent();
-												recruitStudent.setIdCard(user.getLoginName());
-												recruitStudent = recruitStudentService.get(recruitStudent);
-												recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC);
-												recruitStudentService.save(recruitStudent);
-											}
-		                        	 }
-
-		                        } catch (Exception e) {
-		                            logger.error("支付宝回调业务处理报错,params:" + resultJson, e);
-		                        }
-		                        
-		                        
+			                	String out_trade_no = alipayResult.getOut_trade_no(); 
+		                        update(out_trade_no);
 		                    } else {
 		                        logger.error("没有处理支付宝回调业务，支付宝交易状态：{},params:{}",alipayResult.getTrade_status(),resultJson);
 		                    }

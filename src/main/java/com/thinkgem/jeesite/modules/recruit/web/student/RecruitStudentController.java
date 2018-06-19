@@ -181,20 +181,20 @@ public class RecruitStudentController extends BaseController {
 					RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
 					if (org.springframework.util.StringUtils.isEmpty(pojo)){
 						User user = new User();
-						String compayname = recruitStudent.getCompanyName();
+						String compayname = recruitStudent.getDepartment().getName();
 						if(!org.springframework.util.StringUtils.isEmpty(compayname)) {
 							Office company = officeService.getOfficeByName(compayname);
 							if(!org.springframework.util.StringUtils.isEmpty(company)) {
-								recruitStudent.setCompany(company);
+								recruitStudent.setDepartment(company);
 								user.setCompany(company);
 							}
 						}
 						
-						String officename = recruitStudent.getOfficeName();
+						String officename = recruitStudent.getMajor().getName();
 						if(!org.springframework.util.StringUtils.isEmpty(officename)) {
 							Office office = officeService.getOfficeByName(officename);
 							if(!org.springframework.util.StringUtils.isEmpty(office)) {
-								recruitStudent.setOffice(office);
+								recruitStudent.setMajor(office);
 								user.setOffice(office);
 							}
 						}
@@ -209,7 +209,7 @@ public class RecruitStudentController extends BaseController {
 							user.setAccountNo("");
 							user.setName(recruitStudent.getUsername());
 							user.setLoginName(idCard);
-							String password = systemService.entryptPassword(idCard.substring(idCard.length()-6));
+							String password = SystemService.entryptPassword(idCard.substring(idCard.length()-6));
 							user.setPassword(password);
 							user.setLoginIp("0.0.0.0");
 							user.setDelFlag("0");

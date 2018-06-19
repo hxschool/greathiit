@@ -16,7 +16,6 @@ import com.thinkgem.jeesite.modules.payment.dao.order.OrderDao;
 import com.thinkgem.jeesite.modules.payment.dao.trade.TraderecordDao;
 import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
-import com.thinkgem.jeesite.modules.sys.dao.SystemDao;
 
 /**
  * 交易信息Service
@@ -26,6 +25,10 @@ import com.thinkgem.jeesite.modules.sys.dao.SystemDao;
 @Service
 @Transactional(readOnly = true)
 public class TraderecordService extends CrudService<TraderecordDao, Traderecord> {
+	public static final String PAYMENT_TRADE_RECORD_STATUS_FEE="00";//初始化
+
+	public static final String PAYMENT_TRADE_RECORD_STATUS_ING="10";//
+	public static final String PAYMENT_TRADE_RECORD_STATUS_SUCC="20";//缴费成功
 	@Autowired
 	private OrderDao orderDao;
 	public Traderecord get(String id) {

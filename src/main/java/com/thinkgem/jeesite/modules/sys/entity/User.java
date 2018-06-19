@@ -39,7 +39,6 @@ public class User extends DataEntity<User> {
 	private String password;// 密码
 	private String no;		// 工号
 	private String name;	// 姓名
-	private String sex;//性别
 	private String email;	// 邮箱
 	private String phone;	// 电话
 	private String mobile;	// 手机
@@ -60,6 +59,8 @@ public class User extends DataEntity<User> {
 	private List<Role> roleList = Lists.newArrayList(); // 拥有角色列表
 	
 	private String accountNo;
+	
+	private String payStatus;//缴费状态
 
 	public User() {
 		super();
@@ -367,6 +368,16 @@ public class User extends DataEntity<User> {
 
 	public void setAccountNo(String accountNo) {
 		this.accountNo = accountNo;
+	}
+
+
+
+	public String getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(String payStatus) {
+		this.payStatus = payStatus;
 	}
 
 	@Override

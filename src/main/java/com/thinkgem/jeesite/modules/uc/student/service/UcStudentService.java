@@ -26,6 +26,8 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	@Autowired
 	private UcStudentDao ucStudentDao;
+	
+	
 	public UcStudent get(String id) {
 		return super.get(id);
 	}

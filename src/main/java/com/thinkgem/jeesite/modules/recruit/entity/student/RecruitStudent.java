@@ -23,10 +23,9 @@ public class RecruitStudent extends DataEntity<RecruitStudent> {
 	private String noticeNumber;		// 录取通知书编号
 	private String province;		// 省份
 	private String leven;		// 层次(本科/高职单招)
-	private String companyName;		// 院系
-	private Office company;		// 院系编码
-	private String officeName;		// 专业
-	private Office office;		// 专业编码
+	private Office department;		// 院系编码
+
+	private Office major;		// 专业编码
 	private String username;		// 真实姓名
 	private String gender;		// 性别
 	private String birthday;		// 出生日期
@@ -115,43 +114,23 @@ public class RecruitStudent extends DataEntity<RecruitStudent> {
 		this.leven = leven;
 	}
 	
-	@Length(min=0, max=64, message="院系长度必须介于 0 和 64 之间")
-	@ExcelField(title="院系", align=2, sort=7)
-	public String getCompanyName() {
-		return companyName;
+
+	public Office getDepartment() {
+		return department;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
-	}
-	
-	@Length(min=0, max=64, message="院系编码长度必须介于 0 和 64 之间")
-	public Office getCompany() {
-		return company;
+	public void setDepartment(Office department) {
+		this.department = department;
 	}
 
-	public void setCompany(Office company) {
-		this.company = company;
-	}
-	
-	@Length(min=0, max=64, message="专业长度必须介于 0 和 64 之间")
-	@ExcelField(title="专业", align=2, sort=8)
-	public String getOfficeName() {
-		return officeName;
+	public Office getMajor() {
+		return major;
 	}
 
-	public void setOfficeName(String officeName) {
-		this.officeName = officeName;
-	}
-	
-	public Office getOffice() {
-		return office;
+	public void setMajor(Office major) {
+		this.major = major;
 	}
 
-	public void setOffice(Office office) {
-		this.office = office;
-	}
-	
 	@Length(min=1, max=64, message="姓名长度必须介于 1 和 64 之间")
 	@ExcelField(title="姓名", align=2, sort=9)
 	public String getUsername() {

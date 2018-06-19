@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
 import com.thinkgem.jeesite.modules.payment.service.order.OrderService;
+import com.thinkgem.jeesite.modules.payment.service.trade.TraderecordService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
@@ -60,6 +61,11 @@ public class PaymentController {
 		List<Dict> dicts = dictService.findList(dict);
 		
 		User user = UserUtils.getUser();
+		
+		if(StringUtils.isEmpty(user.getPayStatus())) {
+			user.setPayStatus(TraderecordService.PAYMENT_TRADE_RECORD_STATUS_FEE);
+			systemService.saveUser(user);
+		}
 		
 		for(Dict d:dicts) {
 			PaymentEntity paymentEntity = new PaymentEntity();

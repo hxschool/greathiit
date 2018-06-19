@@ -10,10 +10,10 @@
 		a.notice_number AS "noticeNumber",
 		a.province AS "province",
 		a.leven AS "leven",
-		a.company_name AS "companyName",
-		a.company_id AS "company.id",
-		a.office_name AS "officeName",
-		a.office_id AS "office.id",
+		a.department_name AS "department.name",
+		a.department_id AS "department.id",
+		a.major_name AS "major.name",
+		a.major_id AS "major.id",
 		a.username AS "username",
 		a.gender AS "gender",
 		a.birthday AS "birthday",
@@ -39,12 +39,12 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		o11.name AS "office.name"
+		o11.name AS "major.name"
 	</sql>
 	
 	<sql id="recruitStudentJoins">
-		LEFT JOIN sys_office o11 ON o11.id = a.office_id
-		LEFT JOIN sys_office o12 ON o12.id = a.company_id
+		LEFT JOIN sys_office o11 ON o11.id = a.major_id
+		LEFT JOIN sys_office o12 ON o12.id = a.department_id
 	</sql>
     
 	<select id="get" resultType="RecruitStudent">
@@ -136,10 +136,10 @@
 			notice_number,
 			province,
 			leven,
-			company_name,
-			company_id,
-			office_name,
-			office_id,
+			department_name,
+			department_id,
+			major_name,
+			major_id,
 			username,
 			gender,
 			birthday,
@@ -172,10 +172,10 @@
 			#{noticeNumber},
 			#{province},
 			#{leven},
-			#{companyName},
-			#{company.id},
-			#{officeName},
-			#{office.id},
+			#{department.name},
+			#{department.id},
+			#{major.name},
+			#{major.id},
 			#{username},
 			#{gender},
 			#{birthday},
@@ -213,10 +213,10 @@
 			notice_number = #{noticeNumber},
 			province = #{province},
 			leven = #{leven},
-			company_name = #{companyName},
-			company_id = #{company.id},
-			office_name = #{officeName},
-			office_id = #{office.id},
+			department_name = #{department.name},
+			department_id = #{department.id},
+			major_name = #{major.name},
+			major_id = #{major.id},
 			username = #{username},
 			gender = #{gender},
 			birthday = #{birthday},

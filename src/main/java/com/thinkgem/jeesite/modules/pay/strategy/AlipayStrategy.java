@@ -1,8 +1,6 @@
 package com.thinkgem.jeesite.modules.pay.strategy;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,26 +16,15 @@ import com.alipay.api.domain.AlipayTradePrecreateModel;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
-import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.utils.PropertiesLoader;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
-import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.modules.callback.constants.AlipayTradeStatus;
 import com.thinkgem.jeesite.modules.callback.result.AlipayResult;
-import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.pay.PayStrategy;
 import com.thinkgem.jeesite.modules.pay.enums.PayType;
-import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
-import com.thinkgem.jeesite.modules.payment.service.order.OrderService;
 import com.thinkgem.jeesite.modules.payment.service.trade.TraderecordService;
-import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
-import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
-import com.thinkgem.jeesite.modules.sys.entity.Dict;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.DictService;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 
 public class AlipayStrategy extends TradeStrategy implements PayStrategy {

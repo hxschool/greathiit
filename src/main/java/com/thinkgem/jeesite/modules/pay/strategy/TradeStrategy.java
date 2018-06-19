@@ -20,7 +20,10 @@ import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentServic
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
 public class TradeStrategy {
     private static Logger logger = LoggerFactory.getLogger(TradeStrategy.class);
@@ -78,9 +81,50 @@ public class TradeStrategy {
 						RecruitStudentService recruitStudentService = SpringContextHolder.getBean(RecruitStudentService.class);
 						RecruitStudent recruitStudent = new RecruitStudent();
 						recruitStudent.setIdCard(user.getLoginName());
-						recruitStudent = recruitStudentService.get(recruitStudent);
-						recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC);
-						recruitStudentService.save(recruitStudent);
+						RecruitStudent entity = recruitStudentService.get(recruitStudent);
+						if(!StringUtils.isEmpty(entity)) {
+							
+							UcStudentService ucStudentService = SpringContextHolder.getBean(UcStudentService.class);
+							UcStudent e = new UcStudent();
+							e.setIdCard(user.getLoginName());
+							UcStudent us = ucStudentService.get(e);
+							
+							if(!StringUtils.isEmpty(us)) {
+								us = new UcStudent();
+								us.setExaNumber(entity.getExaNumber());
+								us.setLocation(entity.getLocation());
+								//us.setStudentNumber();
+								us.setUsername(entity.getUsername());
+								us.setGender(entity.getGender());
+								us.setBirthday(entity.getBirthday());
+								us.setIdCard(entity.getIdCard());
+								us.setPolitical(entity.getPolitical());
+								us.setNation(entity.getNation());
+								us.setDepartmentCode(entity.getDepartment().getId());
+								us.setDepartmentId(entity.getDepartment().getId());
+								us.setDepartmentName(entity.getDepartment().getName());
+								us.setMajorCode(entity.getMajor().getId());
+								us.setMajorId(entity.getMajor().getId());
+								us.setMajorName(entity.getMajor().getName());
+								//us.setClassNumber
+								//us.setEdu(entity.getLeven());
+								//us.setSchoolSystem();
+								us.setLearning("注册学籍");
+								us.setStartDate("");
+								//us.setCurrentLevel
+								//us.setOverDate
+								us.setStatus("00");
+								//us.setRegionCode();
+								us.setRegionName(entity.getProvince());
+							}
+							
+							
+							entity.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC);
+							recruitStudentService.save(entity);
+						}
+						SystemService systemService = SpringContextHolder.getBean(SystemService.class);
+						user.setPayStatus(TraderecordService.PAYMENT_TRADE_RECORD_STATUS_SUCC);
+						systemService.saveUser(user);
 					}
         	 }
 

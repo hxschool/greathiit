@@ -61,7 +61,13 @@
 			<include refid="ucStudentColumns"/>
 		FROM uc_student a
 		<include refid="ucStudentJoins"/>
-		WHERE a.id = #{id}
+		WHERE 1=1
+		<if test="id != null and id != ''">
+				AND a.id = #{id}
+		</if>
+		<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+		</if>
 	</select>
 	
 	

@@ -74,7 +74,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	public long exist(User user) {
 		return userDao.exist(user);
 	}
-	
+	public List<User> nassignedStudentNumberByMajorId(User user) {
+		return userDao.nassignedStudentNumberByMajorId(user);
+	}
 	
 	public User getUserByNameAndIdCard(User user) {
 		return userDao.getUserByNameAndIdCard(user);

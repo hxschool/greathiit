@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.recruit.service.student;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.recruit.dao.student.RecruitStudentDao;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass;
 
 /**
  * 统招数据Service
@@ -31,6 +33,11 @@ public class RecruitStudentService extends CrudService<RecruitStudentDao, Recrui
 	
 	@Autowired
 	private RecruitStudentDao recruitStudentDao;
+	
+	
+	public List<RecruitTotalMajorClass> totalMajor(String major_id){
+		return recruitStudentDao.totalMajor(major_id);
+	}
 	
 	public RecruitStudent getRecruitStudent(RecruitStudent entity) {
 		return recruitStudentDao.get(entity);

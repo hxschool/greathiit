@@ -551,6 +551,18 @@ public class IdcardUtils extends StringUtils {
         }
         return sGender;
     }
+    
+    public static String getGender(String idCard) {
+        String sGender = "未知";
+
+        String sCardNum = idCard.substring(16, 17);
+        if (Integer.parseInt(sCardNum) % 2 != 0) {
+            sGender = "男";//男
+        } else {
+            sGender = "女";//女
+        }
+        return sGender;
+    }
 
 	/**
 	 * 根据身份编号获取户籍省份

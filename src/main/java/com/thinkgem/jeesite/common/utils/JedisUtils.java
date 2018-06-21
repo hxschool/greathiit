@@ -32,7 +32,7 @@ public class JedisUtils {
 	private static JedisPool jedisPool = SpringContextHolder.getBean(JedisPool.class);
 
 	public static final String KEY_PREFIX = Global.getConfig("redis.keyPrefix");
-	
+	public static final String GREEN_CLASS_MARK="GREEN_CLASS_MARK";
 	/**
 	 * 获取缓存
 	 * @param key 键

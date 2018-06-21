@@ -52,6 +52,10 @@ public interface UserDao extends CrudDao<User> {
 	 * @return
 	 */
 	public List<User> findUserByUserPojo(User pojo);
+	//nassigned
+	public List<User> nassignedStudentNumberByMajorId(User pojo);
+	
+	
 	
 	public List<User> findListByOfficeIdAndClazzId(@Param("officeId")String officeId,@Param("clazzId")String clazzId);
 	

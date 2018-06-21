@@ -25,7 +25,9 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -46,6 +48,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @Controller
 @RequestMapping(value = "${adminPath}/recruit/student/recruitStudent")
 public class RecruitStudentController extends BaseController {
+
 
 	
 	@Autowired
@@ -134,10 +137,23 @@ public class RecruitStudentController extends BaseController {
 		RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
 		pojo.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS);
 		recruitStudentService.save(pojo);
+		//报到成功了就可以分别学号,班号了
+		
+		String classNumber = StudentUtil.assignClasses(pojo.getMajor().getId(), "01");
+		//计算出班级,学号
+		
+		
 		addMessage(redirectAttributes, "报到成功.接下来可以进行修改个人信息,或在线缴费");
 		model.addAttribute("recruitStudent", pojo);
 		return "modules/recruit/student/recruitStudentBaodaoSuccess";
 	}
+	private String classNumber="01";
+	public String finaClassNumber() {
+		
+		return "01";
+	}
+	
+	
 	
 	//@RequiresPermissions("recruit:student:recruitStudent:edit")
 	@RequestMapping(value = "delete")
@@ -241,6 +257,9 @@ public class RecruitStudentController extends BaseController {
 			if (failureNum>0){
 				failureMsg.insert(0, "，失败 "+failureNum+" 条，导入信息如下：");
 			}
+			
+			JedisUtils.setObject(JedisUtils.GREEN_CLASS_MARK, recruitStudentService.totalMajor(null), 0);
+			
 			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入失败！失败信息："+e.getMessage());

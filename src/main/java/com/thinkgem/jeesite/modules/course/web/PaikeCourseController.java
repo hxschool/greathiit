@@ -39,9 +39,11 @@ import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -75,6 +77,8 @@ public class PaikeCourseController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private TeacherClassService teacherClassService;
+	@Autowired
+	private DictService dictService;
 
 	
 	@RequiresPermissions("course:paike:edit")
@@ -377,7 +381,9 @@ public class PaikeCourseController extends BaseController {
 	
 	@RequestMapping(value = "import")
 	public String importFile(MultipartFile file, HttpRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
-
+		Dict dict = new Dict();
+		dict.setType("course_curs_type");
+		List<Dict> courseCurrsTypes = dictService.findList(dict);
 		try {
 			int successNum = 0;
 			int failureNum = 0;
@@ -504,12 +510,23 @@ public class PaikeCourseController extends BaseController {
 						entity = new Course();
 						entity.setId(systemService.getSequence("serialNo10"));
 						entity.setIsNewRecord(true);
+						entity.setCursMajor(major_name);
 						entity.setTeacher(user);
 						entity.setCursNum(curs_num);
 						entity.setCursName(curs_name);
-						entity.setCursType(curs_type);
-						entity.setCursProperty(assessment_type);
-						entity.setCursClassHour(curs_class_hour);
+						curs_type = curs_type.substring(0, 2); 
+						String cursValue = "other";
+						for(Dict d:courseCurrsTypes) {
+							if(d.getLabel().indexOf(curs_type)>-1) {
+								cursValue = d.getValue();
+								break;
+							}
+						}
+						
+						entity.setCursType(cursValue);
+			
+						String cursClassHour = curs_class_hour.split(".")[0];
+						entity.setCursClassHour(cursClassHour);
 						entity.setRemarks(remark);
 						courseService.save(entity);
 					}

@@ -502,6 +502,8 @@ public class PaikeCourseController extends BaseController {
 					if (StringUtils.isEmpty(entity)) {
 						// 新增课程相关信息
 						entity = new Course();
+						entity.setId(systemService.getSequence("serialNo10"));
+						entity.setIsNewRecord(true);
 						entity.setTeacher(user);
 						entity.setCursNum(curs_num);
 						entity.setCursName(curs_name);

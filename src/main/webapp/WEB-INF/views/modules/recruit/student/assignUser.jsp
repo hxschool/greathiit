@@ -7,6 +7,29 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			
+			$(".editBtn").click(function(){
+				submitUrl("${ctx}/recruit/student/recruitStudent/assign/ajaxSingleSetup",$(this).attr("id"));
+			});
+			
+			$(".resetBtn").click(function(){
+				layer.confirm('您是如何看待前端开发？', {
+					  btn: ['确认重置','取消'] //按钮
+					}, function(){
+						$.post("${ctx}/recruit/student/recruitStudent/assign/ajaxResetSetup",{majorId:$("#majorId").val(),classNo:$("#classNo").val(),ids:$(this).attr("id")},function(result){
+						    if(result!=null&&result!="null"){
+						    	layer.msg(result.responseMessage);
+						    	layer.close(index);
+						    	if(result.responseCode=='00000000'){
+						    		window.location.reload();
+						    	}
+						    }
+					   });
+						
+					}, function(){
+					  
+					});
+			});
+			
 			$("#inputSubmit").click(function(){
 				 var flag = false;
 		          $("[name=ids]").each(function(){
@@ -16,27 +39,11 @@
 		                }
 		           });
 		          if (flag){
-		        	  layer.open({
-	  						title:" ",
-	  					  type: 1,
-	  					  btn: ['确认', '取消'],
-	  					  area: ['400px', '220px'], //宽高
-	  					  content: $("#diglog").html(),
-	  					  yes: function(index, layero){  
-	  						  
-	  						  $.post("${ctx}/recruit/student/recruitStudent/assign/ajaxSetup",{majorId:$("#majorId").val(),classNo:$("#classNo").val(),ids:$("input[name='ids']:checked").serialize()},function(result){
-	  							    $("span").html(result);
-	  							    if(result!=null&&result!="null"){
-	  							    	layer.close(index);
-	  							    }else{
-	  							    	layer.msg('实名信息核对失败,请仔细检查信息是否正确.', function(){
-	  										//关闭后的操作
-	  										});
-	  							    }
-	  						   });
-	  						  
-	  		                }
-	  					});
+		        	  var chk_value =[];
+					  	$('input[name=ids]:checked').each(function(){  
+						   chk_value.push($(this).val());
+						});
+		        	  submitUrl("${ctx}/recruit/student/recruitStudent/assign/ajaxSetup",chk_value);
 		          }else{
 		               alert('请选择需要分班的学生!');
 		          }
@@ -50,6 +57,35 @@
 				}
 			});
 		});
+			
+	 	function submitUrl(url,value){
+	 		 layer.open({
+					title:" ",
+				  type: 1,
+				  btn: ['确认', '取消'],
+				  area: ['535px', '345px'], //宽高
+				  content: $("#diglog"),
+				  yes: function(index, layero){  
+
+					  if($("#classNo").val()==''){
+						  layer.msg("请填写班级编号");
+						  return;
+					  }
+					  //"${ctx}/recruit/student/recruitStudent/assign/ajaxSetup"
+					  $.post(url,{majorId:$("#majorId").val(),classNo:$("#classNo").val(),ids:value},function(result){
+						    
+						    if(result!=null&&result!="null"){
+						    	layer.msg(result.responseMessage);
+						    	layer.close(index);
+						    	if(result.responseCode=='00000000'){
+						    		//window.location.href = window.location.href;
+						    	}
+						    }
+					   });
+					  
+	                }
+				});
+	 	}
 	</script>
 <style type="text/css">
 
@@ -175,29 +211,27 @@
 				</td>
 			
 				<td>
-    				<a href="${ctx}/recruit/student/recruitStudent/form?id=${user.id}">修改</a>
-					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${user.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">删除</a>
+    				<a class="editBtn" id="${user.id}">添加学号</a>
+					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${user.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">重置学号</a>
 				</td>
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
 	
-	<a id="inputSubmit" class="button button-block button-rounded button-caution button-large">确认分配学号</a>
+	<a id="inputSubmit" class="button button-block button-rounded button-primary button-large">确认分配学号</a>
 	
-	<input type="text" name="majorId" id="majorId" value="${majorId }"/>
+	<input type="hidden" name="majorId" id="majorId" value="${majorId }"/>
 	
 	<div id="diglog" style="display: none">
 		<form action="" method="post" class="basic-grey"
-			style="margin-top: 20px">
+			style="margin-top: 5px">
 			<h1>
 				信息核实 <span>请输入班级排序号</span>
 			</h1>
-			 <label> <span>班号:</span> <input id="classNo" type="type"
+			 <label> <span>班号:</span> <input id="classNo" type="text"
 				name="classNo" placeholder="请输入班级编号" />
 			</label>
-
-
 		</form>
 	</div>
 </body>

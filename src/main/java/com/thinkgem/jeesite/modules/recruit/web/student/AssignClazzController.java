@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -76,6 +77,7 @@ public class AssignClazzController  extends BaseController{
 				office.setId(majorId);
 				user.setOffice(office);
 				List<User> users = systemService.nassignedStudentNumberByMajorId(user);
+				model.addAttribute("modeSwitch", modeSwitch);
 				model.addAttribute("majorId", majorId);
 				model.addAttribute("users", users);
 				return "modules/recruit/student/assignUser";
@@ -84,18 +86,64 @@ public class AssignClazzController  extends BaseController{
 		addMessage(redirectAttributes, "["+majorName+"]专业设置自动分班状态成功");
 		return "modules/recruit/student/assignSuccess";
 	}
-	@RequestMapping("ajaxSetup")
+	
+	@RequestMapping("ajaxResetSetup")
 	@ResponseBody
-	public Map<String,String> ajaxSetup(String majorId,String classNo,List<String> ids) {
+	public Map<String,String> ajaxResetSetup(String majorId,String classNo,String ids) {
+		Map<String,String> map = new HashMap<String,String>();
+		User user = UserUtils.get(ids);
+		user.setClazz(null);
+		user.setNo(null);
+		user.setLoginIp("0.0.0.0");
+		user.setRemarks("重置学号");
+		systemService.saveUser(user);
+		map.put("responseCode", "00000000");
+		map.put("responseMessage", "为当前班级分配学号成功");
+		return map;
+	}
+	
+	
+	@RequestMapping("ajaxSingleSetup")
+	@ResponseBody
+	public Map<String,String> ajaxSingleSetup(String majorId,String classNo,String ids) {
 		String clazzId = StudentUtil.assignClasses(majorId, classNo);
 		Office clazz = officeService.get(clazzId);
 		Map<String,String> map = new HashMap<String,String>();
 		if(StringUtils.isEmpty(clazz.getRemarks())) {
 			clazz.setRemarks("1");
 		}
-		if((Integer.valueOf(clazz.getRemarks()) + ids.size())>30) {
+
+		int i = Integer.valueOf(clazz.getRemarks());
+		User user = UserUtils.get(ids);
+		clazz.setId(clazzId);
+		user.setClazz(clazz);
+		String s = String.format("%02d", i);
+		String no = clazzId.concat(s);
+		user.setNo(no);
+		user.setLoginIp("0.0.0.0");
+		user.setRemarks("手动设置学号");
+		systemService.saveUser(user);
+		i++;
+		clazz.setRemarks(String.valueOf(i));
+		officeService.save(clazz);
+
+		map.put("responseCode", "00000000");
+		map.put("responseMessage", "为当前班级分配学号成功");
+		return map;
+	}
+	
+	@RequestMapping("ajaxSetup")
+	@ResponseBody
+	public Map<String,String> ajaxSetup(String majorId,String classNo,@RequestParam("ids[]") String[] ids) {
+		String clazzId = StudentUtil.assignClasses(majorId, classNo);
+		Office clazz = officeService.get(clazzId);
+		Map<String,String> map = new HashMap<String,String>();
+		if(StringUtils.isEmpty(clazz.getRemarks())) {
+			clazz.setRemarks("1");
+		}
+		if((Integer.valueOf(clazz.getRemarks()) + ids.length)>30) {
 			map.put("responseCode", "99999999");
-			map.put("responseMessage", "当前分班学生量大于班级默认总人数30,超出人数:" + ((Integer.valueOf(clazz.getRemarks()) + ids.size()) - 30));
+			map.put("responseMessage", "当前分班学生量大于默认人数30,超出人数:" + ((Integer.valueOf(clazz.getRemarks()) + ids.length) - 30));
 			return map;
 		}
 		if(Integer.valueOf(clazz.getRemarks())>30) {
@@ -120,7 +168,8 @@ public class AssignClazzController  extends BaseController{
 			clazz.setRemarks(String.valueOf(i));
 			officeService.save(clazz);
 		}
-		
+		map.put("responseCode", "00000000");
+		map.put("responseMessage", "为当前班级分配学号成功");
 		return map;
 	}
 }

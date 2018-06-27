@@ -19,6 +19,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 @MyBatisDao
 public interface UserDao extends CrudDao<User> {
 	
+	public User getUserSingleByName(@Param("name")String name);
 	
 	public User getCasByLoginName(@Param("loginname")String loginname);
 	

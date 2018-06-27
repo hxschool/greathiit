@@ -134,9 +134,9 @@ td{
 					
 					 <form name="form0">
                    
-                    <input type="text" name="url_time" value="" style="display:none">
-                    <input type="text" name="year"  style="display:none;" value="${yearTerm}" class="input_text"/>
-                    <input type="text" name="servers_time" style="display:none;" value="${mm}@${dd}">
+                    <input type="hidden" name="url_time" value="" >
+                    <input type="hidden" name="year"   value="${yearTerm}" class="input_text"/>
+                    <input type="hidden" name="servers_time" value="${mm}@${dd}">
                    
                  
                     <input type="text" name="year_rili" id="year_rili"
@@ -200,50 +200,81 @@ td{
                     <div id="up" style="display:none; width:400px; height:600px;">
                     <form action="" name="form" style="margin-left:30px; margin-top:50px;">
                         <p>
-                        <a onclick="putongke()" class="prime_a">普通课</a>&nbsp;<!-- |&nbsp;<a onclick="renxuanke()" class="prime_a">任选课</a> -->
-                        <input  type="text" style="display:none" name="time" /> <!-- 存放时间地址字段-->
+                        <a onclick="putongke()" class="button button-primary button-small">普通课</a>&nbsp;&nbsp;<a onclick="renxuanke()" class="button  button-caution button-small">任选课</a> 
+                        <input  type="hidden" name="time" /> <!-- 存放时间地址字段-->
                         
-						<p>
-						
-						<div id="element_id" style="width:340px;">
-						<p>
-							学院:&nbsp;&nbsp; <select name="school" id="school"
-								class="school" style="width:200px;">
-								<option value="" selected="selected">==请选择学院==</option>
-							</select>
-							
+						<p></p>
+						<div id="putongke">
+							<div id="element_id" style="width:340px;">
 							<p>
-								专业:&nbsp;&nbsp; <select name="major" id="major"
-									class="major" style="width:200px;">
-									<option value="" selected="selected">==请选择专业==</option>
+								学院:&nbsp;&nbsp; <select name="school" id="school"
+									class="school" style="width:200px;">
+									<option value="" selected="selected">==请选择学院==</option>
 								</select>
 								
-							<p>年级:&nbsp;&nbsp;
-	                        <select name="grade"  id="grade" class="grade" style="width:200px;" >
-	                          <option value="" selected="selected">==请选择年级==</option>
-	                        </select>
-	                      
-							<p>
-							<div style="width:370px;float:left;margin-bottom:10px">班级:&nbsp;&nbsp;
-								 <div id="w_test"></div></div>
+								<p>
+									专业:&nbsp;&nbsp; <select name="major" id="major"
+										class="major" style="width:200px;">
+										<option value="" selected="selected">==请选择专业==</option>
+									</select>
+									
+								<p>年级:&nbsp;&nbsp;
+		                        <select name="grade"  id="grade" class="grade" style="width:200px;" >
+		                          <option value="" selected="selected">==请选择年级==</option>
+		                        </select>
+		                      
+								<p>
 								
-						</div>
-						
-						<div id="course_id" style="width:370px;float:left">
-							<p>课程:&nbsp;&nbsp;
-	                        <select name="course" id="course" class="course" style="width:280px">
-	                        <option value="" selected="selected">==请选择课程==</option>
-	                        </select>
+								<div style="width: 370px; float: left; margin-bottom: 10px">
+									班级:&nbsp;&nbsp;
+									<div id="w_test"></div>
+								</div>
+
+							</div>
+							
+							<div id="course_id" class="course_id" style="width:370px;float:left">
+								<p>课程:&nbsp;&nbsp;
+		                        <select name="course" id="course" class="course" style="width:280px">
+		                        <option value="" selected="selected">==请选择课程==</option>
+		                        </select>
+	                        </div>
+	                       
+	                        <div>
+	                        	<p>周期:&nbsp;&nbsp;&nbsp;<select name="w" id="select_id" style="width:280px"></select>
+	                        </div>
+	                         <div>
+	                     		 <p>备注:&nbsp;&nbsp;&nbsp;<input type="text" name="tips"/>
+	                        </div>
+	                        <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
                         </div>
-                       
-                        <p>
-                        	 周期:&nbsp;&nbsp;<select name="w" id="select_id" style="width:280px"></select>
-                        </p>
-                         <p>
-                     		   备注:&nbsp;&nbsp;<input type="text" name="tips"/>
-                        <p>
-                        <input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
+                        
+                        <div id="renxuanke" >
+							<div id="course_id" class="course_id"
+								style="width: 370px; float: left">
+								<p>
+									课程:&nbsp;&nbsp; <select name="course" id="renxuanke_course" class="course"
+										style="width: 280px" onchange="">
+										<option value="" selected="selected">==请选择课程==</option>
+									</select>
+							</div>
+							<p>
+								
+								<div style="width: 370px; float: left; margin-bottom: 10px">
+									班级:&nbsp;&nbsp;
+									<div id="renxuanke_test"></div>
+								</div>
+								
+								<div>
+	                        	<p>周期:&nbsp;&nbsp;&nbsp;<select name="renxuanke_w" id="renxuanke_select_id" style="width:280px"></select>
+	                        </div>
+	                         <div>
+	                     		 <p>备注:&nbsp;&nbsp;&nbsp;<input type="text" name="renxuanke_tips"/>
+	                        </div>
+	                        <input  name="add" type="button" value="添加" onclick="renxuanke_resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
+	                        <input  name="over" type="button" value="返回" onclick="cancel()"  class="button"/>
+						</div>
+                        
                     </form>
             
             
@@ -282,6 +313,7 @@ function select_ini(select_name,select_value)
 //页面加载完成后执行change()填表格操作
 $(document).ready(function() 
 {
+	$("#renxuanke").hide();
 	//设置默认值为信息学院
 	select_ini("h_school","04");
 	var url_time = document.form0.url_time.value;
@@ -361,15 +393,10 @@ function change()
 
 	var h_school = $("#h_school").children('option:selected').val();
 	var address = $("#address").children('option:selected').val();
-	//alert(address);
 	var temp = document.getElementById("week_select");//获取周次
 	week= temp.options[temp.selectedIndex].value;
 	time = year+''+h_school+''+address+''+week;
-	//alert(time);
-	
-	//调用动态填写表格函数
 	chuancan(time);
-//	$('#up').fadeOut(500);
 }
 function rili_table()
 {
@@ -403,12 +430,7 @@ function time_limit(xingqi)
 	var servers_mon=parseInt(servers_time[0]);
 	var local_day=parseInt(local_time[1]);
 	var servers_day=parseInt(servers_time[1]);
-        
-//        console.log(servers_mon);
-//        console.log(local_mon);
-//        console.log(servers_day);
-//        console.log(local_day);
-        
+
         
 	if(servers_mon<local_mon)
 	{
@@ -426,10 +448,7 @@ function time_limit(xingqi)
 	else
 	{	return 0;}
 }
-</script>
 
-<script>
-//动态填写表格函数,参数为字段前12位
 function chuancan(selected)
 {
 	rili_table();//调用日历设置函数
@@ -444,7 +463,6 @@ function chuancan(selected)
 			var temp = document.getElementById("s_week");
 			var change,cnt=0;
 			change=msg.split("@");//分割返回数据
-			//alert(msg);
 			if(msg  == '')
 			{
 				for(i=1;i<=5;i++)
@@ -506,7 +524,8 @@ function paike(time,row,cell)
 		  var optionString = "";
 		 
 		  var  week_select = $("#week_select").children('option:selected').val();
-		  
+		  $("#select_id").empty();
+     		$("#renxuanke_select_id").empty();
            for(var i=week_select; i<=20; i++){ //遍历，动态赋值
         	   if(i<=9){
         		   if(i==week_select){
@@ -523,6 +542,7 @@ function paike(time,row,cell)
                
            }   
        		$("#select_id").append(optionString);
+       		$("#renxuanke_select_id").append(optionString);
           
 		
 		
@@ -576,6 +596,8 @@ function deleted(time,row,cell)
 var renxuanke_or_putongke=1;
 function putongke()
 {
+	$("#putongke").show();
+	$("#renxuanke").hide();
 	renxuanke_or_putongke=1;
 	select_ini("school","04");//设置学院默认值为信息学院
 	document.form.school.disabled="";
@@ -586,6 +608,8 @@ function putongke()
 //任选课
 function renxuanke()
 {
+	$("#putongke").hide();
+	$("#renxuanke").show();
 	renxuanke_or_putongke=0;
 	select_ini("school","");//设置学院默认值为空即｛==请选择学院==｝
 	select_ini("major","");
@@ -598,43 +622,21 @@ function renxuanke()
 	document.form.w_class.disabled="false";
 }
 //确定按钮 用来加一门课
-function resure()
-{
 
-	$("#address").children('option:selected').val();
-	
-	var grade_id = $("#grade").children('option:selected').val();
-	var school_id = $("#school").children('option:selected').val();
-	var major_id = $("#major").children('option:selected').val();
-	//var class_id = $("#w_class").children('option:selected').val();
-	
+function renxuanke_resure(){
 	var dropIds = new Array();
 	$("[name='classNumber']").each(function(){
 		if($(this).is(':checked')){
 			dropIds.push($(this).val());
 		}
 	})
-	//var student_id = grade_id+''+school_id+''+major_id+''+class_id;
+	var course_id =  $("#renxuanke_course").children('option:selected').val();
 	var student_id = dropIds;
-	
-	var course_id =  $("#course").children('option:selected').val();
-	tips = document.form.tips.value;
-	var w = document.form.w.value;
+	tips = document.form.renxuanke_tips.value;
+	var w = document.form.renxuanke_w.value;
 	time_add = document.form.time.value;
 	
-	if(school_id=="" && renxuanke_or_putongke)
-	{
-		alert("您需要选择学院");
-	}
-	else if(major_id=="" && renxuanke_or_putongke)
-	{
-		alert("您需要选择专业");
-	}
-	else if(grade_id=="" && renxuanke_or_putongke)
-	{
-		alert("您需要选择年级");
-	}
-	else if(student_id=="" && renxuanke_or_putongke)
+	 if(student_id=="" )
 	{
 		alert("您需要选择班级,至少选择一个");
 	}
@@ -647,6 +649,63 @@ function resure()
 /****************************
 *****************************/
 	//通过ajax给数据库添加一个课程安排
+		submitCourse(time_add,course_id,student_id,tips,w);
+	}
+}
+
+function resure()
+{
+
+	$("#address").children('option:selected').val();
+	
+	var grade_id = $("#grade").children('option:selected').val();
+	var school_id = $("#school").children('option:selected').val();
+	var major_id = $("#major").children('option:selected').val();
+
+	
+	var dropIds = new Array();
+	$("[name='classNumber']").each(function(){
+		if($(this).is(':checked')){
+			dropIds.push($(this).val());
+		}
+	})
+	var student_id = dropIds;
+	
+	var course_id =  $("#course").children('option:selected').val();
+	tips = document.form.tips.value;
+	var w = document.form.w.value;
+	time_add = document.form.time.value;
+	
+	if(school_id=="" )
+	{
+		alert("您需要选择学院");
+	}
+	else if(major_id=="")
+	{
+		alert("您需要选择专业");
+	}
+	else if(grade_id=="" )
+	{
+		alert("您需要选择年级");
+	}
+	else if(student_id=="")
+	{
+		alert("您需要选择班级,至少选择一个");
+	}
+	else if(course_id=="")
+	{
+		alert("您需要选择课程");
+	}
+	else
+	{	
+/****************************
+*****************************/
+	//通过ajax给数据库添加一个课程安排
+		submitCourse(time_add,course_id,student_id,tips,w);
+	}
+}
+
+function submitCourse(time_add,course_id,student_id,tips,w){
 	$.ajax({
    		type: "POST",
   		url: "ajaxAddCourse",
@@ -676,8 +735,6 @@ function resure()
 			}
    		}
 	   }); 
-	//alert(student_id+''+time_add+course_id);
-	}
 }
 //取消按钮，返回并更新页面
 function cancel()
@@ -734,12 +791,32 @@ $(document).ready(function()
 				  jsonSub: 'sub'
 				}); 
 			
+			$('#renxuanke_course').change(function(){
+				var courseId = $("#renxuanke_course").children('option:selected').val();
+				
+				$.ajax({
+					  url: '${ctx}/course/paike/ajaxAllClassByCourseId',
+			          async: false,
+			          data: {
+			        	  courseId: courseId
+			          },
+			          success: function( data ) {
+			        	  $("#renxuanke_test").empty();
+			        	  if(data.length==0){
+			        	  }
+			        	  
+			        	  for(var i=0 ;i<data.length;i++){
+			        		  var clazz = data[i].clazz;
+			        		  $("#renxuanke_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='"+clazz.id+"' name='classNumber'/>"+clazz.name +"</div>");
+			           	  }
+			          }
+			        });
+			});
+			
 			$('#grade').change(function(){
 				
 				var parnetId = $("#major").children('option:selected').val();
 				var grade = $("#grade").children('option:selected').val();
-				 console.log(parnetId);
-				 console.log(grade);
 				 $.ajax({
 					  url: '${ctx}/sys/office/ajaxClass',
 			          async: false,
@@ -750,8 +827,6 @@ $(document).ready(function()
 			          success: function( data ) {
 			        	  $("#w_test").empty();
 			        	  if(data.length==0){
-			        		//  $("#dormMessage").css("color","red");
-		                	//  $("#dormMessage").html("当前寝室没有入住任何学员");
 			        	  }
 			        	  
 			        	  for(var i=0 ;i<data.length;i++){
@@ -761,7 +836,7 @@ $(document).ready(function()
 			        });
 			});
 			
-			$('#course_id').cxSelect({ 
+			$('.course_id').cxSelect({ 
 				  url: '${ctx}/course/paike/ajaxAllCourse',
 				  selects: ['course'], 
 				  jsonName: 'name',

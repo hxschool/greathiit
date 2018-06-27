@@ -29,6 +29,9 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		course.setId(courseId);
 		return courseDao.getCourse(course);
 	}
+	public Course getCourse(Course course) {
+		return courseDao.getCourse(course);
+	}
 	
 	public Course get(String id) {
 		return super.get(id);

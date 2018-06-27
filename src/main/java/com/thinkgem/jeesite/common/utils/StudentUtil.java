@@ -3,24 +3,32 @@ package com.thinkgem.jeesite.common.utils;
 import java.util.Arrays;
 import java.util.List;
 
-import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
+import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 
 public class StudentUtil {
-	private static OfficeDao officeDao = SpringContextHolder.getBean(OfficeDao.class);
+	private static OfficeService officeService = SpringContextHolder.getBean(OfficeService.class);
 	
 	private static String[] majors = {"01","02","03","04","05","06","07"};
 	
 	public static String  assignClasses(String majorId,String classNo) {
 		String year = DateUtils.getDate("yyyy");
-		String classNumber = year.concat(majorId).concat(String.format("%02d", classNo));
-		Office clazz = officeDao.get(classNumber);
+		String classNumber = year.concat(majorId).concat(String.format("%02d", Integer.valueOf(classNo)));
+		Office clazz = officeService.get(classNumber);
 		if(org.springframework.util.StringUtils.isEmpty(clazz)) {
 			List<String> majorList = Arrays.asList(majors);
-			Office parent = officeDao.get(majorId);
+			Office parent = officeService.get(majorId);
 			clazz = new Office();
 			clazz.setId(classNumber);
 			clazz.setParent(parent);
+			Area area = new Area();
+			area.setId("230100");
+			clazz.setArea(area);
+			clazz.setCode(classNo);
+			clazz.setType("4");
+			clazz.setGrade("4");
+			clazz.setUseable("1");
 			if(majorList.contains(majorId)) {
 				String name = parent.getName().concat(year.substring(2)).concat(classNo);
 				clazz.setName(name);
@@ -28,9 +36,39 @@ public class StudentUtil {
 				clazz.setName(classNumber);
 			}
 			clazz.setCode(classNumber);
-			officeDao.insert(clazz);
+			clazz.setIsNewRecord(true);
+			officeService.save(clazz);
 		}
 		return classNumber;
+	}
+	
+	public static Office  createClasses(String year,String majorId,String classNo) {
+		String classNumber = year.concat(majorId).concat(String.format("%02d", Integer.valueOf(classNo)));
+		Office clazz = officeService.get(classNumber);
+		if(org.springframework.util.StringUtils.isEmpty(clazz)) {
+			List<String> majorList = Arrays.asList(majors);
+			Office parent = officeService.get(majorId);
+			clazz = new Office();
+			clazz.setId(classNumber);
+			clazz.setParent(parent);
+			Area area = new Area();
+			area.setId("230100");
+			clazz.setArea(area);
+			clazz.setCode(classNo);
+			clazz.setType("4");
+			clazz.setGrade("4");
+			clazz.setUseable("1");
+			if(majorList.contains(majorId)) {
+				String name = parent.getName().concat(year.substring(2)).concat(classNo);
+				clazz.setName(name);
+			}else {
+				clazz.setName(classNumber);
+			}
+			clazz.setCode(classNumber);
+			clazz.setIsNewRecord(true);
+			officeService.save(clazz);
+		}
+		return clazz;
 	}
 
 	public static String getClassId(String studentNumber) {

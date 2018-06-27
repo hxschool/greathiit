@@ -5,16 +5,23 @@ package com.thinkgem.jeesite.common.utils.excel;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -106,6 +113,12 @@ public class ImportExcel {
 		this(file.getName(), new FileInputStream(file), headerNum, sheetIndex);
 	}
 	
+	public ImportExcel(MultipartFile multipartFile, int headerNum) 
+			throws InvalidFormatException, IOException {
+		this(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), headerNum);
+	}
+
+	
 	/**
 	 * 构造函数
 	 * @param file 导入文件对象
@@ -119,6 +132,22 @@ public class ImportExcel {
 		this(multipartFile.getOriginalFilename(), multipartFile.getInputStream(), headerNum, sheetIndex);
 	}
 
+	public ImportExcel(String fileName, InputStream is, int headerNum) 
+			throws InvalidFormatException, IOException {
+		if (StringUtils.isBlank(fileName)){
+			throw new RuntimeException("导入文档为空!");
+		}else if(fileName.toLowerCase().endsWith("xls")){    
+			this.wb = new HSSFWorkbook(is);    
+        }else if(fileName.toLowerCase().endsWith("xlsx")){  
+        	this.wb = new XSSFWorkbook(is);
+        }else{  
+        	throw new RuntimeException("文档格式不正确!");
+        }  
+		this.headerNum = headerNum;
+		log.debug("Initialize success.");
+	}
+	
+	
 	/**
 	 * 构造函数
 	 * @param path 导入文件对象
@@ -179,6 +208,96 @@ public class ImportExcel {
 		return this.getRow(headerNum).getLastCellNum();
 	}
 	
+	public static void main(String[] args) {
+		try {
+			ImportExcel importExcel = new ImportExcel(new File("D:/excel/cc.xlsx"),3);
+			String[][] curriculumPlans = importExcel.importFile();
+			for(String[] curriculumPlan:curriculumPlans) {
+				String id = curriculumPlan[0];
+				String office = curriculumPlan[1];
+				String major = curriculumPlan[2];
+				String curs_num = curriculumPlan[3];
+				String course_name = curriculumPlan[4];
+				String curs_type = curriculumPlan[5];//课程类型
+				String assessment_type = curriculumPlan[6];//考核类型
+				String clazz = curriculumPlan[7];//考核类型
+				String count = curriculumPlan[8];//考核类型
+				String tchr_name = curriculumPlan[9];//考核类型
+				
+				String tchr_title = curriculumPlan[10];
+				String user_type = curriculumPlan[11];
+				String week_count = curriculumPlan[12];
+				
+				String week = curriculumPlan[13];
+				String curs_class_hour = curriculumPlan[14];
+				String remark = curriculumPlan[15];
+			}
+		} catch (InvalidFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public String[][] importFile() throws FileNotFoundException, IOException {
+		List<String[]> result = new ArrayList<String[]>();
+
+		int rowSize = 0;
+		for (int sheetIndex = 0; sheetIndex < wb.getNumberOfSheets(); sheetIndex++) {
+			Sheet st = wb.getSheetAt(sheetIndex);
+			for (int rowIndex = headerNum; rowIndex <= st.getLastRowNum(); rowIndex++) {
+				Row row = st.getRow(rowIndex);
+				if (null == row) {
+					continue;
+				}
+				int tempRowSize = row.getLastCellNum() + 1;
+				if (tempRowSize > rowSize) {
+					rowSize = tempRowSize;
+				}
+				String[] values = new String[rowSize];
+				Arrays.fill(values, "");
+				boolean hasValue = false;
+				for (short columnIndex = 0; columnIndex <= row.getLastCellNum(); columnIndex++) {
+					String value = "";
+					Object val = (Object) getCellValue(row, columnIndex);
+					if (val != null) {
+						value = val.toString();
+					}
+					if (columnIndex == 0 && value.trim().equals("")) {
+						break;
+					}
+					values[columnIndex] = rightTrim(value);
+					hasValue = true;
+				}
+				if (hasValue) {
+					result.add(values);
+				}
+			}
+		}
+
+		String[][] returnArray = new String[result.size()][rowSize];
+		for (int i = 0; i < returnArray.length; i++) {
+			returnArray[i] = (String[]) result.get(i);
+		}
+		return returnArray;
+	}
+	
+	public static String rightTrim(String str) {  
+        if (str == null) {  
+            return "";  
+        }  
+        int length = str.length();  
+        for (int i = length - 1; i >= 0; i--) {  
+            if (0x20 != str.charAt(i)) {  
+                break;  
+            }  
+            length--;  
+        }  
+        return str.substring(0, length);  
+    }
+
 	/**
 	 * 获取单元格值
 	 * @param row 获取的行

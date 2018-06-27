@@ -3,12 +3,15 @@
  */
 package com.thinkgem.jeesite.modules.recruit.web.student;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.batik.css.engine.value.StringValue;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
@@ -32,6 +36,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass;
 import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -138,19 +143,88 @@ public class RecruitStudentController extends BaseController {
 		pojo.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS);
 		recruitStudentService.save(pojo);
 		//报到成功了就可以分别学号,班号了
-		
-		String classNumber = StudentUtil.assignClasses(pojo.getMajor().getId(), "01");
-		//计算出班级,学号
-		
+		RecruitTotalMajorClass rc = (RecruitTotalMajorClass)JedisUtils.getObject(JedisUtils.GREEN_CLASS_MARK+"_"+user.getOffice().getId()+"_1");
+		if(org.springframework.util.StringUtils.isEmpty(rc)) {
+			List<RecruitTotalMajorClass> totals = (List<RecruitTotalMajorClass>)JedisUtils.getObject(JedisUtils.GREEN_CLASS_MARK);
+			for(RecruitTotalMajorClass recruitTotalMajorClass:totals) {
+				//如果设置是自动走自动流程
+				if(recruitTotalMajorClass.getFlagStatus().equals("1")) {
+					int cnt = (int)Math.ceil(recruitTotalMajorClass.getMajorCnt()/Float.valueOf(30));
+					for (int i = 1; i < cnt + 1; i++) {
+						JedisUtils.setObject(JedisUtils.GREEN_CLASS_MARK+"_"+recruitTotalMajorClass.getMajorId()+"_"+i,recruitTotalMajorClass,0);
+					}
+					if(recruitTotalMajorClass.getMajorId().equals(user.getOffice().getId())) {
+						rc = recruitTotalMajorClass;
+					}
+				}
+			}
+		}
+		if(!org.springframework.util.StringUtils.isEmpty(rc)&&org.springframework.util.StringUtils.isEmpty(user.getNo())) {
+			String sex = IdcardUtils.getGenderByIdCard(user.getLoginName());
+			String majorId = user.getOffice().getId();
+			String classno = "1";
+			rc = getRc(sex,majorId,classno);
+
+			String classId = getClassNumber(majorId,classno);
+			
+			Office clazz = officeService.get(classId);
+
+			if(StringUtils.isEmpty(clazz.getRemarks())) {
+				clazz.setRemarks("1");
+			}
+
+			int i = Integer.valueOf(clazz.getRemarks());
+			clazz.setId(classId);
+			user.setClazz(clazz);
+			String s = String.format("%02d", i);
+			String no = classId.concat(s);
+			user.setNo(no);
+			user.setLoginIp("0.0.0.0");
+			user.setRemarks("自动设置学号");
+			systemService.saveUser(user);
+			i++;
+			clazz.setRemarks(String.valueOf(i));
+			officeService.save(clazz);
+		}
 		
 		addMessage(redirectAttributes, "报到成功.接下来可以进行修改个人信息,或在线缴费");
 		model.addAttribute("recruitStudent", pojo);
 		return "modules/recruit/student/recruitStudentBaodaoSuccess";
 	}
-	private String classNumber="01";
-	public String finaClassNumber() {
+	
+	public RecruitTotalMajorClass getRc(String sex , String marjorId,String classno) {
+		RecruitTotalMajorClass rc = (RecruitTotalMajorClass)JedisUtils.getObject(JedisUtils.GREEN_CLASS_MARK+"_"+marjorId+"_"+classno);
 		
-		return "01";
+		if(sex.equals("1")) {
+			int total = Integer.valueOf(rc.getBoyTotal());
+			if(total>0) {
+				rc.setBoyTotal(String.valueOf(total - 1));
+				JedisUtils.setObject(JedisUtils.GREEN_CLASS_MARK + "_" + marjorId + "_" + classno, rc, 0);
+				return rc;
+			}
+		}else {
+			int total = Integer.valueOf(rc.getGrilTotal());
+			if(total>0) {
+				rc.setGrilTotal(String.valueOf(total - 1));
+				JedisUtils.setObject(JedisUtils.GREEN_CLASS_MARK + "_" + marjorId + "_" + classno, rc, 0);
+				return rc;
+			}
+		}
+		classno = String.valueOf(Integer.valueOf(classno) + 1);
+		return getRc( sex ,  marjorId,classno);
+	}
+	
+	public String getClassNumber(String majorId,String classno) {
+		String clazzId = StudentUtil.assignClasses(majorId, classno);
+		Office clazz = officeService.get(clazzId);
+		if(StringUtils.isEmpty(clazz.getRemarks())) {
+			clazz.setRemarks("1");
+		}
+		if(Integer.valueOf(clazz.getRemarks())>30) {
+			String str = String.valueOf(Integer.valueOf(classno)+1);
+			return getClassNumber(majorId,str);
+		}
+		return clazzId;
 	}
 	
 	

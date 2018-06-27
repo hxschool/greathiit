@@ -78,6 +78,10 @@ public class SystemService extends BaseService implements InitializingBean {
 		return userDao.nassignedStudentNumberByMajorId(user);
 	}
 	
+	
+	public User getUserSingleByName(String name) {
+		return userDao.getUserSingleByName(name);
+	}
 	public User getUserByNameAndIdCard(User user) {
 		return userDao.getUserByNameAndIdCard(user);
 	}

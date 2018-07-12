@@ -59,6 +59,9 @@ public class CourseUtil {
 	
 	public static Map<String,String> GetTimeCol(String $time_add){
 	    Map<String,String> $time = new HashMap<String,String>();
+	    $time.put("year", $time_add.substring(0, 4));
+	    $time.put("term", $time_add.substring(4, 5));
+	    $time.put("school", $time_add.substring(5,10));
 	    $time.put("week", $time_add.substring(10, 12));
 	    $time.put("jie", $time_add.substring(12, 13));
 	    $time.put("zhou", $time_add.substring(13, 14));
@@ -67,26 +70,32 @@ public class CourseUtil {
 	
 	public static void main(String[] args) {
 		String time_add = "20181023020146";
-		int w = 20;
 		
-		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
-		if(StringUtils.isEmpty(w)||w==0) {
-			w = s;
-		}
+		System.out.println(time_add.substring(0,4));
+		System.out.println(time_add.substring(4,5));
+		System.out.println(time_add.substring(5,10));
+		System.out.println(time_add.substring(7,10));
 		
-		for(;s<=w;s++) {
-			String week="";
-			if(s<=9) {
-				week = "0".concat(String.valueOf(s));
-			}else {
-				week =  String.valueOf(s);
-			}
-			String zhou = time_add.substring(12);
-			
-			time_add = time_add.substring(0,10).concat(week).concat(zhou);
-			System.out.println(time_add);
-			System.out.println(week);
-		}
+//		int w = 20;
+//		
+//		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
+//		if(StringUtils.isEmpty(w)||w==0) {
+//			w = s;
+//		}
+//		
+//		for(;s<=w;s++) {
+//			String week="";
+//			if(s<=9) {
+//				week = "0".concat(String.valueOf(s));
+//			}else {
+//				week =  String.valueOf(s);
+//			}
+//			String zhou = time_add.substring(12);
+//			
+//			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+//			System.out.println(time_add);
+//			System.out.println(week);
+//		}
 	}
 	
 	public static String addDate(String today,int day) {

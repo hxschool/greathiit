@@ -31,6 +31,7 @@
 		a.shuxue AS "shuxue",
 		a.waiyu AS "waiyu",
 		a.zonghe AS "zonghe",
+		a.zongfen AS "zongfen",
 		a.techang AS "techang",
 		a.status AS "status",
 		a.create_by AS "createBy.id",
@@ -38,8 +39,7 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		o11.name AS "major.name"
+		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="recruitStudentJoins">
@@ -65,7 +65,8 @@
 	</select>
 	
 	
-	<select id="totalMajor" resultType="com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass">
+	<select id="totalMajor"
+	resultType="com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass">
 		  <![CDATA[ select count(major_id) major_cnt,major_id,major_name,
 CEILING(count(*)/30) as cnt,
 sum(case when gender='女' then 1 else 0 end)*1.0/count(*) gril_cnt,
@@ -73,13 +74,13 @@ ROUND(sum(case when gender='女' then 1 else 0 end)* 1.0/count(*) * 30) gril_tot
 sum(case when gender='男' then 1 else 0 end)*1.0 /count(*) boy_cnt,
 ROUND(sum(case when gender='男' then 1 else 0 end)* 1.0/count(*) * 30) boy_total
 from recruit_student 
-		    ]]> 
-		    WHERE 1=1 
-		    	<if test="major_id != null and majorid != ''">
-				AND a.major_id = #{major_id}
-			</if>
-		    GROUP BY major_id
-	</select>
+		    ]]>
+	WHERE 1=1
+	<if test="major_id != null and majorid != ''">
+		AND a.major_id = #{major_id}
+	</if>
+	GROUP BY major_id
+</select>
 	
 	
 	
@@ -174,6 +175,7 @@ from recruit_student
 			shuxue,
 			waiyu,
 			zonghe,
+			zongfen,
 			techang,
 			status,
 			create_by,
@@ -210,6 +212,7 @@ from recruit_student
 			#{shuxue},
 			#{waiyu},
 			#{zonghe},
+			#{zongfen},
 			#{techang},
 			#{status},
 			#{createBy.id},
@@ -251,6 +254,7 @@ from recruit_student
 			shuxue = #{shuxue},
 			waiyu = #{waiyu},
 			zonghe = #{zonghe},
+			zongfen = #{zongfen},
 			techang = #{techang},
 			status = #{status},
 			update_by = #{updateBy.id},

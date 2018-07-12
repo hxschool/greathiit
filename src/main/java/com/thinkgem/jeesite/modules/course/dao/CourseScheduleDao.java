@@ -19,6 +19,9 @@ import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
  */
 @MyBatisDao
 public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
+	//自定排课
+	public List<CourseSchedule> auto(CourseSchedule courseSchedule);
+	
 	public List<CourseSchedule> findListByTimeAdd(@Param("timeAdd")String timeAdd);
 	
 	public CourseSchedule getByAddTime(@Param("timeAdd")String timeAdd);

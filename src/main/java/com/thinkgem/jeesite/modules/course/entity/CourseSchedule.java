@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.course.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -20,7 +22,16 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 	private String courseClass;		// 7个解析一个班级
 	private String scLock;		// 0表示管理员加的课,1表示可排课,2表示已排课
 	private String tips;		// tips
-	
+	private List<String> schoolRoots;
+
+	public List<String> getSchoolRoots() {
+		return schoolRoots;
+	}
+
+	public void setSchoolRoots(List<String> schoolRoots) {
+		this.schoolRoots = schoolRoots;
+	}
+
 	public CourseSchedule() {
 		super();
 	}

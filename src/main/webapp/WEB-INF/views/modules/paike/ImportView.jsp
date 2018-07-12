@@ -41,6 +41,12 @@
 			enctype="multipart/form-data" class="form-search"
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
+			<br />
+	
+			
+			<input type="radio" name="currTerm" value="1" checked="checked"> 第一学期
+			<input type="radio" name="currTerm" value="2"> 第二学期
+			
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"

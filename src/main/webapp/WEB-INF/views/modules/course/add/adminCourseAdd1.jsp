@@ -135,6 +135,8 @@
 							</div>
 						</div>
 						
+					
+						
 						<div class="control-group control-group-left">
 							<label class="control-label">开设学期：</label>
 							<div class="controls">
@@ -157,6 +159,20 @@
 									<option value="" label=""/>
 									
 									<c:forEach items="${fns:getDictList('course_curs_type')}" var="dict">
+										<option value="${dict.value}">${dict.label}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
+							<div class="control-group control-group-left">
+							<label class="control-label">考核形式：</label>
+							<div class="controls">
+								
+								<select name="cursForm" style="width:200px;">
+									<option value="" label=""/>
+									
+									<c:forEach items="${fns:getDictList('course_curs_form')}" var="dict">
 										<option value="${dict.value}">${dict.label}</option>
 									</c:forEach>
 								</select>

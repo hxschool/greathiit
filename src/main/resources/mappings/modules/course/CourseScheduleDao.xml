@@ -44,8 +44,6 @@
 			<if test="root!=null and root!=''">  
 			 and substring(time_add,6,5)=${root}
 			</if> 
- 		  
-
 	</select>
     
 	<select id="get" resultType="CourseSchedule">
@@ -93,6 +91,26 @@
 		WHERE substr(a.time_add,1,12) = #{timeAdd}
 		order by a.time_add
 	</select>
+	
+	<select id="auto" resultType="CourseSchedule">
+		SELECT 
+			<include refid="courseScheduleColumns"/>
+		FROM course_schedule a
+		<include refid="courseScheduleJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			and  SUBSTR(a.time_add,11,2)='01'
+			and  a.sc_lock='1'
+			<if test="schoolRoots != null and schoolRoots != '' and schoolRoots.size() > 0">
+						and SUBSTR(a.time_add,6,5) in 
+				        <foreach collection="schoolRoots" index="index" item="item" open="(" separator="," close=")">
+            				#{item}
+        				</foreach>
+			</if>
+		</where>
+		
+	</select>
+	
 	
 	
 	<select id="findList" resultType="CourseSchedule">

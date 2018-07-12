@@ -26,6 +26,16 @@
 					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
 				});
 			});
+			
+			$("#btnSimpleImport").click(function() {
+				$.jBox($("#importSimpleBox").html(), {
+					title : "导入数据",
+					buttons : {
+						"关闭" : true
+					},
+					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+				});
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -49,8 +59,26 @@
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
-				type="submit" value="   导    入   " /> <a
+				type="submit" value="   导    入   " />
+				
+				
+				
+				 <a
 				href="${ctx}/recruit/student/recruitStudent/template">下载模板</a>
+		</form>
+	</div>
+	
+	<div id="importSimpleBox" class="hide">
+		<form id="importForm" action="${ctx}/recruit/student/recruitStudent/importSimple" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " />
+				
+				
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
@@ -81,7 +109,10 @@
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/><input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
-				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
+				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+				<input
+				id="btnSimpleImport" class="btn btn-primary" type="button" value="快速导入(简版)" />
+				</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -100,6 +131,7 @@
 				<div class="chengji">外语</div>
 				<div class="chengji">综合</div>
 				<div class="chengji">总分</div>
+				<div class="chengji">美术</div>
 				</th>
 				<th>录取学院</th>
 				<th>录取专业</th>
@@ -142,17 +174,18 @@
 				<div class="chengji" > ${recruitStudent.yuwen}</div>
 				<div class="chengji"> ${recruitStudent.waiyu}</div>
 				<div class="chengji"> ${recruitStudent.zonghe}</div>
+				<div class="chengji"> ${recruitStudent.zongfen}</div>
 				<div class="chengji"> ${recruitStudent.techang}</div>
 				</td>
 				
 			
 				
 				<td>
-					${recruitStudent.companyName}
+					${recruitStudent.department.name}
 				</td>
 				
 				<td>
-					${recruitStudent.officeName}
+					${recruitStudent.major.name}
 				</td>
 				
 				<td>

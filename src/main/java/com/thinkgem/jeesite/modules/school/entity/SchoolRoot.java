@@ -19,10 +19,28 @@ public class SchoolRoot extends DataEntity<SchoolRoot> {
 	private String value;		// 数据值
 	private String label;		// 标签名
 	private String type;		// 类型
+	private String code;
+	private int total;
 	private String description;		// description
 	private String sort;		// 排序（升序）
 	private SchoolRoot parent;		// 父级编号
 	
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public int getTotal() {
+		return total;
+	}
+
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
 	public SchoolRoot() {
 		super();
 	}

@@ -40,6 +40,10 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 		return super.get(id);
 	}
 	
+	public List<CourseSchedule> auto(CourseSchedule courseSchedule) {
+		return courseScheduleDao.auto(courseSchedule);
+	}
+	
 	public List<CourseSchedule> getCourseScheduleByYearTerm(String yearTerm) {
 		return courseScheduleDao.getCourseScheduleByYearTerm(yearTerm);
 	}

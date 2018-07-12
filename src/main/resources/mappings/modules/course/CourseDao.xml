@@ -8,6 +8,8 @@
 		a.curs_name AS "cursName",
 		a.curs_eng_name AS "cursEngName",
 		a.curs_major AS "cursMajor",
+		a.curs_week_total AS "cursWeekTotal",
+		a.curs_week_total AS "cursWeekHour",
 		a.curs_class_hour AS "cursClassHour",
 		a.curs_credit AS "cursCredit",
 		a.curs_curr_term AS "cursCurrTerm",
@@ -18,6 +20,9 @@
 		a.curs_property AS "cursProperty",
 		a.curs_term AS "cursTerm",
 		a.curs_type AS "cursType",
+		a.curs_total AS "cursTotal",
+		a.curs_form AS "cursForm",
+		a.curs_status AS "cursStatus",
 		a.teacher_number AS "teacher.no",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -76,9 +81,19 @@
 		<where>
 		1=1 and
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="item!=null and item!='' and item.size() > 0">
+			and a.curs_major in 
+			<foreach collection="item" index="index" item="item" open="(" separator="," close=")">
+            	#{item}
+        	</foreach>
+			</if>
 			<if test="teacher.no!=null and teacher.no!=''">
 			and a.teacher_number=#{teacher.no}
 			</if>
+			<if test="cursStatus!=null and cursStatus!=''">
+			and a.curs_status=#{cursStatus}
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -150,6 +165,8 @@
 			curs_name,
 			curs_eng_name,
 			curs_major,
+			curs_week_total,
+			curs_week_hour,
 			curs_class_hour,
 			curs_credit,
 			curs_curr_term,
@@ -160,6 +177,9 @@
 			curs_property,
 			curs_term,
 			curs_type,
+			curs_total,
+			curs_form,
+			curs_status,
 			teacher_number,
 			create_by,
 			create_date,
@@ -173,6 +193,8 @@
 			#{cursName},
 			#{cursEngName},
 			#{cursMajor},
+			#{cursWeekTotal},
+			#{cursWeekHour},
 			#{cursClassHour},
 			#{cursCredit},
 			#{cursCurrTerm},
@@ -183,6 +205,9 @@
 			#{cursProperty},
 			#{cursTerm},
 			#{cursType},
+			#{cursTotal},
+			#{cursForm},
+			#{cursStatus},
 			#{teacher.no},
 			#{createBy.id},
 			#{createDate},
@@ -199,6 +224,8 @@
 			curs_name = #{cursName},
 			curs_eng_name = #{cursEngName},
 			curs_major = #{cursMajor},
+			curs_week_total = #{cursWeekTotal},
+			curs_week_hour = #{cursWeekHour},
 			curs_class_hour = #{cursClassHour},
 			curs_credit = #{cursCredit},
 			curs_curr_term = #{cursCurrTerm},
@@ -209,6 +236,9 @@
 			curs_property = #{cursProperty},
 			curs_term = #{cursTerm},
 			curs_type = #{cursType},
+			curs_total = #{cursTotal},
+			curs_status = #{cursStatus},
+			curs_form = #{cursForm},
 			teacher_number = #{teacher.no},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

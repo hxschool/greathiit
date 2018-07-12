@@ -6,7 +6,9 @@ package com.thinkgem.jeesite.modules.course.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.aliyuncs.http.HttpRequest;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.DateUtils;
@@ -39,6 +40,8 @@ import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
+import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
+import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -79,6 +82,8 @@ public class PaikeCourseController extends BaseController {
 	private TeacherClassService teacherClassService;
 	@Autowired
 	private DictService dictService;
+	@Autowired
+	private SchoolRootService schoolRootService;
 
 	
 	@RequiresPermissions("course:paike:edit")
@@ -380,10 +385,15 @@ public class PaikeCourseController extends BaseController {
 	}
 	
 	@RequestMapping(value = "import")
-	public String importFile(MultipartFile file, HttpRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
+	public String importFile(MultipartFile file,String currTerm,HttpServletRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
 		Dict dict = new Dict();
 		dict.setType("course_curs_type");
 		List<Dict> courseCurrsTypes = dictService.findList(dict);
+		dict.setType("course_curs_form");
+		List<Dict> courseCurrsForms = dictService.findList(dict);
+		
+		dict.setType("sys_user_type");
+		List<Dict> userTypes = dictService.findList(dict);
 		try {
 			int successNum = 0;
 			int failureNum = 0;
@@ -405,8 +415,8 @@ public class PaikeCourseController extends BaseController {
 					String tchr_name = curriculumPlan[9];
 					String tchr_title = curriculumPlan[10];
 					String user_type = curriculumPlan[11];
-					String week_count = curriculumPlan[12];
-					String week = curriculumPlan[13];
+					String week = curriculumPlan[12];
+					String week_count = curriculumPlan[13];
 					String curs_class_hour = curriculumPlan[14];
 					String remark = curriculumPlan[15];
 
@@ -437,6 +447,11 @@ public class PaikeCourseController extends BaseController {
 					} else {
 						cls.add(clazz);
 					}
+					
+					if(major_name.indexOf("/")>-1) {
+						major_name = major_name.split("/")[0];
+					}
+					
 					Office major = officeService.getOfficeByName(major_name);
 					// 判断任课教师是否存在
 					User user = systemService.getUserSingleByName(tchr_name);
@@ -464,6 +479,14 @@ public class PaikeCourseController extends BaseController {
 						user.setRole(role);
 						user.setRoleList(rs);
 						user.setLoginFlag("1");
+						
+						String userTypeValue="10";
+						if(!StringUtils.isEmpty(curs_type)) {
+							if(curs_type.indexOf("专职")>-1||curs_type.equals("是")) {
+								userTypeValue = "9";
+							}
+						}
+						user.setUserType(userTypeValue);
 						user.setDelFlag("0");
 						user.setRemarks("执行计划导入教师信息");
 						if (Global.getConfig("virtualAccount").equals("true")) {
@@ -511,9 +534,15 @@ public class PaikeCourseController extends BaseController {
 						entity.setId(systemService.getSequence("serialNo10"));
 						entity.setIsNewRecord(true);
 						entity.setCursMajor(major_name);
+						entity.setCursCurrTerm(currTerm);
+						entity.setCursWeekTotal(new Double(week_count).intValue()+"");
+						entity.setCursWeekHour(new Double(week).intValue()+"");
 						entity.setTeacher(user);
 						entity.setCursNum(curs_num);
 						entity.setCursName(curs_name);
+						entity.setCursTotal(new Double(count).intValue()+"");
+						entity.setCursStatus(Course.PAIKE_STATUS_WEIPAIKE);
+					
 						curs_type = curs_type.substring(0, 2); 
 						String cursValue = "other";
 						for(Dict d:courseCurrsTypes) {
@@ -522,11 +551,18 @@ public class PaikeCourseController extends BaseController {
 								break;
 							}
 						}
-						
 						entity.setCursType(cursValue);
+						
+						String cursForm = "99";
+						for(Dict d:courseCurrsForms) {
+							if(d.getLabel().indexOf(assessment_type)>-1) {
+								cursValue = d.getValue();
+								break;
+							}
+						}
+						entity.setCursForm(cursForm);
 			
-						String cursClassHour = curs_class_hour.split(".")[0];
-						entity.setCursClassHour(cursClassHour);
+						entity.setCursClassHour(new Double(curs_class_hour).intValue()+"");
 						entity.setRemarks(remark);
 						courseService.save(entity);
 					}
@@ -540,7 +576,8 @@ public class PaikeCourseController extends BaseController {
 			if (failureNum>0){
 				failureMsg.insert(0, "，失败 "+failureNum+" 条，导入信息如下：");
 			}
-			addMessage(model, "已成功导入 "+successNum+" 条课程信息");
+
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条课程信息"+failureMsg);
 		}catch (Exception ex) {
 			ex.printStackTrace();
 			addMessage(model, "导入失败！失败信息："+ex.getMessage());
@@ -548,4 +585,105 @@ public class PaikeCourseController extends BaseController {
 		return "modules/paike/ImportView";
 	}
 		
+	
+	public void auto(HttpServletRequest request) {
+		
+		Course course = new Course();
+		//如何选择学院,进行如下操作
+		if(!StringUtils.isEmpty(request.getParameter("officeId"))) {
+			List<Office> majors = officeService.findByParentId(request.getParameter("officeId"));
+			if (!StringUtils.isEmpty(majors) && majors.size() > 0) {
+				List<String> item = new ArrayList<String>();
+				for(Office major:majors) {
+					if(!StringUtils.isEmpty(request.getParameter("majorId")) && request.getParameter("majorId").equals(major.getId())) {
+						item.add(major.getName());
+						break;
+					}
+					item.add(major.getName());
+				}
+				course.setItem(item);
+			}
+		}
+		course.setCursStatus("00");
+		
+		List<Course> courses = courseService.findList(course);
+		//需要进行排课的课程大概有
+		logger.info("需要排课的课程大概有:{},具体需要排课总数:{}",courses,courses.size());
+		//计算可排课教室,默认显示全部教室.管理员显示全部教室
+		List<TreeLink> treelinks = schoolRootService.treeLinkId();
+		List<String> schoolRoots = new ArrayList<String>();
+		for(TreeLink treeLink:treelinks) {
+			schoolRoots.add(treeLink.getValue());
+		}
+		//zhaojunfei
+		CourseSchedule courseSchedule = new CourseSchedule();
+		courseSchedule.setSchoolRoots(schoolRoots);
+		List<CourseSchedule> courseSchedules = courseScheduleService.auto(courseSchedule);
+		
+		Iterator<CourseSchedule> its = courseSchedules.iterator();
+		Iterator<Course> itcs = courses.iterator();
+		while(its.hasNext()) {
+			CourseSchedule cs = its.next();
+			String $time_add = cs.getTimeAdd();
+			Map<String,String> timeAddMap = CourseUtil.GetTimeCol($time_add);
+			String schoolId = timeAddMap.get("school");
+			SchoolRoot schoolRoot = schoolRootService.get(schoolId);
+			while(itcs.hasNext()) {
+				
+				Course c = itcs.next();
+				//1。确定课程类型 ,2.确定人数
+				int cursTotal = Integer.valueOf(c.getCursTotal());//人数
+				int weekTotal = Integer.valueOf(c.getCursWeekTotal());//周数
+				int weekHour = Integer.valueOf(c.getCursWeekHour());//周学时
+				int cursClassHour = Integer.valueOf(c.getCursClassHour());//总学时
+				//课程人数小于40
+				int total = schoolRoot.getTotal();
+				//确定了人数
+				int retTotal = fenpeibanji(cursTotal);
+				if (total <= retTotal && retTotal != 0) {
+					
+				}
+				
+			}
+		}
+	}
+	
+	public int fenpeibanji(int total) {
+		//40
+		if (total < 40) {
+			return 40;
+		} else if (40 < total && total < 60) {
+			return 60;
+		} else if (60 < total && total < 68) {
+			return 68;
+		} else if (68 < total && total < 80) {
+			return 80;
+		} else if (80 < total && total < 90) {
+			return 90;
+		} else if (90 < total && total < 124) {
+			return 124;
+		} else if (90 < total && total < 124) {
+			return 124;
+		} else if (124 < total && total < 132) {
+			return 132;
+		} else if (132 < total && total < 133) {
+			return 124;
+		} else if (133 < total && total < 134) {
+			return 133;
+		} else if (134 < total && total < 135) {
+			return 135;
+		} else if (135 < total && total < 186) {
+			return 186;
+		} else if (186 < total && total < 190) {
+			return 190;
+		}
+		return 0;
+	}
+	
+	
+	public static void main(String[] args) {
+		String a="2.0";
+		
+		System.out.println(new Double(2.0).intValue());
+	}
 }

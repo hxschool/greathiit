@@ -25,7 +25,16 @@
 		FROM teacher_class a
 		<include refid="teacherClassJoins"/>
 		
-		WHERE a.id = #{id}
+		WHERE 1=1 
+		<if test="id != null">
+			and a.id = #{id}
+		</if>
+		<if test="clazz != null and clazz.id!=null">
+			and a.clazz_id = #{clazz.id}
+		</if>
+		<if test="teacherNumber != null ">
+			and a.teacher_number = #{teacherNumber}
+		</if>
 	</select>
 	
 	<select id="findList" resultType="TeacherClass">

@@ -43,6 +43,7 @@ public class RecruitStudent extends DataEntity<RecruitStudent> {
 	private String shuxue;		// 数学
 	private String waiyu;		// 外语
 	private String zonghe;		// 综合
+	private String zongfen;		// 总分
 	private String techang;		// 特长
 	private String status;		// 状态 00:初始化数据导入 01:完成院校报名 11:交易处理中 20:成功 30:失败
 	
@@ -301,6 +302,14 @@ public class RecruitStudent extends DataEntity<RecruitStudent> {
 		this.techang = techang;
 	}
 	
+	public String getZongfen() {
+		return zongfen;
+	}
+
+	public void setZongfen(String zongfen) {
+		this.zongfen = zongfen;
+	}
+
 	@Length(min=0, max=64, message="状态长度必须介于 0 和 64 之间")
 	public String getStatus() {
 		return status;

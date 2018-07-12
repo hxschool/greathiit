@@ -3,11 +3,14 @@
  */
 package com.thinkgem.jeesite.modules.course.entity;
 
-import org.hibernate.validator.constraints.Length;
-import com.thinkgem.jeesite.modules.sys.entity.User;
+import java.util.List;
+
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 课程基本信息Entity
@@ -16,11 +19,15 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  */
 public class Course extends DataEntity<Course> {
 	
+	public static final String PAIKE_STATUS_WEIPAIKE="00";
+	
 	private static final long serialVersionUID = 1L;
 	private String cursNum;		// 课程编号
 	private String cursName;		// 课程名称
 	private String cursEngName;		// 英文名称
 	private String cursMajor;		// 专业
+	private String cursWeekTotal;		// 周数
+	private String cursWeekHour;		// 周学时
 	private String cursClassHour;		// 学时
 	private String cursCredit;		// 学分
 	private String cursCurrTerm;		// curs_curr_term
@@ -31,8 +38,22 @@ public class Course extends DataEntity<Course> {
 	private String cursProperty;		// 课程性质
 	private String cursTerm;		// 开设学期
 	private String cursType;		// 课程类型
-	private User teacher;		// 教师号
+	private String cursTotal;
+	private String cursForm;
+	private String cursStatus;
 	
+	private User teacher;		// 教师号
+
+	private List<String> item;
+	
+	public List<String> getItem() {
+		return item;
+	}
+
+	public void setItem(List<String> item) {
+		this.item = item;
+	}
+
 	public Course() {
 		super();
 	}
@@ -166,6 +187,15 @@ public class Course extends DataEntity<Course> {
 		this.cursType = cursType;
 	}
 	
+	
+	public String getCursForm() {
+		return cursForm;
+	}
+
+	public void setCursForm(String cursForm) {
+		this.cursForm = cursForm;
+	}
+
 	@NotNull(message="教师号不能为空")
 	public User getTeacher() {
 		return teacher;
@@ -173,6 +203,38 @@ public class Course extends DataEntity<Course> {
 
 	public void setTeacher(User teacher) {
 		this.teacher = teacher;
+	}
+
+	public String getCursWeekTotal() {
+		return cursWeekTotal;
+	}
+
+	public void setCursWeekTotal(String cursWeekTotal) {
+		this.cursWeekTotal = cursWeekTotal;
+	}
+
+	public String getCursWeekHour() {
+		return cursWeekHour;
+	}
+
+	public void setCursWeekHour(String cursWeekHour) {
+		this.cursWeekHour = cursWeekHour;
+	}
+
+	public String getCursTotal() {
+		return cursTotal;
+	}
+
+	public void setCursTotal(String cursTotal) {
+		this.cursTotal = cursTotal;
+	}
+
+	public String getCursStatus() {
+		return cursStatus;
+	}
+
+	public void setCursStatus(String cursStatus) {
+		this.cursStatus = cursStatus;
 	}
 	
 }

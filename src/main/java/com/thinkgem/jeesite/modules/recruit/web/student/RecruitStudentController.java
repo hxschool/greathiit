@@ -3,15 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.recruit.web.student;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
-import org.apache.batik.css.engine.value.StringValue;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +34,7 @@ import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass;
+import com.thinkgem.jeesite.modules.recruit.entity.student.SimpleStudent;
 import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -250,6 +248,118 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
     }
+	
+	@RequiresPermissions("sys:user:view")
+    @RequestMapping(value = "import/simpleTemplate")
+    public String simpleTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "统招数据导入模板.xlsx";
+    		List<RecruitStudent> list = Lists.newArrayList(); list.add(new RecruitStudent());
+    		new ExportExcel("统招数据", RecruitStudent.class, 2).setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
+    }
+	
+	@RequiresPermissions("recruit:student:recruitStudent:edit")
+    @RequestMapping(value = "importSimple", method=RequestMethod.POST)
+    public String importSimpleFile(MultipartFile file, RedirectAttributes redirectAttributes) {
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 0, 0);
+			List<SimpleStudent> list = ei.getDataList(SimpleStudent.class);
+			for (SimpleStudent simpleStudent : list){
+				try{
+					RecruitStudent recruitStudent = new RecruitStudent();
+					recruitStudent.setLeven(simpleStudent.getLeven());
+					recruitStudent.setExaNumber(simpleStudent.getExaNumber());
+					recruitStudent.setProvince(simpleStudent.getProvince());
+					recruitStudent.setUsername(simpleStudent.getUsername());
+					recruitStudent.setIdCard(simpleStudent.getIdCard());
+					recruitStudent.setZongfen(simpleStudent.getZongfen());
+					recruitStudent.setTechang(simpleStudent.getTechang());
+					recruitStudent.setBirthday(IdcardUtils.getBirthByIdCard(simpleStudent.getIdCard()));
+					recruitStudent.setGender(IdcardUtils.getGender(simpleStudent.getIdCard()));
+					
+					RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
+					if (org.springframework.util.StringUtils.isEmpty(pojo)){
+						User user = new User();
+						
+						String majorname = simpleStudent.getMajorname();
+						Office major = null;
+						if(!org.springframework.util.StringUtils.isEmpty(majorname)) {
+							major = officeService.getOfficeByName(majorname);
+							if(!org.springframework.util.StringUtils.isEmpty(major)) {
+								recruitStudent.setMajor(major);
+								user.setOffice(major);
+							}
+						}
+						
+						if(!org.springframework.util.StringUtils.isEmpty(major)) {
+							Office company = officeService.get(major.getParentId());
+							if(!org.springframework.util.StringUtils.isEmpty(company)) {
+								recruitStudent.setDepartment(company);
+								user.setCompany(company);
+							}
+						}
+						
+						//初始化数据导入
+						recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO);
+						
+						
+						recruitStudentService.save(recruitStudent);
+						String idCard = recruitStudent.getIdCard();
+						User entity = UserUtils.getByLoginName(idCard);
+						if(org.springframework.util.StringUtils.isEmpty(entity)) {
+							user.setAccountNo("");
+							user.setName(recruitStudent.getUsername());
+							user.setLoginName(idCard);
+							String password = SystemService.entryptPassword(idCard.substring(idCard.length()-6));
+							user.setPassword(password);
+							user.setLoginIp("0.0.0.0");
+							user.setDelFlag("0");
+							user.setRemarks("0.0");
+							String tongzhao = "迎新生";
+							Role role = systemService.getRoleByName(tongzhao);
+							List<Role> roleList = Lists.newArrayList();
+							roleList.add(role);
+							user.setRoleList(roleList);
+							systemService.saveUser(user);
+						}
+						
+						successNum++;
+					}else{
+						failureMsg.append("<br/>身份证号: "+recruitStudent.getIdCard()+" 已存在; ");
+						failureNum++;
+					}
+				}catch(ConstraintViolationException ex){
+					failureMsg.append("<br/>身份证号: "+simpleStudent.getIdCard()+" 已存在; ");
+					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+					for (String message : messageList){
+						failureMsg.append(message+"; ");
+						failureNum++;
+					}
+				}catch (Exception ex) {
+					failureMsg.append("<br/>身份证号: "+simpleStudent.getIdCard()+" 已存在; "+ex.getMessage());
+				}
+			}
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条，导入信息如下：");
+			}
+			
+			JedisUtils.setObject(JedisUtils.GREEN_CLASS_MARK, recruitStudentService.totalMajor(null), 0);
+			
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入失败！失败信息："+e.getMessage());
+		}
+		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
+	}
+	
 	/**
 	 * 导入用户数据
 	 * @param file

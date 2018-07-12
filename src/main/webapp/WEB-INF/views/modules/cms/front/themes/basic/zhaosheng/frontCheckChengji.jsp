@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>个人成绩(院校)</title>
+<title>录取查询系统</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年单招录取查询系统</h3>
+						<h3>录取查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">

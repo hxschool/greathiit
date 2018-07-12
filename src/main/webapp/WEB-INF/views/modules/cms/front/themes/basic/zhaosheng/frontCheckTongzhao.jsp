@@ -70,15 +70,15 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>录取通知书EMS邮件编号查询系统</h3>
+						<h3>2018年哈尔滨信息工程学院单招报名申请表</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
 							
-							<input type="hidden" name="operation" value="ems">
+										<input type="hidden" name="operation" value="tongzhao">
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>结果查询</h4>
+									<h4>报告结果查询</h4>
 								</div>
 
 								<div class="widget-body">

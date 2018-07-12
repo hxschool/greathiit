@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>核对个人信息</title>
+<title>单招考试成绩</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -70,15 +70,15 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>录取通知书EMS邮件编号查询系统</h3>
+						<h3>2018年单招录取查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
 							
-							<input type="hidden" name="operation" value="ems">
+
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>结果查询</h4>
+									<h4>省成绩结果</h4>
 								</div>
 
 								<div class="widget-body">
@@ -88,7 +88,7 @@
 												style="display: block;">
 												<ul class="wizard-steps">
 													<li class="active" style="min-width: 50%; max-width: 50%;">
-														<span class="step">1</span> <span class="title">核对个人信息</span>
+														<span class="step">1</span> <span class="title">单招成绩发布</span>
 													</li>
 
 
@@ -102,7 +102,7 @@
 											<hr>
 
 											<div
-												class="alert alert-block alert-error ${empty message ? 'hide' : ''}">
+												class="alert alert-block  ${empty message ? 'hide' : ''}">
 												<a class="close" data-dismiss="alert" href="#">×</a>
 												${message}
 											</div>
@@ -114,48 +114,100 @@
 													<div class="span3">&nbsp;</div>
 
 													<div class="span6">
+													<div class="control-group ">
+
+															<label for="name" class="control-label">省份</label>
+															<div class="controls">
+
+																<input type="text" name="hcFormCj" value="${systemStudent.province}" style="border: 0px;"/>
+
+															</div>
+														</div>
+														
+														<div class="control-group ">
+
+															<label for="name" class="control-label">学历</label>
+															<div class="controls">
+
+																<input type="text" name="hcFormCj" value="${systemStudent.leven}" style="border: 0px;"/>
+
+															</div>
+														</div>
+													<div class="control-group ">
+
+															<label for="name" class="control-label">录取专业</label>
+															<div class="controls">
+
+																<input type="text" name="hcFormCj" value="${systemStudent.major.name}" style="border: 0px;"/>
+
+															</div>
+														</div>
+														<div class="control-group ">
+
+															<label for="name" class="control-label">考生号</label>
+															<div class="controls">
+
+																<input type="text" name="hcFormBkh" value="${systemStudent.exaNumber }" style="border: 0px;"/>
+
+															</div>
+														</div>
+														
 
 														<div class="control-group ">
 
 															<label for="name" class="control-label">姓名</label>
 															<div class="controls">
 
-																<input type="text" name="username" value="" id="name" placeholder="输入姓名"/>
+																<input type="text" name="hcFormXm" value="${systemStudent.username }" style="border: 0px;"/>
 
 															</div>
 														</div>
+														
+														
 
 
 														<div class="control-group ">
 
-															<label class="control-label">身份证件号</label>
+															<label class="control-label">身份证号</label>
 
 
 															<div class="controls">
-
-
-																<input type="text" name="idCardNumber" value=""
-																	id="idCardNumber" class="form-control"  placeholder="输入18位身份证号"/>
+																<input type="text" name="hcFormSfzh" value="${systemStudent.idCard }" style="border: 0px;"/>
 
 															</div>
 															
 														</div>
 
 
-
+														
 														<div class="control-group ">
 
-															<label for="captcha" class="control-label">图文验证码</label>
+															<label class="control-label">投档成绩</label>
+
 
 															<div class="controls">
 
-																<input type="text" name="captcha" size="6" class="span6"
-																	placeholder="右侧图片中的字母" value="" id="captcha"  /> <img
-																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
-																	id="captchaImage" style="height: 30px" onclick="this.src='${pageContext.request.contextPath}/servlet/validateCodeServlet?d='+Math.random();" />
-															</div>
-														</div>
 
+																<input type="text" name="hcFormZonghe" value="${systemStudent.zongfen }分" style="border: 0px;"/>
+
+															</div>
+															
+														</div>
+														
+														<div class="control-group ">
+
+															<label class="control-label">美术</label>
+
+
+															<div class="controls">
+
+
+																<input type="text" name="hcFormCj" value="${systemStudent.techang }分" style="border: 0px;"/>
+
+															</div>
+															
+														</div>
+														
 													</div>
 
 													<div class="span3"></div>
@@ -165,17 +217,7 @@
 
 											<hr>
 
-											<div class="row-fluid wizard-actions">
-												
-
-												<button name="_eventId_next" id="_eventId_next"
-													onclick="javascript:toNext()"
-													class="btn btn-next btn-success">
-													下一步 <i class="icon-arrow-right icon-on-right"></i>
-												</button>
-
-
-											</div>
+											
 										</div>
 									</div>
 								</div>
@@ -184,21 +226,6 @@
 
 						</form>
 
-						<script language="JavaScript">
-							$(function() {
-								$('btn-exit').click(function() {
-									window.close();
-								});
-							});
-							function toNext() {
-								var Sys = {}, s;
-								(s = (navigator.userAgent.toLowerCase())
-										.match(/msie ([\d.]+)/)) ? Sys.ie = s[1]
-										: 0;
-								if (Sys.ie && Number(Sys.ie) <= 7)
-									$('form').submit();
-							}
-						</script>
 
 					</div>
 					<!--PAGE CONTENT ENDS HERE-->

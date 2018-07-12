@@ -6,7 +6,15 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#btnImport").click(function() {
+				$.jBox($("#importBox").html(), {
+					title : "导入数据",
+					buttons : {
+						"关闭" : true
+					},
+					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+				});
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -21,6 +29,23 @@
 		<li class="active"><a href="${ctx}/out/ems/rsStudentEms/">单招录取通知书列表</a></li>
 		<shiro:hasPermission name="out:ems:rsStudentEms:edit"><li><a href="${ctx}/out/ems/rsStudentEms/form">单招录取通知书添加</a></li></shiro:hasPermission>
 	</ul>
+	
+	<div id="importBox" class="hide">
+		<form id="importForm" action="${ctx}/out/ems/rsStudentEms/import" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " />
+				
+				
+				
+				 <a
+				href="${ctx}/recruit/student/recruitStudent/template">下载模板</a>
+		</form>
+	</div>
 	<form:form id="searchForm" modelAttribute="rsStudentEms" action="${ctx}/out/ems/rsStudentEms/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
@@ -46,7 +71,8 @@
 			<li><label>状态：</label>
 				<form:input path="hcFormStatus" htmlEscape="false" maxlength="11" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/> <input
+				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

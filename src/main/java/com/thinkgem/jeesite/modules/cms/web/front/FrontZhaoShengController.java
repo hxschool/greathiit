@@ -33,6 +33,8 @@ import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
 import com.thinkgem.jeesite.modules.out.sc.service.RsStudentResultService;
 import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
 import com.thinkgem.jeesite.modules.out.system.service.SystemStudentService;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
+import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
@@ -55,6 +57,8 @@ public class FrontZhaoShengController extends BaseController{
 	private RsStudentResultService rsStudentResultService;
 	@Autowired
 	private RsStudentEmsService rsStudentEmsService;
+	@Autowired
+	private RecruitStudentService recruitStudentService;
 	
 	/**
 	 * 网站首页
@@ -229,8 +233,20 @@ public class FrontZhaoShengController extends BaseController{
 			//查询ems成绩信息
 			RsStudentEms studentEms = rsStudentEmsService.getByUsernameAndIdCard(username, idCardNumber);
 			
-			if(!StringUtils.isEmpty(studentEms)&&operation.equals("ems")) {
-				
+			switch (operation) {
+			case "tongzhao": {
+				RecruitStudent recruitStudent = new RecruitStudent();
+				recruitStudent.setUsername(username);
+				recruitStudent.setIdCard(idCardNumber);
+				RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
+				if(StringUtils.isEmpty(pojo)) {
+					model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");
+					return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckJieguo";
+				}
+				model.addAttribute("systemStudent", pojo);
+				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckTongzhaoResult";
+			}
+			case "ems": {
 				KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
 				StringBuffer sb = new StringBuffer();
 				try {
@@ -238,12 +254,13 @@ public class FrontZhaoShengController extends BaseController{
 					System.out.print(result);
 					Gson gson = new Gson();
 					KdniaoTrackResponse kniaoTrackResponse = gson.fromJson(result, KdniaoTrackResponse.class);
-					for(KdniaoTrackTraces kdniaoTrackTraces:kniaoTrackResponse.getTraces()) {
+					for (KdniaoTrackTraces kdniaoTrackTraces : kniaoTrackResponse.getTraces()) {
 						sb.append(kdniaoTrackTraces.getAcceptTime());
 						sb.append("<br>");
 						sb.append(kdniaoTrackTraces.getAcceptStation());
 						sb.append("<br>");
-						sb.append("--------------------------------------------------------------------------------------------");
+						sb.append(
+								"--------------------------------------------------------------------------------------------");
 						sb.append("<br>");
 					}
 				} catch (Exception e) {
@@ -252,8 +269,12 @@ public class FrontZhaoShengController extends BaseController{
 				model.addAttribute("ems", sb.toString());
 				model.addAttribute("systemStudent", studentEms);
 				model.addAttribute("message", "查询成功");
-				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckEmsResult";
+				return "modules/cms/front/themes/" + site.getTheme() + "/zhaosheng/frontCheckEmsResult";
+				
 			}
+			}
+			
+			
 			
 		}
 		

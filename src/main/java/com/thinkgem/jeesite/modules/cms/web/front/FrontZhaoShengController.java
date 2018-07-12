@@ -231,7 +231,7 @@ public class FrontZhaoShengController extends BaseController{
 		String operation = request.getParameter("operation");
 		if(!StringUtils.isEmpty(operation)) {
 			//查询ems成绩信息
-			RsStudentEms studentEms = rsStudentEmsService.getByUsernameAndIdCard(username, idCardNumber);
+			
 			
 			switch (operation) {
 			case "tongzhao": {
@@ -247,6 +247,7 @@ public class FrontZhaoShengController extends BaseController{
 				return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckTongzhaoResult";
 			}
 			case "ems": {
+				RsStudentEms studentEms = rsStudentEmsService.getByUsernameAndIdCard(username, idCardNumber);
 				KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
 				StringBuffer sb = new StringBuffer();
 				try {
@@ -258,7 +259,8 @@ public class FrontZhaoShengController extends BaseController{
 						sb.append("<br>");
 						sb.append(kdniaoTrackTraces.getAcceptStation());
 						sb.append("<br>");
-						sb.append("--------------------------------------------------------------------------------------------");
+						sb.append(
+								"--------------------------------------------------------------------------------------------");
 						sb.append("<br>");
 					}
 				} catch (Exception e) {

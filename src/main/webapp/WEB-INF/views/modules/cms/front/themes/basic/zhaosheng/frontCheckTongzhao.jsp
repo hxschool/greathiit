@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>核对个人信息</title>
+<title>哈尔滨信息工程学院录取查询系统</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -78,7 +78,7 @@
 										<input type="hidden" name="operation" value="tongzhao">
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>报告结果查询</h4>
+									<h4>结果查询</h4>
 								</div>
 
 								<div class="widget-body">

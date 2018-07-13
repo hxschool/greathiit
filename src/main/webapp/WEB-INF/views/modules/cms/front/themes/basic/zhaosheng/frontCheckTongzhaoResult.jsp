@@ -70,7 +70,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年单招录取查询系统</h3>
+						<h3>哈尔滨信息工程学院录取查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">

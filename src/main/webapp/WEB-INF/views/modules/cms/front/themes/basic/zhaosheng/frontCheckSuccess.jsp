@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2018年哈尔滨信息工程学院单招报名申请表</title>
+<title>哈尔滨信息工程学院录取查询系统</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -78,7 +78,7 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>2018年哈尔滨信息工程学院单招报名申请表</h4>
+									<h4>哈尔滨信息工程学院录取查询系统</h4>
 								</div>
 
 								<div class="widget-body">

@@ -115,7 +115,7 @@ window.close();
 								<div class="col-sm-10 col-xs-12">
 									<div class="panel panel-primary text-wr">
 										<div class="panel-heading text-center text-s28 text-bold"
-											id="bmform">2018年哈尔滨信息工程学院单招报名申请表</div>
+											id="bmform">哈尔滨信息工程学院录取查询系统</div>
 										<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
 												${fns:getDictDescription('2018', 'greathiit_zhaosheng', '暂无')}

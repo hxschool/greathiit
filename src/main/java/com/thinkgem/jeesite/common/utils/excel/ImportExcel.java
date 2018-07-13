@@ -197,7 +197,9 @@ public class ImportExcel {
 	 * @return
 	 */
 	public int getLastDataRowNum(){
-		return this.sheet.getLastRowNum()+headerNum;
+		int lastRowNum = this.sheet.getLastRowNum();
+		int ret = lastRowNum+headerNum;
+		return ret;
 	}
 	
 	/**
@@ -208,38 +210,7 @@ public class ImportExcel {
 		return this.getRow(headerNum).getLastCellNum();
 	}
 	
-	public static void main(String[] args) {
-		try {
-			ImportExcel importExcel = new ImportExcel(new File("D:/excel/cc.xlsx"),3);
-			String[][] curriculumPlans = importExcel.importFile();
-			for(String[] curriculumPlan:curriculumPlans) {
-				String id = curriculumPlan[0];
-				String office = curriculumPlan[1];
-				String major = curriculumPlan[2];
-				String curs_num = curriculumPlan[3];
-				String course_name = curriculumPlan[4];
-				String curs_type = curriculumPlan[5];//课程类型
-				String assessment_type = curriculumPlan[6];//考核类型
-				String clazz = curriculumPlan[7];//考核类型
-				String count = curriculumPlan[8];//考核类型
-				String tchr_name = curriculumPlan[9];//考核类型
-				
-				String tchr_title = curriculumPlan[10];
-				String user_type = curriculumPlan[11];
-				String week_count = curriculumPlan[12];
-				
-				String week = curriculumPlan[13];
-				String curs_class_hour = curriculumPlan[14];
-				String remark = curriculumPlan[15];
-			}
-		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 
 	public String[][] importFile() throws FileNotFoundException, IOException {
 		List<String[]> result = new ArrayList<String[]>();

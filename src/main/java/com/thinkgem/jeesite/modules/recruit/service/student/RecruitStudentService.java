@@ -39,11 +39,7 @@ public class RecruitStudentService extends CrudService<RecruitStudentDao, Recrui
 	}
 	
 	public RecruitStudent getRecruitStudent(RecruitStudent entity) {
-		return recruitStudentDao.get(entity);
-	}
-	
-	public RecruitStudent get(String id) {
-		return super.get(id);
+		return recruitStudentDao.getRecruitStudent(entity);
 	}
 	
 	public List<RecruitStudent> findList(RecruitStudent recruitStudent) {

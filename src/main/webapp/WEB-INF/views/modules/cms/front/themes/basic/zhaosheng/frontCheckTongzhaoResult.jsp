@@ -78,25 +78,13 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>省成绩结果</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">
 									<div class="widget-body-inner">
 										<div class="widget-main">
-											<div id="fuelux-wizard" class="row-fluid hide"
-												style="display: block;">
-												<ul class="wizard-steps">
-													<li class="active" style="min-width: 50%; max-width: 50%;">
-														<span class="step">1</span> <span class="title">单招成绩发布</span>
-													</li>
-
-
-													<li class="" style="min-width: 50%; max-width: 50%;">
-														<span class="step">2</span> <span class="title">完成</span>
-													</li>
-												</ul>
-											</div>
+											
 
 
 											<hr>
@@ -126,7 +114,7 @@
 														
 														<div class="control-group ">
 
-															<label for="name" class="control-label">学历</label>
+															<label for="name" class="control-label">层次</label>
 															<div class="controls">
 
 																<input type="text" name="hcFormCj" value="${systemStudent.leven}" style="border: 0px;"/>

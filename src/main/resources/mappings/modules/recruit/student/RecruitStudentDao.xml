@@ -52,16 +52,8 @@
 			<include refid="recruitStudentColumns"/>
 		FROM recruit_student a
 		<include refid="recruitStudentJoins"/>
-		WHERE 1=1
-		<if test="id != null and id != ''">
-				AND a.id = #{id}
-			</if>
-		<if test="username != null and username != ''">
-				AND a.username = #{username}
-			</if>
-		<if test="idCard != null and idCard != ''">
-				AND a.id_card = #{idCard}
-			</if>
+		WHERE a.id = #{id}
+
 	</select>
 	
 	
@@ -89,7 +81,14 @@ from recruit_student
 			<include refid="recruitStudentColumns"/>
 		FROM recruit_student a
 		<include refid="recruitStudentJoins"/>
-		WHERE a.id_card = #{idCard}
+		WHERE 1=1
+				<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+		<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+
 	</select>
 	
 	<select id="findList" resultType="RecruitStudent">

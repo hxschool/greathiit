@@ -270,7 +270,7 @@ public class RecruitStudentController extends BaseController {
 			int successNum = 0;
 			int failureNum = 0;
 			StringBuilder failureMsg = new StringBuilder();
-			ImportExcel ei = new ImportExcel(file, 0, 0);
+			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<SimpleStudent> list = ei.getDataList(SimpleStudent.class);
 			for (SimpleStudent simpleStudent : list){
 				try{

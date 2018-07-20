@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2018年高职(专科)单独招生专业志愿填报系统说明</title>
+<title>哈尔滨信息工程学院-单独招生专业志愿填报系统说明</title>
 
 <link rel="stylesheet" href="${ctxStatic}/zhaosheng/bootstrap.min.css">
 <link rel="stylesheet"

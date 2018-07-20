@@ -48,15 +48,7 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
+				
 			</div>
 		</div>
 	</div>
@@ -70,7 +62,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年高职（专科）单招录取通知书EMS邮件编号查询系统</h3>
+						<h3>录取通知书EMS邮件编号查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
@@ -78,7 +70,7 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>EMS结果查询</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">

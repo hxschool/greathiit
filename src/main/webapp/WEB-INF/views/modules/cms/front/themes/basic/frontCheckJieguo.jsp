@@ -48,15 +48,7 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
+				
 			</div>
 		</div>
 	</div>
@@ -78,7 +70,7 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>报告结果查询</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>哈尔滨信息工程学院录取查询系统</title>
+<title>哈尔滨信息工程学院</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -48,15 +48,6 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
 			</div>
 		</div>
 	</div>

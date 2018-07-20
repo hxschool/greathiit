@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>单招考试成绩</title>
+<title>哈尔滨信息工程学院</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="renderer" content="webkit" />
@@ -48,15 +48,7 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
+				
 			</div>
 		</div>
 	</div>
@@ -70,7 +62,7 @@
 					<!--PAGE CONTENT BEGINS HERE-->
 					<div class="content">
 
-						<h3>2018年单招录取查询系统</h3>
+						<h3>哈尔滨信息工程学院录取查询系统</h3>
 
 						<form action="jieguo"
 							method="post" class="form-horizontal" onsubmit="return chechForm();">
@@ -78,7 +70,7 @@
 
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>省成绩结果</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">

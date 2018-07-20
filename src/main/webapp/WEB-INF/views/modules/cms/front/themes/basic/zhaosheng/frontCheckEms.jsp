@@ -48,15 +48,6 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
 			</div>
 		</div>
 	</div>
@@ -78,7 +69,7 @@
 							<input type="hidden" name="operation" value="ems">
 							<div class="widget-box">
 								<div class="widget-header widget-header-large header-color-blue">
-									<h4>结果查询</h4>
+									<h4></h4>
 								</div>
 
 								<div class="widget-body">
@@ -149,7 +140,7 @@
 
 															<div class="controls">
 
-																<input type="text" name="captcha" size="6" class="span6"
+																<input type="text" name="captcha" size="6" class="form-control"
 																	placeholder="右侧图片中的字母" value="" id="captcha"  /> <img
 																	src="${pageContext.request.contextPath}/servlet/validateCodeServlet"
 																	id="captchaImage" style="height: 30px" onclick="this.src='${pageContext.request.contextPath}/servlet/validateCodeServlet?d='+Math.random();" />

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>2018年高职(专科)单独招生专业志愿填报系统说明</title>
+<title>哈尔滨信息工程-单独招生专业志愿填报系统说明</title>
 
 <link rel="stylesheet" href="${ctxStatic}/zhaosheng/bootstrap.min.css">
 <link rel="stylesheet"
@@ -101,7 +101,7 @@ alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
 								<div class="col-sm-10 col-xs-12">
 									<div class="panel panel-primary text-wr">
 										<div class="panel-heading text-center text-s28 text-bold"
-											id="bmform">2018年高职(专科)单独招生专业志愿填报系统说明</div>
+											id="bmform">单独招生专业志愿填报系统说明</div>
 
 				<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">

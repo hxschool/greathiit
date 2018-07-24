@@ -4,6 +4,7 @@
 	<!-- 默认装饰页面, 在需要装饰的页面增加<meta name="decorator" content="default"/> -->
 	<decorator name="blank" page="layouts/blank.jsp" />
 	<decorator name="default" page="layouts/default.jsp" />
+	<decorator name="bootstarp" page="layouts/default.jsp" />
 	
 	<!-- CMS基础主题装饰页面 -->
 	<decorator name="cms_default_basic" page="modules/cms/front/themes/basic/layouts/default.jsp" />
@@ -11,6 +12,6 @@
 	
 	<!-- 迎新系统 -->
 	<decorator name="yingxin_default_basic" page="modules/yingxin/themes/basic/layouts/default.jsp" />
-
+	<decorator name="yingxin_default_bootstarp" page="modules/yingxin/themes/bootstarp/layouts/default.jsp" />
 	
 </decorators>

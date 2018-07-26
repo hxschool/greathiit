@@ -22,10 +22,10 @@
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script charset="utf-8" src="${ctxStatic}/yingxin2/b.js"></script><script charset="utf-8" src="${ctxStatic}/yingxin2/lxb.js"></script>
+    <script src="${ctxStatic}/jquery/jquery-1.9.1.min.js"
+	type="text/javascript"></script>	
+    
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="${ctxStatic}/yingxin2/bootstrap.js"></script>
 <script src="${ctxStatic}/yingxin2/pc_nb.js" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="${ctxStatic}/yingxin2/main.css">
 
-<script src="${ctxStatic}/jquery/jquery-1.9.1.min.js"
-	type="text/javascript"></script>	

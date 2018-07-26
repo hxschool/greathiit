@@ -33,17 +33,10 @@
 			<a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=13" class="service-item-title"><h3>美国签证加急预约</h3></a>
 			<p class="hidden-xs">
 				<span>受理范围: 全国受理</span>
-				<span>入境次数: 多次往返</span>
-				<span>有效期限: 十年有效</span>
-				<span>停留期限: 海关决定</span>
+
 				<span class="hidden-sm">是否邮寄: 无需邮寄</span>
 			</p>
-			<p>
-				<span>办理难度: <span class="star"><i>★★★★</i>★</span></span>
-			</p>
-			<p>
-				<span>能否加急: 可加急办理</span>
-			</p>
+
 			<a href="http://www.clantrip.com/index.php?m=content&c=index&a=lists&catid=13" class="btn btn-outline-blue">查看详情</a>
 		</dd>
 

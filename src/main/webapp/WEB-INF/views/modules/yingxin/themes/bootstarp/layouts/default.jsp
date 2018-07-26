@@ -9,6 +9,19 @@
 <%@include file="/WEB-INF/views/modules/yingxin/include/head.jsp"%>
 <sitemesh:head />
 </head>
+<script type="text/javascript">
+$(function () {
+    $(".nav").find("li").each(function () {
+        var a = $(this).find("a:first")[0];
+        if ($(a).attr("href") == location.pathname) {
+        	$(a).after('<span class="sr-only">(current)</span></a><p class="line-top hidden-xs"></p>');
+            $(this).addClass("active");
+        } else {
+            $(this).removeClass("active");
+        }
+    });
+})
+</script>
 <body>
 	
 <div id="header">
@@ -27,13 +40,13 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a><p class="line-top hidden-xs"></p></li>
+                    <li ><a href="/yingxin">首页 </a></li>
                            
                                         	<c:forEach items="${categorys}" var="category">
 												<li><a href="/yingxin/list-${category.id}${urlSuffix}">${category.name }</a></li>
 											</c:forEach>
 											
-                                        <li class="hidden-sm"><a href="#">网上登录</a></li>
+                                        <li class="hidden-sm"><a href="/yingxin/login">网上登录</a></li>
                                     </ul>
                             </div>
         </div>
@@ -70,90 +83,7 @@
 	
 	
 	
-<!-- 数字滚动插件 -->
-<script type="text/javascript" src="${ctxStatic}/yingxin2/countUp.js"></script>
-<script type="text/javascript">
-    $(function () {
-        /**通用-banner大图自定义缩放**/
-        var zoomWidth = 992; //缩放阀值992px, 即所有小于992px的视口都会对原图进行缩放, 只是缩放比例不同
-        var maxWidth = 1920; //最大宽度1920px
-        var ratio = 1; //缩放比例
-        var viewWidth = window.innerWidth; // 视口宽度
-        var zoomSlider = function () {
-            if (viewWidth < 768) { //当视口小于768时(移动端), 按992比例缩放
-                ratio = viewWidth / zoomWidth; //视口宽度除以阀值, 计算缩放比例
-            } else if (viewWidth < zoomWidth) { //当视口界于768与992之间时, bootstrap主宽度为750, 这区间图片缩放比例固定.
-                ratio = zoomWidth / (zoomWidth + (zoomWidth - 750));
-            } else { // PC端不缩放
-                ratio = 1;
-            }
-            //ratio = viewWidth / zoomWidth; //视口宽度除以阀值, 计算缩放比例
-            //ratio = (ratio<=1) ? ratio : 1; //如果比例值大于1, 说明视口宽度高于阀值, 则不进行任何缩放
-            var width = maxWidth * ratio; //缩放宽度
-            $(".my-slide img").each(function () {
-                $(this).css({
-                    "width": width,
-                    "max-width": width,
-                    "margin-left": -(width - viewWidth) / 2
-                }); //图片自适应居中, 图片宽度与视口宽度差除以2的值, 设置为负margin
-            });
-        }
-        /**通用-我们的成绩等数字滚动特效**/
-        var numOptions = {
-            useEasing: true,
-            useGrouping: true,
-            separator: ',',
-            decimal: '.',
-            prefix: '',
-            suffix: ''
-        }
-        var numGroup = new Array(
-                new CountUp("sum-apply", 0, 1044, 0, 2.5, numOptions),
-                new CountUp("sum-rate", 0, 25.6, 1, 2.5, numOptions),
-                new CountUp("sum-urgent", 0, 5262, 0, 2.5, numOptions),
-                new CountUp("urgent-rate", 0, 473, 0, 2.5, numOptions)
-        );
-        var runNumber = function () {
-            $('.run-number').each(function () {
-                var oTop = $(this).offset().top;
-                var sTop = $(window).scrollTop();
-                var oHeight = $(this).height();
-                var oIndex = $(this).index('.run-number');
-                //console.log(oTop+'\r\n'+sTop+'\r\n'+oHeight+'\r\n'+$(window).height());
-                if (oTop >= sTop && (oTop + (oHeight / 2)) < (sTop + $(window).height())) {
-                    numGroup[oIndex].start();
-                    //console.log('元素'+$(this).index('.run-number')+'可见');
-                } else {
-                    //console.log('元素'+$(this).index('.run-number')+'不可见');
-                }
-            });
-        }
 
-        zoomSlider(); //页面加载时初始化并检查一次.
-        runNumber(); //页面加载时判断一次
-        /**视口发生变化时的事件**/
-        $(window).resize(function () {
-            viewWidth = window.innerWidth; // 重置视口宽度
-            zoomSlider();//判断是否绽放banner
-            runNumber();//判断是否执行动画
-        });
-        /**滚动事件**/
-        $(window).scroll(function () {
-            runNumber();
-        });
-
-        //首页-我们的服务
-        $('.card-item').each(function () {
-            $(this).mouseover(function () {
-                $(this).addClass('card-active');
-                $(this).siblings().removeClass('card-active');
-                $(this).find(".btn").addClass('btn-outline-inverse').removeClass('btn-outline-blue');
-                $(this).siblings().find(".btn").addClass('btn-outline-blue').removeClass('btn-outline-inverse');
-            });
-        });
-
-    });
-</script>
 
 <!-- 返回顶部滑块 -->
 <div id="clan-slider">

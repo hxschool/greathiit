@@ -27,5 +27,5 @@
     
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="${ctxStatic}/yingxin2/bootstrap.js"></script>
-<script src="${ctxStatic}/yingxin2/pc_nb.js" charset="UTF-8"></script><link rel="stylesheet" type="text/css" href="${ctxStatic}/yingxin2/main.css">
+<link rel="stylesheet" type="text/css" href="${ctxStatic}/yingxin2/main.css">
 

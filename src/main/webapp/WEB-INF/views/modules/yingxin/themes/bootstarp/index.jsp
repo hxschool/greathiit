@@ -193,89 +193,44 @@
                     <small>哈尔滨信息工程学院帮您关注最新美国签证相关政策与新闻。</small>
                 </h2>
             </div>
-                                    <div class="col-sm-6">
-                <div class="media our-news-item">
-                    <div class="media-left">
-                        <a class="thumbnail" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=49">
-                            <img class="media-object" src="${ctxStatic}/yingxin2/20170509103625563.jpg" alt="92名中国民工被欠薪受困塞班岛 华裔中介扣钱逃匿">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=49"><h4 class="media-heading">92名中国民工被欠薪受困塞班岛 华裔中介扣钱逃匿</h4></a>
-                        <div class="dynamic-li">
-                            <span>时间：2017-05-09 </span>
-                        </div>
-                        <p>他们大部分来自东北，在去年10月份时，其所在城市的劳务中介公司找到他们，介绍了塞班岛的工作，中介给他们开出每天工作8小时日薪300元、如果加班每小时50元的待遇。民工称他们当时也没</p>
-                        <div class="dynamic-li">
-                            <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=49">[详细]</a>
-                            <span>作者：哈尔滨信息工程学院 <span class="hidden-xs">clantrip.com</span> </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                        <div class="col-sm-6">
-                <div class="media our-news-item">
-                    <div class="media-left">
-                        <a class="thumbnail" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=48">
-                            <img class="media-object" src="${ctxStatic}/yingxin2/20170508061916221.png" alt="2017年赴美签证新规定">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=48"><h4 class="media-heading">2017年赴美签证新规定</h4></a>
-                        <div class="dynamic-li">
-                            <span>时间：2017-05-08 </span>
-                        </div>
-                        <p>美国国务院领事事务局2016年10月6日公告，自2016年11月1日开始，申请美国护照或签证，要使用没有戴眼镜的照片。</p>
-                        <div class="dynamic-li">
-                            <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=48">[详细]</a>
-                            <span>作者：哈尔滨信息工程学院 <span class="hidden-xs">clantrip.com</span> </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                        <div class="col-sm-6">
-                <div class="media our-news-item">
-                    <div class="media-left">
-                        <a class="thumbnail" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=47">
-                            <img class="media-object" src="${ctxStatic}/yingxin2/20170508052848613.jpg" alt="美国有多少人缴纳个人所得税及其它">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=47"><h4 class="media-heading">美国有多少人缴纳个人所得税及其它</h4></a>
-                        <div class="dynamic-li">
-                            <span>时间：2017-05-08 </span>
-                        </div>
-                        <p>前几天我们有一篇博文介绍了美国个人所得税税率，不少网友提出许多有关美国个税税收的问题，这里就集中回答。由于个税牵涉到联邦所得税以及   </p>
-                        <div class="dynamic-li">
-                            <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=47">[详细]</a>
-                            <span>作者：哈尔滨信息工程学院 <span class="hidden-xs">clantrip.com</span> </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                        <div class="col-sm-6">
-                <div class="media our-news-item">
-                    <div class="media-left">
-                        <a class="thumbnail" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=35">
-                            <img class="media-object" src="${ctxStatic}/yingxin2/20170414112021996.jpg" alt="多国签证利好频出，带火春节出境游">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=35"><h4 class="media-heading">多国签证利好频出，带火春节出境游</h4></a>
-                        <div class="dynamic-li">
-                            <span>时间：2017-04-15 </span>
-                        </div>
-                        <p>近一两个月来，澳大利亚、马来西亚、以色列、阿联酋、塞尔维亚、泰国等国纷纷对中国公民捧出签证利好，加上春节临近，大为提振了南京市民的旅游热情。记者从旅游市场上获悉，春节期间</p>
-                        <div class="dynamic-li">
-                            <a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=10&amp;id=35">[详细]</a>
-                            <span>作者：哈尔滨信息工程学院 <span class="hidden-xs">clantrip.com</span> </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                                    <div class="col-sm-12 our-news-more">
+
+<c:forEach items="${articles}" var="article">
+
+					
+
+				<div class="col-sm-6">
+					<div class="media our-news-item">
+						<div class="media-left">
+							<a class="thumbnail"
+								href="yingxin/view-${article.category.id}-${article.id}${urlSuffix}">
+								<img class="media-object"
+								src="${article.image }"
+								alt="${article.title}">
+							</a>
+						</div>
+						<div class="media-body">
+							<a
+								href="yingxin/view-${article.category.id}-${article.id}${urlSuffix}"><h4
+									class="media-heading">${fns:abbr(article.title,40)}</h4></a>
+							<div class="dynamic-li">
+								<span>时间：<fmt:formatDate value="${article.createDate}" type="both"/> </span>
+							</div>
+							<p>
+								${fns:abbr(article.description,100)}</p>
+							<div class="dynamic-li">
+								<a
+									href="yingxin/view-${article.category.id}-${article.id}${urlSuffix}">[详细]</a>
+								<span>作者：哈尔滨信息工程学院 <span class="hidden-xs">www.greathiit.com</span>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+</c:forEach>
+
+				<div class="col-sm-12 our-news-more">
                 <h2>
-                    <small><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=10">更多资讯&gt;&gt;&gt;</a></small>
+                    <small><a href="/yingxin/list-5.html">更多资讯&gt;&gt;&gt;</a></small>
                 </h2>
             </div>
         </div>

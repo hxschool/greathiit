@@ -186,61 +186,6 @@ $(function() {
     }, a.prototype.running = !0, a.prototype.loop = function() {
         this.running === !0 && this.update(), window.requestAnimationFrame(this.loop.bind(this))
     }, a.prototype.Waves = o, a.prototype.Ease = n, a
-}), $(function() {
-    var a = new SineWaves({
-            el: document.getElementById("waves"),
-            //设置正弦波速度 刘明注释
-            speed: 4,
-            width: function() {
-                var a = $(document).width();
-                //原来的值, 设置正弦波的宽度, 现在设置为与元素同宽
-                //return 768 > a ? 3 * $("#waves").parent().width() : 1.4 * $("#waves").parent().width()
-                return 1.4 * $("#waves").parent().width()
-            },
-            height: function() {
-                return $("#waves").parent().height()
-            },
-            //原来的值, 可以正弦波宽度, 居中, 两边超出部分隐藏
-            //wavesWidth: "100%",
-            wavesWidth: "130%",//150
-            ease: "SineInOut",
-            waves: [{
-                timeModifier: .5,
-                lineWidth: 2,
-                amplitude: 150,
-                wavelength: 200,
-                segmentLength: 1
-            }, {
-                timeModifier: .5,
-                lineWidth: 2,
-                amplitude: 100,
-                wavelength: 150,
-                segmentLength: 1
-            }, {
-                timeModifier: .5,
-                lineWidth: 2,
-                amplitude: 50,
-                wavelength: 80,
-                segmentLength: 1
-            }],
-            initialize: function() {},
-            resizeEvent: function() {
-                var a = this.ctx.createLinearGradient(0, 0, this.width, 0);
-                //原来的值, 设置线条渐变透明度, 以及开始激变的位置
-                //a.addColorStop(0, "rgba(255, 255, 255, 0)"), a.addColorStop(.5, "rgba(255, 255, 255, 0.2)"), a.addColorStop(1, "rgba(255, 255, 255, 0)");
-                a.addColorStop(0, "rgba(255, 255, 255, 0)"), a.addColorStop(.1, "rgba(255, 255, 255, 0.2)"), a.addColorStop(1, "rgba(255, 255, 255, 0)");
-                for (var b = -1, c = this.waves.length; ++b < c;) this.waves[b].strokeStyle = a;
-                b = void 0, c = void 0, a = void 0
-            }
-        }),
-        b = $("#waves"),
-        c = $(document).scrollTop(),
-        d = $(document).scrollTop() + $(window).height(),
-        e = b.offset().top + b.height(),
-        f = b.offset().top;
-    (c > e || f > d) && (a.running = !1, a.update()), $(window).bind("scroll", function() {
-        c = $(document).scrollTop(), d = $(document).scrollTop() + $(window).height(), e = b.offset().top + b.height(), f = b.offset().top, c > e || f > d ? (a.running = !1, a.update()) : (a.running = !0, a.update())
-    })
 });
 
 

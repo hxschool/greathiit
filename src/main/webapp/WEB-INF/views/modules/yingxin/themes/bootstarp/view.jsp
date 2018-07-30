@@ -21,7 +21,7 @@
 					style="margin-top: 10px; margin-bottom: 10px;">
 					<li><a href="http://yingxin.greathiit.com">首页</a></li>
 					<li><a
-						href="/yingxin/list-${category.id }${urlSuffix}">${category.name }</a></li>
+						href="../yingxin/list-${article.category.id}${urlSuffix}">${article.category.name }</a></li>
 				</ol>
 			</div>
 		</div>
@@ -30,28 +30,15 @@
 	<div class="main-container">
 		<div class="container">
 			<div class="row main-container-row" style="position: relative">
-				<div class="col-xs-12 col-sm-9 service-list">
-					<dl class="service-item">
-
-						<c:forEach items="${articles}" var="article" varStatus="status">
-							<dd class="ruxue">
-								<a
-									href="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
-									class="service-item-title"><h3>${fns:abbr(article.keywords,96)}</h3></a>
-								<p class="hidden-xs">
-									<span> ${article.description} </span>
-								</p>
-
-								<a
-									href="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
-									class="btn btn-outline-blue">查看详情</a>
-							</dd>
-						</c:forEach>
-
-
-
-					</dl>
-
+				<div class="col-xs-12 col-sm-9 news-article">
+					<div class="article-title">
+						<h1 class="h2" style="text-align: center;">${article.title }</h1>
+					</div>
+					<div class="article-content">
+					
+					           <center><time><fmt:formatDate value="${article.createDate}" pattern="yyyy-MM-dd HH:mm:ss"/></time>   来源： ${article.articleData.copyfrom }   　点击：${article.hits }</center>
+        ${article.articleData.content }
+					</div>
 				</div>
 				<div class="col-sm-3">
 					<div id="sidebar">
@@ -64,11 +51,11 @@
 								<a class="sidebar-chat web-chat" href="javascript:;">点击在线咨询</a>
 							</div>
 							<h4 class="hidden-xs">常用电话</h4>
-							
-					            <ul>
-					                <li><a href="tel:0451-58607888" title="招生电话">招生电话:0451-58607888</a></li>
-	
-					            </ul>
+
+							<ul>
+								<li><a href="tel:0451-58607888" title="招生电话">招生电话:0451-58607888</a></li>
+
+							</ul>
 
 						</div>
 					</div>

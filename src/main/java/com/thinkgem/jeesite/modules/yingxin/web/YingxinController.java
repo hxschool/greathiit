@@ -51,7 +51,7 @@ public class YingxinController {
 		
 		Article entity = new Article();
 		Category category = new Category();
-		category.setId("4");
+		category.setId("5");
 		entity.setCategory(category);
 		List<Article> list = articleService.findList(entity);
 		List<Article> articles = new ArrayList<Article>();

@@ -49,15 +49,7 @@
 				</a>
 				<!--/.brand-->
 
-				<ul class="nav ace-nav pull-right">
-					<li class="light-blue"><a data-toggle="dropdown" href="#"
-						class="dropdown-toggle"> <img
-							src="${ctxStatic}/campus-account/images/avatar.jpg"
-							class="nav-user-photo" alt="Avatar" /> <span class="user-info">
-								<small>您好</small> 访客
-						</span> <i class="icon-caret-down"></i>
-					</a></li>
-				</ul>
+				
 			</div>
 		</div>
 	</div>

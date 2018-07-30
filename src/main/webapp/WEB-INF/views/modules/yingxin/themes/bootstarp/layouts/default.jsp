@@ -66,7 +66,7 @@ $(function () {
                 <p class="line line-big"></p>
 
                 <h2>
-                    <small>他们与中岚建立了合作关系</small>
+                    <small></small>
                 </h2>
             </div>
             <c:forEach items="${links}" var="link">
@@ -95,7 +95,7 @@ $(function () {
             </div>
         </li>
         <li class="hidden-xs">
-            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=274027502&amp;site=qq&amp;menu=yes" id="slider-qq"></a>
+            <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=773152&amp;site=qq&amp;menu=yes" id="slider-qq"></a>
             <div class="clan-slider-tips">
                 QQ咨询
             </div>
@@ -103,7 +103,7 @@ $(function () {
         <li class="hidden-xs">
             <a id="slider-phone" href="javascript:void(0);"></a>
             <div class="clan-slider-tips">
-                010-64648731
+                0451-58607916
             </div>
         </li>
         <li class="hidden-xs">
@@ -129,45 +129,50 @@ $(function () {
         <div class="row">
             <div class="col-xs-6 col-sm-2 footer-item">
                 <div class="footer-list">
-                    <h4>常用工具</h4>
+                    <h4>学院概况</h4>
                     <ul>
-                        <li><a href="http://www.clantrip.com/code" target="_blank">电码查询</a></li>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=12&amp;id=36#track">护照追踪</a></li>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=14">资料下载</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1124" target="_blank">走进哈信息</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=70&id=20">花园式校园</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1125">信息化校园</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+             <div class="col-xs-6 col-sm-2 footer-item">
+                <div class="footer-list">
+                    <h4>招生专栏</h4>
+                    <ul>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1413">招生计划</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=lists&catid=225">报考指南</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1414">咨询热线</a></li>
+                        <!--  <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=39&id=1192">分数线</a></li>
+                        <li><a href="javascript:AddFavorite('%E7%BE%8E%E5%9B%BD%E7%AD%BE%E8%AF%81-%E4%B8%AD%E5%B2%9A','http://www.clantrip.com/');">咨询热线</a></li> -->
+                        
                     </ul>
                 </div>
             </div>
             <div class="col-xs-6 col-sm-2 footer-item">
                 <div class="footer-list">
-                    <h4>快捷裢接</h4>
+                      <h4>社会贡献</h4>
                     <ul>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=10">签证资讯</a></li>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=7&amp;id=1">签证指南</a></li>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=8&amp;id=37">常见问题</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1126">奖助学金</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1128">参军入伍</a></li>
+                        <li><a href="http://www.hxci.com.cn/index.php?m=content&c=index&a=show&catid=254&id=1127">职业认证</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="col-xs-6 col-sm-2 footer-item">
-                <div class="footer-list">
-                    <h4>关于我们</h4>
-                    <ul>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=11&amp;id=17">关于中岚</a></li>
-                        <li><a href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=show&amp;catid=11&amp;id=19">服务协议</a></li>
-                        <li><a href="javascript:AddFavorite('%E7%BE%8E%E5%9B%BD%E7%AD%BE%E8%AF%81-%E4%B8%AD%E5%B2%9A','http://www.clantrip.com/');">收藏本站</a></li>
-                    </ul>
-                </div>
-            </div>
+           
             <div class="col-xs-6 col-sm-2 footer-item">
                 <div class="footer-wechat">
-                    <img class="img-responsive" src="${ctxStatic}/yingxin2/wechat.png">
-                    <p>微信<sapn class="hidden-sm">号:</sapn>18401238365</p>
+                    <img class="img-responsive" src="http://www.hxci.com.cn/statics/images/gzh_290.jpg">
+                    <p>微信<sapn class="hidden-sm">号:</sapn>hrbxxgcxy</p>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-4 footer-item footer-item-last">
                 <div class="footer-contact">
-                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-phone.png">010-64648731</h2>
-                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-qq.png">274027502</h2>
-                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-mob.png">18401238365</h2>
+                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-phone.png">0451-58607888</h2>
+                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-qq.png"></h2>
+                    <h2><img src="${ctxStatic}/yingxin2/pc-footer-mob.png"></h2>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -238,7 +243,7 @@ $(function () {
 				</ins>
 				<ins id="nb_nodeboard_text" class="nb-nodeboard-text">
 					<p class="nb-nodeboard-company">哈尔滨信息工程学院</p>
-					<p class="nb-nodeboard-link">010-64648731</p>
+					<p class="nb-nodeboard-link">0451-58607916</p>
 				</ins>
 				<form id="nb_nodeboard_form" autocomplete="off"
 					class="nb-board-form"

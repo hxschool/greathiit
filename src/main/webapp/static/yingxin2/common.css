@@ -1234,16 +1234,20 @@ blockquote .quote-content{
     background-color: #f93;
     color: #fff;
 }
-.service-item .quancheng{
-    background-image: url(../images/quancheng.png);
+.service-item .ruxue{
+    background-image: url(images/ruxue.png);
     background-repeat: no-repeat;
 }
-.service-item .liucheng{
-    background-image: url(../images/liucheng.png);
+.service-item .jia{
+    background-image: url(images/jia.png);
     background-repeat: no-repeat;
 }
-.service-item .zhoubian{
-    background-image: url(../images/zhoubian.png);
+.service-item .xue{
+    background-image: url(images/xue.png);
+    background-repeat: no-repeat;
+}
+.service-item .help{
+    background-image: url(images/help.png);
     background-repeat: no-repeat;
 }
 

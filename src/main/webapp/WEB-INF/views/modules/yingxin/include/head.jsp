@@ -9,8 +9,8 @@
     <meta name="renderer" content="webkit">
     <!-- 目前仅限360急速浏览 webkit:急速  ie-comp:ie兼容模式   ie-stand: ie标准模式 -->
     
-    <meta name="keywords" content="关键字">
-    <meta name="description" content="一家专门从事美国签证咨询的网站">
+    <meta name="keywords" content="哈尔滨信息工程学院,迎新系统,欢迎新生,本科,大专,专业">
+    <meta name="description" content="哈尔滨信息工程学院,迎新系统,欢迎新生">
     <!-- Bootstrap中文字体版 -->
     <link href="${ctxStatic}/yingxin2/bootstrap.css" rel="stylesheet">
     <!-- 自定义样式 -->

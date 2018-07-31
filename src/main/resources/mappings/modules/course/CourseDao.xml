@@ -87,7 +87,7 @@
             	#{item}
         	</foreach>
 			</if>
-			<if test="teacher.no!=null and teacher.no!=''">
+			<if test="teacher!=null and teacher.no!=null and teacher.no!=''">
 			and a.teacher_number=#{teacher.no}
 			</if>
 			<if test="cursStatus!=null and cursStatus!=''">

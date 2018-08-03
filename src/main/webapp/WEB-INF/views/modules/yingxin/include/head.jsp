@@ -29,3 +29,4 @@
     <script src="${ctxStatic}/yingxin2/bootstrap.js"></script>
 <link rel="stylesheet" type="text/css" href="${ctxStatic}/yingxin2/main.css">
 
+<link rel="icon" href="${ctxStatic}/favicon.ico" />

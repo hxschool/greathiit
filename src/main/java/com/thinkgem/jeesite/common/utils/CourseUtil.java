@@ -55,6 +55,22 @@ public class CourseUtil {
 			return $z;
 	}
 	
+	public static String jiaoxuelou(String school)
+	{
+	        if(!StringUtils.isEmpty(school)&&school.length()==5) {
+	        	return schoolRootMap.get(school.substring(0,2));
+	        }
+	        return school;
+	}
+	
+	public static String jiaoshi(String school)
+	{
+	        if(!StringUtils.isEmpty(school)&&school.length()==5) {
+	        	return school.substring(2);
+	        }
+	        return school;
+	}
+	
 	
 	
 	public static Map<String,String> GetTimeCol(String $time_add){
@@ -69,6 +85,9 @@ public class CourseUtil {
 	}
 	
 	public static void main(String[] args) {
+		String school = "02302";
+		System.out.println(jiaoxuelou(school));
+		System.out.println(jiaoshi(school));
 		String time_add = "20181023020146";
 		
 		System.out.println(time_add.substring(0,4));

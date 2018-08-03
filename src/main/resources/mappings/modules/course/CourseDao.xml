@@ -29,11 +29,12 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		b.name as "teacher.name"
 	</sql>
 	
 	<sql id="courseJoins">
-	
+	LEFT JOIN sys_user b on a.teacher_number=b.no
 	</sql>
     
 	<select id="get" resultType="Course">
@@ -70,8 +71,6 @@
 			</if>
 		</where>
 	</select>
-	
-
 	
 	<select id="findList" resultType="Course">
 		SELECT 

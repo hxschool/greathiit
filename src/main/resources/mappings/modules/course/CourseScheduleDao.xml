@@ -21,6 +21,26 @@
 	</sql>
 	
 	
+	<select id="findCoursesByParam" resultType="com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt">
+		select <include refid="courseScheduleColumns"/>,b.curs_name as cursName,c.tchr_name as tchrName from course_schedule a left join course b on a.course_id=b.id left join teacher c on b.teacher_number=c.teacher_number
+			where a.sc_lock=2 
+ 		  <if test="courseClass!=null and courseClass!=''">  
+          and   LOCATE(#{courseClass},a.course_class )>0
+          </if>  
+          <if test="teacherNumber!=null and teacherNumber!=''  ">  
+          and   c.teacher_number in (#{teacherNumber})
+          </if> 
+          
+          <if test="list!=null and list.size()>0">
+          				AND a.course_id in 
+          				<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            				#{item}
+        				</foreach>
+          </if>
+          
+	</select>
+	
+	
 	
 	<select id="getCourseScheduleExt" resultType="com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt">
 		select <include refid="courseScheduleColumns"/>,b.curs_name as cursName,c.tchr_name as tchrName from course_schedule a left join course b on a.course_id=b.id left join teacher c on b.teacher_number=c.teacher_number

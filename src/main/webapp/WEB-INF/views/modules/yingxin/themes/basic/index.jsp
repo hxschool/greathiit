@@ -196,7 +196,7 @@
 
 				<c:forEach items="${articles}" var="article">
 					<c:set var="link"
-						value="yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
+						value="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
 						scope="session"></c:set>
 					<c:if test="${!empty article.link }">
 						<c:set var="link" value="${article.link}" scope="session"></c:set>
@@ -229,7 +229,7 @@
 
 				<div class="col-sm-12 our-news-more">
                 <h2>
-                    <small><a href="/yingxin/list-5.html">更多资讯&gt;&gt;&gt;</a></small>
+                    <small><a href="/yingxin/list-200005.html">更多资讯&gt;&gt;&gt;</a></small>
                 </h2>
             </div>
         </div>

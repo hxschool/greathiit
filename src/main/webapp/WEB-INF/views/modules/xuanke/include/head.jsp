@@ -9,7 +9,7 @@
 	<meta name="description" content="哈尔滨信息工程学院  选课系统">
 	<meta name="author" content="Willshon">
 	<meta name="keyword" content="哈尔滨信息工程学院  选课系统">
-	<link rel="shortcut icon" href="${ctxStatic}/xuanke/images/favicon.png">
+	<link rel="icon" href="${ctxStatic}/favicon.ico" />
 	
 
 	<!-- Bootstrap core CSS -->
@@ -33,6 +33,4 @@
 	<!-- DataTables CSS -->
 	<link href="${ctxStatic}/xuanke/home/css/dataTables.css" rel="stylesheet">
 	<link href="${ctxStatic}/xuanke/dataTables/css/jquery.dataTables.css" rel="stylesheet">
-	<!-- DataTables -->
-	<script type="text/javascript" charset="utf8" src="${ctxStatic}/xuanke/dataTables/js/jquery.dataTables.js"></script>
-	<script type="text/javascript" charset="utf8" src="${ctxStatic}/xuanke/home/Js/dataTables.js"></script>
+

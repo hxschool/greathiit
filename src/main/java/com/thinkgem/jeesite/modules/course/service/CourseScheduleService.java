@@ -27,6 +27,11 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
 	
+	public List<CourseScheduleExt> findCoursesByParam(List<String> list,String courseClass,String teacherNumber){
+		return courseScheduleDao.findCoursesByParam(list,courseClass,teacherNumber);
+		
+	}
+	
 	public List<CourseScheduleExt> getCourseScheduleExt(String yearTerm,Integer courseClass,String teacherNumber){
 		return courseScheduleDao.getCourseScheduleExt( yearTerm, courseClass, teacherNumber);
 		

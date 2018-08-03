@@ -783,3 +783,7 @@ from teacher_temp
 
 where 姓名 not in (select name from sys_user)
 
+
+
+ALTER TABLE select_course
+ADD UNIQUE KEY(course_id, student_number);

@@ -38,9 +38,16 @@ public class YingxinController {
 
 	@ModelAttribute
 	public void initalCategory(Model model) {
+		Link link = new Link();
+		Category linkCategory = new Category();
+		linkCategory.setId("2");
+		link.setCategory(linkCategory);
+		List<Link> links = linkService.findList(link);
+		
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		List<Category> categorys = categoryService.findByParentId("2", site.getId());
 		model.addAttribute("categorys", categorys);	
+		model.addAttribute("links", links);
 	}
 	
 	/**
@@ -51,7 +58,7 @@ public class YingxinController {
 		
 		Article entity = new Article();
 		Category category = new Category();
-		category.setId("5");
+		category.setId("200005");
 		entity.setCategory(category);
 		List<Article> list = articleService.findList(entity);
 		List<Article> articles = new ArrayList<Article>();
@@ -60,15 +67,10 @@ public class YingxinController {
 				articles.add(article);
 			}
 		}
-		Link link = new Link();
-		Category linkCategory = new Category();
-		linkCategory.setId("20");
-		link.setCategory(linkCategory);
-		List<Link> links = linkService.findList(link);
+		
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		
 		model.addAttribute("articles", articles);
-		model.addAttribute("links", links);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
 		return "modules/yingxin/themes/"+site.getTheme()+"/index";

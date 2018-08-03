@@ -43,6 +43,7 @@ public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentE
 	
 	@Transactional(readOnly = false)
 	public void save(RsStudentEms rsStudentEms) {
+		rsStudentEms.setIsNewRecord(true);
 		super.save(rsStudentEms);
 	}
 	

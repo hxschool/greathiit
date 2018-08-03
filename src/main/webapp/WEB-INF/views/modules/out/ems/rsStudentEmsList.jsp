@@ -50,27 +50,28 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>EMS邮件编号：</label>
+			<li><label>EMS编号：</label>
 				<form:input path="hcFormEms" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>报考号：</label>
 				<form:input path="hcFormBkh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
+			
 			<li><label>姓名：</label>
 				<form:input path="hcFormXm" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
+			<li class="clearfix"></li>
 			<li><label>身份证号：</label>
 				<form:input path="hcFormSfzh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
+			
 			<li><label>地址：</label>
 				<form:input path="hcFormDz" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>收件人：</label>
 				<form:input path="hcFormSjf" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>状态：</label>
-				<form:input path="hcFormStatus" htmlEscape="false" maxlength="11" class="input-medium"/>
-			</li>
+			<li class="clearfix"></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
 			<li class="clearfix"></li>

@@ -82,10 +82,10 @@
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/recruit/student/recruitStudent/">统招数据列表</a></li>
+		<li class="active"><a href="${ctx}/recruit/student/recruitStudent/list">统招数据列表</a></li>
 		<shiro:hasPermission name="recruit:student:recruitStudent:edit"><li><a href="${ctx}/recruit/student/recruitStudent/form">统招数据添加</a></li></shiro:hasPermission>
 	</ul>
-	<form:form id="searchForm" modelAttribute="recruitStudent" action="${ctx}/recruit/student/recruitStudent/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="recruitStudent" action="${ctx}/recruit/student/recruitStudent/list" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

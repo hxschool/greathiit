@@ -248,6 +248,12 @@ public class FrontZhaoShengController extends BaseController{
 			}
 			case "ems": {
 				RsStudentEms studentEms = rsStudentEmsService.getByUsernameAndIdCard(username, idCardNumber);
+				
+				if(StringUtils.isEmpty(studentEms)) {
+					model.addAttribute("message", "查询失败,根据姓名身份证未查找到相关EMS信息");
+					return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/frontCheckError";
+				}
+				
 				KdniaoTrackQueryAPI api = new KdniaoTrackQueryAPI();
 				StringBuffer sb = new StringBuffer();
 				try {

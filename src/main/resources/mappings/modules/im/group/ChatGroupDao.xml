@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.im.admin.dao.group.ChatGroupDao">
+    
+	<sql id="chatGroupColumns">
+		a.id AS "id",
+		a.group_type AS "groupType",
+		a.online AS "online",
+		a.avatar AS "avatar",
+		a.groupname AS "groupname",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="chatGroupJoins">
+	</sql>
+    
+	<select id="get" resultType="ChatGroup">
+		SELECT 
+			<include refid="chatGroupColumns"/>
+		FROM chat_group a
+		<include refid="chatGroupJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ChatGroup">
+		SELECT 
+			<include refid="chatGroupColumns"/>
+		FROM chat_group a
+		<include refid="chatGroupJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="groupType != null and groupType != ''">
+				AND a.group_type = #{groupType}
+			</if>
+			<if test="online != null and online != ''">
+				AND a.online = #{online}
+			</if>
+			<if test="avatar != null and avatar != ''">
+				AND a.avatar = #{avatar}
+			</if>
+			<if test="groupname != null and groupname != ''">
+				AND a.groupname = #{groupname}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="myGroupByUid" resultType="ChatGroup">
+		SELECT 
+			<include refid="chatGroupColumns"/>
+		FROM chat_group a
+		<include refid="chatGroupJoins"/>
+		<where>
+			a.del_flag = '0'
+			<if test="groupType != null and groupType != ''">
+				AND a.group_type = #{groupType}
+			</if>
+
+		</where>
+		<choose>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
+	<select id="findAllList" resultType="ChatGroup">
+		SELECT 
+			<include refid="chatGroupColumns"/>
+		FROM chat_group a
+		<include refid="chatGroupJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO chat_group(
+			id,
+			group_type,
+			online,
+			avatar,
+			groupname,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{groupType},
+			#{online},
+			#{avatar},
+			#{groupname},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE chat_group SET 	
+			group_type = #{groupType},
+			online = #{online},
+			avatar = #{avatar},
+			groupname = #{groupname},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE chat_group SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

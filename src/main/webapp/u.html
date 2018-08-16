@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+
+</head>
+<body>
+	<form action="im/api/head" method="post">
+
+
+订单编号<input type="text" name="uid"/><br>
+证件类型<select name="imageType"><option VALUE="P11">正面</option><option VALUE="P12">背面</option></select><br>
+
+<textarea rows="10" cols="200" name="imageBase64">
+</textarea>
+		<br>
+		<input type="submit" value="上传身份证">&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="button" value="返回首页"
+			onclick="javascript:window.location='index.html'">
+	</form>
+	
+</body>
+
+</html>

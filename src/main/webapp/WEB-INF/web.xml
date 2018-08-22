@@ -94,6 +94,11 @@
 		<url-pattern>/yingxin/*</url-pattern>
 	</filter-mapping>
 	
+		<filter-mapping>
+		<filter-name>sitemeshFilter</filter-name>
+		<url-pattern>/answering/*</url-pattern>
+	</filter-mapping>
+	
 	<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>
 		<url-pattern>/route/*</url-pattern>

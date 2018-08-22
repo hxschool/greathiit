@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.answering.admin.dao.AsAnsweringStudentDao">
+    
+	<sql id="asAnsweringStudentColumns">
+		a.id AS "id",
+		a.as_answering_id AS "asAnsweringId",
+		a.student_number AS "studentNumber",
+		a.username AS "username",
+		a.status AS "status",
+		a.description AS "description",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="asAnsweringStudentJoins">
+	</sql>
+    
+	<select id="get" resultType="AsAnsweringStudent">
+		SELECT 
+			<include refid="asAnsweringStudentColumns"/>
+		FROM as_answering_student a
+		<include refid="asAnsweringStudentJoins"/>
+		
+		<where>
+			1=1 and
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="id!=null and id!=''">
+				and a.id = #{id}
+			</if>
+			<if test="asAnsweringId!=null and asAnsweringId!=''">
+				and a.as_answering_id = #{asAnsweringId}
+			</if>
+			 <if test="status!=null and status!=''">
+				and a.status = #{status}
+			</if>
+		</where>
+	</select>
+	<select id="count" resultType="java.lang.Integer">
+    	select count(*) from as_answering_student a
+    	<where>
+			1=1 and
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			
+			<if test="id!=null and id!=''">
+				and a.id = #{id}
+			</if>
+			<if test="asAnsweringId!=null and asAnsweringId!=''">
+				and a.as_answering_id = #{asAnsweringId}
+			</if>
+			 <if test="status!=null and status!=''">
+				and a.status = #{status}
+			</if>
+		</where>
+    </select>
+	<select id="findList" resultType="AsAnsweringStudent">
+		SELECT 
+			<include refid="asAnsweringStudentColumns"/>
+		FROM as_answering_student a
+		<include refid="asAnsweringStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="AsAnsweringStudent">
+		SELECT 
+			<include refid="asAnsweringStudentColumns"/>
+		FROM as_answering_student a
+		<include refid="asAnsweringStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO as_answering_student(
+			id,
+			as_answering_id,
+			student_number,
+			username,
+			status,
+			description,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{asAnsweringId},
+			#{studentNumber},
+			#{username},
+			#{status},
+			#{description},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE as_answering_student SET 	
+			as_answering_id = #{asAnsweringId},
+			student_number = #{studentNumber},
+			username = #{username},
+			status = #{status},
+			description = #{description},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE as_answering_student SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -23,12 +23,12 @@
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
         <div class="item">
-            <a target="_blank" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=9">
+            <a target="_blank" href="">
                 <img src="${ctxStatic}/yingxin2/banner1.jpg" alt="哈尔滨，一座东西方文化互相交融的城市，说起城市的美好，丽江大理最美丽,西藏最圣洁，然而哈尔滨的魅力却是最独特的！玩在哈信息" style="width: 1920px; max-width: 1920px; margin-left: 0px;">
             </a>
         </div>
         <div class="item active">
-            <a target="_blank" href="http://www.clantrip.com/index.php?m=content&amp;c=index&amp;a=lists&amp;catid=13">
+            <a target="_blank" href="">
                 <img src="${ctxStatic}/yingxin2/banner2.jpg" alt="  一座花园式的现代化校园——走近哈尔滨信息工程学院哈东新校园门口，极目四望，新校园的规划设计匠心独具，现代、大气、还颇具洋气！高起点、高规格的建设，使新校园充满生机与活力！新校园自落成以来就成为哈东一处最靓丽、最引人注目和驻足的新景观：雄伟壮观的教学大楼、卓尔不俗的大学生艺体活动中心、高雅别致的国际交流中心、绿草如茵的凝萃园、碧波荡漾的荷花湖、苍翠欲滴的太平山、奔流不息的猞猁河……小桥流水的温馨，亭台楼阁的浪漫，让新校园生机盎然！" style="width: 1920px; max-width: 1920px; margin-left: 0px;">
             </a>
         </div>

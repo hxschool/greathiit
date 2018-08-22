@@ -1238,6 +1238,27 @@ blockquote .quote-content{
     background-image: url(images/ruxue.png);
     background-repeat: no-repeat;
 }
+.service-item .ruxue2{
+    background-image: url(images/2.png);
+    background-repeat: no-repeat;
+}
+.service-item .ruxue3{
+    background-image: url(images/3.png);
+    background-repeat: no-repeat;
+}
+.service-item .ruxue4{
+    background-image: url(images/4.png);
+    background-repeat: no-repeat;
+}
+.service-item .ruxue5{
+    background-image: url(images/5.png);
+    background-repeat: no-repeat;
+}
+.service-item .ruxue{
+    background-image: url(images/ruxue.png);
+    background-repeat: no-repeat;
+}
+
 .service-item .jia{
     background-image: url(images/jia.png);
     background-repeat: no-repeat;

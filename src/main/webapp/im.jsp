@@ -8,6 +8,8 @@
   <title>LayIM_JavaClient by Pz11111</title>
 <link rel="stylesheet" href="static/layer/css/layui.css"/>
  <script type="text/javascript" src="static/layer/layui.js"></script>
+ <script type="text/javascript" src="static/jquery/jquery-1.8.3.js"></script>
+ 
   <style>
     html{background-color: #D9D9D9;}
   </style>
@@ -210,6 +212,21 @@
 
     //layim建立就绪
     layim.on('ready', function(res){
+    	
+    	 $(".layui-layim-user").click(function(){
+    		 var username = $(this).html();
+             layui.use(['layer'], function(){
+                 var layer = layui.layer;
+                 layer.prompt({
+                	  value: username,
+                	  title: '修改昵称'
+                	}, function(value, index, elem){
+                	  alert(value); //得到value
+                	  layer.close(index);
+                	});
+             });
+         });
+    	
     	//layim.msgbox(5); //模拟消息盒子有新消息，实际使用时，一般是动态获得
 /*
       //添加好友（如果检测到该socket）

@@ -34,16 +34,27 @@
 					<dl class="service-item">
 
 						<c:forEach items="${articles}" var="article" varStatus="status">
-							<dd class="ruxue">
+						
+						<c:set var="link"
+								value="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
+								scope="session"></c:set>
+							<c:if test="${!empty article.link }">
+								<c:set var="link" value="${article.link}" scope="session"></c:set>
+							</c:if>
+							<c:set var="ruxue" value="ruxue" scope="session"></c:set>
+							<c:if test="${!empty article.weight} && ${article.weight<=5 }">
+								<c:set var="ruxue" value="ruxue${article.weight}" scope="session"></c:set>
+							</c:if>
+							<dd class="${ruxue }">
 								<a
-									href="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
-									class="service-item-title"><h3>${fns:abbr(article.keywords,96)}</h3></a>
+									href="${link }"
+									class="service-item-title"><h3>${fns:abbr(article.title,96)}</h3></a>
 								<p class="hidden-xs">
 									<span> ${article.description} </span>
 								</p>
 
 								<a
-									href="/yingxin/view-${article.category.id}-${article.id}${urlSuffix}"
+									href="${link }"
 									class="btn btn-outline-blue">查看详情</a>
 							</dd>
 						</c:forEach>

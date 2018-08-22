@@ -97,8 +97,6 @@
 									</div>
 									<div class="summary ">
 
-
-
 										<ul class="author list-inline">
 											<li class="pull-right" title="${article.title}"><small
 												class="glyphicon glyphicon-bookmark"></small> 1</li>
@@ -127,9 +125,9 @@
 
 
 					</div>
-					<!-- /.main__board -->
+				
 				</div>
-				<!-- /.main -->
+				
 
 			</div>
 		</div>

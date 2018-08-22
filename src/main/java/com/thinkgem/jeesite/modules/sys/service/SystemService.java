@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.sys.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.service.ServiceException;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
@@ -37,6 +39,8 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
@@ -69,7 +73,10 @@ public class SystemService extends BaseService implements InitializingBean {
 
 	@Autowired
 	private IdentityService identityService;
-
+	@Autowired
+	private OfficeService officeService;
+	@Autowired
+	private TeacherService teacherService;
 	//-- User Service --//
 	public long exist(User user) {
 		return userDao.exist(user);
@@ -82,6 +89,63 @@ public class SystemService extends BaseService implements InitializingBean {
 	public User getUserSingleByName(String name) {
 		return userDao.getUserSingleByName(name);
 	}
+	@Transactional(readOnly = false)
+	public User isExisUser(String office_name, String curs_type, String tchr_name, String tchr_title, Office major) {
+		User user = getUserSingleByName(tchr_name);
+		
+		if (org.springframework.util.StringUtils.isEmpty(user)) {
+			
+			Office office = officeService.getOfficeByName(office_name);
+			if (org.springframework.util.StringUtils.isEmpty(office)) {
+				office = new Office();
+				office.setId("1");
+			}
+			
+			String serialNo = getSequence("serialNo3");
+			user = new User();
+			String no = DateUtils.getYear().concat(serialNo.substring(serialNo.length() - 4));// 自增剩下教师号
+			user.setNo(no);
+			user.setLoginName(no);
+			user.setName(tchr_name);
+			user.setCompany(office);// 学院
+			user.setOffice(major);// 专业
+			String password = "888888";
+			user.setPassword(SystemService.entryptPassword(password));
+			Role role = new Role("");
+			List<Role> rs = new ArrayList<Role>();
+			rs.add(role);
+			user.setRole(role);
+			user.setRoleList(rs);
+			user.setLoginFlag("1");
+			
+			String userTypeValue="10";
+			if(!StringUtils.isEmpty(curs_type)) {
+				if(curs_type.indexOf("专职")>-1||curs_type.equals("是")) {
+					userTypeValue = "9";
+				}
+			}
+			user.setUserType(userTypeValue);
+			user.setDelFlag("0");
+			user.setRemarks("执行计划导入教师信息");
+			if (Global.getConfig("virtualAccount").equals("true")) {
+				// 开通虚拟账户系统
+				String accountNo = "1";
+				user.setAccountNo(accountNo);
+			}
+			saveUser(user);
+		}
+		Teacher teacher = teacherService.getTeacherByTeacherNumber(user.getNo());
+		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
+			teacher = new Teacher();
+			teacher.setTchrName(tchr_name);
+			teacher.setTeacher(user);
+			teacher.setDelFlag("0");
+			teacher.setTchrTitle(tchr_title);
+			teacherService.save(teacher);
+		}
+		return user;
+	}
+	
 	public User getUserByNameAndIdCard(User user) {
 		return userDao.getUserByNameAndIdCard(user);
 	}

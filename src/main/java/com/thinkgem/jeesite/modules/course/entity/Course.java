@@ -36,12 +36,13 @@ public class Course extends DataEntity<Course> {
 	private String cursNote2;		// 其他说明
 	private String cursPreCourses;		// 先修课程
 	private String cursProperty;		// 课程性质
+	private String cursSelectCourseType;//功课选课类型
 	private String cursTerm;		// 开设学期
 	private String cursType;		// 课程类型
 	private String cursTotal;
 	private String cursForm;
 	private String cursStatus;
-	
+	private String cursLearningModel;//学习模式
 	private User teacher;		// 教师号
 
 	private List<String> item;
@@ -235,6 +236,22 @@ public class Course extends DataEntity<Course> {
 
 	public void setCursStatus(String cursStatus) {
 		this.cursStatus = cursStatus;
+	}
+
+	public String getCursSelectCourseType() {
+		return cursSelectCourseType;
+	}
+
+	public void setCursSelectCourseType(String cursSelectCourseType) {
+		this.cursSelectCourseType = cursSelectCourseType;
+	}
+
+	public String getCursLearningModel() {
+		return cursLearningModel;
+	}
+
+	public void setCursLearningModel(String cursLearningModel) {
+		this.cursLearningModel = cursLearningModel;
 	}
 	
 }

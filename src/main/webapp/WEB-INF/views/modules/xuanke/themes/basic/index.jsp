@@ -30,31 +30,29 @@
 						<h2 class="h4 widget-box__title">分类列表(1)</h2>
 						<div class="pcss3mm ">
 							<ul id="pcss3mm" class="nav nav-pills" role="tablist">
-								<li id="cate1"><a
-									href="/xuanke/list-${category.id }.html">常见问题与解答</a></li>
-								<li id="cate2"><a
-									href="tel:18801029695">反馈消息</a></li>
+								<li id="cate1"><a href="/xuanke/list-${category.id }.html">常见问题与解答</a></li>
+								<li id="cate2"><a href="tel:18801029695">反馈消息</a></li>
 							</ul>
 						</div>
 					</div>
 
-					
+
 
 					<div class="widget-box no-border">
 						<h2 class="h4 widget-box__title">最新公告</h2>
 						<ul class="widget-links list-unstyled">
-						<c:forEach items="${articles}" var="article" varStatus="status">
-							<c:set var="link"
-								value="/xuanke/view-${article.category.id}-${article.id}${urlSuffix}"
-								scope="session"></c:set>
-							<c:if test="${!empty article.link }">
-								<c:set var="link" value="${article.link}" scope="session"></c:set>
-							</c:if>
-							<li class="widget-links__item"><a
-								href="${link }" title="${article.title }">${article.title }</a>
-								<small class="text-muted"> ， ${article.hits } 浏览 </small></li>
-						</c:forEach>
-							
+							<c:forEach items="${articles}" var="article" varStatus="status">
+								<c:set var="link"
+									value="/xuanke/view-${article.category.id}-${article.id}${urlSuffix}"
+									scope="session"></c:set>
+								<c:if test="${!empty article.link }">
+									<c:set var="link" value="${article.link}" scope="session"></c:set>
+								</c:if>
+								<li class="widget-links__item"><a href="${link }"
+									title="${article.title }">${article.title }</a> <small
+									class="text-muted"> ， ${article.hits } 浏览 </small></li>
+							</c:forEach>
+
 						</ul>
 					</div>
 
@@ -70,8 +68,9 @@
 							<!-- Nav tabs -->
 							<ul class=" nav nav-pills pb10 mb10 mt10">
 								<li class="active"><a href="">已选课程</a></li>
-									<c:forEach items="${selectCourses}" var="selectCourse" varStatus="status">
-								<li><a>${selectCourse.course.cursName }</a></li>
+								<c:forEach items="${selectCourses}" var="selectCourse"
+									varStatus="status">
+									<li><a>${selectCourse.course.cursName }</a></li>
 								</c:forEach>
 							</ul>
 							<div style="min-height: 300px;">
@@ -117,7 +116,6 @@
 									</thead>
 
 									<tbody>
-
 										<c:forEach items="${courses}" var="course" varStatus="status">
 											<tr>
 												<td>${status.index+1 }</td>
@@ -127,25 +125,34 @@
 												<td>${course.cursClassHour }</td>
 
 												<td>${course.cursCredit}</td>
-												<td>
-												
-												 <c:set var="bgColor" value="bg-green" scope="application"></c:set>
-												 <c:set var="label" value="选课" scope="application"></c:set>
+												<td><c:if test="${isIndex }">
+
+														<c:set var="bgColor" value="bg-green" scope="application"></c:set>
+														<c:set var="bgIcon" value="icon-plus-sign" scope="application"></c:set>
+														<c:set var="label" value="选课" scope="application"></c:set>
 														<c:forEach items="${selectCourses}" var="selectCourse"
 															varStatus="status">
 															<c:if test="${course.id==selectCourse.course.id }">
-																 <c:set var="bgColor" value="bg-orange" scope="application"></c:set>
-												 				<c:set var="label" value="退课" scope="application"></c:set>
+																<c:set var="bgColor" value="bg-orange"
+																	scope="application"></c:set>
+																<c:set var="label" value="退课" scope="application"></c:set>
+																<c:set var="bgIcon" value="icon-minus-sign" scope="application"></c:set>
+																
 															</c:if>
-	
+
 														</c:forEach>
-																
-																
-																<a href="/xuanke/select?id=${course.id }"
-																		class="btn small ${bgColor }" target="ajaxTodo"><span
-																		class="button-content"><i
-																			class="glyph-icon icon-minus-sign"></i> ${label }</span></a>
-														</td>
+														<a href="/xuanke/select?id=${course.id }"
+															class="btn small ${bgColor }" target="ajaxTodo"><span
+															class="button-content"><i
+																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
+
+													</c:if>
+													<c:if test="${!isIndex }">
+														<a href="#"
+															class="btn small bg-blue" target="ajaxTodo"><span
+															class="button-content">查看</span></a>
+													</c:if>
+													</td>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -160,7 +167,7 @@
 		</div>
 	</div>
 
-<!-- ${empty  fns:getUser().id} -->
+	<!-- ${empty  fns:getUser().id} -->
 
 
 </body>

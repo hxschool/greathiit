@@ -14,4 +14,8 @@
 	
 	<!-- 选课 -->
 	<decorator name="xuanke_default_basic" page="modules/xuanke/themes/basic/layouts/default.jsp" />
+	
+	<decorator name="answering_default_basic" page="modules/answering/home/layouts/default.jsp" />
+	
+	
 </decorators>

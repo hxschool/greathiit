@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.CourseUtil;
-import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.RegexUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
@@ -44,11 +42,11 @@ import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
@@ -454,61 +452,7 @@ public class PaikeCourseController extends BaseController {
 					
 					Office major = officeService.getOfficeByName(major_name);
 					// 判断任课教师是否存在
-					User user = systemService.getUserSingleByName(tchr_name);
-					
-					if (StringUtils.isEmpty(user)) {
-						Office office = officeService.getOfficeByName(office_name);
-						if (StringUtils.isEmpty(office)) {
-							office = new Office();
-							office.setId("1");
-						}
-						
-						String serialNo = systemService.getSequence("serialNo3");
-						user = new User();
-						String no = DateUtils.getYear().concat(serialNo.substring(serialNo.length() - 4));// 自增剩下教师号
-						user.setNo(no);
-						user.setLoginName(no);
-						user.setName(tchr_name);
-						user.setCompany(office);// 学院
-						user.setOffice(major);// 专业
-						String password = "888888";
-						user.setPassword(SystemService.entryptPassword(password));
-						Role role = new Role("");
-						List<Role> rs = new ArrayList<Role>();
-						rs.add(role);
-						user.setRole(role);
-						user.setRoleList(rs);
-						user.setLoginFlag("1");
-						
-						String userTypeValue="10";
-						if(!StringUtils.isEmpty(curs_type)) {
-							if(curs_type.indexOf("专职")>-1||curs_type.equals("是")) {
-								userTypeValue = "9";
-							}
-						}
-						user.setUserType(userTypeValue);
-						user.setDelFlag("0");
-						user.setRemarks("执行计划导入教师信息");
-						if (Global.getConfig("virtualAccount").equals("true")) {
-							// 开通虚拟账户系统
-							String accountNo = "1";
-							user.setAccountNo(accountNo);
-						}
-						systemService.saveUser(user);
-						
-
-					}
-					
-					
-					Teacher teacher = teacherService.getTeacherByTeacherNumber(user.getNo());
-					if(StringUtils.isEmpty(teacher)) {
-						teacher = new Teacher();
-						teacher.setTchrName(tchr_name);
-						teacher.setTeacher(user);
-						teacher.setDelFlag("0");
-						teacher.setTchrTitle(tchr_title);
-						teacherService.save(teacher);
-					}
+					User user = systemService.isExisUser(office_name, curs_type, tchr_name, tchr_title, major);
 					
 					for (String cs : cls) {
 						String year = "20" + cs.substring(0, 2);
@@ -584,6 +528,114 @@ public class PaikeCourseController extends BaseController {
 		}
 		return "modules/paike/ImportView";
 	}
+	@RequestMapping(value = "viewSelect")
+	public String viewSelect() {
+		return "modules/paike/ImportSelectView";
+	}
+	@RequestMapping(value = "import_select")
+	public String importSelectFile(MultipartFile file, String currTerm, HttpServletRequest request,
+			HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+		Dict dict = new Dict();
+		dict.setType("course_curs_type");
+		List<Dict> courseCurrsTypes = dictService.findList(dict);
+		dict.setType("course_curs_form");
+		List<Dict> courseCurrsForms = dictService.findList(dict);
+		List<Dict> dds = DictUtils.getDictList("select_course_type_item");
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel importExcel = new ImportExcel(file, 2);
+			String[][] selectCourses = importExcel.importFile();
+			for (String[] selectCourse : selectCourses) {
+				try {
+					String id = selectCourse[0];
+					String select_course_type = selectCourse[1];
+					String curs_num = selectCourse[2];// 课程编码
+					String curs_name = selectCourse[3];// 课程名称
+					String tchr_name = selectCourse[4];// 教师名称
+					String tchr_title = selectCourse[5];// 职称
+					String curs_credit = selectCourse[6];// 学分
+					String curs_class_hour = selectCourse[7];// 学时
+					String teaching_type = selectCourse[8];// 授课类型
+					String remark = selectCourse[9];// 备注
+					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);
+					Course course = new Course();
+					course.setTeacher(user);
+					course.setCursNum(curs_num);
+					course.setCursName(curs_name);
+					Course entity = courseService.getCourse(course);
+					if (StringUtils.isEmpty(entity)) {
+						// 新增课程相关信息
+						entity = new Course();
+						entity.setId(systemService.getSequence("serialNo10"));
+						entity.setIsNewRecord(true);
+						String select_course_type_item_id = null;
+						if (select_course_type.indexOf("（") > -1 && select_course_type.indexOf("）") > -1) {
+							
+							String label  = select_course_type.substring(select_course_type.indexOf("（") + 1,
+									select_course_type.lastIndexOf("）"));
+							
+							
+							for(Dict dd:dds) {
+								if(dd.getLabel().trim().equals(label.trim())) {
+									select_course_type_item_id = dd.getId();
+									break;
+								}
+							}
+						}
+						entity.setCursSelectCourseType(select_course_type_item_id);
+						entity.setCursCurrTerm(currTerm);
+						entity.setCursCredit(curs_credit);
+						entity.setTeacher(user);
+						entity.setCursNum(curs_num);
+						entity.setCursName(curs_name);
+						entity.setCursStatus(Course.PAIKE_STATUS_WEIPAIKE);
+						String curs_type = "考查";
+						curs_type = curs_type.substring(0, 2);
+						String cursValue = "other";
+						for (Dict d : courseCurrsTypes) {
+							if (d.getLabel().indexOf(curs_type) > -1) {
+								cursValue = d.getValue();
+								break;
+							}
+						}
+						entity.setCursType(cursValue);
+
+						String cursForm = "99";
+						String assessment_type = "其他";
+						for (Dict d : courseCurrsForms) {
+							if (d.getLabel().indexOf(assessment_type) > -1) {
+								cursValue = d.getValue();
+								break;
+							}
+						}
+						entity.setCursForm(cursForm);
+
+						entity.setCursClassHour(new Double(curs_class_hour).intValue() + "");
+						entity.setRemarks(remark);
+						courseService.save(entity);
+					}
+					successNum++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					failureMsg.append("<br/>课程信息异常: " + selectCourse + " ; " + e.getMessage());
+					failureNum++;
+
+				}
+				if (failureNum > 0) {
+					failureMsg.insert(0, "，失败 " + failureNum + " 条，导入信息如下：");
+				}
+
+				addMessage(redirectAttributes, "已成功导入 " + successNum + " 条课程信息" + failureMsg);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			addMessage(model, "导入失败！失败信息："+ex.getMessage());
+		}
+		return "modules/paike/ImportSelectView";
+	}
 		
 	
 	public void auto(HttpServletRequest request) {
@@ -648,6 +700,8 @@ public class PaikeCourseController extends BaseController {
 		}
 	}
 	
+	
+	
 	public int fenpeibanji(int total) {
 		//40
 		if (total < 40) {
@@ -683,7 +737,8 @@ public class PaikeCourseController extends BaseController {
 	
 	public static void main(String[] args) {
 		String a="2.0";
-		
-		System.out.println(new Double(2.0).intValue());
+		String b="人文（历史与文化）";
+		System.out.println(b.substring(0,b.indexOf("（")));
+		System.out.println(b.substring(b.indexOf("（")+1,b.lastIndexOf("）")));
 	}
 }

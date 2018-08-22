@@ -1,6 +1,7 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -99,18 +101,51 @@ public class XuankeController extends BaseController {
 	 */
 	@RequestMapping(value = {"index", ""})
 	public String index(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+		boolean isIndex = true;
 		List<Course> courses = courseService.findList(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		User user = UserUtils.getUser();
 		if(!StringUtils.isEmpty(user)&&!StringUtils.isEmpty(user.getNo())) {
+			isIndex = false;
 			SelectCourse selectCourse = new SelectCourse();
 			String studentNumber = user.getNo();
 			selectCourse.setStudentNumber(studentNumber);
 			selectCourses = selectCourseService.findList(selectCourse);
+			
+			for(Role r:user.getRoleList()) {
+				int id = Integer.valueOf(r.getId());
+				if (id >= 90) {
+					isIndex = true;
+				}
+			}
+		}
+
+		
+		if(!StringUtils.isEmpty(user)) {
+			String studentNumber = user.getNo();
+			if(!StringUtils.isEmpty(studentNumber)) {
+				Iterator<Course> it = courses.iterator();
+				String benke = "B".toUpperCase();
+				if(studentNumber.length()==10) {//本科
+					while(it.hasNext()){
+						Course c = it.next();
+						if(!c.getCursName().substring(0,1).toUpperCase().equals(benke)) {
+							it.remove();
+						}
+					}
+				}else if(studentNumber.length()==7||studentNumber.length()==8){
+					while(it.hasNext()){
+						Course c = it.next();
+						if(c.getCursName().substring(0,1).toUpperCase().equals(benke)) {
+							it.remove();
+						}
+					}
+				}
+			}
 		}
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("site", site);
-		model.addAttribute("isIndex", true);
+		model.addAttribute("isIndex", isIndex);
 		model.addAttribute("courses", courses);
 		model.addAttribute("selectCourses", selectCourses);
 		return "modules/xuanke/themes/"+site.getTheme()+"/index";

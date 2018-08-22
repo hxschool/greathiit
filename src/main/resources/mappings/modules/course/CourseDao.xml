@@ -18,11 +18,13 @@
 		a.curs_note2 AS "cursNote2",
 		a.curs_pre_courses AS "cursPreCourses",
 		a.curs_property AS "cursProperty",
+		a.curs_select_course_type as "cursSelectCourseType",
 		a.curs_term AS "cursTerm",
 		a.curs_type AS "cursType",
 		a.curs_total AS "cursTotal",
 		a.curs_form AS "cursForm",
 		a.curs_status AS "cursStatus",
+		a.curs_learning_model AS "cursLearningModel",
 		a.teacher_number AS "teacher.no",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -45,27 +47,27 @@
 		WHERE a.id = #{id}
 	</select>
 	
-		<select id="getCourse" resultType="Course">
-		SELECT 
-			<include refid="courseColumns"/>
-		FROM course a
-		
+	<select id="getCourse" resultType="Course">
+		SELECT
+		<include refid="courseColumns" />
+		FROM course a 
+		<include refid="courseJoins" />
 		<where>
 			1=1 and
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			
+	
 			<if test="teacher.no!=null and teacher.no!=''">
 				and a.teacher_number=#{teacher.no}
 			</if>
-			
+	
 			<if test="cursName!=null and cursName!=''">
 				and a.curs_name=#{cursName}
 			</if>
-			
+	
 			<if test="cursTerm!=null and cursTerm!=''">
 				and a.curs_term =#{cursTerm}
 			</if>
-			
+	
 			<if test="cursNum!=null and cursNum!=''">
 				and a.curs_num=#{cursNum}
 			</if>
@@ -174,11 +176,13 @@
 			curs_note2,
 			curs_pre_courses,
 			curs_property,
+			curs_select_course_type,
 			curs_term,
 			curs_type,
 			curs_total,
 			curs_form,
 			curs_status,
+			curs_learning_model,
 			teacher_number,
 			create_by,
 			create_date,
@@ -202,11 +206,13 @@
 			#{cursNote2},
 			#{cursPreCourses},
 			#{cursProperty},
+			#{cursSelectCourseType},
 			#{cursTerm},
 			#{cursType},
 			#{cursTotal},
 			#{cursForm},
 			#{cursStatus},
+			#{cursLearningModel},
 			#{teacher.no},
 			#{createBy.id},
 			#{createDate},
@@ -233,10 +239,12 @@
 			curs_note2 = #{cursNote2},
 			curs_pre_courses = #{cursPreCourses},
 			curs_property = #{cursProperty},
+			curs_select_course_type = #{cursSelectCourseType},
 			curs_term = #{cursTerm},
 			curs_type = #{cursType},
 			curs_total = #{cursTotal},
 			curs_status = #{cursStatus},
+			curs_learning_model = #{cursLearningModel},
 			curs_form = #{cursForm},
 			teacher_number = #{teacher.no},
 			update_by = #{updateBy.id},

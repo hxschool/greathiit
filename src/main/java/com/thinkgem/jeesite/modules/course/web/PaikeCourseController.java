@@ -500,7 +500,7 @@ public class PaikeCourseController extends BaseController {
 						String cursForm = "99";
 						for(Dict d:courseCurrsForms) {
 							if(d.getLabel().indexOf(assessment_type)>-1) {
-								cursValue = d.getValue();
+								cursForm = d.getValue();
 								break;
 							}
 						}
@@ -540,8 +540,6 @@ public class PaikeCourseController extends BaseController {
 		List<Dict> courseCurrsTypes = dictService.findList(dict);
 		dict.setType("course_curs_form");
 		List<Dict> courseCurrsForms = dictService.findList(dict);
-		List<Dict> dds = DictUtils.getDictList("select_course_type_item");
-		List<Dict> lms = DictUtils.getDictList("course_learning_model");
 		
 		try {
 			int successNum = 0;
@@ -578,13 +576,7 @@ public class PaikeCourseController extends BaseController {
 							String label  = select_course_type.substring(select_course_type.indexOf("（") + 1,
 									select_course_type.lastIndexOf("）"));
 							
-							
-							for(Dict dd:dds) {
-								if(dd.getLabel().trim().equals(label.trim())) {
-									select_course_type_item_id = dd.getId();
-									break;
-								}
-							}
+							select_course_type_item_id = DictUtils.getDictValue(label,"select_course_type_item","01");
 						}
 						entity.setCursSelectCourseType(select_course_type_item_id);
 						entity.setCursCurrTerm(currTerm);
@@ -608,11 +600,11 @@ public class PaikeCourseController extends BaseController {
 						String assessment_type = "其他";
 						for (Dict d : courseCurrsForms) {
 							if (d.getLabel().indexOf(assessment_type) > -1) {
-								cursValue = d.getValue();
+								cursForm = d.getValue();
 								break;
 							}
 						}
-						String course_learning_model_id = DictUtils.getDictValue(lms, course_learning_model);
+						String course_learning_model_id = DictUtils.getDictValue(course_learning_model,"course_learning_model","01");
 						
 						entity.setCursLearningModel(course_learning_model_id);
 						entity.setCursForm(cursForm);

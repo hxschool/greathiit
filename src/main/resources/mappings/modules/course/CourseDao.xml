@@ -89,10 +89,16 @@
         	</foreach>
 			</if>
 			<if test="teacher!=null and teacher.no!=null and teacher.no!=''">
-			and a.teacher_number=#{teacher.no}
+			and b.no=#{teacher.no}
+			</if>
+			<if test="teacher!=null and teacher.name!=null and teacher.name!=''">
+			and b.name=#{teacher.name}
 			</if>
 			<if test="cursStatus!=null and cursStatus!=''">
 			and a.curs_status=#{cursStatus}
+			</if>
+			<if test="cursName!=null and cursName!=''">
+			and a.curs_name  LIKE concat(concat('%',#{cursName}),'%')
 			</if>
 			
 		</where>

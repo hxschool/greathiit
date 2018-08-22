@@ -541,6 +541,8 @@ public class PaikeCourseController extends BaseController {
 		dict.setType("course_curs_form");
 		List<Dict> courseCurrsForms = dictService.findList(dict);
 		List<Dict> dds = DictUtils.getDictList("select_course_type_item");
+		List<Dict> lms = DictUtils.getDictList("course_learning_model");
+		
 		try {
 			int successNum = 0;
 			int failureNum = 0;
@@ -557,7 +559,7 @@ public class PaikeCourseController extends BaseController {
 					String tchr_title = selectCourse[5];// 职称
 					String curs_credit = selectCourse[6];// 学分
 					String curs_class_hour = selectCourse[7];// 学时
-					String teaching_type = selectCourse[8];// 授课类型
+					String course_learning_model = selectCourse[8];// 授课类型
 					String remark = selectCourse[9];// 备注
 					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);
 					Course course = new Course();
@@ -610,6 +612,9 @@ public class PaikeCourseController extends BaseController {
 								break;
 							}
 						}
+						String course_learning_model_id = DictUtils.getDictValue(lms, course_learning_model);
+						
+						entity.setCursLearningModel(course_learning_model_id);
 						entity.setCursForm(cursForm);
 
 						entity.setCursClassHour(new Double(curs_class_hour).intValue() + "");

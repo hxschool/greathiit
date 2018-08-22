@@ -38,6 +38,19 @@ public class DictUtils {
 		return defaultValue;
 	}
 	
+	public static String getDictValue(List<Dict> list,String label){
+		String value = "";
+		if(!StringUtils.isEmpty(label)) {
+			for (Dict d : list) {
+				if (d.getLabel().trim().equals(label.trim())) {
+					value = d.getValue();
+					break;
+				}
+			}
+		}
+		return value;
+	}
+	
 	public static String getDictLabels(String values, String type, String defaultValue){
 		if (StringUtils.isNotBlank(type) && StringUtils.isNotBlank(values)){
 			List<String> valueList = Lists.newArrayList();

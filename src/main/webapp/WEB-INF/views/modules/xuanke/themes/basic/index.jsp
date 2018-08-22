@@ -74,14 +74,21 @@
 								</c:forEach>
 							</ul>
 							<div style="min-height: 300px;">
-								<form action="/index.php?m=&c=index&a=course" method="post"
+								<form action="${ctx }" method="post"
 									id="formsearch">
 									<div class="example-code">
 										<div class="form-label float-left">
 											<label>课程名称：</label>
 										</div>
 										<div class="form-input col-md-2">
-											<input type="text" value="" name="name" size="10" />
+											<input type="text" value="" name="cursName" size="10" />
+										</div>
+										
+										<div class="form-label float-left">
+											<label>任课老师：</label>
+										</div>
+										<div class="form-input col-md-2">
+											<input type="text" value="" name="teacher.name" size="10" />
 										</div>
 
 										<button type="submit" class="btn medium bg-blue">
@@ -125,7 +132,7 @@
 												<td>${course.cursClassHour }</td>
 
 												<td>${course.cursCredit}</td>
-												<td><c:if test="${isIndex }">
+												<td><c:if test="${isIndex } && ${not empty  fns:getUser().id}">
 
 														<c:set var="bgColor" value="bg-green" scope="application"></c:set>
 														<c:set var="bgIcon" value="icon-plus-sign" scope="application"></c:set>
@@ -145,11 +152,11 @@
 															class="btn small ${bgColor }" target="ajaxTodo"><span
 															class="button-content"><i
 																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
-
+														
 													</c:if>
-													<c:if test="${!isIndex }">
-														<a href="#"
-															class="btn small bg-blue" target="ajaxTodo"><span
+													<c:if test="${!isIndex or empty  fns:getUser().id}">
+														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }','${course.remarks }');"
+															class="btn small bg-blue" ><span
 															class="button-content">查看</span></a>
 													</c:if>
 													</td>
@@ -169,6 +176,20 @@
 
 	<!-- ${empty  fns:getUser().id} -->
 
-
+<script type="text/javascript">
+function showRemark(title,remark){
+	if(remark==""){
+		remark = "暂无简介";
+	}
+	layer.open({
+		  type: 1,
+		  title: title,
+		  shadeClose: true,
+		  shade: 0.8,
+		  area: ['380px', '320px'],
+		  content: "<div style='margin:10px;'>"+remark+"</div>" //iframe的url
+		}); 
+}
+</script>
 </body>
 </html>

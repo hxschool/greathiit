@@ -27,7 +27,7 @@
 	<![endif]-->
 
 	<script src="${ctxStatic}/xuanke/home/Js/core.js"></script>
-	<script src="${ctxStatic}/xuanke/layer/layer.js"></script>
+	<script src="${ctxStatic}/layer/layer.js"></script>
 	<script src="${ctxStatic}/xuanke/bootstrap/bootstrap-tags.js"></script>
 
 	<!-- DataTables CSS -->

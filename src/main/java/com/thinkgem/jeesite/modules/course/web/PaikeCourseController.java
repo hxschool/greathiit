@@ -552,14 +552,20 @@ public class PaikeCourseController extends BaseController {
 					String id = selectCourse[0];
 					String select_course_type = selectCourse[1];
 					String curs_num = selectCourse[2];// 课程编码
-					String curs_name = selectCourse[3];// 课程名称
-					String tchr_name = selectCourse[4];// 教师名称
-					String tchr_title = selectCourse[5];// 职称
-					String curs_credit = selectCourse[6];// 学分
-					String curs_class_hour = selectCourse[7];// 学时
-					String course_learning_model = selectCourse[8];// 授课类型
-					String remark = selectCourse[9];// 备注
+					String curs_edu_num = selectCourse[3];// 课程编码
+					String curs_name = selectCourse[4];// 课程名称
+					String upper_limit = selectCourse[5];// 上限
+					String lower_limit = selectCourse[6];// 下限
+					String tchr_name = selectCourse[7];// 教师名称
+					String tchr_title = selectCourse[8];// 职称
+					String curs_credit = selectCourse[9];// 学分
+					String curs_class_hour = selectCourse[10];// 学时
+					String course_learning_model = selectCourse[11];// 授课类型
+					String remark = selectCourse[14];// 备注
 					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);
+					if(StringUtils.isEmpty(curs_num)||curs_num.equals("——")) {
+						curs_num = curs_edu_num;
+					}
 					Course course = new Course();
 					course.setTeacher(user);
 					course.setCursNum(curs_num);
@@ -583,7 +589,17 @@ public class PaikeCourseController extends BaseController {
 						entity.setCursCredit(curs_credit);
 						entity.setTeacher(user);
 						entity.setCursNum(curs_num);
+						entity.setCursEduNum(curs_edu_num);
 						entity.setCursName(curs_name);
+						int upperLimit=0,lowerLimit = 0;
+						if(!StringUtils.isEmpty(lower_limit)&&!lower_limit.equals("无")) {
+							lowerLimit = new Double(lower_limit).intValue();
+						}
+						if(!StringUtils.isEmpty(upper_limit)&&!upper_limit.equals("无")) {
+							upperLimit =new Double(upper_limit).intValue(); 
+						}
+						entity.setLowerLimit(lowerLimit);
+						entity.setUpperLimit(upperLimit);
 						entity.setCursStatus(Course.PAIKE_STATUS_WEIPAIKE);
 						String curs_type = "考查";
 						curs_type = curs_type.substring(0, 2);

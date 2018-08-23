@@ -12,8 +12,8 @@
 </head>
 <body>
 
-
-
+ <c:set var="vEnter" value="\n" scope="request"/>
+ <% request.setAttribute("vEnter", "\n"); %> 
 	<div class="wrap maincontent">
 
 		<div class="container">
@@ -155,7 +155,7 @@
 														
 													</c:if>
 													<c:if test="${!isIndex or empty  fns:getUser().id}">
-														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }','${course.remarks }');"
+														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }',' ${fn:replace(course.remarks,vEnter,'')}');"
 															class="btn small bg-blue" ><span
 															class="button-content">查看</span></a>
 													</c:if>

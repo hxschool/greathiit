@@ -23,6 +23,7 @@ public class Course extends DataEntity<Course> {
 	
 	private static final long serialVersionUID = 1L;
 	private String cursNum;		// 课程编号
+	private String cursEduNum;		// 课程编号
 	private String cursName;		// 课程名称
 	private String cursEngName;		// 英文名称
 	private String cursMajor;		// 专业
@@ -43,6 +44,8 @@ public class Course extends DataEntity<Course> {
 	private String cursForm;
 	private String cursStatus;
 	private String cursLearningModel;//学习模式
+	private int upperLimit;//班额上限
+	private int lowerLimit;//班额下限
 	private User teacher;		// 教师号
 
 	private List<String> item;
@@ -252,6 +255,30 @@ public class Course extends DataEntity<Course> {
 
 	public void setCursLearningModel(String cursLearningModel) {
 		this.cursLearningModel = cursLearningModel;
+	}
+
+	public String getCursEduNum() {
+		return cursEduNum;
+	}
+
+	public void setCursEduNum(String cursEduNum) {
+		this.cursEduNum = cursEduNum;
+	}
+
+	public int getUpperLimit() {
+		return upperLimit;
+	}
+
+	public void setUpperLimit(int upperLimit) {
+		this.upperLimit = upperLimit;
+	}
+
+	public int getLowerLimit() {
+		return lowerLimit;
+	}
+
+	public void setLowerLimit(int lowerLimit) {
+		this.lowerLimit = lowerLimit;
 	}
 	
 }

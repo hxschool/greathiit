@@ -42,7 +42,8 @@
 								<c:set var="link" value="${article.link}" scope="session"></c:set>
 							</c:if>
 							<c:set var="ruxue" value="ruxue" scope="session"></c:set>
-							<c:if test="${!empty article.weight} && ${article.weight<=5 }">
+							<c:if test="${!empty article.weight && article.weight<=5 }">
+							
 								<c:set var="ruxue" value="ruxue${article.weight}" scope="session"></c:set>
 							</c:if>
 							<dd class="${ruxue }">

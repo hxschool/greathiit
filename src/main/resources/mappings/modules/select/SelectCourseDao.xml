@@ -5,19 +5,23 @@
 	<sql id="selectCourseColumns">
 		a.id AS "id",
 		a.course_id AS "courseId",
-		a.student_number AS "studentNumber",
+		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		c.id as "course.id",
+		c.curs_num as "course.cursNum",
 		c.curs_name as "course.cursName",
+		u.no as "student.no",
+		u.name as "student.name",
 		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="selectCourseJoins">
 		LEFT JOIN course c on a.course_id=c.id
+		LEFT JOIN sys_user u on a.student_number=u.no
 	</sql>
     
 	<select id="get" resultType="SelectCourse">
@@ -34,8 +38,8 @@
         and a.course_id = #{course.id}
       	</if>
       	
-      	<if test="studentNumber != null" >
-        and a.student_number = #{studentNumber}
+      	<if test="student != null and student.no!=null and student.no!=''" >
+        and u.no = #{student.no}
       	</if>
 	</select>
 	
@@ -51,8 +55,8 @@
         and a.course_id = #{course.id}
       	</if>
       	
-      	<if test="studentNumber != null" >
-        and a.student_number = #{studentNumber}
+      	<if test="student != null and student.no!=null and student.no!=''" >
+       	and u.no = #{student.no}
       	</if>
 		</where>
 		<choose>
@@ -97,7 +101,7 @@
 		) VALUES (
 			#{id},
 			#{course.id},
-			#{studentNumber},
+			#{student.no},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -110,7 +114,7 @@
 	<update id="update">
 		UPDATE select_course SET 	
 			course_id = #{course.id},
-			student_number = #{studentNumber},
+			student_number = #{student.no},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

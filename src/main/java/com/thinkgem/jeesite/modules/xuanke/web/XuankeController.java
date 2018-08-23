@@ -108,8 +108,7 @@ public class XuankeController extends BaseController {
 		if(!StringUtils.isEmpty(user)&&!StringUtils.isEmpty(user.getNo())) {
 			isIndex = false;
 			SelectCourse selectCourse = new SelectCourse();
-			String studentNumber = user.getNo();
-			selectCourse.setStudentNumber(studentNumber);
+			selectCourse.setStudent(user);
 			selectCourses = selectCourseService.findList(selectCourse);
 			
 			for(Role r:user.getRoleList()) {
@@ -161,8 +160,7 @@ public class XuankeController extends BaseController {
 		if (!StringUtils.isEmpty(user) && !StringUtils.isEmpty(user.getNo())) {
 			
 			SelectCourse selectCourse = new SelectCourse();
-			String studentNumber = user.getNo();
-			selectCourse.setStudentNumber(studentNumber);
+			selectCourse.setStudent(user);
 			selectCourse.setCourse(entity);
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			if(!StringUtils.isEmpty(selectCourseEntity)) {

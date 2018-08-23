@@ -3,10 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.select.entity;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 选课信息表Entity
@@ -17,7 +16,7 @@ public class SelectCourse extends DataEntity<SelectCourse> {
 	
 	private static final long serialVersionUID = 1L;
 	private Course course;		// 课程编号
-	private String studentNumber;		// 学号
+	private User student;		// 学号
 
 	
 	public SelectCourse() {
@@ -38,13 +37,13 @@ public class SelectCourse extends DataEntity<SelectCourse> {
 		this.course = course;
 	}
 
-	@Length(min=1, max=64, message="学号长度必须介于 1 和 64 之间")
-	public String getStudentNumber() {
-		return studentNumber;
+	public User getStudent() {
+		return student;
 	}
 
-	public void setStudentNumber(String studentNumber) {
-		this.studentNumber = studentNumber;
+	public void setStudent(User student) {
+		this.student = student;
 	}
+
 	
 }

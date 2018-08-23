@@ -9,8 +9,6 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
-import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
-
 public class CourseUtil {
 	
 	public static Map<String,String> schoolRootMap = new HashMap<String,String>();

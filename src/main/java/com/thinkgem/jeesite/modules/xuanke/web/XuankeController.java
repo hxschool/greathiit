@@ -1,8 +1,10 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,8 +104,17 @@ public class XuankeController extends BaseController {
 	@RequestMapping(value = {"index", ""})
 	public String index(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		boolean isIndex = true;
+		if(StringUtils.isEmpty(course.getCursProperty())) {
+			course.setCursProperty("20");
+		}
 		List<Course> courses = courseService.findList(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
+		
+		Map<String,CourseScheduleExt> courseScheduleMap = new HashMap<String,CourseScheduleExt>();
+		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.getCourseScheduleExt("","00000000","");
+		for(CourseScheduleExt courseScheduleExt:courseScheduleExts) {
+			courseScheduleMap.put(courseScheduleExt.getCourseId(), courseScheduleExt);
+		}
 		User user = UserUtils.getUser();
 		if(!StringUtils.isEmpty(user)&&!StringUtils.isEmpty(user.getNo())) {
 			isIndex = false;
@@ -143,6 +154,7 @@ public class XuankeController extends BaseController {
 			}
 		}
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("courseScheduleMap", courseScheduleMap);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", isIndex);
 		model.addAttribute("courses", courses);

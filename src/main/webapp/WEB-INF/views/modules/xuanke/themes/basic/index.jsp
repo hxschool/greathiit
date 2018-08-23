@@ -115,9 +115,9 @@
 											<th>序号</th>
 											<th>课程名称</th>
 											<th>任课老师</th>
-											<th>所属专业</th>
 											<th>学时</th>
 											<th>学分</th>
+											<th>时间(地点)</th>
 											<th class="text-center" width="60">操作</th>
 										</tr>
 									</thead>
@@ -128,10 +128,19 @@
 												<td>${status.index+1 }</td>
 												<td>${course.cursName}</td>
 												<td>${course.teacher.name}</td>
-												<td>${course.cursMajor }</td>
+												
 												<td>${course.cursClassHour }</td>
 
 												<td>${course.cursCredit}</td>
+												<td>
+												
+												<c:if test="${!empty courseScheduleMap[course.id]}">
+												
+												
+												 <c:set var="timeAdd" value="${courseScheduleMap[course.id].timeAdd}" scope="request"/>
+												<!-- 第${fnc:GetTimeCol(timeAdd).week}周 -->  ${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
+												</c:if>
+												</td>
 												<td><c:if test="${isIndex } && ${not empty  fns:getUser().id}">
 
 														<c:set var="bgColor" value="bg-green" scope="application"></c:set>

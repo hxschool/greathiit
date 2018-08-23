@@ -803,6 +803,7 @@ $(document).ready(function()
 			          success: function( data ) {
 			        	  $("#renxuanke_test").empty();
 			        	  if(data.length==0){
+			        		  $("#renxuanke_test").append("<div style='width:120px;float:left;'> <input type='checkbox' class='classNumber' value='00000000' checked disabled name='classNumber'/>公共课</div>");
 			        	  }
 			        	  
 			        	  for(var i=0 ;i<data.length;i++){

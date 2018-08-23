@@ -253,31 +253,37 @@ public class PaikeCourseController extends BaseController {
 					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
 					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
 					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
-		
-					String[] courseArray = courseClass.split(",");
-					StringBuilder sb = new StringBuilder();
-					for(int i=0;i<courseArray.length;i++) {
-						
-						String str = courseArray[i];
-						Office clazz = officeService.get(str);
-						String officeId = str.substring(4,6);
-						Office office = officeService.get(officeId);
-						String company = "";
-						String major = "";
-						if(!StringUtils.isEmpty(office)) {
-							major = office.getName();
-							company = office.getParent().getName();
-						}
-						sb.append("<a title=\""+company + "," + major + "," + clazz.getName() + "\">"+clazz.getName()+"</a>");
-						if(i%2==1) {
-							sb.append("<br>");
+					if(!StringUtils.isEmpty(courseClass)) {
+						if(courseClass.equals("00000000")) {
+							ps.write("<div class=\"course_text\">公共课</div>");
 						}else {
-							sb.append(",");
+							String[] courseArray = courseClass.split(",");
+							StringBuilder sb = new StringBuilder();
+							for(int i=0;i<courseArray.length;i++) {
+								String str = courseArray[i];
+								Office clazz = officeService.get(str);
+								String officeId = str.substring(4,6);
+								Office office = officeService.get(officeId);
+								String company = "";
+								String major = "";
+								if(!StringUtils.isEmpty(office)) {
+									major = office.getName();
+									company = office.getParent().getName();
+								}
+								sb.append("<a title=\""+company + "," + major + "," + clazz.getName() + "\">"+clazz.getName()+"</a>");
+								if(i%2==1) {
+									sb.append("<br>");
+								}else {
+									sb.append(",");
+								}
+								
+							}
+							sb.deleteCharAt(sb.length() - 1);
+							ps.write("<div class=\"course_text\">"+ sb.toString() +"</div>");
 						}
 						
 					}
-					sb.deleteCharAt(sb.length() - 1);
-					ps.write("<div class=\"course_text\">"+ sb.toString() +"</div>");
+					
 				}
 				
 				
@@ -299,7 +305,7 @@ public class PaikeCourseController extends BaseController {
 		
 		Office clazz = student.getClazz();
 		if(!StringUtils.isEmpty(clazz)) {
-			List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(null,Integer.valueOf(student.getClazz().getId()),null);
+			List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(null,student.getClazz().getId(),null);
 			for(CourseScheduleExt courseSchedule:courseSchedules) {
 				ps.write(courseSchedule.getScLock());
 				if(courseSchedule.getScLock().equals("1")) {

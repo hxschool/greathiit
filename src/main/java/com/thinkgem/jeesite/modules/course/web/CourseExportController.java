@@ -330,9 +330,9 @@ public class CourseExportController extends BaseController {
 			pw.close();
 			return;
 		}
-		Integer clazz = Integer.valueOf(cla.getId());
+		String clazz = cla.getId();
 		
-		List<CourseScheduleExt> courseSchedules =  courseScheduleService.getCourseScheduleExt(null, clazz, null);
+		List<CourseScheduleExt> courseSchedules =  courseScheduleService.getCourseScheduleExt(null,clazz, null);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
 		Row row = sheet.createRow(0);
@@ -714,7 +714,7 @@ public class CourseExportController extends BaseController {
 	}
 
 	@RequestMapping(value = "getCourseScheduleExt")
-	public String getCourseScheduleExt(String cursTerm,Integer courseClass,String teacherName, Model model) {
+	public String getCourseScheduleExt(String cursTerm,String courseClass,String teacherName, Model model) {
 		
 		if(org.springframework.util.StringUtils.isEmpty(courseClass)&&org.springframework.util.StringUtils.isEmpty(teacherName)) {
 			model.addAttribute("courseScheduleExt", new ArrayList<CourseScheduleExt>());

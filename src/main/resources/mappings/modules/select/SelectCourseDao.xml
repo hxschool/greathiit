@@ -43,6 +43,21 @@
       	</if>
 	</select>
 	
+	<select id="count" resultType="java.lang.Integer">
+		SELECT 
+			count(a.*)
+		FROM select_course a
+		
+		WHERE 
+		1=1
+		<if test="id != null" >
+        and a.id = #{id}
+      	</if>
+		<if test="course != null and course.id!=null and course.id!=''" >
+        and a.course_id = #{course.id}
+      	</if>
+	</select>
+	
 	<select id="findList" resultType="SelectCourse">
 		SELECT 
 			<include refid="selectCourseColumns"/>

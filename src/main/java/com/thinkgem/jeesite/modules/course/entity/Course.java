@@ -19,7 +19,9 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
  */
 public class Course extends DataEntity<Course> {
 	
-	public static final String PAIKE_STATUS_WEIPAIKE="00";
+	public static final String PAIKE_STATUS_WEI_PAIKE="00";
+	public static final String PAIKE_STATUS_YI_PAIKE="10";
+	public static final String PAIKE_STATUS_OVER_PAIKE="90";
 	
 	private static final long serialVersionUID = 1L;
 	private String cursNum;		// 课程编号

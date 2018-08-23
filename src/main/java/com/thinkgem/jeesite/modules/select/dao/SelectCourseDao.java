@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
  */
 @MyBatisDao
 public interface SelectCourseDao extends CrudDao<SelectCourse> {
-	
+	public int count(SelectCourse selectCourse);
 }

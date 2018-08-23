@@ -190,6 +190,10 @@ public class PaikeCourseController extends BaseController {
 		}
 		
 		if(flag) {
+			//设置已排课
+			Course course = courseService.get(course_id);
+			course.setCursStatus(Course.PAIKE_STATUS_YI_PAIKE);
+			courseService.save(course);
 			return "1";
 		}
 		
@@ -491,7 +495,7 @@ public class PaikeCourseController extends BaseController {
 						entity.setCursNum(curs_num);
 						entity.setCursName(curs_name);
 						entity.setCursTotal(new Double(count).intValue()+"");
-						entity.setCursStatus(Course.PAIKE_STATUS_WEIPAIKE);
+						entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 					
 						curs_type = curs_type.substring(0, 2); 
 						String cursValue = "other";
@@ -606,7 +610,7 @@ public class PaikeCourseController extends BaseController {
 						}
 						entity.setLowerLimit(lowerLimit);
 						entity.setUpperLimit(upperLimit);
-						entity.setCursStatus(Course.PAIKE_STATUS_WEIPAIKE);
+						entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 						String curs_type = "考查";
 						curs_type = curs_type.substring(0, 2);
 						String cursValue = "other";

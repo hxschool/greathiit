@@ -179,6 +179,15 @@ public class XuankeController extends BaseController {
 				selectCourseService.delete(selectCourseEntity);
 				addMessage(redirectAttributes, "退课成功");
 			}else {
+				int cnt = selectCourseService.count(selectCourse);
+				if (cnt > entity.getUpperLimit()) {
+					//设置完成排课信息
+					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
+					courseService.save(entity);
+					
+					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");
+					return "redirect:/xuanke/index?repage";
+				}
 				selectCourseService.save(selectCourse);
 				addMessage(redirectAttributes, "选课成功");
 			}

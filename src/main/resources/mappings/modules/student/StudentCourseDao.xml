@@ -41,8 +41,12 @@
 		  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
 		 end
 	 </if>
-  and b.teacher_number=#{teacherNumber}
-  AND b.curs_type = #{cursType}
+	 <if test="teacherNumber != null and teacherNumber != ''">
+  		and b.teacher_number=#{teacherNumber}
+  	 </if>
+  	 <if test="cursType != null and cursType != ''">
+  		AND b.curs_type = #{cursType}
+  	 </if>
     </select>
     
     <select id="findListByStudentNumber" resultType="StudentCourse">

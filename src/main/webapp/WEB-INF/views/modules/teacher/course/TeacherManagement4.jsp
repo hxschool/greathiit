@@ -61,12 +61,12 @@
 												课程&nbsp;&nbsp;<select id="course" name="course" style="width:200px;">
 													
 													<c:forEach var="item" items="${courses}" varStatus="status">
-													     <option value="${item.id}"> ${item.cursName}</option>
+													     <option value="${item.id}"> ${fns:abbr(item.cursName,22)}</option>
 													</c:forEach>
 														
-													
 												</select>
 											</div>
+											
 											<div class="div-select">
 												班级&nbsp;&nbsp;
 												
@@ -82,6 +82,7 @@
 											
 											<input type="submit" value="上传成绩" class="btn"
 												onclick="return check(this.form)">
+												
 										</form>
 									</div>
 								</div>
@@ -94,19 +95,20 @@
 											</h5>
 											<div class="div-select">
 												课程&nbsp;&nbsp;<select 
-													name="stuCursLimit.cursName">
+													name="stuCursLimit.cursName" style="width:200px;">
 													<c:forEach var="item" items="${courses}" varStatus="status">
-													     <option value="${item.id}"> ${item.cursName}</option>
+													     <option value="${item.id}">${fns:abbr(item.cursName,22)}</option>
 													</c:forEach>
 												</select>
 											</div>
 											<div class="div-select">
-												班级&nbsp;&nbsp;<select id="class" name="stuCursLimit.claName">
+												班级&nbsp;&nbsp;<select id="class" name="stuCursLimit.claName" style="width:200px;">
 													<option value="" selected="selected">全部</option>
 													
 												</select>
 											</div>
 											<input class="btn" type="submit" value="查询成绩">
+											<a class="btn" >导出数据</a>
 										</form>
 									</div>
 									

@@ -30,6 +30,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherCourseService;
 
@@ -54,7 +55,10 @@ public class TeacherCourseController extends BaseController {
 	@RequiresPermissions("teacher:course:view")
 	@RequestMapping(value = {"Teacher_Management_4_excute","", "Teacher_Management_2_selectStuPer"})
 	public String list(Course course ,String clazzId,HttpServletRequest request, HttpServletResponse response, Model model) {
-		course.setTeacher(UserUtils.getUser());
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			course.setTeacher(UserUtils.getUser());
+		}
 		List<Course> courses = courseService.findList(course);
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
 		if(StringUtils.isEmpty(course.getCursType())) {

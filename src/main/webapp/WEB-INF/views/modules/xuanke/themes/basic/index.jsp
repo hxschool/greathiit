@@ -133,12 +133,14 @@
 
 												<td>${course.cursCredit}</td>
 												<td>
-												
-												<c:if test="${!empty courseScheduleMap[course.id]}">
-												
-												
-												 <c:set var="timeAdd" value="${courseScheduleMap[course.id].timeAdd}" scope="request"/>
-												<!-- 第${fnc:GetTimeCol(timeAdd).week}周 -->  ${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
+												<c:if test="${course.cursLearningModel=='03'}">
+												在线模式
+												</c:if>
+												<c:if test="${course.cursLearningModel!='03'}">
+													<c:if test="${!empty courseScheduleMap[course.id]}">
+													 <c:set var="timeAdd" value="${courseScheduleMap[course.id].timeAdd}" scope="request"/>
+													<!-- 第${fnc:GetTimeCol(timeAdd).week}周 -->  ${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
+													</c:if>
 												</c:if>
 												</td>
 												<td><c:if test="${isIndex } && ${not empty  fns:getUser().id}">

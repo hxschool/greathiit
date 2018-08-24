@@ -23,6 +23,9 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
+import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 课程基本信息Controller
@@ -37,6 +40,8 @@ public class CourseSelectController extends BaseController {
 	private CourseService courseService;
 	@Autowired
 	private SelectCourseService selectCourseService;
+	@Autowired
+	private UserOperationLogService userOperationLogService;
 	
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
@@ -48,6 +53,18 @@ public class CourseSelectController extends BaseController {
 			entity = new Course();
 		}
 		return entity;
+	}
+	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "selectCourseLog")
+	public String selectCourseLog(UserOperationLog userOperationLog, HttpServletRequest request, HttpServletResponse response, Model model) {
+		userOperationLog.setModule("course");
+		if(!UserUtils.getUser().isAdmin()) {
+			userOperationLog.setUserNumber(UserUtils.getUser().getNo());
+		}
+		Page<UserOperationLog> page = userOperationLogService.findPage(new Page<UserOperationLog>(request, response), userOperationLog); 
+		model.addAttribute("page", page);
+		return "modules/course/log/userOperationLogList.jsp";
 	}
 	
 	@RequiresPermissions("course:course:view")

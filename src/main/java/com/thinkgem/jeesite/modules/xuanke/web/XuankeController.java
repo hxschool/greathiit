@@ -33,11 +33,14 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 @Controller
@@ -57,6 +60,8 @@ public class XuankeController extends BaseController {
 	private ArticleDataService articleDataService;
 	@Autowired
 	private OfficeService officeService;
+	@Autowired
+	private UserOperationLogService userOperationLogService;
 	
 	@ModelAttribute
 	public void initalCategory(Model model) {
@@ -177,6 +182,7 @@ public class XuankeController extends BaseController {
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
 				selectCourseService.delete(selectCourseEntity);
+				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
 				int cnt = selectCourseService.count(selectCourse);
@@ -189,6 +195,7 @@ public class XuankeController extends BaseController {
 					return "redirect:/xuanke/index?repage";
 				}
 				selectCourseService.save(selectCourse);
+				saveSelectCourseLog(request, entity,GlobalConstants.Global_SUC,user.getNo());
 				addMessage(redirectAttributes, "选课成功");
 			}
 			
@@ -196,6 +203,18 @@ public class XuankeController extends BaseController {
 		}
 		addMessage(redirectAttributes, "当前用户未登录,请登陆后再操作");
 		return "redirect:/xuanke/index?repage";
+	}
+	private void saveSelectCourseLog(HttpServletRequest request, Course entity,String status,String userno) {
+		UserOperationLog log = new UserOperationLog();
+		log.setModule("course");
+		log.setModuleId(entity.getId());
+		log.setUserNumber(userno);
+		log.setUserType("99");
+		log.setStatus(status);;
+		log.setRemoteAddr(com.thinkgem.jeesite.common.utils.StringUtils.getRemoteAddr(request));
+		log.setUserAgent(request.getHeader("user-agent"));
+		log.setRequestUri(request.getRequestURI());
+		userOperationLogService.save(log);
 	}
 	
 	

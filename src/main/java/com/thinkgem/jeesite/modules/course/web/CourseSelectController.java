@@ -12,17 +12,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -92,6 +97,20 @@ public class CourseSelectController extends BaseController {
 		model.addAttribute("course", course);
 		return "modules/course/select/courseForm";
 	}
+	
+	
+	@RequiresPermissions("course:course:view")
+    @RequestMapping(value = "export")
+    public String exportFile(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "公共选课"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+    		new ExportExcel("公共选课", CourseSelectExcel.class).setDataList(selectCourseService.exportSelectCourse(courseSelectExcel)).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/sys/user/list?repage";
+    }
 
 	
 	

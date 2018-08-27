@@ -128,7 +128,6 @@ public class User extends DataEntity<User> {
 	}
 	
 	@JsonIgnore
-	@NotNull(message="归属部门不能为空")
 	@ExcelField(title="归属部门", align=2, sort=25)
 	public Office getOffice() {
 		return office;

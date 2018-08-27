@@ -101,6 +101,60 @@
 			</otherwise>
 		</choose>
 	</select>
+
+
+	<select id="exportSelectCourse"
+	resultType="com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel"
+	parameterType="com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel">
+
+	select
+	@rownum := @rownum + 1 AS id,
+	c.id AS "course.id",
+	c.curs_num AS "course.cursNum",
+	c.curs_edu_num AS "course.cursEduNum",
+	c.curs_name AS "course.cursName",
+	dept.id AS "dept.id",
+	dept.name AS "dept.name",
+	major.id AS "major.id",
+	major.name AS "major.name",
+	cla.id AS "cla.id",
+	cla.name AS "cla.name",
+	b.no as "user.no",
+	b.login_name as "user.loginName",
+	b.phone as "user.phone",
+	b.name as "user.name"
+	from ( SELECT @rownum := 0 ) r, select_course a
+	LEFT JOIN sys_user b on a.student_number=b.no
+	LEFT JOIN sys_office dept on b.company_id=dept.id
+	LEFT JOIN sys_office major on b.office_id=major.id
+	LEFT JOIN sys_office cla on b.clazz_id=cla.id
+	LEFT JOIN course c on a.course_id=c.id
+	LEFT JOIN student_course sc on sc.course_id=c.id
+	<where>
+		a.del_flag = 0
+		<if test="course!=null and course.id!=null and course.id!=''">
+			AND c.id=#{course.id}
+		</if>
+		<if test="course!=null and course.name!=null and course.name!=''">
+			AND c.curs_name=#{course.cursName}
+		</if>
+		<if test="dept!=null and dept.name!=null and dept.name!=''">
+			AND dept.name=#{dept.name}
+		</if>
+		<if test="major!=null and major.name!=null and major.name!=''">
+			AND major.name=#{major.name}
+		</if>
+		<if test="cla!=null and cla.name!=null and cla.name!=''">
+			AND cla.name=#{cla.name}
+		</if>
+		<if test="user!=null and user.name!=null and user.name!=''">
+			AND b.name=#{user.name}
+		</if>
+		<if test="user!=null and user.phone!=null and user.phone!=''">
+			AND b.phone=#{user.phone}
+		</if>
+	</where>
+</select>
 	
 	<insert id="insert">
 		INSERT INTO select_course(

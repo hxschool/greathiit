@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.select.dao.SelectCourseDao;
 
 /**
@@ -28,6 +29,9 @@ public class SelectCourseService extends CrudService<SelectCourseDao, SelectCour
 		return super.get(id);
 	}
 	
+	public List<CourseSelectExcel> exportSelectCourse(CourseSelectExcel courseSelectExcel){
+		return selectCourseDao.exportSelectCourse(courseSelectExcel);
+	}
 
 	public int count(SelectCourse selectCourse) {
 		return selectCourseDao.count(selectCourse);

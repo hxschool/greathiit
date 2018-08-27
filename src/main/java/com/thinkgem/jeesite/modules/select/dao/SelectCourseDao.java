@@ -3,8 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.select.dao;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
+import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 
 /**
@@ -15,4 +18,5 @@ import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 @MyBatisDao
 public interface SelectCourseDao extends CrudDao<SelectCourse> {
 	public int count(SelectCourse selectCourse);
+	public List<CourseSelectExcel> exportSelectCourse(CourseSelectExcel courseSelectExcel);
 }

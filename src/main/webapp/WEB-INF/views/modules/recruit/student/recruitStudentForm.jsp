@@ -70,20 +70,22 @@
 				<form:input path="leven" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
+		
 		<div class="control-group">
 			<label class="control-label">院系：</label>
 			<div class="controls">
-				<form:input path="company.name" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="department.name" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>
 	
 		<div class="control-group">
 			<label class="control-label">专业编码：</label>
 			<div class="controls">
-				<sys:treeselect id="office" name="office.id" value="${recruitStudent.major.id}" labelName="office.name" labelValue="${recruitStudent.office.name}"
+				<sys:treeselect id="major" name="major.id" value="${recruitStudent.major.id}" labelName="major.name" labelValue="${recruitStudent.major.name}"
 					title="部门" url="/sys/office/treeData?type=2" cssClass="" allowClear="true" notAllowSelectParent="true"/>
 			</div>
 		</div>
+		 
 		<div class="control-group">
 			<label class="control-label">真实姓名：</label>
 			<div class="controls">

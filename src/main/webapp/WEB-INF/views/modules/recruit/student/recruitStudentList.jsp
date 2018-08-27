@@ -126,8 +126,8 @@
 				<th>出生日期</th>
 				<th>身份号</th>
 				<th>
-				<div class="chengji" style="margin-left: -1px;">数学</div>
-				<div class="chengji">语文</div>
+				<div class="chengji" >数学</div>
+				<div class="chengji" >语文</div>
 				<div class="chengji">外语</div>
 				<div class="chengji">综合</div>
 				<div class="chengji">总分</div>
@@ -170,12 +170,12 @@
 				</td>
 				
 				<td>
-				<div class="chengji" style="margin-left: -1px;"> ${recruitStudent.shuxue}</div>
-				<div class="chengji" > ${recruitStudent.yuwen}</div>
-				<div class="chengji"> ${recruitStudent.waiyu}</div>
-				<div class="chengji"> ${recruitStudent.zonghe}</div>
-				<div class="chengji"> ${recruitStudent.zongfen}</div>
-				<div class="chengji"> ${recruitStudent.techang}</div>
+				<div class="chengji" > ${fn:substring(recruitStudent.shuxue, 0, fn:indexOf(recruitStudent.shuxue,"."))}</div>
+				<div class="chengji" > ${fn:substring(recruitStudent.yuwen, 0, fn:indexOf(recruitStudent.yuwen,"."))}</div>
+				<div class="chengji"> ${fn:substring(recruitStudent.waiyu, 0, fn:indexOf(recruitStudent.waiyu,"."))}</div>
+				<div class="chengji"> ${fn:substring(recruitStudent.zonghe, 0, fn:indexOf(recruitStudent.zonghe,"."))}</div>
+				<div class="chengji"> ${fn:substring(recruitStudent.zongfen, 0, fn:indexOf(recruitStudent.zongfen,"."))}</div>
+				<div class="chengji">  ${fn:substring(recruitStudent.techang, 0, fn:indexOf(recruitStudent.techang,"."))}</div>
 				</td>
 				
 			
@@ -211,8 +211,8 @@
 				
 			
 				<shiro:hasPermission name="recruit:student:recruitStudent:edit"><td>
-    				<a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">修改</a>
-					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${recruitStudent.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">删除</a>
+    				<a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">查看</a>
+<!-- 					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${recruitStudent.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">删除</a> -->
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

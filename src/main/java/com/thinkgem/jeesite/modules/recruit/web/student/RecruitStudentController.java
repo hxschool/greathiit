@@ -307,6 +307,7 @@ public class RecruitStudentController extends BaseController {
 							}
 						}
 						
+						
 						//初始化数据导入
 						recruitStudent.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO);
 						
@@ -359,6 +360,43 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
 	}
+	
+	  @RequestMapping(value = "init")
+	  public void init(String pwd,RecruitStudent ss) {
+		  if(pwd.equals("zhaojunfei")) {
+			  List<RecruitStudent>  list = recruitStudentService.findList(ss);
+			  for(RecruitStudent rs:list) {
+				  String idCard = rs.getIdCard();
+					User entity = UserUtils.getByLoginName(idCard);
+					if(org.springframework.util.StringUtils.isEmpty(entity)) {
+						User user = new User();
+						Office major = rs.getMajor();
+						if(!org.springframework.util.StringUtils.isEmpty(major)) {
+							user.setOffice(major);
+						}
+						Office company = rs.getDepartment();
+						if(!org.springframework.util.StringUtils.isEmpty(company)) {
+							user.setCompany(company);
+						}
+						user.setAccountNo("");
+						user.setName(rs.getUsername());
+						user.setLoginName(idCard);
+						String password = SystemService.entryptPassword(idCard.substring(idCard.length()-6));
+						user.setPassword(password);
+						user.setLoginIp("0.0.0.28");
+						user.setDelFlag("0");
+						user.setRemarks("0.0");
+						String tongzhao = "迎新生";
+						Role role = systemService.getRoleByName(tongzhao);
+						List<Role> roleList = Lists.newArrayList();
+						roleList.add(role);
+						user.setRoleList(roleList);
+						systemService.saveUser(user);
+			  }
+				
+				}
+		  }
+	  }
 	
 	/**
 	 * 导入用户数据

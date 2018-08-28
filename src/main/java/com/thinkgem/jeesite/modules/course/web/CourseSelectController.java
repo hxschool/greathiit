@@ -98,6 +98,11 @@ public class CourseSelectController extends BaseController {
 		return "modules/course/select/courseForm";
 	}
 	
+	@RequestMapping(value = "exportView")
+	public String exportView(Course course, Model model) {
+		model.addAttribute("course", course);
+		return "modules/course/select/exportView";
+	}
 	
 	@RequiresPermissions("course:course:view")
     @RequestMapping(value = "export")
@@ -107,9 +112,9 @@ public class CourseSelectController extends BaseController {
     		new ExportExcel("公共选课", CourseSelectExcel.class).setDataList(selectCourseService.exportSelectCourse(courseSelectExcel)).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导出公共选课失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/course/select/exportView?repage";
     }
 
 	

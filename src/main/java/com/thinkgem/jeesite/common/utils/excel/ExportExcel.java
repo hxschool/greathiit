@@ -181,11 +181,59 @@ public class ExportExcel {
 		initialize(title, headerList);
 	}
 	
+	public ExportExcel() {
+		
+	}
 	/**
 	 * 初始化函数
 	 * @param title 表格标题，传“空值”，表示无标题
 	 * @param headerList 表头列表
 	 */
+	
+	public void init(String title, List<String> headerList) {
+		this.wb = new SXSSFWorkbook(500);
+		this.sheet = wb.createSheet("Export");
+		this.styles = createStyles(wb);
+		// Create title
+		if (StringUtils.isNotBlank(title)){
+			Row titleRow = sheet.createRow(rownum++);
+			titleRow.setHeightInPoints(30);
+			Cell titleCell = titleRow.createCell(0);
+			titleCell.setCellStyle(styles.get("title"));
+			titleCell.setCellValue(title);
+			sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
+					titleRow.getRowNum(), titleRow.getRowNum(), headerList.size()-1));
+		}
+	}
+	
+	public void setHeader(List<String> headerList) {
+		if (headerList == null){
+			throw new RuntimeException("headerList not null!");
+		}
+		Row headerRow = sheet.createRow(rownum++);
+		headerRow.setHeightInPoints(16);
+		for (int i = 0; i < headerList.size(); i++) {
+			Cell cell = headerRow.createCell(i);
+			cell.setCellStyle(styles.get("header"));
+			String[] ss = StringUtils.split(headerList.get(i), "**", 2);
+			if (ss.length==2){
+				cell.setCellValue(ss[0]);
+				Comment comment = this.sheet.createDrawingPatriarch().createCellComment(
+						new XSSFClientAnchor(0, 0, 0, 0, (short) 3, 3, (short) 5, 6));
+				comment.setString(new XSSFRichTextString(ss[1]));
+				cell.setCellComment(comment);
+			}else{
+				cell.setCellValue(headerList.get(i));
+			}
+			sheet.autoSizeColumn(i);
+		}
+		for (int i = 0; i < headerList.size(); i++) {  
+			int colWidth = sheet.getColumnWidth(i)*2;
+	        sheet.setColumnWidth(i, colWidth < 3000 ? 3000 : colWidth);  
+		}
+		log.debug("Initialize success.");
+	}
+	
 	private void initialize(String title, List<String> headerList) {
 		this.wb = new SXSSFWorkbook(500);
 		this.sheet = wb.createSheet("Export");
@@ -440,38 +488,41 @@ public class ExportExcel {
 //	/**
 //	 * 导出测试
 //	 */
-//	public static void main(String[] args) throws Throwable {
-//		
-//		List<String> headerList = Lists.newArrayList();
-//		for (int i = 1; i <= 10; i++) {
-//			headerList.add("表头"+i);
-//		}
-//		
-//		List<String> dataRowList = Lists.newArrayList();
-//		for (int i = 1; i <= headerList.size(); i++) {
-//			dataRowList.add("数据"+i);
-//		}
-//		
-//		List<List<String>> dataList = Lists.newArrayList();
-//		for (int i = 1; i <=1000000; i++) {
-//			dataList.add(dataRowList);
-//		}
-//
-//		ExportExcel ee = new ExportExcel("表格标题", headerList);
-//		
-//		for (int i = 0; i < dataList.size(); i++) {
-//			Row row = ee.addRow();
-//			for (int j = 0; j < dataList.get(i).size(); j++) {
-//				ee.addCell(row, j, dataList.get(i).get(j));
-//			}
-//		}
-//		
-//		ee.writeFile("target/export.xlsx");
-//
-//		ee.dispose();
-//		
-//		log.debug("Export success.");
-//		
-//	}
+	public static void main(String[] args) throws Throwable {
+		
+		List<String> headerList = Lists.newArrayList();
+		for (int i = 1; i <= 10; i++) {
+			headerList.add("表头"+i);
+		}
+		
+		List<String> dataRowList = Lists.newArrayList();
+		for (int i = 1; i <= headerList.size(); i++) {
+			dataRowList.add("数据"+i);
+		}
+		
+		List<List<String>> dataList = Lists.newArrayList();
+		for (int i = 1; i <=10; i++) {
+			dataList.add(dataRowList);
+		}
+
+		ExportExcel ee = new ExportExcel();
+		ee.init("2018年新生统计", headerList);
+		Row r = ee.addRow();
+		ee.addCell(r, 1, "测试原生");
+		ee.setHeader(headerList);
+		for (int i = 0; i < dataList.size(); i++) {
+			Row row = ee.addRow();
+			for (int j = 0; j < dataList.get(i).size(); j++) {
+				ee.addCell(row, j, dataList.get(i).get(j));
+			}
+		}
+		
+		ee.writeFile("target/export.xlsx");
+
+		ee.dispose();
+		
+		log.debug("Export success.");
+		
+	}
 
 }

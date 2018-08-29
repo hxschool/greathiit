@@ -62,7 +62,7 @@
             <div class="container">
                 <div class="login_box" >
                     <div class="login_head">
-                        <h2>登录</h2>
+                        <h2>哈尔滨信息工程学院</h2>
                     </div>
                     <div class="mui-input-row" style='margin:1.2rem 0 0.7rem'>
                         <label>姓名</label>
@@ -102,7 +102,7 @@
                 }
            
                 $.post('checkSign', {"phone": phone, "pwd": pwd}, function(data) {
-                	$.alert(data.responseMessage);
+                	alert(data.responseMessage);
 
                 }, "json")
             });

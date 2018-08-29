@@ -116,6 +116,14 @@ from recruit_student
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
+			
+			<if test="department != null and department.id != null and department.id != ''">
+				AND a.department_id = #{department.id}
+			</if>
+			
+			<if test="major != null and major.id != null and major.id != ''">
+				AND a.major_id = #{major.id}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

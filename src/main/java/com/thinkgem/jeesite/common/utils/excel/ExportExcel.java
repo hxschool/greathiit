@@ -211,7 +211,7 @@ public class ExportExcel {
 			throw new RuntimeException("headerList not null!");
 		}
 		Row headerRow = sheet.createRow(rownum++);
-		headerRow.setHeightInPoints(16);
+		headerRow.setHeightInPoints(22);
 		for (int i = 0; i < headerList.size(); i++) {
 			Cell cell = headerRow.createCell(i);
 			cell.setCellStyle(styles.get("header"));
@@ -253,7 +253,7 @@ public class ExportExcel {
 			throw new RuntimeException("headerList not null!");
 		}
 		Row headerRow = sheet.createRow(rownum++);
-		headerRow.setHeightInPoints(16);
+		headerRow.setHeightInPoints(22);
 		for (int i = 0; i < headerList.size(); i++) {
 			Cell cell = headerRow.createCell(i);
 			cell.setCellStyle(styles.get("header"));
@@ -347,7 +347,9 @@ public class ExportExcel {
 	 * @return 行对象
 	 */
 	public Row addRow(){
-		return sheet.createRow(rownum++);
+		Row r = sheet.createRow(rownum++);
+				r.setHeightInPoints(22);
+		return r;
 	}
 	
 

@@ -6,6 +6,24 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			
+			$("#allcheckbox").click(function() {
+				if (this.checked) {
+					$("[name=ids]").attr("checked", true);
+
+				} else {
+					$("[name=ids]").attr("checked", false);
+					
+				}
+			});
+			
+			$('#element_id').cxSelect({ 
+				  url: '${ctx}/sys/office/treeClassLink',
+				  selects: ['school', 'major', 'grade'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
 			$("#btnExport").click(function() {
 				top.$.jBox.confirm("确认要导出用户数据吗？", "系统提示", function(v, h, f) {
 					if (v == "ok") {
@@ -43,6 +61,25 @@
 			$("#searchForm").submit();
         	return false;
         }
+		function up_Inquiry(){
+			layer.confirm('<form  id="classForm" action="${ctx}/recruit/student/recruitStudent/assign" method="post" >学院/专业名称:${recruitStudent.department.name}/${recruitStudent.major.name}<br>请班级名称:<input name="classname" id="classname" /><input type="hidden" name="id_card_str" id="id_card_str" /><input type="hidden" name="majorId" id="majorId" value="${recruitStudent.major.id}"/></form>', {
+				  btn: ['确认','关闭'],
+				  yes: function(index, layero){
+					  $("input:checkbox[name='ids']:checked").each(function() {
+						  if($("#id_card_str").val()==""){
+							  $("#id_card_str").val($(this).val());
+						  }else{
+							  $("#id_card_str").val($("#id_card_str").val()+","+$(this).val());
+						  }
+					  });
+					  	$("#classForm").submit();
+					  layer.close(index);
+					  },
+					  no: function(index, layero){
+						  layer.close(index);
+						  }
+				});
+		}
 	</script>
 	<style type="text/css">
 	.chengji
@@ -89,24 +126,48 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>考试号：</label>
-				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+			<div id="element_id">
+				<s:if test="${fns:getUser().id=='1' }">
+
+				<li><label>所属学院：</label> <select name="department.id" id="school"
+					class="school" style="width: 176px;">
+						<option value="" selected="selected">==请选择学院==</option>
+				</select></li>
+				<li><label>所属专业：</label> <select name="major.id" id="major"
+					class="major" style="width: 176px;">
+						<option value="" selected="selected">==请选择专业==</option>
+				</select></li>
+				
+				<li><label>状态：</label>
+				<select id="status" name="status" class="required input-medium">
+					<c:forEach items="${fns:getDictList('RECRUIT_STUDENT_STATUS')}" var="dict">
+						<option value="${dict.value}">${dict.label}</option>
+					</c:forEach>
+				</select>
+				
+				</li>
+				</s:if>
+			</div>
+			<li class="clearfix"></li>
+	
 			<li><label>真实姓名：</label>
 				<form:input path="username" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>性别：</label>
-				<form:input path="gender" htmlEscape="false" maxlength="64" class="input-medium"/>
+				
+				<select id="gender" name="gender" class=" input-medium" style="width: 176px;">
+				<option value="">请选择</option>
+				<option value="男">男</option>
+				<option value="女">女</option>
+				</select>
 			</li>
-			<li><label>出生日期：</label>
-				<form:input path="birthday" htmlEscape="false" maxlength="14" class="input-medium"/>
-			</li>
+			
 			<li><label>身份证号码：</label>
 				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
 			</li>
-			<li><label>状态：</label>
-				<form:input path="status" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+			<li class="clearfix"></li>
+			
+			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/><input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
@@ -117,9 +178,13 @@
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
-	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+	<input id="allocation" class="btn btn-success"
+				type="button" onclick="up_Inquiry()" value="分配班级" />
+				
+	<table id="contentTable" class="table table-striped table-bordered table-condensed" style="margin-top:10px;">
 		<thead>
-			<tr>
+			<tr><th><input type="checkbox"
+						name="allcheckbox" id="allcheckbox"></th>
 				<th>考试号</th>
 				<th>姓名</th>
 				<th>性别</th>
@@ -147,7 +212,11 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="recruitStudent">
-			<tr>
+			<tr><td>
+			<input type="checkbox" name="ids" id="${recruitStudent.idCard}"
+						value="${recruitStudent.idCard}">
+
+			</td>
 				<td><a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">
 					${recruitStudent.exaNumber}
 				</a></td>
@@ -206,12 +275,14 @@
 					${recruitStudent.province}
 				</td>
 				<td>
-					${recruitStudent.status}
+					
+					${fns:getDictLabel(recruitStudent.status, 'RECRUIT_STUDENT_STATUS', '未知状态')}
 				</td>
 				
 			
 				<shiro:hasPermission name="recruit:student:recruitStudent:edit"><td>
     				<a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">查看</a>
+    				<a href="${ctx}/recruit/student/recruitStudent/form?id=${recruitStudent.id}">分班</a>
 <!-- 					<a href="${ctx}/recruit/student/recruitStudent/delete?id=${recruitStudent.id}" onclick="return confirmx('确认要删除该统招数据吗？', this.href)">删除</a> -->
 				</td></shiro:hasPermission>
 			</tr>

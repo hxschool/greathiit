@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitTotalMajorClass;
 import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -86,7 +88,7 @@ public class AssignClazzController  extends BaseController{
 		addMessage(redirectAttributes, "["+majorName+"] 专业设置自动分班状态成功");
 		return "modules/recruit/student/assignSuccess";
 	}
-	
+
 	@RequestMapping("ajaxResetSetup")
 	@ResponseBody
 	public Map<String,String> ajaxResetSetup(String majorId,String classNo,String ids) {
@@ -101,6 +103,7 @@ public class AssignClazzController  extends BaseController{
 		map.put("responseMessage", "为当前班级分配学号成功");
 		return map;
 	}
+	
 	
 	
 	@RequestMapping("ajaxSingleSetup")

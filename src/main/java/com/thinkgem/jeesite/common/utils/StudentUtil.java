@@ -16,6 +16,9 @@ public class StudentUtil {
 		String year = DateUtils.getDate("yyyy");
 		String classNumber = year.concat(majorId).concat(String.format("%02d", Integer.valueOf(classNo)));
 		Office clazz = officeService.get(classNumber);
+		if(!org.springframework.util.StringUtils.isEmpty(clazz)) {
+			return assignClasses(majorId,String.valueOf(Integer.valueOf(classNo) + 1));
+		}
 		if(org.springframework.util.StringUtils.isEmpty(clazz)) {
 			List<String> majorList = Arrays.asList(majors);
 			Office parent = officeService.get(majorId);

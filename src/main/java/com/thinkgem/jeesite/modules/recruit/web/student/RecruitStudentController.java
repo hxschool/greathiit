@@ -3,12 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.recruit.web.student;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,6 +29,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -98,7 +103,34 @@ public class RecruitStudentController extends BaseController {
 	//@RequiresPermissions("recruit:student:recruitStudent:view")
 	@RequestMapping(value = {"list"})
 	public String list(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			if(!org.springframework.util.StringUtils.isEmpty(user.getCompany())) {
+				recruitStudent.setDepartment(user.getCompany());
+			}
+			if(!org.springframework.util.StringUtils.isEmpty(user.getOffice())) {
+				recruitStudent.setMajor(user.getOffice());
+			}
+		}
 		Page<RecruitStudent> page = recruitStudentService.findPage(new Page<RecruitStudent>(request, response), recruitStudent); 
+		
+		if(!org.springframework.util.StringUtils.isEmpty(recruitStudent.getDepartment())&&!org.springframework.util.StringUtils.isEmpty(recruitStudent.getDepartment().getId())) {
+			recruitStudent.setDepartment(officeService.get(recruitStudent.getDepartment().getId()));
+		}
+		if(!org.springframework.util.StringUtils.isEmpty(recruitStudent.getMajor())&&!org.springframework.util.StringUtils.isEmpty(recruitStudent.getMajor().getId())) {
+			recruitStudent.setMajor(officeService.get(recruitStudent.getMajor().getId()));
+		}
+		if(org.springframework.util.StringUtils.isEmpty(recruitStudent.getDepartment())) {
+			Office department = new Office();
+			department.setName("全学院");
+			recruitStudent.setDepartment(department);
+			if(org.springframework.util.StringUtils.isEmpty(recruitStudent.getMajor())) {
+				Office major = new Office();
+				major.setName("全专业");
+				recruitStudent.setMajor(major);
+			}
+		}
+		model.addAttribute("recruitStudent", recruitStudent);
 		model.addAttribute("page", page);
 		return "modules/recruit/student/recruitStudentList";
 	}
@@ -217,8 +249,9 @@ public class RecruitStudentController extends BaseController {
 		Office clazz = officeService.get(clazzId);
 		if(StringUtils.isEmpty(clazz.getRemarks())) {
 			clazz.setRemarks("1");
+			officeService.save(clazz);
 		}
-		if(Integer.valueOf(clazz.getRemarks())>30) {
+		if(Integer.valueOf(clazz.getRemarks())>50) {
 			String str = String.valueOf(Integer.valueOf(classno)+1);
 			return getClassNumber(majorId,str);
 		}
@@ -226,14 +259,71 @@ public class RecruitStudentController extends BaseController {
 	}
 	
 	
-	
-	//@RequiresPermissions("recruit:student:recruitStudent:edit")
 	@RequestMapping(value = "delete")
 	public String delete(RecruitStudent recruitStudent, RedirectAttributes redirectAttributes) {
 		recruitStudentService.delete(recruitStudent);
 		addMessage(redirectAttributes, "删除统招数据成功");
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
 	}
+	
+	
+	//@RequiresPermissions("recruit:student:recruitStudent:edit")
+	@RequestMapping(value = "assign")
+	public String assign(String majorId,String classname,String id_card_str, RedirectAttributes redirectAttributes) {
+		String[] id_cards = id_card_str.split(",");
+		Office clazz = officeService.getOfficeByName(classname);
+		if(org.springframework.util.StringUtils.isEmpty(clazz)) {
+			String classno = "1";
+			String clazzId = getClassNumber(majorId,classno);
+			clazz = officeService.get(clazzId);
+			clazz.setRemarks("1");
+			clazz.setName(classname);
+			officeService.save(clazz);
+		}
+		int cnt = Integer.valueOf(clazz.getRemarks());
+		int total = cnt + id_cards.length;
+		int failureNum = 0;
+		StringBuilder failureMsg = new StringBuilder();
+		for (String id_card:id_cards) {
+			User user = systemService.getCasByLoginName(id_card);
+			if(!org.springframework.util.StringUtils.isEmpty(user.getNo())) {
+				failureMsg.append("<br/>姓名 : " + user.getName() + " 身份证号: "+id_card+" 学号已存在,不需要重复生成; ");
+				failureNum++;
+			}else{
+				String serialNo = systemService.getSequence(clazz.getId());
+				if(org.springframework.util.StringUtils.isEmpty(serialNo)) {
+					serialNo = "01";
+					systemService.insertSequence(clazz.getId(), serialNo, 2);
+				}
+				if(serialNo.length()==9) {
+					serialNo = serialNo.substring(0, serialNo.length()-1).concat("0").concat(serialNo.substring(serialNo.length()-1));
+				}
+				String no = clazz.getId().concat(org.apache.commons.lang3.StringUtils.right(serialNo, 2));
+				String tongzhao = "学生";
+				Role role = systemService.getRoleByName(tongzhao);
+				List<Role> roleList = Lists.newArrayList();
+				roleList.add(role);
+				user.setRoleList(roleList);
+				user.setNo(no);
+				user.setClazz(clazz);
+				systemService.saveUser(user);
+				RecruitStudent recruitStudent = new RecruitStudent();
+				recruitStudent.setIdCard(id_card);
+				RecruitStudent entity = recruitStudentService.getRecruitStudent(recruitStudent);
+				entity.setStatus(recruitStudentService.RECRUIT_STUDENT_STATUS_PAY_SUCC);
+				recruitStudentService.save(entity);
+			}
+		}
+		clazz.setRemarks(total+"");
+		officeService.save(clazz);
+		if (failureNum>0){
+			failureMsg.insert(0, "，失败 "+failureNum+" 条，导入信息如下：");
+		}
+		addMessage(redirectAttributes, "生成学号成功." + failureMsg);
+		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
+	}
+	
+	
 	
 	@RequiresPermissions("sys:user:view")
     @RequestMapping(value = "import/template")
@@ -488,7 +578,67 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
     }
-    
+    @RequestMapping(value = "exportView")
+	public String exportView( Model model) {
+		
+		return "redirect:"+Global.getAdminPath()+"/recruit/student/exportView";
+
+	}
+	
+    @RequestMapping(value = "export")
+    public String exportFile(String classno, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+			StringBuffer sb = new StringBuffer();
+			
+            if(!StringUtils.isAllLowerCase(classno)) {
+            	Office entity = officeService.get(classno);
+            	String majorName = entity.getParent().getName();
+            	Office major = officeService.getOfficeByName(majorName);
+            	String departmentName = major.getParent().getName();
+				sb.append(departmentName + "-" + majorName + "-" + entity.getName());
+            
+				String fileName = "班级信息-"+ classno +"-"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+	            ExportExcel ee = new ExportExcel();
+	            String[] headers = {"序号","学号","姓名","备注"}; 
+	            List<String> headerList = Arrays.asList(headers);
+	            ee.init(sb.toString(), headerList);
+	            ee.setHeader(headerList);
+	            
+	            User user = new User();
+	            Office clazz = new Office();
+	            clazz.setId(classno);
+	            user.setClazz(clazz);
+	            List<User> list = systemService.findAllList(user);
+	            Collections.sort(list, new Comparator<User>(){
+	              
+	                public int compare(User p1, User p2) {
+	                    if(Integer.valueOf(p1.getNo()) >Integer.valueOf(p2.getNo()) ){
+	                        return 1;
+	                    }
+	                    if(Integer.valueOf(p1.getNo()) == Integer.valueOf(p2.getNo())){
+	                        return 0;
+	                    }
+	                    return -1;
+	                }
+	            });
+	            int i = 1;
+	            for(User u : list) {
+	            	Row row = ee.addRow();
+	            	ee.addCell(row, 0, i);
+	            	ee.addCell(row, 1, u.getNo());
+	            	ee.addCell(row, 2, u.getName());
+	            	ee.addCell(row, 3, "");
+	            	i++;
+	            }
+	    		ee.write(response, fileName).dispose();
+            }
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出公共选课失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/recruit/student/recruitStudent/exportView?repage";
+    }
+
     
 
 }

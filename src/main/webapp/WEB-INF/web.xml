@@ -89,10 +89,7 @@
 		<url-pattern>/xuanke/*</url-pattern>
 	</filter-mapping>
 	
-	<filter-mapping>
-		<filter-name>sitemeshFilter</filter-name>
-		<url-pattern>/yingxin/*</url-pattern>
-	</filter-mapping>
+
 	
 		<filter-mapping>
 		<filter-name>sitemeshFilter</filter-name>
@@ -103,7 +100,10 @@
 		<filter-name>sitemeshFilter</filter-name>
 		<url-pattern>/route/*</url-pattern>
 	</filter-mapping>
-	
+		<filter-mapping>
+		<filter-name>sitemeshFilter</filter-name>
+		<url-pattern>/yingxin/*</url-pattern>
+	</filter-mapping>
 	<!-- MVC Servlet -->
 	<servlet>
 		<servlet-name>springServlet</servlet-name>

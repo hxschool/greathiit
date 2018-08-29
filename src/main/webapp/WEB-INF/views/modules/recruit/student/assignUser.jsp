@@ -8,14 +8,14 @@
 		$(document).ready(function() {
 			
 			$(".editBtn").click(function(){
-				submitUrl("${ctx}/recruit/student/recruitStudent/assign/ajaxSingleSetup",$(this).attr("id"));
+				submitUrl("${ctx}/recruit/student/assign/ajaxSingleSetup",$(this).attr("id"));
 			});
 			
 			$(".resetBtn").click(function(){
 				layer.confirm('您是如何看待前端开发？', {
 					  btn: ['确认重置','取消'] //按钮
 					}, function(){
-						$.post("${ctx}/recruit/student/recruitStudent/assign/ajaxResetSetup",{majorId:$("#majorId").val(),classNo:$("#classNo").val(),ids:$(this).attr("id")},function(result){
+						$.post("${ctx}/recruit/student/assign/ajaxResetSetup",{majorId:$("#majorId").val(),classNo:$("#classNo").val(),ids:$(this).attr("id")},function(result){
 						    if(result!=null&&result!="null"){
 						    	layer.msg(result.responseMessage);
 						    	layer.close(index);
@@ -43,7 +43,7 @@
 					  	$('input[name=ids]:checked').each(function(){  
 						   chk_value.push($(this).val());
 						});
-		        	  submitUrl("${ctx}/recruit/student/recruitStudent/assign/ajaxSetup",chk_value);
+		        	  submitUrl("${ctx}/recruit/student/assign/ajaxSetup",chk_value);
 		          }else{
 		               alert('请选择需要分班的学生!');
 		          }

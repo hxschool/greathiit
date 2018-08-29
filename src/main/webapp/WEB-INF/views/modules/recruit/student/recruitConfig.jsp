@@ -27,7 +27,7 @@
 </head>
 <body>
 	<br/>
-	<form  id="inputForm" action="${ctx}/recruit/student/recruitStudent/assign/operation" method="post" class="form-horizontal">
+	<form  id="inputForm" action="${ctx}/recruit/student/assign/operation" method="post" class="form-horizontal">
 	
 		<sys:message content="${message}"/>		
 		

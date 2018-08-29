@@ -29,7 +29,7 @@ import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 @Controller
-@RequestMapping(value = "${adminPath}/recruit/student/recruitStudent/assign")
+@RequestMapping(value = "${adminPath}/recruit/student/assign")
 public class AssignClazzController  extends BaseController{
 	@Autowired
 	private RecruitStudentService recruitStudentService;
@@ -83,7 +83,7 @@ public class AssignClazzController  extends BaseController{
 				return "modules/recruit/student/assignUser";
 			}
 		}
-		addMessage(redirectAttributes, "["+majorName+"]专业设置自动分班状态成功");
+		addMessage(redirectAttributes, "["+majorName+"] 专业设置自动分班状态成功");
 		return "modules/recruit/student/assignSuccess";
 	}
 	

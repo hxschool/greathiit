@@ -1,17 +1,20 @@
 package com.thinkgem.jeesite.modules.yingxin.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thinkgem.jeesite.modules.cms.entity.Article;
 import com.thinkgem.jeesite.modules.cms.entity.Category;
@@ -22,6 +25,11 @@ import com.thinkgem.jeesite.modules.cms.service.ArticleService;
 import com.thinkgem.jeesite.modules.cms.service.CategoryService;
 import com.thinkgem.jeesite.modules.cms.service.LinkService;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
+import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
+import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 @Controller
 @RequestMapping(value = "/yingxin")
@@ -35,7 +43,12 @@ public class YingxinController {
 	private LinkService linkService;
 	@Autowired
 	private CategoryService categoryService;
-
+	@Autowired
+	private RecruitStudentService recruitStudentService;
+	@Autowired
+	private SystemService systemService;
+	@Autowired
+	private OfficeService officeService;
 	@ModelAttribute
 	public void initalCategory(Model model) {
 		Link link = new Link();
@@ -111,6 +124,37 @@ public class YingxinController {
 		return "modules/yingxin/themes/"+site.getTheme()+"/list";
 	}
 
+	@RequestMapping(value = "signin")
+	public String signin(Model model) {
+		return "modules/yingxin/themes/mobile/signin";
+	}
 	
+	@RequestMapping(value = "checkSign")
+	@ResponseBody
+	public Map<String,String> checkSign(String phone,String pwd,  Model model) {
+		Map<String,String> map = new HashMap<String,String>();
+		RecruitStudent recruitStudent = new RecruitStudent();
+		recruitStudent.setUsername(phone);
+		recruitStudent.setIdCard(pwd);
+		RecruitStudent pojo = recruitStudentService.getRecruitStudent(recruitStudent);
+		if(StringUtils.isEmpty(pojo)) {
+			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");
+			map.put("responseCode", "0");
+			map.put("responseMessage", "根据姓名和身份证号未查找到相关信息,请联系报考教师");
+			return map;
+		}
+		if(pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS)) {
+			map.put("responseCode", "1");
+			map.put("responseMessage", "已签到,请勿重复签到");
+			return map;
+		}
+		if (pojo.getStatus().equals(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO)) {
+			pojo.setStatus(RecruitStudentService.RECRUIT_STUDENT_STATUS_BAODAO_SUCCESS);
+			recruitStudentService.save(pojo);
+		}
+		map.put("responseCode", "2");
+		map.put("responseMessage", "签到成功,请领取报道卡后进行缴费");
+		return map;
+	}
 	
 }

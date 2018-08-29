@@ -6,7 +6,9 @@ package com.thinkgem.jeesite.modules.recruit.web.student;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -578,10 +580,48 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
     }
-    @RequestMapping(value = "exportView")
-	public String exportView( Model model) {
+
+	@RequestMapping(value = "exportView")
+	public String exportView(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		return "modules/recruit/student/exportView";
+
+	}
+	
+	@RequestMapping(value = "ajaxReport")
+	@ResponseBody
+	public Map<String,Integer> ajaxReport(String classno, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		User user = new User();
+		if(!org.springframework.util.StringUtils.isEmpty(classno)) {
+			
+			user.setClazz(officeService.get(classno));
+			
+		}
 		
-		return "redirect:"+Global.getAdminPath()+"/recruit/student/exportView";
+		List<User> users = systemService.findAllList(user);
+		int m = 0;
+		int f = 0;
+		int o = 0;
+		for(User u : users) {
+			String idCard = u.getLoginName();
+			if(!org.springframework.util.StringUtils.isEmpty(idCard)) {
+				String s = IdcardUtils.getGenderByIdCard(idCard);
+				if(s.equals("1")) {
+					m++;
+				}else if (s.equals("2")) {
+					f++;
+				}else {
+					o++;
+				}
+			}
+			
+		}
+		map.put("M", m);
+		map.put("F", f);
+		map.put("O", o);
+		map.put("T",users.size());
+		return map;
 
 	}
 	
@@ -634,7 +674,7 @@ public class RecruitStudentController extends BaseController {
             }
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导出公共选课失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导出班级信息,失败信息："+e.getMessage());
 		}
 		return "redirect:" + adminPath + "/recruit/student/recruitStudent/exportView?repage";
     }

@@ -288,6 +288,7 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%', #{name}, '%')</if>
 		</if>
+
 		<!-- 数据范围过滤 -->
 		${sqlMap.dsf}
 		<choose>

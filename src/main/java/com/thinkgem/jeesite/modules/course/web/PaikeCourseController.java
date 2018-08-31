@@ -636,6 +636,7 @@ public class PaikeCourseController extends BaseController {
 						entity.setCursForm(cursForm);
 
 						entity.setCursClassHour(new Double(curs_class_hour).intValue() + "");
+						entity.setCursIntro(remark);
 						entity.setRemarks(remark);
 						courseService.save(entity);
 					}

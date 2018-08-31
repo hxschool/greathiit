@@ -130,7 +130,7 @@ public class Course extends DataEntity<Course> {
 		this.cursCurrTerm = cursCurrTerm;
 	}
 	
-	@Length(min=0, max=255, message="课程简介长度必须介于 0 和 255 之间")
+	@Length(min=0, max=255, message="课程简介长度必须介于 0 和 2000 之间")
 	public String getCursIntro() {
 		return cursIntro;
 	}

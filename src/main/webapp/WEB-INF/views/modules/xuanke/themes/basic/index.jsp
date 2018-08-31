@@ -174,7 +174,7 @@
 														
 													</c:if>
 													<!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
-														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }',' ${fn:replace(course.remarks,vEnter,'')}');"
+														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
 															class="btn small bg-blue" ><span
 															class="button-content">查看</span></a>
 													

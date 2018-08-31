@@ -38,12 +38,13 @@
 				<th>开设学期</th>
 				<th>学时</th>
 				<th>学分</th>
-				<th>课程简介</th>
+				
 				<th>课程性质</th>
 				
 				<th>课程类型</th>
 				<th>更新时间</th>
-				<th>remarks</th>
+				<th>课程简介</th>
+				<th>备注</th>
 				<th>查看</th>
 			</tr>
 		</thead>
@@ -69,9 +70,7 @@
 					${course.cursCredit}
 				</td>
 				
-				<td>
-					${course.cursIntro}
-				</td>
+				
 				
 				<td>
 					
@@ -84,6 +83,9 @@
 				</td>
 				<td>
 					<fmt:formatDate value="${course.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<td>
+					${course.cursIntro}
 				</td>
 				<td>
 					${course.remarks}

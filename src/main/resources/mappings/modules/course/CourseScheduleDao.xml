@@ -51,7 +51,7 @@
           <if test="teacherNumber!=null and teacherNumber!=''  ">  
           and   c.teacher_number in (#{teacherNumber})
           </if> 
-           <if test="cursCurrTerm!=null and cursCurrTerm''">  
+           <if test="cursCurrTerm!=null and cursCurrTerm!=''">  
           and   c.curs_curr_term=#{cursCurrTerm}  
           </if> 
 

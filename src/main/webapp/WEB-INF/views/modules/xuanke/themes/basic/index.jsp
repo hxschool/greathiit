@@ -108,17 +108,23 @@
 									<div class="divider"></div>
 								</form>
 								<br>
-
-								<table class="dataTable table text-left" id="dataTables">
+<c:if test="${not empty message}">
+<div id="myAlert" class="alert alert-warning">
+   <a href="#" class="close" data-dismiss="alert">&times;</a>
+   <strong> ${message}</strong>
+</div>
+</c:if>									
+						<table class="dataTable table text-left" id="dataTables">
 									<thead>
 										<tr>
 											<th>序号</th>
 											<th>课程名称</th>
+											
 											<th>任课老师</th>
 											<th>学时</th>
 											<th>学分</th>
 											<th>时间(地点)</th>
-											<th class="text-center" width="60">操作</th>
+											<th class="text-center" width="120">操作</th>
 										</tr>
 									</thead>
 
@@ -127,6 +133,7 @@
 											<tr>
 												<td>${status.index+1 }</td>
 												<td>${course.cursName}</td>
+												
 												<td>${course.teacher.name}</td>
 												
 												<td>${course.cursClassHour }</td>
@@ -134,7 +141,7 @@
 												<td>${course.cursCredit}</td>
 												<td>
 												<c:if test="${course.cursLearningModel=='03'}">
-												在线模式
+												${fns:getDictLabel(course.cursLearningModel, "course_learning_model", "未知")}
 												</c:if>
 												<c:if test="${course.cursLearningModel!='03'}">
 													<c:if test="${!empty courseScheduleMap[course.id]}">
@@ -143,7 +150,9 @@
 													</c:if>
 												</c:if>
 												</td>
-												<td><c:if test="${isIndex } && ${not empty  fns:getUser().id}">
+												<td>
+												<!-- ${isIndex } -->
+												<c:if test="${not empty  fns:getUser().id}">
 
 														<c:set var="bgColor" value="bg-green" scope="application"></c:set>
 														<c:set var="bgIcon" value="icon-plus-sign" scope="application"></c:set>

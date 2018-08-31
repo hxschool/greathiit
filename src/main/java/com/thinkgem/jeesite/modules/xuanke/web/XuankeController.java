@@ -1,6 +1,8 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.aliyuncs.http.HttpRequest;
+import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.cms.entity.Article;
 import com.thinkgem.jeesite.modules.cms.entity.Category;
@@ -40,6 +44,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
@@ -107,7 +112,7 @@ public class XuankeController extends BaseController {
 	 * 网站首页
 	 */
 	@RequestMapping(value = {"index", ""})
-	public String index(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String index(Course course, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		boolean isIndex = true;
 		if(StringUtils.isEmpty(course.getCursProperty())) {
 			course.setCursProperty("20");
@@ -144,35 +149,57 @@ public class XuankeController extends BaseController {
 				if(studentNumber.length()==10) {//本科
 					while(it.hasNext()){
 						Course c = it.next();
-						if(!c.getCursName().substring(0,1).toUpperCase().equals(benke)) {
+						if(!c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
 					}
 				}else if(studentNumber.length()==7||studentNumber.length()==8){
 					while(it.hasNext()){
 						Course c = it.next();
-						if(c.getCursName().substring(0,1).toUpperCase().equals(benke)) {
+						if(c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
 					}
 				}
 			}
 		}
+		Collections.sort(courses, new Comparator<Course>(){
+			 public int compare(Course p1, Course p2) {
+				 if(StringUtils.isEmpty(p1.getCursLearningModel())) {
+					 return 0;
+				 }
+				 if(Integer.valueOf(p1.getCursLearningModel())>Integer.valueOf(p2.getCursLearningModel())) {
+					 return 1;
+				 }else {
+					 return -1;
+				 }
+				 
+			 }
+		});
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("courseScheduleMap", courseScheduleMap);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", isIndex);
 		model.addAttribute("courses", courses);
 		model.addAttribute("selectCourses", selectCourses);
+		
+		Map<String, Object> map= model.asMap();
+		if(!StringUtils.isEmpty(map.get("message"))) {
+			model.addAttribute("message", map.get("message") + "," + getMessage(user));
+		}else {
+			model.addAttribute("message", "");
+		}
 		return "modules/xuanke/themes/"+site.getTheme()+"/index";
 	}
 	
+
 	@RequestMapping("select")
 	public String select(Course course, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
 		Course entity = courseService.get(course);
 		if(StringUtils.isEmpty(entity)) {
 			addMessage(redirectAttributes, "请求参数异常。请不要使用非法参数操作");
 		}
+		
 		User user = UserUtils.getUser();
 		if (!StringUtils.isEmpty(user) && !StringUtils.isEmpty(user.getNo())) {
 			
@@ -194,6 +221,8 @@ public class XuankeController extends BaseController {
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");
 					return "redirect:/xuanke/index?repage";
 				}
+				//本科需要最少设置一个在线课程 course_learning_model
+				
 				selectCourseService.save(selectCourse);
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_SUC,user.getNo());
 				addMessage(redirectAttributes, "选课成功");
@@ -203,6 +232,32 @@ public class XuankeController extends BaseController {
 		}
 		addMessage(redirectAttributes, "当前用户未登录,请登陆后再操作");
 		return "redirect:/xuanke/index?repage";
+	}
+	
+	public String getMessage(User user) {
+		if(StringUtils.isEmpty(user)) {
+			return "";
+		}
+		SelectCourse selectedCourse = new SelectCourse();
+		selectedCourse.setStudent(user);
+		List<SelectCourse> selectedCourses = selectCourseService.findList(selectedCourse);
+		List<Course> courses = new ArrayList<Course>();
+		String benke = "B".toUpperCase();
+		if(user.getNo().length()==10) {//本科
+			for(SelectCourse sc:selectedCourses) {
+				Course c = courseService.get(sc.getCourse());
+				if(c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
+					if(!StringUtils.isEmpty(c.getCursLearningModel())&&c.getCursLearningModel().equals("01")) {
+						courses.add(c);
+					}
+				}
+			}
+			
+			if(courses.size()<1) {
+				 return  "本科学生必须选择一节 <b>课堂讲授 </b> 模式课程";
+			}
+		}
+		return "";
 	}
 	private void saveSelectCourseLog(HttpServletRequest request, Course entity,String status,String userno) {
 		UserOperationLog log = new UserOperationLog();
@@ -234,4 +289,34 @@ public class XuankeController extends BaseController {
 	public List<TreeLink> treeClassLink(@RequestParam(required=false,defaultValue="1") String parnetId, HttpRequest request, HttpServletResponse response) {
 		return officeService.treeClassLink(parnetId);
 	}
+	@Autowired
+	private SystemService systemService;
+	@ResponseBody
+	@RequestMapping(value = "checkPassword")
+	public String checkPassword(User user,String loginname, HttpRequest request, HttpServletResponse response) {
+		if(StringUtils.isEmpty(user.getLoginName())) {
+			List<User> users = systemService.findAllList(user);
+			for(User u:users) {
+				if(!StringUtils.isEmpty(u.getLoginName())) {
+					if(IdcardValidator.isValidatedAllIdcard(u.getLoginName())) {
+						String password = org.apache.commons.lang3.StringUtils.right(u.getLoginName(), 6);
+						systemService.updatePasswordById(u.getId(), u.getLoginName(), password);
+					}
+				}
+			}
+		}else {
+			User entity = systemService.getCasByLoginName(loginname);
+			if(!StringUtils.isEmpty(entity)) {
+				if(IdcardValidator.isValidatedAllIdcard(entity.getLoginName())) {
+					String password = org.apache.commons.lang3.StringUtils.right(entity.getLoginName(), 6);
+					systemService.updatePasswordById(entity.getId(), entity.getLoginName(), password);
+				}else {
+					String password = "888888";
+					systemService.updatePasswordById(entity.getId(), entity.getLoginName(), password);
+				}
+			}
+		}
+		return "成功";
+	}
+	
 }

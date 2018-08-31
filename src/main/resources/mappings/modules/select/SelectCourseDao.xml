@@ -45,16 +45,17 @@
 	
 	<select id="count" resultType="java.lang.Integer">
 		SELECT 
-			count(a.*)
+			count(1)
 		FROM select_course a
-		
+		<include refid="selectCourseJoins"/>
 		WHERE 
 		1=1
-		<if test="id != null" >
-        and a.id = #{id}
-      	</if>
+		
 		<if test="course != null and course.id!=null and course.id!=''" >
         and a.course_id = #{course.id}
+      	</if>
+      	<if test="student != null and student.no!=null and student.no!=''" >
+       	and u.no = #{student.no}
       	</if>
 	</select>
 	
@@ -66,7 +67,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			
-			<if test="course != null and course.id!=null and course.id!=''" >
+		<if test="course != null and course.id!=null and course.id!=''" >
         and a.course_id = #{course.id}
       	</if>
       	

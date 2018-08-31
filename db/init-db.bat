@@ -1,21 +1,21 @@
 @echo off
 rem /**
-rem  * Copyright &copy; 2012-2014 <a href="https://github.com/thinkgem/jeesite">JeeSite</a> All rights reserved.
+rem  * TCopyright &copy; 2018-2025 <a href="http://www.greathiit.com">å“ˆå°”æ»¨ä¿¡æ¯å·¥ç¨‹å­¦é™¢</a> All rights reserved.
 rem  *
 rem  * Author: ThinkGem@163.com
 rem  */
 echo.
-echo [ÐÅÏ¢] ÖØ½¨ÄúµÄÊý¾Ý¿â²¢µ¼Èë³õÊ¼Êý¾Ý¡£
+echo [ï¿½ï¿½Ï¢] ï¿½Ø½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿â²¢ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½Ý¡ï¿½
 echo.
 pause
 echo.
-echo [ÐÅÏ¢] ´Ë²Ù×÷»áÇå¿ÕÄúµÄÊý¾Ý±íºÍÊý¾Ý£¬²¢»Ö¸´³õÊ¼×´Ì¬¡£
+echo [ï¿½ï¿½Ï¢] ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý±ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½Ê¼×´Ì¬ï¿½ï¿½
 echo.
-echo [ÐÅÏ¢] È·ÈÏ¼ÌÐøÂð£¿·ñÔòÇë¹Ø±Õ´°¿Ú¡£
+echo [ï¿½ï¿½Ï¢] È·ï¿½Ï¼ï¿½ï¿½ï¿½ï¿½ð£¿·ï¿½ï¿½ï¿½ï¿½ï¿½Ø±Õ´ï¿½ï¿½Ú¡ï¿½
 echo.
 pause
 echo.
-echo [ÐÅÏ¢] ÄúÕæµÄÈ·ÈÏ¼ÌÐøÂð£¿·ñÔòÇë¹Ø±Õ´°¿Ú¡£
+echo [ï¿½ï¿½Ï¢] ï¿½ï¿½ï¿½ï¿½ï¿½È·ï¿½Ï¼ï¿½ï¿½ï¿½ï¿½ð£¿·ï¿½ï¿½ï¿½ï¿½ï¿½Ø±Õ´ï¿½ï¿½Ú¡ï¿½
 echo.
 pause
 echo.

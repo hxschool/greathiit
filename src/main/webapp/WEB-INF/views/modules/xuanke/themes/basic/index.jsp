@@ -58,7 +58,6 @@
 
 
 				</div>
-				<!-- /.layout-sidebar -->
 
 
 

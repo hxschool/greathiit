@@ -35,11 +35,12 @@
 				<th>课程编号</th>
 				<th>课程名称</th>
 				<th>英文名称</th>
+				<th>开设学期</th>
 				<th>学时</th>
 				<th>学分</th>
 				<th>课程简介</th>
 				<th>课程性质</th>
-				<th>开设学期</th>
+				
 				<th>课程类型</th>
 				<th>更新时间</th>
 				<th>remarks</th>
@@ -58,26 +59,28 @@
 				<td>
 					${course.cursEngName}
 				</td>
-	
+			<td>
+					${course.cursCurrTerm}
+				</td>
 				<td>
 					${course.cursClassHour}
 				</td>
 				<td>
 					${course.cursCredit}
 				</td>
-				<td>
-					${course.cursCurrTerm}
-				</td>
+				
 				<td>
 					${course.cursIntro}
 				</td>
 				
 				<td>
-					${course.cursProperty}
+					
+					${fns:getDictLabel(course.cursProperty, 'course_property', '暂无信息')}
 				</td>
 
 				<td>
-					${course.cursType}
+					
+					${fns:getDictLabel(course.cursType, 'course_curs_type', '暂无信息')}
 				</td>
 				<td>
 					<fmt:formatDate value="${course.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -86,7 +89,7 @@
 					${course.remarks}
 				</td>
 				<td>
-    				<a href="${ctx}/course/select/student?id=${course.id}">查看</a>
+    				<a href="${ctx}/course/select/form?id=${course.id}">详情</a>
 				</td>
 			</tr>
 		</c:forEach>

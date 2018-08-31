@@ -73,7 +73,7 @@
 								</c:forEach>
 							</ul>
 							<div style="min-height: 300px;">
-								<form action="${ctx }" method="post"
+								<form action="${ctx }/xuanke" method="post"
 									id="formsearch">
 									<div class="example-code">
 										<div class="form-label float-left">

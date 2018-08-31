@@ -99,7 +99,7 @@
 			<if test="cursStatus!=null and cursStatus!=''">
 			and a.curs_status=#{cursStatus}
 			</if>
-			<if test="cursProperty and cursProperty''">
+			<if test="cursProperty and cursProperty!=''">
 			and a.curs_property=#{cursProperty}
 			</if>
 			<if test="cursName!=null and cursName!=''">

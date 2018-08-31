@@ -39,13 +39,12 @@
 				<th>专业</th>
 				<th>学时</th>
 				<th>学分</th>
-				<th>curs_curr_term</th>
+				<th>开设学期</th>
 				<th>课程简介</th>
 				<th>与相关课程的分工衔接</th>
 				<th>其他说明</th>
 				<th>先修课程</th>
 				<th>课程性质</th>
-				<th>开设学期</th>
 				<th>课程类型</th>
 				<th>更新时间</th>
 				<th>remarks</th>
@@ -91,9 +90,7 @@
 				<td>
 					${course.cursProperty}
 				</td>
-				<td>
-					${course.cursTerm}
-				</td>
+
 				<td>
 					${course.cursType}
 				</td>

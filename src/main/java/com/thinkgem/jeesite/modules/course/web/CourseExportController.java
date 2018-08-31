@@ -714,7 +714,7 @@ public class CourseExportController extends BaseController {
 	}
 
 	@RequestMapping(value = "getCourseScheduleExt")
-	public String getCourseScheduleExt(String cursTerm,String courseClass,String teacherName, Model model) {
+	public String getCourseScheduleExt(String cursCurrTerm,String courseClass,String teacherName, Model model) {
 		
 		if(org.springframework.util.StringUtils.isEmpty(courseClass)&&org.springframework.util.StringUtils.isEmpty(teacherName)) {
 			model.addAttribute("courseScheduleExt", new ArrayList<CourseScheduleExt>());
@@ -734,7 +734,7 @@ public class CourseExportController extends BaseController {
 			teacherNumber = sb.substring(0, sb.length() - ",".length());
 		}
 		
-		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(cursTerm, courseClass, teacherNumber));
+		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(cursCurrTerm, courseClass, teacherNumber));
 		return "modules/course/courseScheduleExt";
 	}
 	

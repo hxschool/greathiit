@@ -71,7 +71,7 @@ public class TeacherCourseService {
 		if ((!cursName.trim().equals("")) && (!cursCurrTerm.trim().equals(""))
 				&& (!cursClazz.equals(""))) {
 			Course courseQuery = new Course();
-			courseQuery.setCursTerm(cursCurrTerm);
+			courseQuery.setCursCurrTerm(cursCurrTerm);
 			courseQuery.setCursName(cursName);
 			courseQuery.setTeacher(UserUtils.getUser());
 			course = courseDao.getCourse(courseQuery);

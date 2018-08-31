@@ -35,14 +35,9 @@
 				<th>课程编号</th>
 				<th>课程名称</th>
 				<th>英文名称</th>
-				<th>专业</th>
 				<th>学时</th>
 				<th>学分</th>
-				<th>curs_curr_term</th>
 				<th>课程简介</th>
-				<th>与相关课程的分工衔接</th>
-				<th>其他说明</th>
-				<th>先修课程</th>
 				<th>课程性质</th>
 				<th>开设学期</th>
 				<th>课程类型</th>
@@ -63,9 +58,7 @@
 				<td>
 					${course.cursEngName}
 				</td>
-				<td>
-					${course.cursMajor}
-				</td>
+	
 				<td>
 					${course.cursClassHour}
 				</td>
@@ -78,21 +71,11 @@
 				<td>
 					${course.cursIntro}
 				</td>
-				<td>
-					${course.cursNote1}
-				</td>
-				<td>
-					${course.cursNote2}
-				</td>
-				<td>
-					${course.cursPreCourses}
-				</td>
+				
 				<td>
 					${course.cursProperty}
 				</td>
-				<td>
-					${course.cursTerm}
-				</td>
+
 				<td>
 					${course.cursType}
 				</td>

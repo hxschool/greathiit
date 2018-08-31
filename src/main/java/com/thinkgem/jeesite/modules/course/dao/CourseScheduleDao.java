@@ -30,13 +30,13 @@ public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
 	
 	public List<CourseSchedule> getCourseScheduleByYearTermAndTeacherNumber(@Param("yearTerm")String yearTerm,@Param("teacherNumber")String teacherNumber);
 	
-	public List<CourseScheduleExt> getCourseScheduleExt(@Param("cursTerm") String cursTerm,@Param("courseClass") String courseClass, @Param("teacherNumber") String teacherNumber);
+	public List<CourseScheduleExt> getCourseScheduleExt(@Param("cursCurrTerm") String cursCurrTerm,@Param("courseClass") String courseClass, @Param("teacherNumber") String teacherNumber);
 	/**
 	 * 楼号+教室号
 	 * @param root
 	 * @return
 	 */
-	public List<CourseScheduleExt> getCourseScheduleByRoot(@Param("cursTerm") String cursTerm,@Param("root")String root);
+	public List<CourseScheduleExt> getCourseScheduleByRoot(@Param("cursCurrTerm") String cursCurrTerm,@Param("root")String root);
 	
 	
 	public List<CourseScheduleExt> findCoursesByParam(@Param("list") List<String> list,@Param("courseClass") String courseClass,@Param("teacherNumber") String teacherNumber);

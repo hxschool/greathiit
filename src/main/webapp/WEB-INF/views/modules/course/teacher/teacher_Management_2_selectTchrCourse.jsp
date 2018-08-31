@@ -55,7 +55,7 @@
 											<h6>课程性质：</h6>
 											<label>${item.cursProperty}</label><br />
 											<h6>开设学期：</h6>
-											<label>${item.cursTerm}</label>
+											<label>${item.cursCurrTerm}</label>
 											<div class="div-curs-detail-inf a">
 												<a
 													href="teacherCourseModify?cursId=${item.id}">修改</a>&nbsp;&nbsp;
@@ -77,7 +77,7 @@
 											<h6>课程性质：</h6>
 											<label><s:property value="#c.cursProperty" /></label><br />
 											<h6>开设学期：</h6>
-											<label><s:property value="#c.cursTerm" /></label>
+											<label><s:property value="#c.cursCurrTerm" /></label>
 											<div class="div-curs-detail-inf a">
 												<a
 													href="Course_Detail_1_selectByCursId?cursId=<s:property value="#c.cursId"/>">详细</a>&nbsp;&nbsp;

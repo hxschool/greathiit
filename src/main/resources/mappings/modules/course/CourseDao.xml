@@ -20,7 +20,6 @@
 		a.curs_pre_courses AS "cursPreCourses",
 		a.curs_property AS "cursProperty",
 		a.curs_select_course_type as "cursSelectCourseType",
-		a.curs_term AS "cursTerm",
 		a.curs_type AS "cursType",
 		a.curs_total AS "cursTotal",
 		a.curs_form AS "cursForm",
@@ -67,8 +66,8 @@
 				and a.curs_name=#{cursName}
 			</if>
 	
-			<if test="cursTerm!=null and cursTerm!=''">
-				and a.curs_term =#{cursTerm}
+			<if test="cursCurrTerm and cursCurrTerm''">
+				and a.curs_curr_term =#{cursCurrTerm}
 			</if>
 	
 			<if test="cursNum!=null and cursNum!=''">
@@ -99,6 +98,9 @@
 			</if>
 			<if test="cursStatus!=null and cursStatus!=''">
 			and a.curs_status=#{cursStatus}
+			</if>
+			<if test="cursProperty and cursProperty''">
+			and a.curs_property=#{cursProperty}
 			</if>
 			<if test="cursName!=null and cursName!=''">
 			and a.curs_name  LIKE concat(concat('%',#{cursName}),'%')
@@ -187,7 +189,6 @@
 			curs_pre_courses,
 			curs_property,
 			curs_select_course_type,
-			curs_term,
 			curs_type,
 			curs_total,
 			curs_form,
@@ -220,7 +221,6 @@
 			#{cursPreCourses},
 			#{cursProperty},
 			#{cursSelectCourseType},
-			#{cursTerm},
 			#{cursType},
 			#{cursTotal},
 			#{cursForm},
@@ -242,7 +242,7 @@
 		UPDATE course SET 	
 			curs_num = #{cursNum},
 			curs_name = #{cursName},
-			curs_edu_name = #{cursEduName},
+			curs_edu_num = #{cursEduNum},
 			curs_eng_name = #{cursEngName},
 			curs_major = #{cursMajor},
 			curs_week_total = #{cursWeekTotal},
@@ -256,7 +256,6 @@
 			curs_pre_courses = #{cursPreCourses},
 			curs_property = #{cursProperty},
 			curs_select_course_type = #{cursSelectCourseType},
-			curs_term = #{cursTerm},
 			curs_type = #{cursType},
 			curs_total = #{cursTotal},
 			curs_status = #{cursStatus},

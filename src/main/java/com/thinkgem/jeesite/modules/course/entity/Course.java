@@ -40,7 +40,7 @@ public class Course extends DataEntity<Course> {
 	private String cursPreCourses;		// 先修课程
 	private String cursProperty;		// 课程性质
 	private String cursSelectCourseType;//功课选课类型
-	private String cursTerm;		// 开设学期
+
 	private String cursType;		// 课程类型
 	private String cursTotal;
 	private String cursForm;
@@ -175,15 +175,7 @@ public class Course extends DataEntity<Course> {
 		this.cursProperty = cursProperty;
 	}
 	
-	@Length(min=0, max=255, message="开设学期长度必须介于 0 和 255 之间")
-	public String getCursTerm() {
-		return cursTerm;
-	}
 
-	public void setCursTerm(String cursTerm) {
-		this.cursTerm = cursTerm;
-	}
-	
 	@Length(min=0, max=255, message="课程类型长度必须介于 0 和 255 之间")
 	public String getCursType() {
 		return cursType;

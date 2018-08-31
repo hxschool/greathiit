@@ -173,11 +173,11 @@
 																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
 														
 													</c:if>
-													<c:if test="${!isIndex or empty  fns:getUser().id}">
+													<!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
 														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }',' ${fn:replace(course.remarks,vEnter,'')}');"
 															class="btn small bg-blue" ><span
 															class="button-content">查看</span></a>
-													</c:if>
+													
 													</td>
 											</tr>
 										</c:forEach>

@@ -206,8 +206,9 @@ public class PaikeCourseController extends BaseController {
 	@ResponseBody
 	public String ajaxDeleteCourse(String time_add,String week, Model model) {
 		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
-		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("0")) {
+		if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)) {
 			courseSchedule.setScLock("1");
+			courseSchedule.setCourseId("00000000");
 			courseSchedule.setTips("");
 			courseScheduleService.save(courseSchedule);
 			return "1";

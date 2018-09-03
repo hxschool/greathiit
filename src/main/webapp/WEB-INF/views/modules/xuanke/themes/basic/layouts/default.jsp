@@ -53,7 +53,7 @@ $(function () {
 <c:choose>
    <c:when test="${empty  fns:getUser().id}"> 
        <a class="login btn btn-normal btn-primary"
-				href="http://login.greathiit.com/login?service=http%3A%2F%2Fwww.greathiit.com%2Fxuanke">点击登录</a>    
+				href="http://login.greathiit.com/login?service=http://www.greathiit.com/xuanke">点击登录</a>    
    </c:when>
    <c:otherwise>
 

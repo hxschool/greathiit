@@ -3,16 +3,19 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -20,6 +23,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
@@ -27,8 +31,10 @@ import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -47,7 +53,8 @@ public class CourseSelectController extends BaseController {
 	private SelectCourseService selectCourseService;
 	@Autowired
 	private UserOperationLogService userOperationLogService;
-	
+	@Autowired
+	private OfficeService officeService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
 		Course entity = null;
@@ -60,7 +67,7 @@ public class CourseSelectController extends BaseController {
 		return entity;
 	}
 	
-	@RequiresPermissions("course:course:view")
+
 	@RequestMapping(value = "selectCourseLog")
 	public String selectCourseLog(UserOperationLog userOperationLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		userOperationLog.setModule("course");
@@ -72,26 +79,77 @@ public class CourseSelectController extends BaseController {
 		return "modules/course/log/userOperationLogList.jsp";
 	}
 	
-	@RequiresPermissions("course:course:view")
+
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			course.setTeacher(user);
+		}
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/select/courseList";
 	}
 	
-	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "student")
 	public String student(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(course);
-		Page<SelectCourse> page = selectCourseService.findPage(new Page<SelectCourse>(request, response),  selectCourse); 
-		
-		model.addAttribute("page", page);
+		model.addAttribute("list", selectCourseService.findList(selectCourse));
 		return "modules/course/select/studentList";
 	}
+	
+	@RequestMapping(value = "clazz")
+	public String clazz(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+		List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+		Map<Office,Integer> cls = new HashMap<Office,Integer>();
+		for(SelectCourse sc:list) {
+			String studentNumber = sc.getStudent().getNo();
+			String clazzId = StudentUtil.getClassId(studentNumber);
+			Office entity = officeService.get(clazzId);
+			if(cls.containsKey(entity)) {
+				int cnt = cls.get(entity);
+				cls.put(entity, cnt+1);
+			}else {
+				if(org.springframework.util.StringUtils.isEmpty(entity)) {
+					entity = new Office();
+					entity.setId("99999999");
+					entity.setName("未知班级");
+					entity.setCode("99999999");
+				}
+				cls.put(entity, 1);
+			}
+		}
+		model.addAttribute("cls", cls);
+		return "modules/course/select/studentClazz";
+	}
+	
+	@RequestMapping(value = "info")
+	public String info(String clsId, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
+		List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
+		for(SelectCourse sc:list) {
+			String studentNumber = sc.getStudent().getNo();
+			String clazzId = StudentUtil.getClassId(studentNumber);
+			
+			if(clsId.equals("99999999")) {
+				Office office = officeService.get(clazzId);
+				if(org.springframework.util.StringUtils.isEmpty(office)) {
+					selectCourses.add(sc);
+				}
+				continue;
+			}
+			
+			if(clazzId.equals(clsId)) {
+				selectCourses.add(sc);
+			}
+			
+		}
+		model.addAttribute("list", selectCourses);
+		return "modules/course/select/studentClazzInfo";
+	}
 
-	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "form")
 	public String form(Course course, Model model) {
 		model.addAttribute("course", course);
@@ -104,7 +162,6 @@ public class CourseSelectController extends BaseController {
 		return "modules/course/select/exportView";
 	}
 	
-	@RequiresPermissions("course:course:view")
     @RequestMapping(value = "export")
     public String exportFile(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
@@ -119,7 +176,6 @@ public class CourseSelectController extends BaseController {
 
 	
 	
-	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "student/delete")
 	public String studentDelete(SelectCourse selectCourse, RedirectAttributes redirectAttributes) {
 		selectCourseService.delete(selectCourse);

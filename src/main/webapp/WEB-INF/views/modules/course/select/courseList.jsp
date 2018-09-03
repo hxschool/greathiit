@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>课程基本信息管理</title>
+	<title>选课信息维护</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -34,7 +34,6 @@
 			<tr>
 				<th>课程编号</th>
 				<th>课程名称</th>
-				<th>英文名称</th>
 				<th>开设学期</th>
 				<th>学时</th>
 				<th>学分</th>
@@ -51,15 +50,13 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="course">
 			<tr>
-				<td><a href="${ctx}/course/select/form?id=${course.id}">
+				<td><a href="${ctx}/course/select/student?id=${course.id}">
 					${course.cursNum}
 				</a></td>
 				<td>
 					${course.cursName}
 				</td>
-				<td>
-					${course.cursEngName}
-				</td>
+		
 			<td>
 					${course.cursCurrTerm}
 				</td>
@@ -91,7 +88,7 @@
 					${course.remarks}
 				</td>
 				<td>
-    				<a href="${ctx}/course/select/form?id=${course.id}">详情</a>
+    				<a href="${ctx}/course/select/select?id=${course.id}">查看报考学员</a>
 				</td>
 			</tr>
 		</c:forEach>

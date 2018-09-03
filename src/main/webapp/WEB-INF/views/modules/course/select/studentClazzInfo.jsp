@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>选课信息维护</title>
+<title>选课班级学生信息列表</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -21,7 +21,7 @@
 		<li class="active"><a href="${ctx}/course/select/">信息列表</a></li>
 		
 	</ul>
-	<form:form id="searchForm" modelAttribute="course" action="${ctx}/course/select/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="course" action="${ctx}/course/select/clazz/Info" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -38,7 +38,6 @@
 				<th>学号</th>
 				<th>姓名</th>
 				<th>更新时间</th>
-
 			</tr>
 		</thead>
 		<tbody>
@@ -61,7 +60,6 @@
 				<td>
 					<fmt:formatDate value="${selectCourse.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-
 
 			</tr>
 		</c:forEach>

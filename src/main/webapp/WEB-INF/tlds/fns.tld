@@ -95,6 +95,14 @@
     <function-signature>java.util.List getOfficeList()</function-signature>
     <example>${fns:getOfficeList()}</example>  
   </function>
+   <function>
+    <description>获取对象值</description>
+    <name>getOffice</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.util.List getOffice(java.lang.String)</function-signature>
+    <example>${fns:getOffice(id)}</example>  
+  </function> 
+  
   
   <function>
     <description>获取当前用户缓存</description>

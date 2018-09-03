@@ -236,6 +236,11 @@ public class UserUtils {
 		return officeList;
 	}
 	
+	public static Office getOffice(String id){
+		
+		return officeDao.get(id);
+	}
+	
 	/**
 	 * 获取授权主要对象
 	 */

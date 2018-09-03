@@ -127,9 +127,7 @@ public class StudentUtil {
 	}
 	
 	public static void main(String[] args) {
-		String s = getCircles("15211001");
-		System.out.println("s:"+s);
-		String year = DateUtils.getDate("yyyy");
-		System.out.print(	year.substring(2));
+		String s = getClassId("1551342");
+		
 	}
 }

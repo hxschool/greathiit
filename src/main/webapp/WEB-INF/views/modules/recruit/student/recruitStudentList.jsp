@@ -139,12 +139,15 @@
 				</select></li>
 				
 				<li><label>状态：</label>
-				<select id="status" name="status" class="required input-medium">
-					<c:forEach items="${fns:getDictList('RECRUIT_STUDENT_STATUS')}" var="dict">
-						<option value="${dict.value}">${dict.label}</option>
-					</c:forEach>
-				</select>
 				
+				<form:select path="status" id="status"
+					class="input-status" style="width:178px">
+					<form:option value="" label="请选择" />
+					<form:options items="${fns:getDictList('RECRUIT_STUDENT_STATUS')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
+				
+
 				</li>
 				</s:if>
 			</div>

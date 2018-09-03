@@ -100,8 +100,14 @@ public class CourseSelectController extends BaseController {
 	}
 	
 	@RequestMapping(value = "clazz")
-	public String clazz(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+	public String clazz(SelectCourse selectCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			Course course = new Course();
+			course.setTeacher(user);
+			selectCourse.setCourse(course);
+		}
+		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		Map<Office,Integer> cls = new HashMap<Office,Integer>();
 		for(SelectCourse sc:list) {
 			String studentNumber = sc.getStudent().getNo();

@@ -136,6 +136,10 @@
 		<if test="course!=null and course.id!=null and course.id!=''">
 			AND c.id=#{course.id}
 		</if>
+		
+		<if test="course!=null and course.teacher!=null and course.teacher.no!=''">
+			AND c.teacher_number=#{course.teacher.no}
+		</if>
 
 		<if test="dept!=null and dept.id!=null and dept.id!=''">
 			AND dept.id=#{dept.id}
@@ -147,8 +151,8 @@
 			AND cla.id=#{cla.id}
 		</if>
 
-		<if test="user!=null and user.name!=null and user.name!=''">
-			AND b.name=#{user.name}
+		<if test="user!=null and user.name!=null and user.no!=''">
+			AND b.name=#{user.no}
 		</if>
 		<if test="user!=null and user.phone!=null and user.phone!=''">
 			AND b.phone=#{user.phone}

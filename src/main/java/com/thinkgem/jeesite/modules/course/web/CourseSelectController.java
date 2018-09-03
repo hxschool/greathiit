@@ -157,8 +157,12 @@ public class CourseSelectController extends BaseController {
 	}
 	
 	@RequestMapping(value = "exportView")
-	public String exportView(Course course, Model model) {
-		model.addAttribute("course", course);
+	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			courseSelectExcel.getCourse().setTeacher(user);
+		}
+		model.addAttribute("list", selectCourseService.exportSelectCourse(courseSelectExcel));
 		return "modules/course/select/exportView";
 	}
 	

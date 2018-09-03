@@ -139,6 +139,15 @@
 		<function-signature>java.lang.String jiaoxuelou(java.lang.String)</function-signature>
 		<example>${fnc:jiaoxuelou(school)}</example>
 	</function>
+	
+	
+	<function>
+		<description>获取当前课程报名人数</description>
+		<name>countStudents</name>
+		<function-class>com.thinkgem.jeesite.common.utils.StudentUtil</function-class>
+		<function-signature>java.lang.Integer countStudents(java.lang.String)</function-signature>
+		<example>${fnc:countStudents(courseId)}</example>
+	</function>
 
 
 	<function>

@@ -84,7 +84,7 @@
 				</td>
 				<td>
 					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
-    				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}">查看</a>
+    				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}">查看(${fnc:countStudents(course.id)})</a>
 				</td>
 			</tr>
 		</c:forEach>

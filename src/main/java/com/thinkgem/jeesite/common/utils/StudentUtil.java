@@ -3,13 +3,16 @@ package com.thinkgem.jeesite.common.utils;
 import java.util.Arrays;
 import java.util.List;
 
+import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Area;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 
 public class StudentUtil {
 	private static OfficeService officeService = SpringContextHolder.getBean(OfficeService.class);
-	
+	private static SelectCourseService selectCourseService = SpringContextHolder.getBean(SelectCourseService.class);
 	private static String[] majors = {"01","02","03","04","05","06","07"};
 	
 	public static String  assignClasses(String majorId,String classNo) {
@@ -125,7 +128,16 @@ public class StudentUtil {
 		}
 		return "";
 	}
-	
+	public static int  countStudents(String courseId) {
+		if(!StringUtils.isEmpty(courseId)) {
+			Course course = new Course();
+			course.setId(courseId);
+			SelectCourse selectCourse = new SelectCourse();
+			selectCourse.setCourse(course);
+			return selectCourseService.count(selectCourse);
+		}
+		return 0;
+	}
 	public static void main(String[] args) {
 		String s = getClassId("1551342");
 		

@@ -41,7 +41,6 @@
 				<th>课程性质</th>
 				
 				<th>课程类型</th>
-				<th>更新时间</th>
 				<th>课程简介</th>
 				<th>备注</th>
 				<th>查看</th>
@@ -67,8 +66,6 @@
 					${course.cursCredit}
 				</td>
 				
-				
-				
 				<td>
 					
 					${fns:getDictLabel(course.cursProperty, 'course_property', '暂无信息')}
@@ -78,17 +75,16 @@
 					
 					${fns:getDictLabel(course.cursType, 'course_curs_type', '暂无信息')}
 				</td>
+	
 				<td>
-					<fmt:formatDate value="${course.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<a href="javacript:void(0);" title="${course.cursIntro }">${fns:abbr(course.cursIntro,10)}</a>
 				</td>
 				<td>
-					${course.cursIntro}
+					${fns:abbr(course.remarks,10)}
 				</td>
 				<td>
-					${course.remarks}
-				</td>
-				<td>
-    				<a href="${ctx}/course/select/select?id=${course.id}">查看报考学员</a>
+					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
+    				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}">查看</a>
 				</td>
 			</tr>
 		</c:forEach>

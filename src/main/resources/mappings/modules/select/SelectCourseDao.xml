@@ -68,7 +68,7 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			
 		<if test="course != null and course.id!=null and course.id!=''" >
-        and a.course_id = #{course.id}
+        	and a.course_id = #{course.id}
       	</if>
       	
       	<if test="student != null and student.no!=null and student.no!=''" >
@@ -136,18 +136,17 @@
 		<if test="course!=null and course.id!=null and course.id!=''">
 			AND c.id=#{course.id}
 		</if>
-		<if test="course!=null and course.name!=null and course.name!=''">
-			AND c.curs_name=#{course.cursName}
+
+		<if test="dept!=null and dept.id!=null and dept.id!=''">
+			AND dept.id=#{dept.id}
 		</if>
-		<if test="dept!=null and dept.name!=null and dept.name!=''">
-			AND dept.name=#{dept.name}
+		<if test="major!=null and major.id!=null and major.id!=''">
+			AND major.id=#{major.id}
 		</if>
-		<if test="major!=null and major.name!=null and major.name!=''">
-			AND major.name=#{major.name}
+			<if test="cla!=null and cla.id!=null and cla.id!=''">
+			AND cla.id=#{cla.id}
 		</if>
-		<if test="cla!=null and cla.name!=null and cla.name!=''">
-			AND cla.name=#{cla.name}
-		</if>
+
 		<if test="user!=null and user.name!=null and user.name!=''">
 			AND b.name=#{user.name}
 		</if>

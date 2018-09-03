@@ -83,6 +83,7 @@
 			</select></li>
 			<li class="btns"> <input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" />
+				<a href="${ctx}/course/select/unknown" class="btn btn-warning">导出未知数据</a>
 			</li>
 			<li class="clearfix"></li>
 		</ul>

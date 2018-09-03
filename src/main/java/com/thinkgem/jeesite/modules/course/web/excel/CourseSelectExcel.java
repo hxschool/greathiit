@@ -29,29 +29,33 @@ public class CourseSelectExcel {
 	public String getMajorName() {
 		return major.getName();
 	}
-	@ExcelField(title="学号", type=1, align=2, sort=4)
+	@ExcelField(title="班级", type=1, align=2, sort=4)
+	public String getClassName() {
+		return cla.getName();
+	}
+	@ExcelField(title="学号", type=1, align=2, sort=5)
 	public String getStudentNumber() {
 		return user.getNo();
 	}
-	@ExcelField(title="姓名", type=1, align=2, sort=5)
+	@ExcelField(title="姓名", type=1, align=2, sort=6)
 	public String getName() {
 		return user.getName();
 	}
-	@ExcelField(title="选修课程", type=1, align=2, sort=6)
+	@ExcelField(title="选修课程", type=1, align=2, sort=7)
 	public String getCourseName() {
 		return course.getCursName();
 	}
-	@ExcelField(title="成绩", type=1, align=2, sort=7)
+	@ExcelField(title="成绩", type=1, align=2, sort=8)
 	
 	public String getFinEvaValue() {
 		return studentCourse.getFinEvaValue();
 	}
 	
-	@ExcelField(title="学分", type=1, align=2, sort=8)
+	@ExcelField(title="学分", type=1, align=2, sort=9)
 	public String getEvaValue() {
 		return studentCourse.getEvaValue();
 	}
-	@ExcelField(title="签到", type=1, align=2, sort=9)
+	@ExcelField(title="签到", type=1, align=2, sort=10)
 	public String getSignIn() {
 		return "";
 	}

@@ -162,6 +162,45 @@ public class CourseSelectController extends BaseController {
 		return "modules/course/select/exportView";
 	}
 	
+	
+	@RequestMapping(value = "unknown")
+    public String unknown(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "未知数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            
+            List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+    		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
+			for (SelectCourse sc : list) {
+				String studentNumber = sc.getStudent().getNo();
+				String clazzId = StudentUtil.getClassId(studentNumber);
+
+				Office office = officeService.get(clazzId);
+				if (org.springframework.util.StringUtils.isEmpty(office)) {
+					selectCourses.add(sc);
+				}
+				continue;
+
+			}
+			List<CourseSelectExcel> courseSelectExcels = new ArrayList<CourseSelectExcel>();
+			int i = 1;
+			for(SelectCourse sc :selectCourses) {
+				Course c = sc.getCourse();
+				CourseSelectExcel cs = new CourseSelectExcel();
+				cs.setId(String.valueOf(i));
+				cs.setCourse(c);
+				cs.setUser(sc.getStudent());
+				courseSelectExcels.add(cs);
+				i++;
+			}
+            
+    		new ExportExcel("未知数据", CourseSelectExcel.class).setDataList(courseSelectExcels).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出公共选课失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/course/select/exportView?repage";
+    }
+	
     @RequestMapping(value = "export")
     public String exportFile(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {

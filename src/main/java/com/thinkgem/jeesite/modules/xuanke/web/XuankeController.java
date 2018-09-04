@@ -202,29 +202,29 @@ public class XuankeController extends BaseController {
 		
 		User user = UserUtils.getUser();
 		if (!StringUtils.isEmpty(user) && !StringUtils.isEmpty(user.getNo())) {
+			SelectCourse countCourse = new SelectCourse();
+			countCourse.setCourse(course);
+			int cnt = selectCourseService.count(countCourse);
 			
 			SelectCourse selectCourse = new SelectCourse();
 			selectCourse.setStudent(user);
 			selectCourse.setCourse(entity);
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
+				if (cnt > entity.getUpperLimit()) {
+					entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
+					courseService.save(entity);
+				}
 				selectCourseService.delete(selectCourseEntity);
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
-				SelectCourse countCourse = new SelectCourse();
-				countCourse.setCourse(entity);
-				int cnt = selectCourseService.count(countCourse);
 				if (cnt > entity.getUpperLimit()) {
-					//设置完成排课信息
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
 					courseService.save(entity);
-					
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");
 					return "redirect:/xuanke/index?repage";
 				}
-				//本科需要最少设置一个在线课程 course_learning_model
-				
 				selectCourseService.save(selectCourse);
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_SUC,user.getNo());
 				addMessage(redirectAttributes, "选课成功");
@@ -245,7 +245,7 @@ public class XuankeController extends BaseController {
 		List<SelectCourse> selectedCourses = selectCourseService.findList(selectedCourse);
 		List<Course> courses = new ArrayList<Course>();
 		String benke = "B".toUpperCase();
-		if(user.getNo().length()==10) {//本科
+		if(user.getNo().length()==10) {
 			for(SelectCourse sc:selectedCourses) {
 				Course c = courseService.get(sc.getCourse());
 				if(c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {

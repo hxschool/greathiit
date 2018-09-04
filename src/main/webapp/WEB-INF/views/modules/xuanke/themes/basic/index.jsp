@@ -180,6 +180,44 @@
 													
 													</td>
 											</tr>
+											
+											<c:if test="${course.cursLearningModel=='01'}">
+												<tr >
+													<td colspan="7" style="border-top: 0px;border-bottom: 0px;">
+														<c:set var="upperLimit" value="${course.upperLimit }" scope="request"/>
+														<c:set var="count" value="${fnc:countStudents(course.id) }" scope="request"/>
+														<c:if test="${count>=upperLimit }">
+														
+														</c:if>
+														
+														<c:choose>
+															<c:when test="${count>=upperLimit }">
+																<div class="progress progress-striped active" style="padding: 0px; margin: 0px; height: 5px;">
+																	<div class="progress-bar progress-bar-danger"
+																		role="progressbar" aria-valuenow="60"
+																		aria-valuemin="0" aria-valuemax="100"
+																		style="width: 100%;">
+																		<span class="sr-only">100% 完成（危险）</span>
+																	</div>
+																</div>
+															</c:when>
+															<c:otherwise>
+																<div class="progress progress-striped active"
+																	style="padding: 0px; margin: 0px; height: 5px;">
+																	<div class="progress-bar progress-bar-success"
+																		role="progressbar" aria-valuenow="60"
+																		aria-valuemin="0" aria-valuemax="100"
+																		style="width: ${(count/upperLimit)*100}%;">
+																		<span class="sr-only">40% 完成</span>
+																	</div>
+																</div>
+															</c:otherwise>
+														</c:choose>
+
+													</td>
+												</tr>
+											</c:if>
+											
 										</c:forEach>
 									</tbody>
 								</table>

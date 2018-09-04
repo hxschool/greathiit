@@ -64,7 +64,11 @@
 				<div class="col-xs-12 col-md-9 main mt30">
 					<div class="panel panel-default panel-archive">
 						<div class="panel-body">
-							<!-- Nav tabs -->
+							<!-- Nav tabs --><div id="myAlert" class="alert alert-danger">
+   <a href="#" class="close" data-dismiss="alert">&times;</a>
+     <strong>选课时间:9月4日7:00-9月5日00:00 未在规定时间段选课同学的选课数据系统将自动清除。</strong>
+
+</div>
 							<ul class=" nav nav-pills pb10 mb10 mt10">
 								<li class="active"><a href="">已选课程</a></li>
 								<c:forEach items="${selectCourses}" var="selectCourse"

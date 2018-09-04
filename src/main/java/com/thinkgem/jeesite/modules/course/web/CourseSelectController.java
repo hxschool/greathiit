@@ -29,6 +29,7 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
+import com.thinkgem.jeesite.modules.course.web.param.SelectCourseOfficeExt;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -108,22 +109,26 @@ public class CourseSelectController extends BaseController {
 			selectCourse.setCourse(course);
 		}
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
-		Map<Office,Integer> cls = new HashMap<Office,Integer>();
+		Map<String,SelectCourseOfficeExt> cls = new HashMap<String,SelectCourseOfficeExt>();
 		for(SelectCourse sc:list) {
 			String studentNumber = sc.getStudent().getNo();
 			String clazzId = StudentUtil.getClassId(studentNumber);
 			Office entity = officeService.get(clazzId);
-			if(cls.containsKey(entity)) {
-				int cnt = cls.get(entity);
-				cls.put(entity, cnt+1);
+			if(cls.containsKey(clazzId)) {
+				SelectCourseOfficeExt selectCourseOfficeExt = cls.get(clazzId);
+				selectCourseOfficeExt.setCnt(selectCourseOfficeExt.getCnt()+1);
+				cls.put(clazzId, selectCourseOfficeExt);
 			}else {
 				if(org.springframework.util.StringUtils.isEmpty(entity)) {
 					entity = new Office();
 					entity.setId("99999999");
-					entity.setName("未知班级");
+					entity.setName(clazzId);
 					entity.setCode("99999999");
 				}
-				cls.put(entity, 1);
+				SelectCourseOfficeExt selectCourseOfficeExt = new SelectCourseOfficeExt();
+				selectCourseOfficeExt.setClazz(entity);
+				selectCourseOfficeExt.setCnt(1);
+				cls.put(clazzId, selectCourseOfficeExt);
 			}
 		}
 		model.addAttribute("cls", cls);
@@ -131,8 +136,8 @@ public class CourseSelectController extends BaseController {
 	}
 	
 	@RequestMapping(value = "info")
-	public String info(String clsId, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+	public String info(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, Model model) {
+		String clsId = courseSelectExcel.getCla().getId();
 		List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		for(SelectCourse sc:list) {

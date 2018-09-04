@@ -33,6 +33,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>课程</th>
+				<th>讲授模式</th>
 				<th>专业</th>
 				<th>班级</th>
 				<th>学号</th>
@@ -42,8 +44,15 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${list}" var="selectCourse">
-			<c:set var="clazz" value="${fns:getOffice(fn:substring(selectCourse.student.no, 0, 8))}"/>
+			<c:set var="clazz" value="${fns:getOffice(fnc:getClassId(selectCourse.student.no))}"/>
 			<tr>
+				<td>
+					${selectCourse.course.cursName}
+				</td>
+				<td>
+				
+				${fns:getDictLabel(selectCourse.course.cursLearningModel, "course_learning_model", "未知")}
+				</td>
 				<td>
 					${clazz.parent }
 				</td>

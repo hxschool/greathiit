@@ -25,23 +25,22 @@
 
 		<c:forEach items="${cls}" var="entry">
 
-
 			<c:choose>
-				<c:when test="${entry.key.id=='99999999' }">
-					<a href="${ctx}/course/select/info?clsId=${entry.key.id}"
-						class="btn btn-danger">${entry.key}(${entry.value})</a>
+				<c:when test="${entry.value.clazz.id=='99999999' }">
+					<a href="${ctx}/course/select/info?cla.id=${entry.key}"
+						class="btn btn-danger" style="width:120px">${entry.value.clazz.name}(${entry.value.cnt})</a>
 				</c:when>
 				<c:otherwise>
 					<div class="btn-group">
 						<button type="button" class="btn btn-success dropdown-toggle"
-							data-toggle="dropdown">
-							${entry.key}(${entry.value}) <span class="caret"></span>
+							data-toggle="dropdown" style="width:140px">
+							${entry.value.clazz.name}(${entry.value.cnt}) <span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
 							<li><a
-								href="${ctx}/course/select/info?clsId=${entry.key.id}">查看</a></li>
+								href="${ctx}/course/select/info?cla.id=${entry.key}">查看</a></li>
 							<li><a
-								href="${ctx}/course/select/export?cla.id=${entry.key.id}">导出</a></li>
+								href="${ctx}/course/select/export?cla.id=${entry.key}">导出</a></li>
 						</ul>
 					</div>
 				</c:otherwise>

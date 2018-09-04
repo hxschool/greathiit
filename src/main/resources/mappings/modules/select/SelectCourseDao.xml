@@ -14,6 +14,7 @@
 		c.id as "course.id",
 		c.curs_num as "course.cursNum",
 		c.curs_name as "course.cursName",
+		c.curs_learning_model as "course.cursLearningModel",
 		u.no as "student.no",
 		u.name as "student.name",
 		a.del_flag AS "delFlag"

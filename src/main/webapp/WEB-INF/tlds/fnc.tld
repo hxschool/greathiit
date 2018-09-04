@@ -140,6 +140,13 @@
 		<example>${fnc:jiaoxuelou(school)}</example>
 	</function>
 	
+	<function>
+		<description>定位教室</description>
+		<name>jiaoshi</name>
+		<function-class>com.thinkgem.jeesite.common.utils.CourseUtil</function-class>
+		<function-signature>java.lang.String jiaoshi(java.lang.String)</function-signature>
+		<example>${fnc:jiaoshi(school)}</example>
+	</function>
 	
 	<function>
 		<description>获取当前课程报名人数</description>
@@ -148,13 +155,11 @@
 		<function-signature>java.lang.Integer countStudents(java.lang.String)</function-signature>
 		<example>${fnc:countStudents(courseId)}</example>
 	</function>
-
-
 	<function>
-		<description>定位教室</description>
-		<name>jiaoshi</name>
-		<function-class>com.thinkgem.jeesite.common.utils.CourseUtil</function-class>
-		<function-signature>java.lang.String jiaoshi(java.lang.String)</function-signature>
-		<example>${fnc:jiaoshi(school)}</example>
+		<description>获取班号</description>
+		<name>getClassId</name>
+		<function-class>com.thinkgem.jeesite.common.utils.StudentUtil</function-class>
+		<function-signature>java.lang.String getClassId(java.lang.String)</function-signature>
+		<example>${fnc:getClassId(studentNumber)}</example>
 	</function>
 </taglib>

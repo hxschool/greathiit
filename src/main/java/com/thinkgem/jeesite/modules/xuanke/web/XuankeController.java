@@ -212,7 +212,9 @@ public class XuankeController extends BaseController {
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
-				int cnt = selectCourseService.count(selectCourse);
+				SelectCourse countCourse = new SelectCourse();
+				countCourse.setCourse(entity);
+				int cnt = selectCourseService.count(countCourse);
 				if (cnt > entity.getUpperLimit()) {
 					//设置完成排课信息
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);

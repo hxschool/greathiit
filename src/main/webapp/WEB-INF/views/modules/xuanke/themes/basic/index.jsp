@@ -10,10 +10,13 @@
 <meta name="keywords"
 	content="哈尔滨信息工程学院-国家示范性软件学院 http://greathiit.com ${site.keywords} 选课系统" />
 </head>
+
 <body>
 
- <c:set var="vEnter" value="\n" scope="request"/>
- <% request.setAttribute("vEnter", "\n"); %> 
+	<c:set var="vEnter" value="\n" scope="request" />
+	<c:set var="nowDate" value="<%= new java.util.Date()%>" />
+
+	<% request.setAttribute("vEnter", "\n"); %>
 	<div class="wrap maincontent">
 
 		<div class="container">
@@ -25,7 +28,14 @@
 						<script type="text/javascript" charset="utf-8"
 							src="${ctxStatic}/xuanke/home/Js/showtime.js"></script>
 					</div>
-
+					<div class="widget-box clearfix"
+						style="margin: 3px; border-style: solid; border-color: #CC9900; text-align: center;">
+						<font style="color:#000;font-family:微软雅黑;font-size:14pt;width:100px;">距离选课结束还有
+						<br>
+						<span id="_d">00</span> <span id="_h">00</span> <span id="_m">00</span>
+						<span id="_s">00</span>
+						</font>
+					</div>
 					<div class="widget-box clearfix">
 						<h2 class="h4 widget-box__title">分类列表(1)</h2>
 						<div class="pcss3mm ">
@@ -35,6 +45,7 @@
 							</ul>
 						</div>
 					</div>
+
 
 
 
@@ -64,11 +75,12 @@
 				<div class="col-xs-12 col-md-9 main mt30">
 					<div class="panel panel-default panel-archive">
 						<div class="panel-body">
-							<!-- Nav tabs --><div id="myAlert" class="alert alert-danger">
-   <a href="#" class="close" data-dismiss="alert">&times;</a>
-     <strong>选课时间:9月4日7:00-9月5日00:00 未在规定时间段选课同学的选课数据系统将自动清除。</strong>
+							<!-- Nav tabs -->
+							<div id="myAlert" class="alert alert-danger">
+								<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>选课时间:9月4日7:00-9月5日00:00
+									未在规定时间段选课同学的选课数据系统将自动清除。</strong>
 
-</div>
+							</div>
 							<ul class=" nav nav-pills pb10 mb10 mt10">
 								<li class="active"><a href="">已选课程</a></li>
 								<c:forEach items="${selectCourses}" var="selectCourse"
@@ -77,8 +89,7 @@
 								</c:forEach>
 							</ul>
 							<div style="min-height: 300px;">
-								<form action="/xuanke" method="post"
-									id="formsearch">
+								<form action="/xuanke" method="post" id="formsearch">
 									<div class="example-code">
 										<div class="form-label float-left">
 											<label>课程名称：</label>
@@ -86,7 +97,7 @@
 										<div class="form-input col-md-2">
 											<input type="text" value="" name="cursName" size="10" />
 										</div>
-										
+
 										<div class="form-label float-left">
 											<label>任课老师：</label>
 										</div>
@@ -111,18 +122,18 @@
 									<div class="divider"></div>
 								</form>
 								<br>
-<c:if test="${not empty message}">
-<div id="myAlert" class="alert alert-warning">
-   <a href="#" class="close" data-dismiss="alert">&times;</a>
-   <strong> ${message}</strong>
-</div>
-</c:if>									
-						<table class="dataTable table text-left" id="dataTables">
+								<c:if test="${not empty message}">
+									<div id="myAlert" class="alert alert-warning">
+										<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>
+											${message}</strong>
+									</div>
+								</c:if>
+								<table class="dataTable table text-left" id="dataTables">
 									<thead>
 										<tr>
 											<th>序号</th>
 											<th>课程名称</th>
-											
+
 											<th>任课老师</th>
 											<th>学时</th>
 											<th>学分</th>
@@ -136,29 +147,28 @@
 											<tr>
 												<td>${status.index+1 }</td>
 												<td>${course.cursName}</td>
-												
+
 												<td>${course.teacher.name}</td>
-												
+
 												<td>${course.cursClassHour }</td>
 
 												<td>${course.cursCredit}</td>
-												<td>
-												<c:if test="${course.cursLearningModel=='03'}">
+												<td><c:if test="${course.cursLearningModel=='03'}">
 												${fns:getDictLabel(course.cursLearningModel, "course_learning_model", "未知")}
-												</c:if>
-												<c:if test="${course.cursLearningModel!='03'}">
-													<c:if test="${!empty courseScheduleMap[course.id]}">
-													 <c:set var="timeAdd" value="${courseScheduleMap[course.id].timeAdd}" scope="request"/>
-													<!-- 第${fnc:GetTimeCol(timeAdd).week}周 -->  ${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
+												</c:if> <c:if test="${course.cursLearningModel!='03'}">
+														<c:if test="${!empty courseScheduleMap[course.id]}">
+															<c:set var="timeAdd"
+																value="${courseScheduleMap[course.id].timeAdd}"
+																scope="request" />
+															<!-- 第${fnc:GetTimeCol(timeAdd).week}周 -->  ${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
 													</c:if>
-												</c:if>
-												</td>
+													</c:if></td>
 												<td>
-												<!-- ${isIndex } -->
-												<c:if test="${not empty  fns:getUser().id}">
+													<!-- ${isIndex } --> <c:if test="${not empty  fns:getUser().id}">
 
 														<c:set var="bgColor" value="bg-green" scope="application"></c:set>
-														<c:set var="bgIcon" value="icon-plus-sign" scope="application"></c:set>
+														<c:set var="bgIcon" value="icon-plus-sign"
+															scope="application"></c:set>
 														<c:set var="label" value="选课" scope="application"></c:set>
 														<c:forEach items="${selectCourses}" var="selectCourse"
 															varStatus="status">
@@ -166,37 +176,42 @@
 																<c:set var="bgColor" value="bg-orange"
 																	scope="application"></c:set>
 																<c:set var="label" value="退课" scope="application"></c:set>
-																<c:set var="bgIcon" value="icon-minus-sign" scope="application"></c:set>
-																
+																<c:set var="bgIcon" value="icon-minus-sign"
+																	scope="application"></c:set>
 															</c:if>
 
 														</c:forEach>
-														<a href="/xuanke/select?id=${course.id }"
+														
+														
+														<c:if test="${ret}">
+															<a href="/xuanke/select?id=${course.id }"
 															class="btn small ${bgColor }" target="ajaxTodo"><span
 															class="button-content"><i
 																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
-														
-													</c:if>
-													<!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
-														<a href="javascript:void(0)" onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
-															class="btn small bg-blue" ><span
-															class="button-content">查看</span></a>
-													
-													</td>
-											</tr>
-											
-											<c:if test="${course.cursLearningModel=='01'}">
-												<tr >
-													<td colspan="7" style="border-top: 0px;border-bottom: 0px;">
-														<c:set var="upperLimit" value="${course.upperLimit }" scope="request"/>
-														<c:set var="count" value="${fnc:countStudents(course.id) }" scope="request"/>
-														<c:if test="${count>=upperLimit }">
-														
 														</c:if>
 														
-														<c:choose>
+
+													</c:if> <!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
+													<a href="javascript:void(0)"
+													onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
+													class="btn small bg-blue"><span class="button-content">查看</span></a>
+
+												</td>
+											</tr>
+
+											<c:if test="${course.cursLearningModel=='01'}">
+												<tr>
+													<td colspan="7"
+														style="border-top: 0px; border-bottom: 0px;"><c:set
+															var="upperLimit" value="${course.upperLimit }"
+															scope="request" /> <c:set var="count"
+															value="${fnc:countStudents(course.id) }" scope="request" />
+														<c:if test="${count>=upperLimit }">
+
+														</c:if> <c:choose>
 															<c:when test="${count>=upperLimit }">
-																<div class="progress progress-striped active" style="padding: 0px; margin: 0px; height: 5px;">
+																<div class="progress progress-striped active"
+																	style="padding: 0px; margin: 0px; height: 5px;">
 																	<div class="progress-bar progress-bar-danger"
 																		role="progressbar" aria-valuenow="60"
 																		aria-valuemin="0" aria-valuemax="100"
@@ -216,12 +231,10 @@
 																	</div>
 																</div>
 															</c:otherwise>
-														</c:choose>
-
-													</td>
+														</c:choose></td>
 												</tr>
 											</c:if>
-											
+
 										</c:forEach>
 									</tbody>
 								</table>
@@ -237,7 +250,7 @@
 
 	<!-- ${empty  fns:getUser().id} -->
 
-<script type="text/javascript">
+	<script type="text/javascript">
 function showRemark(title,remark){
 	if(remark==""){
 		remark = "暂无简介";
@@ -251,6 +264,36 @@ function showRemark(title,remark){
 		  content: "<div style='margin:10px;'>"+remark+"</div>" //iframe的url
 		}); 
 }
+function countTime() {
+    //获取当前时间
+    var date = new Date();
+    var now = date.getTime();
+    //设置截止时间
+    var endDate = new Date("${fns:getDictLabel('end', 'select_course_end', '')}");
+    var end = endDate.getTime();
+    //时间差
+    var leftTime = end-now;
+    //定义变量 d,h,m,s保存倒计时的时间
+    var d='0',h='0',m='0',s='0';
+    if (leftTime>=0) {
+        d = Math.floor(leftTime/1000/60/60/24);
+        h = Math.floor(leftTime/1000/60/60%24);
+        m = Math.floor(leftTime/1000/60%60);
+        s = Math.floor(leftTime/1000%60);                   
+    }
+    //将倒计时赋值到div中
+    document.getElementById("_d").innerHTML = d+"天";
+    document.getElementById("_h").innerHTML = h+"时";
+    document.getElementById("_m").innerHTML = m+"分";
+    document.getElementById("_s").innerHTML = s+"秒";
+    //递归每秒调用countTime方法，显示动态时间效果
+    setTimeout(countTime,1000);
+
+}
+$(function () {
+	countTime();
+})
+
 </script>
 </body>
 </html>

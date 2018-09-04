@@ -1,8 +1,11 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,9 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.aliyuncs.http.HttpRequest;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.cms.entity.Article;
@@ -46,6 +49,7 @@ import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 @Controller
@@ -80,6 +84,8 @@ public class XuankeController extends BaseController {
 				articles.add(article);
 			}
 		}
+		boolean ret = DateUtils.isEffectiveDate(DictUtils.getDictLabel("start","select_course_start", ""), DictUtils.getDictLabel("end","select_course_end", ""));
+		model.addAttribute("ret", ret);	
 		model.addAttribute("category", category);	
 		model.addAttribute("articles", articles);
 	}
@@ -211,7 +217,7 @@ public class XuankeController extends BaseController {
 			selectCourse.setCourse(entity);
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
-				if (!entity.getCursLearningModel().equals("03") && entity.getUpperLimit()!=0 && cnt > entity.getUpperLimit()) {
+				if (!entity.getCursLearningModel().equals("03") &&  cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 					courseService.save(entity);
 				}
@@ -219,7 +225,7 @@ public class XuankeController extends BaseController {
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
-				if (!entity.getCursLearningModel().equals("03") && entity.getUpperLimit()!=0 && cnt > entity.getUpperLimit()) {
+				if (!entity.getCursLearningModel().equals("03") && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
 					courseService.save(entity);
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");
@@ -321,4 +327,20 @@ public class XuankeController extends BaseController {
 		return "成功";
 	}
 	
+	public static void main(String[] args) {
+		String startTime = "2018-09-04 16:00:00";
+		String endTime = "2018-09-04 18:00:00";
+		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		try {
+			Date startDate = dateFormat.parse(startTime);
+			Date endDate = dateFormat.parse(endTime);
+			boolean ret = DateUtils.isEffectiveDate(new Date(), startDate, endDate);
+			System.out.println("开始结束时间"+ret);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 }

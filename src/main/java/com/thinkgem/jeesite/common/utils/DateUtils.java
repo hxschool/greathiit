@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.common.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -213,4 +214,85 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 			e.printStackTrace();
 		}	
 	}
+	
+	public static boolean isEffectiveDate(String startDate, String endDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date startTime;
+		Date endTime ;
+		try {
+			startTime = sdf.parse(startDate);
+			endTime =  sdf.parse(endDate);
+			Date nowTime = new Date();
+	        if (nowTime.getTime() == startTime.getTime()
+	                || nowTime.getTime() == endTime.getTime()) {
+	            return true;
+	        }
+
+	        Calendar date = Calendar.getInstance();
+	        date.setTime(nowTime);
+
+	        Calendar begin = Calendar.getInstance();
+	        begin.setTime(startTime);
+
+	        Calendar end = Calendar.getInstance();
+	        end.setTime(endTime);
+
+	        if (date.after(begin) && date.before(end)) {
+	            return true;
+	        } else {
+	            return false;
+	        }
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		return false;
+    }
+	
+	public static boolean isEffectiveDate(Date startTime, Date endTime) {
+		Date nowTime = new Date();
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+	
+	public static boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
+        }
+
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+
+        if (date.after(begin) && date.before(end)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

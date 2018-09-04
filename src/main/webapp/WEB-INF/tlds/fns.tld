@@ -244,6 +244,14 @@
     <function-signature>java.lang.String getDate(java.lang.String)</function-signature>
     <example>${fns:getDate(pattern)}</example>  
   </function>
+    <function>
+    <description>判断是否在时间范围内</description>
+    <name>isEffectiveDate</name>
+    <function-class>com.thinkgem.jeesite.common.utils.DateUtils</function-class>
+    <function-signature>java.lang.String isEffectiveDate(java.util.Date,java.util.Date)</function-signature>
+    <example>${fns:isEffectiveDate( startTime, endTime)}</example>  
+  </function>
+  
   <function>
     <description>获取过去的天数</description>
     <name>pastDays</name>

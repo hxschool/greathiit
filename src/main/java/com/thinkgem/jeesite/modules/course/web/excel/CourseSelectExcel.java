@@ -1,7 +1,9 @@
 package com.thinkgem.jeesite.modules.course.web.excel;
 
+import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -32,7 +34,8 @@ public class CourseSelectExcel {
 	}
 	@ExcelField(title="班级", type=1, align=2, sort=4)
 	public String getClassName() {
-		return cla.getName();
+		String classno = StudentUtil.getClassId(user.getNo());
+		return StudentUtil.getClassName(classno);
 	}
 	@ExcelField(title="学号", type=1, align=2, sort=5)
 	public String getStudentNumber() {

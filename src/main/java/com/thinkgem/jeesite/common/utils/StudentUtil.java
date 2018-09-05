@@ -101,6 +101,14 @@ public class StudentUtil {
 		return "";
 	}
 	
+	public static String getClassName(String classno) {
+		Office entity = officeService.get(classno);
+		if (entity != null) {
+			return entity.getName();
+		}
+		return "";
+	}
+	
 	public static String getCircles(String studentNumber) {
 		if(StringUtils.isEmpty(studentNumber)) {
 			return "";

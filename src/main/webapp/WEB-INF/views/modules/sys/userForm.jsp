@@ -77,7 +77,7 @@
 			<label class="control-label">所属寝室:</label>
 			<div class="controls">
                 
-					所在${user.dorm.dormbuildId }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室
+					所在${user.dorm.ucDormBuild.id }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室
 			</div>
 		</div>
 		

@@ -5,6 +5,7 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 public class CourseSelectExcel {
 	private String id;
@@ -41,21 +42,25 @@ public class CourseSelectExcel {
 	public String getName() {
 		return user.getName();
 	}
-	@ExcelField(title="选修课程", type=1, align=2, sort=7)
+	@ExcelField(title="学习模式", type=1, align=2, sort=7)
+	public String getLearningModel() {
+		return DictUtils.getDictLabel(course.getCursLearningModel(), "course_learning_model", "未知模式");
+	}
+	@ExcelField(title="选修课程", type=1, align=2, sort=8)
 	public String getCourseName() {
 		return course.getCursName();
 	}
-	@ExcelField(title="成绩", type=1, align=2, sort=8)
+	@ExcelField(title="成绩", type=1, align=2, sort=9)
 	
 	public String getFinEvaValue() {
 		return studentCourse.getFinEvaValue();
 	}
 	
-	@ExcelField(title="学分", type=1, align=2, sort=9)
+	@ExcelField(title="学分", type=1, align=2, sort=10)
 	public String getEvaValue() {
 		return studentCourse.getEvaValue();
 	}
-	@ExcelField(title="签到", type=1, align=2, sort=10)
+	@ExcelField(title="签到", type=1, align=2, sort=11)
 	public String getSignIn() {
 		return "";
 	}

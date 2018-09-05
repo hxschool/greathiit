@@ -119,6 +119,7 @@
 	c.curs_num AS "course.cursNum",
 	c.curs_edu_num AS "course.cursEduNum",
 	c.curs_name AS "course.cursName",
+	c.curs_learning_model AS "course.cursLearningModel",
 	dept.id AS "dept.id",
 	dept.name AS "dept.name",
 	major.id AS "major.id",

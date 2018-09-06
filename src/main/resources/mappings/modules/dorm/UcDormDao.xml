@@ -105,6 +105,7 @@
 	
 	<insert id="insert">
 		INSERT INTO uc_dorm(
+			id,
 			dormbuild_id,
 			dorm_number,
 			dorm_floor,
@@ -122,6 +123,7 @@
 			remarks,
 			del_flag
 		) VALUES (
+			#{id},
 			#{ucDormBuild.id},
 			#{dormNumber},
 			#{dormFloor},

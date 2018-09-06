@@ -45,23 +45,32 @@
 		<div class="control-group">
 			<label class="control-label">所属学院:</label>
 			<div class="controls">
-				<label class="lbl">${user.company.name}</label>
+			
+				<c:choose>
+				    <c:when test="${user.remarks!='uninitialized'}"> 
+					<label class="lbl">${user.company.name}</label>
+					 </c:when>
+				   <c:otherwise>
+					学院：<select class="province input-medium"><option>请选择</option></select>
+					</c:otherwise>
+				</c:choose>
+				<font color="red">当前所属学院：${user.company.name}</font>
 			</div>
+			
 		</div>
 
 			<div class="control-group">
 				<label class="control-label">所属专业:</label>
 				<div class="controls">
 				<c:choose>
-				   <c:when test="${user.office.name!=null&&user.office.name!=''}"> 
+				    <c:when test="${user.remarks!='uninitialized'}"> 
 					<label class="lbl">${user.office.name}</label>
 					 </c:when>
 				   <c:otherwise>
-					学院：<select class="province input-medium"><option>请选择</option></select>
 					专业：<select id="city" class="city input-medium"><option>请选择</option></select>
 					</c:otherwise>
 				</c:choose>
-					
+					<font color="red">当前所属专业：${user.office.name}</font>
 				</div>
 			</div>
 
@@ -69,15 +78,19 @@
 			<label class="control-label">所属班级:</label>
 			<div class="controls">
 			<c:choose>
-				   <c:when test="${user.clazz.name!=null&&user.clazz.name!=''}"> 
+				    <c:when test="${user.remarks!='uninitialized'}"> 
 					<label class="lbl">${user.clazz.name}</label>
 					 </c:when>
 				   <c:otherwise>
-				年级：<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
+				
+					年级：<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
 				班级：<select id="area" class="area input-medium" name="clazzId"><option>请选择</option></select> 
-					
 				</c:otherwise>
 				</c:choose>
+				
+				<font color="red">当前所属班级:${user.clazz.name}</font>
+				
+				
 			</div>
 		</div>
 		</div>
@@ -87,14 +100,13 @@
 			<div class="controls">
 			<div id="dormBuild_id">
 				<c:choose>
-				   <c:when test="${user.dorm!=null}"> 
-				        	<label class="lbl">所在${user.dorm.ucDormBuild.dormBuildNo }公寓,第${user.dorm.dormFloor }层,${user.dorm.dormNumber }室</label>
+				    <c:when test="${user.remarks!='uninitialized'}"> 
+				        	<label class="lbl">所在${user.dorm.id }室,第${user.dorm.dormFloor }层</label>
 				   </c:when>
 				   <c:otherwise>
-							公寓：<select class="dormBuild input-medium"><option>请选择</option></select> 寝室 ：<select id="dorm" class="dorm input-medium" name="dormId"
+					公寓：<select class="dormBuild input-medium"><option>请选择</option></select> 寝室 ：<select id="dorm" class="dorm input-medium" name="dormId"
 						required="required"><option>请选择</option></select>
 						床位： 1 <input type="radio" name="chuangwei"  value="a" checked> 2 <input type="radio" name="chuangwei"  value="b" > 3 <input type="radio" name="chuangwei"  value="c" > 4 <input type="radio" name="chuangwei"  value="d" >
-						
 				   </c:otherwise>
 				</c:choose>
 				

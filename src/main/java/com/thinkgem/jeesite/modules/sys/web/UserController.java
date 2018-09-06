@@ -106,10 +106,7 @@ public class UserController extends BaseController {
 	@RequiresPermissions("sys:user:edit")
 	@RequestMapping(value = "save")
 	public String save(User user, HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/user/list?repage";
-		}
+
 		// 修正引用赋值问题，不知道为何，Company和Office引用的一个实例地址，修改了一个，另外一个跟着修改。
 		user.setCompany(new Office(request.getParameter("company.id")));
 		user.setOffice(new Office(request.getParameter("office.id")));
@@ -294,22 +291,24 @@ public class UserController extends BaseController {
 			}
 			if(!org.springframework.util.StringUtils.isEmpty(dormId)) {
 				UcDorm dorm = ucDormService.get(dormId);
-				int total = Integer.valueOf(dorm.getTotal());
-				int cnt = Integer.valueOf(dorm.getCnt());
-				if(total-cnt<=0) {
-					attributes.addFlashAttribute("message", "该寝室没有可分配资源,如有疑问请联系管理员. qq:773152 ");
-					return "redirect:" + adminPath + "/sys/user/info?repage";
+				if(!org.springframework.util.StringUtils.isEmpty(dorm)) {
+					int total = Integer.valueOf(dorm.getTotal());
+					int cnt = Integer.valueOf(dorm.getCnt());
+					if(total-cnt<=0) {
+						attributes.addFlashAttribute("message", "该寝室没有可分配资源,如有疑问请联系管理员. qq:773152 ");
+						return "redirect:" + adminPath + "/sys/user/info?repage";
+					}
+					Object object = Reflections.getFieldValue(dorm, chuangwei);
+					if(!org.springframework.util.StringUtils.isEmpty(object)&&object.toString().equals(user.getId())) {
+						attributes.addFlashAttribute("message", "当前床位已被分配,请选择其他床位,或者联系管理员. qq:773152 ");
+						return "redirect:" + adminPath + "/sys/user/info?repage";
+					}
+					Reflections.setFieldValue(dorm, chuangwei, currentUser.getId());
+					currentUser.setDorm(dorm);
+					cnt = cnt + 1;
+					dorm.setCnt(String.valueOf(cnt));
+					ucDormService.save(dorm);
 				}
-				Object object = Reflections.getFieldValue(dorm, chuangwei);
-				if(!org.springframework.util.StringUtils.isEmpty(object)&&object.toString().equals(user.getId())) {
-					attributes.addFlashAttribute("message", "当前床位已被分配,请选择其他床位,或者联系管理员. qq:773152 ");
-					return "redirect:" + adminPath + "/sys/user/info?repage";
-				}
-				Reflections.setFieldValue(dorm, chuangwei, currentUser.getId());
-				currentUser.setDorm(dorm);
-				cnt = cnt + 1;
-				dorm.setCnt(String.valueOf(cnt));
-				ucDormService.save(dorm);
 			}
 			
 			if(!org.springframework.util.StringUtils.isEmpty(clazzId)) {
@@ -328,6 +327,9 @@ public class UserController extends BaseController {
 			currentUser.setEmail(user.getEmail());
 			currentUser.setPhone(user.getPhone());
 			currentUser.setMobile(user.getMobile());
+			if (user.getRemarks() != null && user.getRemarks().equals("uninitialized")) {
+				user.setRemarks("");
+			}
 			currentUser.setRemarks(user.getRemarks());
 			currentUser.setPhoto(user.getPhoto());
 			systemService.updateUserInfo(currentUser);

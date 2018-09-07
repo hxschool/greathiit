@@ -106,13 +106,17 @@ public class RecruitStudentController extends BaseController {
 	@RequestMapping(value = {"list"})
 	public String list(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
+		
 		if(!user.isAdmin()) {
 			if(!org.springframework.util.StringUtils.isEmpty(user.getCompany())) {
 				recruitStudent.setDepartment(user.getCompany());
 			}
-			if(!org.springframework.util.StringUtils.isEmpty(user.getOffice())) {
-				recruitStudent.setMajor(user.getOffice());
+			if(org.springframework.util.StringUtils.isEmpty(recruitStudent.getMajor())) {
+				if(!org.springframework.util.StringUtils.isEmpty(user.getOffice())) {
+					recruitStudent.setMajor(user.getOffice());
+				}
 			}
+			
 		}
 		Page<RecruitStudent> page = recruitStudentService.findPage(new Page<RecruitStudent>(request, response), recruitStudent); 
 		

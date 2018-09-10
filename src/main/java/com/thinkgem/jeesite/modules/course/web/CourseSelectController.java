@@ -110,25 +110,34 @@ public class CourseSelectController extends BaseController {
 		}
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		Map<String,SelectCourseOfficeExt> cls = new HashMap<String,SelectCourseOfficeExt>();
+		
 		for(SelectCourse sc:list) {
-			String studentNumber = sc.getStudent().getNo();
-			String clazzId = StudentUtil.getClassId(studentNumber);
-			Office entity = officeService.get(clazzId);
-			if(cls.containsKey(clazzId)) {
-				SelectCourseOfficeExt selectCourseOfficeExt = cls.get(clazzId);
-				selectCourseOfficeExt.setCnt(selectCourseOfficeExt.getCnt()+1);
-				cls.put(clazzId, selectCourseOfficeExt);
-			}else {
-				if(org.springframework.util.StringUtils.isEmpty(entity)) {
-					entity = new Office();
-					entity.setId("99999999");
-					entity.setName(clazzId);
-					entity.setCode("99999999");
+			try {
+				User student = sc.getStudent();
+				if(!org.springframework.util.StringUtils.isEmpty(student)) {
+					String studentNumber = student.getNo();
+					String clazzId = StudentUtil.getClassId(studentNumber);
+					Office entity = officeService.get(clazzId);
+					if (cls.containsKey(clazzId)) {
+						SelectCourseOfficeExt selectCourseOfficeExt = cls.get(clazzId);
+						selectCourseOfficeExt.setCnt(selectCourseOfficeExt.getCnt() + 1);
+						cls.put(clazzId, selectCourseOfficeExt);
+					} else {
+						if (org.springframework.util.StringUtils.isEmpty(entity)) {
+							entity = new Office();
+							entity.setId("99999999");
+							entity.setName(clazzId);
+							entity.setCode("99999999");
+						}
+						SelectCourseOfficeExt selectCourseOfficeExt = new SelectCourseOfficeExt();
+						selectCourseOfficeExt.setClazz(entity);
+						selectCourseOfficeExt.setCnt(1);
+						cls.put(clazzId, selectCourseOfficeExt);
+					}
 				}
-				SelectCourseOfficeExt selectCourseOfficeExt = new SelectCourseOfficeExt();
-				selectCourseOfficeExt.setClazz(entity);
-				selectCourseOfficeExt.setCnt(1);
-				cls.put(clazzId, selectCourseOfficeExt);
+				
+			} catch (Exception ex) {
+				logger.error("异常错误信息:{},{}",ex.getMessage(),sc);
 			}
 		}
 		model.addAttribute("cls", cls);

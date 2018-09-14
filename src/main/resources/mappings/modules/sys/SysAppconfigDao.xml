@@ -6,6 +6,7 @@
 		a.id AS "id",
 		a.appid AS "appid",
 		a.name AS "name",
+		a.url AS "url",
 		a.privatekey AS "privatekey",
 		a.publickey AS "publickey",
 		a.contactperson AS "contactperson",
@@ -96,6 +97,7 @@
 			id,
 			appid,
 			name,
+			url,
 			privatekey,
 			publickey,
 			contactperson,
@@ -113,6 +115,7 @@
 			#{id},
 			#{appid},
 			#{name},
+			#{url},
 			#{privatekey},
 			#{publickey},
 			#{contactperson},
@@ -133,6 +136,7 @@
 		UPDATE sys_appconfig SET 	
 			appid = #{appid},
 			name = #{name},
+			name = #{url},
 			privatekey = #{privatekey},
 			publickey = #{publickey},
 			contactperson = #{contactperson},
@@ -147,8 +151,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE sys_appconfig SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		delete from sys_appconfig 
 		WHERE id = #{id}
 	</update>
 	

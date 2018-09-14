@@ -26,7 +26,13 @@ public interface ApiDao{
 	 * 获取学院
 	 * @return
 	 */
-	public List<Map<String,Object>> getDepartment();
+	public List<Map<String,Object>> getCollege();
+	/**
+	 * 获取班级信息
+	 * @param classno
+	 * @return
+	 */
+	public Map<String,Object> getClass(@Param("classno")String classno);
 	/**
 	 * 通过名称获取主键
 	 * @param name

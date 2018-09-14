@@ -9,9 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.modules.api.dao.ApiDao;
+import com.thinkgem.jeesite.modules.student.dao.StudentDao;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
 import com.thinkgem.jeesite.modules.sys.entity.Area;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.dao.TeacherDao;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
@@ -24,18 +29,40 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 @Transactional(readOnly = true)
 public class ApiService {
 	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private TeacherDao teacherDao;
+	@Autowired
 	private UcStudentDao ucStudentDao;
 	@Autowired
 	private ApiDao apiDao;
 	@Autowired
 	private AreaDao areaDao;
-
+	
+	
+	public List<Student> getInClass(String classno){
+		Student entity = new Student();
+		Office clazz = new Office();
+		clazz.setId(classno);
+		entity.setClazz(clazz);
+		return studentDao.findAllList(entity);
+	}
+	public Map<String,Object> getClass(String classno){
+		return apiDao.getClass(classno);
+	}
+	public Student getStudent(String studentNumber) {
+		return studentDao.getStudentByStudentNumber(studentNumber);
+	}
+	
+	public Teacher getTeacher(String teacherNumber) {
+		return teacherDao.getTeacherByTeacherNumber(teacherNumber);
+	}
 	
 	public List<Map<String,Object>> getMajor(){
 		return apiDao.getMajor();
 	}
-	public List<Map<String,Object>> getDepartment(){
-		return apiDao.getDepartment();
+	public List<Map<String,Object>> getCollege(){
+		return apiDao.getCollege();
 	}
 	
 	public String getClazzName(String parentId,String name){
@@ -49,7 +76,7 @@ public class ApiService {
 	public String getStudentNumber(String username,String idCard){
 		return ucStudentDao.findNumberByUsernameAndIdCard(username, idCard);
 	}
-	
+
 	public UcStudent getStudentNumber(String username,String idCard,String number){
 		return ucStudentDao.findNumberByUsernameAndIdCardAndNumber(username, idCard, number);
 	}

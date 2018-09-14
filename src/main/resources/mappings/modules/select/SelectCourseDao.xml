@@ -146,7 +146,9 @@
 		<if test="course!=null and course.teacher!=null and course.teacher.no!=''">
 			AND c.teacher_number=#{course.teacher.no}
 		</if>
-
+		<if test="course!=null and course.cursLearningModel!=null and course.cursLearningModel!=''">
+			AND c.curs_learning_model=#{course.cursLearningModel}
+		</if>
 		<if test="dept!=null and dept.id!=null and dept.id!=''">
 			AND dept.id=#{dept.id}
 		</if>
@@ -163,6 +165,7 @@
 		<if test="user!=null and user.phone!=null and user.phone!=''">
 			AND b.phone=#{user.phone}
 		</if>
+		
 	</where>
 </select>
 	

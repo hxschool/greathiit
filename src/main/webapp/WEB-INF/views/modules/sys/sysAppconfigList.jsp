@@ -47,8 +47,7 @@
 			<tr>
 				<th>应用编号</th>
 				<th>应用名称</th>
-				<th>私钥</th>
-				<th>公钥</th>
+				<th>URL</th>
 				<th>联系人</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
@@ -65,11 +64,9 @@
 					${sysAppconfig.name}
 				</td>
 				<td>
-					${sysAppconfig.privatekey}
+					${sysAppconfig.url}
 				</td>
-				<td>
-					${sysAppconfig.publickey}
-				</td>
+
 				<td>
 					${sysAppconfig.contactperson}
 				</td>

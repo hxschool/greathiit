@@ -22,7 +22,7 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 public interface UcStudentDao extends CrudDao<UcStudent> {
 	
 	
-	
+	public UcStudent findBystudentNumber(@Param("studentNumber")String studentNumber);
 	/**
 	 * 通过姓名和身份证号获取学生信息
 	 * @param username

@@ -66,6 +66,8 @@ public abstract class BaseController {
 	@Autowired
 	protected Validator validator;
 
+	
+	
 	/**
 	 * 服务端参数有效性验证
 	 * @param object 验证的实体对象

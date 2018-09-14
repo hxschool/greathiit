@@ -4,10 +4,14 @@
     
 	
 	<select id="getMajor" resultType="map">
-		select a.id,a.name,a.parent_id as departmentId,b.name as departmentName from sys_office a left join sys_office b on a.parent_id=b.id where b.name is not null
+		select a.id,a.name,a.parent_id as collegeId,b.name as college from sys_office a left join sys_office b on a.parent_id=b.id where b.name is not null and a.grade=3
 	</select>
 	
-	<select id="getDepartment" resultType="map">
+	<select id="getClass" resultType="map">
+		select a.id,a.name,b.name as major from sys_office a left join sys_office b on a.parent_id=b.id where a.id=#{classno} and b.name is not null and a.grade=4
+	</select>
+	
+	<select id="getCollege" resultType="map">
 		select id,name from sys_office where parent_id=1 and del_flag=0 and grade=2
 	</select>
 	

@@ -17,6 +17,7 @@ public class SysAppconfig extends DataEntity<SysAppconfig> {
 	private static final long serialVersionUID = 1L;
 	private String appid;		// 应用编号
 	private String name;		// 应用名称
+	private String url;		// 应用地址
 	private String privatekey;		// 私钥
 	private String publickey;		// 公钥
 	private String contactperson;		// 联系人
@@ -51,6 +52,14 @@ public class SysAppconfig extends DataEntity<SysAppconfig> {
 		this.name = name;
 	}
 	
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
 	@Length(min=1, max=2048, message="私钥长度必须介于 1 和 2048 之间")
 	public String getPrivatekey() {
 		return privatekey;

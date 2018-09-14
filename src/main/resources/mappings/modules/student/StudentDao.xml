@@ -95,6 +95,9 @@
 		<include refid="studentJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="clazz != null and clazz.id!=null and clazz.id!=''">
+				and cl.id=#{clazz.id}
+			</if>
 		</where>		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

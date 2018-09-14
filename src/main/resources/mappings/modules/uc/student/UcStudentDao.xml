@@ -47,6 +47,14 @@
 		WHERE a.username=#{username} and a.id_card=#{idCard}
 	</select>
 	
+	<select id="findBystudentNumber" resultType="UcStudent">
+		SELECT
+		<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		WHERE  a.student_number=#{studentNumber}
+	</select>
+	
+	
 	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="UcStudent">
 		SELECT
 		<include refid="ucStudentColumns"/>

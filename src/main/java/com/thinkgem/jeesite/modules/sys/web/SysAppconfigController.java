@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
+import java.security.KeyPair;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.greathiit.common.util.codec.binary.Base64;
+import com.greathiit.common.util.secure.RSA;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.SysAppconfig;
 import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 /**
  * 系统秘钥Controller
@@ -33,6 +38,8 @@ public class SysAppconfigController extends BaseController {
 
 	@Autowired
 	private SysAppconfigService sysAppconfigService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public SysAppconfig get(@RequestParam(required=false) String id) {
@@ -66,6 +73,17 @@ public class SysAppconfigController extends BaseController {
 	public String save(SysAppconfig sysAppconfig, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, sysAppconfig)){
 			return form(sysAppconfig, model);
+		}
+		if(org.springframework.util.StringUtils.isEmpty(sysAppconfig.getId())) {
+			String serialNo = "C"+systemService.getSequence("serialNo12");
+			sysAppconfig.setIsNewRecord(true);
+			sysAppconfig.setId(serialNo);
+			sysAppconfig.setAppid(serialNo);
+			KeyPair KeyPair = RSA.generateKeyPair(1025);
+			String privatekey = Base64.encodeBase64String(KeyPair.getPrivate().getEncoded());
+			String publickey = Base64.encodeBase64String(KeyPair.getPublic().getEncoded());
+			sysAppconfig.setPrivatekey(privatekey);
+			sysAppconfig.setPublickey(publickey);
 		}
 		sysAppconfigService.save(sysAppconfig);
 		addMessage(redirectAttributes, "保存系统秘钥成功");

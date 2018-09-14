@@ -33,13 +33,7 @@
 	<form:form id="inputForm" modelAttribute="sysAppconfig" action="${ctx}/sys/sysAppconfig/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
-		<div class="control-group">
-			<label class="control-label">应用编号：</label>
-			<div class="controls">
-				<form:input path="appid" htmlEscape="false" maxlength="30" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+
 		<div class="control-group">
 			<label class="control-label">应用名称：</label>
 			<div class="controls">
@@ -47,20 +41,14 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">私钥：</label>
+				<div class="control-group">
+			<label class="control-label">URL：</label>
 			<div class="controls">
-				<form:input path="privatekey" htmlEscape="false" maxlength="2048" class="input-xlarge required"/>
+				<form:input path="url" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">公钥：</label>
-			<div class="controls">
-				<form:input path="publickey" htmlEscape="false" maxlength="2048" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">联系人：</label>
 			<div class="controls">

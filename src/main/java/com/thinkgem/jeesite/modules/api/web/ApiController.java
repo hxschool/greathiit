@@ -83,7 +83,7 @@ public class ApiController extends BaseController {
 			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
 			String otherPublicKey = sysAppconfig.getPublickey();
 			
-			String resultJson = SecureUtil.decryptTradeInfo(appid, secureRequest.getCER(), secureRequest.getDATA(), secureRequest.getSIGN(), "", otherPublicKey);
+			String resultJson = SecureUtil.decryptTradeInfo(appid, secureRequest.getCER(), secureRequest.getDATA(), secureRequest.getSIGN(), Global.privateKey, otherPublicKey);
 			T t = new  GsonBuilder()
 					.registerTypeAdapter(BigDecimal.class,new BigDecimalDefault0Adapter())
 				    .registerTypeAdapter(Integer.class,new IntegerDefault0Adapter())
@@ -120,14 +120,15 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getStudents(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String  appid = getRequest(request,response,String.class);
-			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
+			
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
+			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(baseRequest.getAppid());
 			if(StringUtils.isEmpty(sysAppconfig)) {
 				map.put("status", "99999999");
 				map.put("message", "请求没有授权,请求消息APPID不存在");
 				return map;
 			}
-			LogUtils.saveLog(request, "APPID:"+appid+"获取全部学生数据");
+			LogUtils.saveLog(request, "APPID:"+baseRequest.getAppid()+"获取全部学生数据");
 			map.put("status", "00000000");
 			map.put("message", "获取全部学生信息成功");
 			List<Student> students = apiService.getStudents(new Student());
@@ -146,10 +147,10 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getStudent(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String  studentNumber = getRequest(request,response,String.class);
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
 			map.put("status", "00000000");
 			map.put("message", "获取学生信息成功");
-			Student student = apiService.getStudent(studentNumber);
+			Student student = apiService.getStudent(baseRequest.getStudentNumber());
 			student.setIdCard(null);
 			map.put("result", student);
 		} catch (Exception e) {
@@ -165,14 +166,14 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getTeachers(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String  appid = getRequest(request,response,String.class);
-			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
+			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(baseRequest.getAppid());
 			if(StringUtils.isEmpty(sysAppconfig)) {
 				map.put("status", "99999999");
 				map.put("message", "请求没有授权,请求消息APPID不存在");
 				return map;
 			}
-			LogUtils.saveLog(request, "APPID:"+appid+"获取全部教师数据");
+			LogUtils.saveLog(request, "APPID:"+baseRequest.getAppid()+"获取全部教师数据");
 			map.put("status", "00000000");
 			map.put("message", "获取教师信息成功");
 			List<Teacher> teachers = apiService.getTeachers(new Teacher());
@@ -190,10 +191,10 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getTeacher(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String  teacherName = getRequest(request,response,String.class);
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
 			map.put("status", "00000000");
 			map.put("message", "获取教师信息成功");
-			Teacher teacher = apiService.getTeacher(teacherName);
+			Teacher teacher = apiService.getTeacher(baseRequest.getTeacherNumber());
 			teacher.setTchrIdcard(null);
 			map.put("result", teacher);
 		} catch (Exception e) {
@@ -227,10 +228,10 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getDictByType(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String  type = getRequest(request,response,String.class);
+			Map<String,String>  m = getRequest(request,response,Map.class);
 			map.put("status", "00000000");
 			map.put("message", "获取字典信息成功");
-			List<Dict> dicts = DictUtils.getDictList(type);
+			List<Dict> dicts = DictUtils.getDictList(m.get("type"));
 			map.put("result", dicts);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -287,10 +288,10 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getClass(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String classno = getRequest(request,response,String.class);
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
 			map.put("status", "00000000");
 			map.put("message", "班级信息成功");
-			map.put("result", 	apiService.getClass(classno));
+			map.put("result", 	apiService.getClass(baseRequest.getClassno()));
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
@@ -304,10 +305,10 @@ public class ApiController extends BaseController {
 	public Map<String, Object> getInClass(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
-			String classno = getRequest(request,response,String.class);
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
 			map.put("status", "00000000");
 			map.put("message", "班级信息成功");
-			map.put("result", 	apiService.getInClass(classno));
+			map.put("result", 	apiService.getInClass(baseRequest.getClassno()));
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());

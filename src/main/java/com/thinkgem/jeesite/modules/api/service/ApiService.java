@@ -50,8 +50,17 @@ public class ApiService {
 	public Map<String,Object> getClass(String classno){
 		return apiDao.getClass(classno);
 	}
+	
+	public List<Student> getStudents(Student student) {
+		return studentDao.findList(student);
+	}
+	
 	public Student getStudent(String studentNumber) {
 		return studentDao.getStudentByStudentNumber(studentNumber);
+	}
+	
+	public List<Teacher> getTeachers(Teacher teacher) {
+		return teacherDao.findAllList(teacher);
 	}
 	
 	public Teacher getTeacher(String teacherNumber) {

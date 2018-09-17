@@ -41,6 +41,7 @@ import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 @Controller
@@ -114,6 +115,32 @@ public class ApiController extends BaseController {
 		return map;
 	}
 	
+	@RequestMapping(value = "getStudents")
+	@ResponseBody
+	public Map<String, Object> getStudents(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			String  appid = getRequest(request,response,String.class);
+			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
+			if(StringUtils.isEmpty(sysAppconfig)) {
+				map.put("status", "99999999");
+				map.put("message", "请求没有授权,请求消息APPID不存在");
+				return map;
+			}
+			LogUtils.saveLog(request, "APPID:"+appid+"获取全部学生数据");
+			map.put("status", "00000000");
+			map.put("message", "获取全部学生信息成功");
+			List<Student> students = apiService.getStudents(new Student());
+
+			map.put("result", students);
+		} catch (Exception e) {
+			map.put("status", "99999999");
+			map.put("message", e.getMessage());
+			renderString(response, map);
+		}
+		return map;
+	}
+	
 	@RequestMapping(value = "getStudent")
 	@ResponseBody
 	public Map<String, Object> getStudent(HttpServletRequest request,HttpServletResponse response) {
@@ -125,6 +152,31 @@ public class ApiController extends BaseController {
 			Student student = apiService.getStudent(studentNumber);
 			student.setIdCard(null);
 			map.put("result", student);
+		} catch (Exception e) {
+			map.put("status", "99999999");
+			map.put("message", e.getMessage());
+			renderString(response, map);
+		}
+		return map;
+	}
+	
+	@RequestMapping(value = "getTeachers")
+	@ResponseBody
+	public Map<String, Object> getTeachers(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			String  appid = getRequest(request,response,String.class);
+			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
+			if(StringUtils.isEmpty(sysAppconfig)) {
+				map.put("status", "99999999");
+				map.put("message", "请求没有授权,请求消息APPID不存在");
+				return map;
+			}
+			LogUtils.saveLog(request, "APPID:"+appid+"获取全部教师数据");
+			map.put("status", "00000000");
+			map.put("message", "获取教师信息成功");
+			List<Teacher> teachers = apiService.getTeachers(new Teacher());
+			map.put("result", teachers);
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());

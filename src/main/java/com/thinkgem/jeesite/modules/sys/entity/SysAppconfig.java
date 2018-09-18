@@ -17,6 +17,7 @@ public class SysAppconfig extends DataEntity<SysAppconfig> {
 	private static final long serialVersionUID = 1L;
 	private String appid;		// 应用编号
 	private String name;		// 应用名称
+	private String logo;		// logo
 	private String url;		// 应用地址
 	private String privatekey;		// 私钥
 	private String publickey;		// 公钥
@@ -121,6 +122,14 @@ public class SysAppconfig extends DataEntity<SysAppconfig> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getLogo() {
+		return logo;
+	}
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
 	
 }

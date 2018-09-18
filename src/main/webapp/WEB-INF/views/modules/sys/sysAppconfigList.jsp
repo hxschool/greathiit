@@ -47,6 +47,7 @@
 			<tr>
 				<th>应用编号</th>
 				<th>应用名称</th>
+				<th>LOGO</th>
 				<th>URL</th>
 				<th>联系人</th>
 				<th>更新时间</th>
@@ -62,6 +63,9 @@
 				</a></td>
 				<td>
 					${sysAppconfig.name}
+				</td>
+				<td>
+					${sysAppconfig.logo}
 				</td>
 				<td>
 					${sysAppconfig.url}

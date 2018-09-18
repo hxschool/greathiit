@@ -41,10 +41,17 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
+			<div class="control-group">
+			<label class="control-label">LOGO：</label>
+			<div class="controls">
+				<form:input path="logo" htmlEscape="false" maxlength="200" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
 				<div class="control-group">
 			<label class="control-label">URL：</label>
 			<div class="controls">
-				<form:input path="url" htmlEscape="false" maxlength="100" class="input-xlarge required"/>
+				<form:input path="url" htmlEscape="false" maxlength="200" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

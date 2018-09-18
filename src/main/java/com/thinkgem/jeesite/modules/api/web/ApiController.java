@@ -132,6 +132,20 @@ public class ApiController extends BaseController {
 			map.put("status", "00000000");
 			map.put("message", "获取全部学生信息成功");
 			List<Student> students = apiService.getStudents(new Student());
+			
+			for(Student student:students) {
+				if(!StringUtils.isEmpty(student.getStudent())) {
+					String studentNumber = student.getStudent().getNo();
+					student.setStudent(null);
+					student.setStudentNumber(studentNumber);
+				}
+				if(!StringUtils.isEmpty(student.getClazz())) {
+					String classno = student.getClazz().getId();
+					student.setClazz(null);
+					student.setClassno(classno);
+				}
+			}
+			
 
 			map.put("result", students);
 		} catch (Exception e) {
@@ -152,6 +166,16 @@ public class ApiController extends BaseController {
 			map.put("message", "获取学生信息成功");
 			Student student = apiService.getStudent(baseRequest.getStudentNumber());
 			student.setIdCard(null);
+			if(!StringUtils.isEmpty(student.getStudent())) {
+				String studentNumber = student.getStudent().getNo();
+				student.setStudent(null);
+				student.setStudentNumber(studentNumber);
+			}
+			if(!StringUtils.isEmpty(student.getClazz())) {
+				String classno = student.getClazz().getId();
+				student.setClazz(null);
+				student.setClassno(classno);
+			}
 			map.put("result", student);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -177,6 +201,13 @@ public class ApiController extends BaseController {
 			map.put("status", "00000000");
 			map.put("message", "获取教师信息成功");
 			List<Teacher> teachers = apiService.getTeachers(new Teacher());
+			for(Teacher teacher:teachers) {
+				if(!StringUtils.isEmpty(teacher.getTeacher())) {
+					String teacherNumber = teacher.getTeacher().getNo();
+					teacher.setTeacher(null);
+					teacher.setTeacherNumber(teacherNumber);
+				}
+			}
 			map.put("result", teachers);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -196,6 +227,11 @@ public class ApiController extends BaseController {
 			map.put("message", "获取教师信息成功");
 			Teacher teacher = apiService.getTeacher(baseRequest.getTeacherNumber());
 			teacher.setTchrIdcard(null);
+			if(!StringUtils.isEmpty(teacher.getTeacher())) {
+				String teacherNumber = teacher.getTeacher().getNo();
+				teacher.setTeacher(null);
+				teacher.setTeacherNumber(teacherNumber);
+			}
 			map.put("result", teacher);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -373,8 +409,8 @@ public class ApiController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> getCollege() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("responseCode", "00000000");
-		map.put("responseMessage", "获取参数信息成功");
+		map.put("status", "00000000");
+		map.put("message", "获取参数信息成功");
 		map.put("result", apiService.getCollege());
 		return map;
 	}
@@ -385,8 +421,8 @@ public class ApiController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> getMajor() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("responseCode", "00000000");
-		map.put("responseMessage", "获取参数信息成功");
+		map.put("status", "00000000");
+		map.put("message", "获取参数信息成功");
 		map.put("result", apiService.getMajor());
 		return map;
 	}
@@ -395,8 +431,8 @@ public class ApiController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> getArea(String parentId) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("responseCode", "00000000");
-		map.put("responseMessage", "获取参数信息成功");
+		map.put("status", "00000000");
+		map.put("message", "获取参数信息成功");
 		map.put("result", apiService.getArea(parentId));
 		return map;
 	}

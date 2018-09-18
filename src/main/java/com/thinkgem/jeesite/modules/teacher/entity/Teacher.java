@@ -38,7 +38,7 @@ public class Teacher extends DataEntity<Teacher> {
 	private String tchrEngSelfIntroduce;		// 英文自我介绍
 	private String tchrTitle;		// 职称
 	private User teacher;		// 教师号
-	
+	private String teacherNumber;//教师号
 	public Teacher() {
 		super();
 	}
@@ -214,5 +214,15 @@ public class Teacher extends DataEntity<Teacher> {
 	public void setTeacher(User teacher) {
 		this.teacher = teacher;
 	}
+
+	public String getTeacherNumber() {
+		return teacherNumber;
+	}
+
+	public void setTeacherNumber(String teacherNumber) {
+		this.teacherNumber = teacherNumber;
+	}
+
+	
 	
 }

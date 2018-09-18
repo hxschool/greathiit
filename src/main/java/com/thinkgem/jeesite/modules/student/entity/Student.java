@@ -42,7 +42,8 @@ public class Student extends DataEntity<Student> {
 	private String studentLength;		// 学制
 	private User student;		// 用户号
 	private Office clazz;		// 班级编号
-	
+	private String studentNumber;//返回json处理~
+	private String classno;//返回json处理~
 	private List<String> clazzNumbers;//数组查询添加
 	
 	public Student() {
@@ -229,5 +230,21 @@ public class Student extends DataEntity<Student> {
 	public void setStudent(User student) {
 		this.student = student;
 	}
-	
+
+	public String getStudentNumber() {
+		return studentNumber;
+	}
+
+	public void setStudentNumber(String studentNumber) {
+		this.studentNumber = studentNumber;
+	}
+
+	public String getClassno() {
+		return classno;
+	}
+
+	public void setClassno(String classno) {
+		this.classno = classno;
+	}
+
 }

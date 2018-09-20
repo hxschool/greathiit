@@ -100,6 +100,13 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		return formatDate(new Date(), "E");
 	}
 	
+	public static int getWeekOfDate() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+		return w;
+	}
+	
 	/**
 	 * 日期型字符串转化为日期 格式
 	 * { "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", 
@@ -201,18 +208,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 //		System.out.println(getDate("yyyy年MM月dd日 E"));
 //		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
 //		System.out.println(time/(24*60*60*1000));
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date start = sdf.parse("2016-01-01");//开始时间
-        java.util.Date end = sdf.parse("2016-12-31");//结束时间
-        try {
-			List<Date> lists = dateSplit(start, end);
-			for(Date date:lists) {
-				System.out.println(formatDate(date));
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		System.out.println(getWeekOfDate());
 	}
 	
 	public static boolean isEffectiveDate(String startDate, String endDate) {
@@ -295,4 +291,21 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
             return false;
         }
     }
+	
+	public static long getWeek(String startDate, String endDate) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateStart;
+		try {
+			dateStart = sdf.parse(startDate);
+			Date dateEnd = sdf.parse(endDate);
+			return getWeek(dateStart,dateEnd);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+	
+	public static long getWeek(Date dateStart, Date dateEnd) {
+		return (dateEnd.getTime() - dateStart.getTime()) / 86400000 / 7;
+	}
 }

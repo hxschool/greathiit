@@ -127,7 +127,9 @@ public class XuankeController extends BaseController {
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		
 		Map<String,CourseScheduleExt> courseScheduleMap = new HashMap<String,CourseScheduleExt>();
-		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.getCourseScheduleExt("","00000000","");
+		CourseScheduleExt cse = new CourseScheduleExt();
+		cse.setCourseClass("00000000");
+		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.getCourseScheduleExt(cse);
 		for(CourseScheduleExt courseScheduleExt:courseScheduleExts) {
 			courseScheduleMap.put(courseScheduleExt.getCourseId(), courseScheduleExt);
 		}
@@ -283,7 +285,12 @@ public class XuankeController extends BaseController {
 	
 	@RequestMapping("kebiao")
 	public String kebiao(@RequestParam(value="list",required=false) List<String> list,@RequestParam(value="courseClass",required=false) String courseClass,@RequestParam(value="teacherNumber",required=false) String teacherNumber, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
-		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.findCoursesByParam(list,courseClass,teacherNumber);
+		
+		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		courseScheduleExt.setList(list);
+		courseScheduleExt.setCourseClass(courseClass);
+		courseScheduleExt.setTeacherNumber(teacherNumber);
+		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.findCoursesByParam(courseScheduleExt);
 		model.addAttribute("courseScheduleExts", courseScheduleExts);
 
 		Site site = CmsUtils.getSite(Site.defaultSiteId());

@@ -331,8 +331,9 @@ public class CourseExportController extends BaseController {
 			return;
 		}
 		String clazz = cla.getId();
-		
-		List<CourseScheduleExt> courseSchedules =  courseScheduleService.getCourseScheduleExt(null,clazz, null);
+		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		courseScheduleExt.setCourseClass(clazz);
+		List<CourseScheduleExt> courseSchedules =  courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
 		Row row = sheet.createRow(0);
@@ -436,7 +437,10 @@ public class CourseExportController extends BaseController {
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
-		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleByRoot(yearTerm, id);
+		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		courseScheduleExt.setCursCurrTerm(yearTerm);
+		courseScheduleExt.setRoot(id);
+		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
 		Row row = sheet.createRow(0);
@@ -529,7 +533,9 @@ public class CourseExportController extends BaseController {
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
-		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleByRoot(yearTerm, null);
+		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		courseScheduleExt.setCursCurrTerm(yearTerm);
+		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
 		Row row = sheet.createRow(0);
@@ -733,8 +739,11 @@ public class CourseExportController extends BaseController {
 			}
 			teacherNumber = sb.substring(0, sb.length() - ",".length());
 		}
-		
-		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(cursCurrTerm, courseClass, teacherNumber));
+		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		courseScheduleExt.setCursCurrTerm(cursCurrTerm);
+		courseScheduleExt.setCourseClass(courseClass);
+		courseScheduleExt.setTeacherNumber(teacherNumber);
+		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(courseScheduleExt));
 		return "modules/course/courseScheduleExt";
 	}
 	

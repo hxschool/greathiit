@@ -310,7 +310,9 @@ public class PaikeCourseController extends BaseController {
 		
 		Office clazz = student.getClazz();
 		if(!StringUtils.isEmpty(clazz)) {
-			List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(null,student.getClazz().getId(),null);
+			CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+			courseScheduleExt.setCourseClass(student.getClazz().getId());
+			List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 			for(CourseScheduleExt courseSchedule:courseSchedules) {
 				ps.write(courseSchedule.getScLock());
 				if(courseSchedule.getScLock().equals("1")) {

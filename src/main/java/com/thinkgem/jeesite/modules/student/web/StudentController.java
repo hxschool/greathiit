@@ -16,9 +16,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -26,6 +29,12 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
+import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
+import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
+import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
 import com.thinkgem.jeesite.modules.student.entity.StudentItem;
@@ -50,7 +59,12 @@ public class StudentController extends BaseController {
 	private StudentActivityService studentActivityService;
 	@Autowired
 	private StudentItemService studentItemService;
-	
+	@Autowired
+	private CourseCalendarService courseCalendarService;
+	@Autowired
+	private CourseScheduleService courseScheduleService;
+	@Autowired
+	private SelectCourseService selectCourseService;
 	@ModelAttribute
 	public Student get(@RequestParam(required=false) String id) {
 		Student entity = null;
@@ -187,7 +201,53 @@ public class StudentController extends BaseController {
 	public String Student_Performance(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
 		return "modules/student/StudentPerformance";
 	}
-
+	
+	//课程表
+	@RequestMapping("Student_Class_Schedule_Card ")
+	public String Student_Class_Schedule_Card(Student student, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		User user = UserUtils.getUser();
+		if(org.springframework.util.StringUtils.isEmpty(user.getClazz())) {
+			throw new Exception("当前学生未初始化班级信息,请设置班级信息");
+		}
+		String week = DateUtils.getWeek();
+		int weekOfDate = DateUtils.getWeekOfDate();
+		model.addAttribute("xqs",Global.xqs);
+		model.addAttribute("weekOfDate",weekOfDate);
+		model.addAttribute("week",week);
+		model.addAttribute("weeks", Global.weeks);
+		return "modules/student/course/StudentClassScheduleCard";
+	}
+	@RequestMapping("Ajax_Student_Class_Schedule_Card")
+	@ResponseBody
+	public List<CourseScheduleExt> getCourseScheduleExts(String weekNumber){
+		if(org.springframework.util.StringUtils.isEmpty(weekNumber)) {
+			CourseCalendar courseCalendar = courseCalendarService.get("1");
+			String startDate = courseCalendar.getCalendarYear() + "-" + courseCalendar.getCalendarMonth() + "-" + courseCalendar.getCalendarDay();
+			String endDate = DateUtils.formatDate(new Date());
+			weekNumber = String.valueOf(DateUtils.getWeek(startDate, endDate));	
+		}
+		if(weekNumber.length()==1) {
+			weekNumber = "0"+weekNumber;
+		}
+		User student = UserUtils.getUser();
+		CourseScheduleExt cse = new CourseScheduleExt();
+		cse.setCourseClass(student.getClazz().getId());
+		cse.setTimeAdd("%"+weekNumber+"__");
+		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(cse);
+		SelectCourse selectCourse = new SelectCourse();
+		selectCourse.setStudent(student);
+		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+		
+		for(SelectCourse sc:selectCourses) {
+			CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+			courseScheduleExt.setCourseId(sc.getCourse().getId());
+			List<CourseScheduleExt> lcs = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
+			if(!CollectionUtils.isEmpty(lcs)) {
+				courseSchedules.addAll(lcs);
+			}
+		}
+		return courseSchedules;
+	}
 	
 	//成绩查询	10	/student/student/Student_Course_Grade
 	@RequiresPermissions("student:student:edit")

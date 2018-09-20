@@ -25,19 +25,12 @@ import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 public class CourseScheduleService extends CrudService<CourseScheduleDao, CourseSchedule> {
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
-	
-	public List<CourseScheduleExt> findCoursesByParam(List<String> list,String courseClass,String teacherNumber){
-		return courseScheduleDao.findCoursesByParam(list,courseClass,teacherNumber);
-		
+	public List<CourseScheduleExt> findCoursesByParam(CourseScheduleExt courseScheduleExt){
+		return courseScheduleDao.findCoursesByParam(courseScheduleExt.getList(), courseScheduleExt.getCourseClass(), courseScheduleExt.getTeacherNumber());
 	}
-	
-	public List<CourseScheduleExt> getCourseScheduleExt(String yearTerm,String courseClass,String teacherNumber){
-		return courseScheduleDao.getCourseScheduleExt( yearTerm, courseClass, teacherNumber);
+	public List<CourseScheduleExt> getCourseScheduleExt(CourseScheduleExt courseScheduleExt){
+		return courseScheduleDao.getCourseScheduleExt(courseScheduleExt);
 		
-	}
-	
-	public List<CourseScheduleExt> getCourseScheduleByRoot(String yearTerm,String root){
-		return courseScheduleDao.getCourseScheduleByRoot(yearTerm,root);
 	}
 	
 	public CourseSchedule get(String id) {

@@ -5,6 +5,9 @@ package com.thinkgem.jeesite.common.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.core.io.DefaultResourceLoader;
@@ -21,6 +24,22 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
  */
 public class Global {
 
+	public static List<String> weeks = new ArrayList();
+	static {
+		for(int i=1;i<=20;i++) {
+			weeks.add(""+i);
+		}
+	}
+	public static List<String> xqs = new LinkedList<String>();
+	static {
+		xqs.add("星期一");
+		xqs.add("星期二");
+		xqs.add("星期三");
+		xqs.add("星期四");
+		xqs.add("星期五");
+		xqs.add("星期六");
+		xqs.add("星期日");
+	}
 	/**
 	 * 当前对象实例
 	 */

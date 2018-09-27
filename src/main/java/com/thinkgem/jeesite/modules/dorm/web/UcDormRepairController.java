@@ -61,6 +61,17 @@ public class UcDormRepairController extends BaseController {
 		return "modules/dorm/ucDormRepairList";
 	}
 
+	@RequestMapping(value = "wechat")
+	public String wechatList(UcDormRepair ucDormRepair, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			ucDormRepair.setCreateBy(user);
+		}
+		Page<UcDormRepair> page = ucDormRepairService.findPage(new Page<UcDormRepair>(request, response), ucDormRepair); 
+		model.addAttribute("page", page);
+		return "modules/dorm/dormRecordWechat";
+	}
+	
 	@RequiresPermissions("dorm:ucDormRepair:view")
 	@RequestMapping(value = "form")
 	public String form(UcDormRepair ucDormRepair, Model model) {

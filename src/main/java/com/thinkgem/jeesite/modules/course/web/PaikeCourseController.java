@@ -255,9 +255,12 @@ public class PaikeCourseController extends BaseController {
 					ps.write("<div class=\"course_text\">"+courseClass+"</div>");
 				}else {
 					Course course = courseService.get(courseSchedule.getCourseId());
-					ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
-					Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
-					ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
+					if(!StringUtils.isEmpty(course)) {
+						ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
+						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+						ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
+					}
+					
 					if(!StringUtils.isEmpty(courseClass)) {
 						if(courseClass.equals("00000000")) {
 							ps.write("<div class=\"course_text\">公共课</div>");

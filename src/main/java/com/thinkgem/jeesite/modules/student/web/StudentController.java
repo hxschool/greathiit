@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,8 +36,10 @@ import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
+import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.entity.StudentItem;
 import com.thinkgem.jeesite.modules.student.service.StudentActivityService;
+import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentItemService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -65,6 +66,8 @@ public class StudentController extends BaseController {
 	private CourseScheduleService courseScheduleService;
 	@Autowired
 	private SelectCourseService selectCourseService;
+	@Autowired
+	private StudentCourseService studentCourseService;
 	@ModelAttribute
 	public Student get(@RequestParam(required=false) String id) {
 		Student entity = null;
@@ -198,7 +201,10 @@ public class StudentController extends BaseController {
 	//课程成绩	40	/student/student/Student_Performance
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Performance")
-	public String Student_Performance(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Performance(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User student = UserUtils.getUser();
+		studentCourse.setStudentNumber(student.getNo());
+		studentCourseService.findList(studentCourse);
 		return "modules/student/StudentPerformance";
 	}
 	
@@ -249,7 +255,7 @@ public class StudentController extends BaseController {
 		return courseSchedules;
 	}
 	
-	//成绩查询	10	/student/student/Student_Course_Grade
+	//学生课程等级	10	/student/student/Student_Course_Grade
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Course_Grade")
 	public String Student_Course_Grade(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.wechat.dao.WeixinUserDao">
+    
+	<sql id="weixinUserColumns">
+		a.openid AS "openid",
+		a.user_no AS "userNo",
+		a.create_date AS "createDate"
+	</sql>
+	
+	<sql id="weixinUserJoins">
+	</sql>
+    
+	<select id="get" resultType="WeixinUser">
+		SELECT 
+			<include refid="weixinUserColumns"/>
+		FROM weixin_user a
+		<include refid="weixinUserJoins"/>
+		WHERE a.openid = #{openid}
+	</select>
+	
+	<select id="findList" resultType="WeixinUser">
+		SELECT 
+			<include refid="weixinUserColumns"/>
+		FROM weixin_user a
+		<include refid="weixinUserJoins"/>
+		<where>
+			1=1
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="WeixinUser">
+		SELECT 
+			<include refid="weixinUserColumns"/>
+		FROM weixin_user a
+		<include refid="weixinUserJoins"/>
+		<where>
+			1=1
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO weixin_user(
+			openid,
+			user_no,
+			create_date
+		) VALUES (
+			#{openid},
+			#{userNo},
+			#{createDate}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE weixin_user SET 	
+			openid = #{openid},
+			user_no = #{userNo}
+		WHERE openid = #{openid}
+	</update>
+	
+	<update id="delete">
+		DELETE FROM weixin_user
+		WHERE openid = #{openid}
+	</update>
+	
+</mapper>

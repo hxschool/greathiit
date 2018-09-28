@@ -27,7 +27,7 @@
 	<div class="weui-tab">
 		<div class="weui-tab__bd">
 
-			<div id="tab1" class="weui-tab__bd-item">
+			<div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
 			<form id="inputForm" action="${ctx}/dorm/ucDormRepair/save" method="post" class="form-horizontal">
 				<div class="weui-panel__bd">
 					<div class="weui-cell">
@@ -83,7 +83,7 @@
 				</div>
 				</form>
 			</div>
-			<div id="tab2" class="weui-tab__bd-item weui-tab__bd-item--active">
+			<div id="tab2" class="weui-tab__bd-item ">
 
 				<div class="weui-panel__bd">
 					<c:forEach items="${page.list}" var="ucDormRepair">

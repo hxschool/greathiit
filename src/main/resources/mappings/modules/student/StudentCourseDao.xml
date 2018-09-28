@@ -19,10 +19,12 @@
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag"
+		a.del_flag AS "delFlag",
+		c.curs_name AS "courseName"
 	</sql>
 	
 	<sql id="studentCourseJoins">
+		LEFT JOIN course c on c.id=a.course_id
 	</sql>
     
     <select id="findListByTeacherIdAndClassIdAndCursType" resultType="StudentCourse">
@@ -73,7 +75,7 @@
 		<include refid="studentCourseColumns" />
 		FROM student_course a
 		<include refid="studentCourseJoins" />
-		WHERE a.student_number = #{studentNumber} and course_id=#{courseId}
+		WHERE a.student_number = #{studentNumber} and a.course_id=#{courseId}
 	</select>
 	
 	

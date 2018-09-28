@@ -17,10 +17,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 学生成绩Controller
@@ -46,6 +48,13 @@ public class StudentCourseController extends BaseController {
 		return entity;
 	}
 	
+	@RequestMapping(value = "wechat")
+	public String wechat(StudentCourse studentCourse, Model model) {
+		User student = UserUtils.getUser();
+		studentCourse.setStudentNumber(student.getNo());
+		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
+		return "modules/student/StudentCourseWechat";
+	}
 	
 	
 	@RequiresPermissions("student:studentCourse:view")

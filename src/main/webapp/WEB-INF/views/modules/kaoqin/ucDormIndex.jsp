@@ -7,8 +7,8 @@
 
 </head>
 <body>
-
-    <div class="weui-tab">
+	
+	<div class="weui-tab">
       <div class="weui-tab__bd">
 	
 
@@ -18,24 +18,71 @@
 				<h1 class="demos-title">考勤</h1>
 			</header>
 
-				<div class='demos-content-padded'>
-					<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1A"
-						class="weui-btn weui-btn_primary">1A</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1B"
-						class="weui-btn weui-btn_primary">1B</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2A"
-						class="weui-btn weui-btn_primary">2A</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2B"
-						class="weui-btn weui-btn_primary">2B</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=3"
-						class="weui-btn weui-btn_warn">3</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=4"
-						class="weui-btn weui-btn_warn">4</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5A"
-						class="weui-btn weui-btn_primary">5A</a> <a
-						href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5B"
-						class="weui-btn weui-btn_primary">5B</a>
-				</div>
+				<div class="weui-grids">
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1A" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">1A</p>
+		</a>
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=1B" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">1B</p>
+		</a>
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2A" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">2A</p>
+		</a>
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=2B" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">2B</p>
+		</a>
+		
+
+		
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5A" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">5A</p>
+		</a>
+		
+		<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=5B" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">5B</p>
+		</a>
+		
+					<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=3" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index_gril.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">3</p>
+		</a>
+		
+			<a href="${ctx}/dorm/kaoqin/list?ucDormBuild.id=4" class="weui-grid js_grid">
+			<div class="weui-grid__icon">
+				<img src="${ctxStatic}/jquery-weui/images/icon_nav_index_gril.png"
+					alt="">
+			</div>
+			<p class="weui-grid__label">4</p>
+		</a>
+		
+	</div>
 			</div>
 	</c:if>
 	

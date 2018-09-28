@@ -23,6 +23,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String schoolYear;		// school_year
 	private String workEvaValue;		// 作业成绩
 	private String courseId;		// 课程号
+	private String courseName;		//课程名称
 	private String studentNumber;		// 学号
 	private String status;		// 状态标记
 	private String studentName;
@@ -33,6 +34,14 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 
 	public StudentCourse(String id){
 		super(id);
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
 	}
 
 	public String getStudentName() {

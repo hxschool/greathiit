@@ -69,7 +69,7 @@ $(document).ready(function(){
 					<ul class="nav navbar-nav ">
 						<li class="active"><select class="form-control"
 							style="margin-top: 8px;" onchange="getMyCourseCard(this.options[this.options.selectedIndex].value)">
-								<c:forEach items="${weeks}" var="w">
+								<c:forEach items="${studentCourses}" var="w">
 									<option value="${w}">第${w}周</option>
 								</c:forEach>
 						</select></li>

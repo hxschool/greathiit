@@ -53,7 +53,7 @@ public class StudentCourseController extends BaseController {
 		User student = UserUtils.getUser();
 		studentCourse.setStudentNumber(student.getNo());
 		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
-		return "modules/student/StudentCourseWechat";
+		return "modules/student/studentcourse/StudentCourseWechat";
 	}
 	
 	
@@ -62,7 +62,7 @@ public class StudentCourseController extends BaseController {
 	public String Teacher_Management_4_excute(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		model.addAttribute("page", page);
-		return "modules/student/studentCourseList";
+		return "modules/student/studentcourse/studentCourseList";
 	}
 	
 	@RequiresPermissions("student:studentCourse:view")
@@ -70,14 +70,14 @@ public class StudentCourseController extends BaseController {
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		model.addAttribute("page", page);
-		return "modules/student/studentCourseList";
+		return "modules/student/studentcourse/studentCourseList";
 	}
 
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = "form")
 	public String form(StudentCourse studentCourse, Model model) {
 		model.addAttribute("studentCourse", studentCourse);
-		return "modules/student/studentCourseForm";
+		return "modules/student/studentcourse/studentCourseForm";
 	}
 
 	@RequiresPermissions("student:studentCourse:edit")

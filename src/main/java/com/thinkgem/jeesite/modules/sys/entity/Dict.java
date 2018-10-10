@@ -18,6 +18,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class Dict extends DataEntity<Dict> {
 
 	private static final long serialVersionUID = 1L;
+	private String id;
 	private String value;	// 数据值
 	private String label;	// 标签名
 	private String type;	// 类型
@@ -38,6 +39,14 @@ public class Dict extends DataEntity<Dict> {
 		this.label = label;
 	}
 	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@XmlAttribute
 	@Length(min=1, max=100)
 	public String getValue() {

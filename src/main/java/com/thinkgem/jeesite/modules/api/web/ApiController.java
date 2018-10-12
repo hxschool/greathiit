@@ -206,25 +206,7 @@ public class ApiController extends BaseController {
 					String teacherNumber = teacher.getTeacher().getNo();
 					teacher.setTeacher(null);
 					teacher.setTeacherNumber(teacherNumber);
-					User user = systemService.getCasByLoginName(teacherNumber);
-					if(!StringUtils.isEmpty(user)) {
-						Office office = user.getOffice();
-						String officeId = "00";
-						if(!StringUtils.isEmpty(office)) {
-							officeId = office.getId();
-						}
-						Office major = user.getCompany();
-						String majorId = "00";
-						if(!StringUtils.isEmpty(major)) {
-							majorId = major.getId();
-						}
-						String userType = "00";
-						if(!StringUtils.isEmpty(user.getUserType())) {
-							userType = user.getUserType();
-						}
-						String info = officeId.concat(majorId).concat(userType).concat(teacherNumber);
-						teacher.setInfo(info);
-					}
+					teacher.setInfo(getInfo(teacherNumber));
 				}
 			}
 			map.put("result", teachers);
@@ -234,6 +216,29 @@ public class ApiController extends BaseController {
 			renderString(response, map);
 		}
 		return map;
+	}
+	
+	private String getInfo(String teacherNumber) {
+		User user = systemService.getCasByLoginName(teacherNumber);
+		if(!StringUtils.isEmpty(user)) {
+			Office office = user.getOffice();
+			String officeId = "00";
+			if(!StringUtils.isEmpty(office)) {
+				officeId = office.getId();
+			}
+			Office major = user.getCompany();
+			String majorId = "00";
+			if(!StringUtils.isEmpty(major)) {
+				majorId = major.getId();
+			}
+			String userType = "00";
+			if(!StringUtils.isEmpty(user.getUserType())) {
+				userType = user.getUserType();
+			}
+			String info = officeId.concat(majorId).concat(userType).concat(teacherNumber);
+			return info;
+		}
+		return "";
 	}
 	
 	@RequestMapping(value = "getTeacher")
@@ -250,6 +255,7 @@ public class ApiController extends BaseController {
 				String teacherNumber = teacher.getTeacher().getNo();
 				teacher.setTeacher(null);
 				teacher.setTeacherNumber(teacherNumber);
+				teacher.setInfo(getInfo(teacherNumber));
 			}
 			map.put("result", teacher);
 		} catch (Exception e) {

@@ -113,25 +113,10 @@ public class StudentUtil {
 		if(StringUtils.isEmpty(studentNumber)) {
 			return "";
 		}
-		if(studentNumber.length()==6) {
+		if(studentNumber.length()==6||studentNumber.length()==7||studentNumber.length()==8) {
 			return "20" + studentNumber.substring(0, 2);
-		}
-		if(studentNumber.length()==7) {
-			return "20" + studentNumber.substring(0, 2);
-		}
-		
-		if(studentNumber.length()==8) {
-			return "20" + studentNumber.substring(0, 2) ;
-		}
-		
-		if(studentNumber.length()==10) {
-			return studentNumber.substring(0, 4);
-		}
-		
-		if(studentNumber.length()==12) {
-			return studentNumber.substring(0, 4);
-		}
-		if(studentNumber.length()==13) {
+		}		
+		if(studentNumber.length()>10) {
 			return studentNumber.substring(0, 4);
 		}
 		return "";

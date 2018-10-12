@@ -34,13 +34,13 @@ import com.thinkgem.jeesite.modules.api.web.adapter.IntegerDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.LongDefault0Adapter;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysAppconfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
@@ -206,6 +206,25 @@ public class ApiController extends BaseController {
 					String teacherNumber = teacher.getTeacher().getNo();
 					teacher.setTeacher(null);
 					teacher.setTeacherNumber(teacherNumber);
+					User user = systemService.getCasByLoginName(teacherNumber);
+					if(!StringUtils.isEmpty(user)) {
+						Office office = user.getOffice();
+						String officeId = "00";
+						if(!StringUtils.isEmpty(office)) {
+							officeId = office.getId();
+						}
+						Office major = user.getCompany();
+						String majorId = "00";
+						if(!StringUtils.isEmpty(major)) {
+							majorId = major.getId();
+						}
+						String userType = "00";
+						if(!StringUtils.isEmpty(user.getUserType())) {
+							userType = user.getUserType();
+						}
+						String info = officeId.concat(majorId).concat(userType).concat(teacherNumber);
+						teacher.setInfo(info);
+					}
 				}
 			}
 			map.put("result", teachers);
@@ -244,12 +263,12 @@ public class ApiController extends BaseController {
 	
 	@RequestMapping(value = "getDicts")
 	@ResponseBody
-	public Map<String, Object> getDicts(HttpServletRequest request,HttpServletResponse response) {
+	public Map<String, Object> getDicts(Dict dict,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			map.put("status", "00000000");
 			map.put("message", "获取字典信息成功");
-			List<Dict> dicts = dictService.findList(new Dict());
+			List<Dict> dicts = dictService.findList(dict);
 			map.put("result", dicts);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -259,65 +278,7 @@ public class ApiController extends BaseController {
 		return map;
 	}
 	
-	@RequestMapping(value = "getDictByType")
-	@ResponseBody
-	public Map<String, Object> getDictByType(HttpServletRequest request,HttpServletResponse response) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			Map<String,String>  m = getRequest(request,response,Map.class);
-			map.put("status", "00000000");
-			map.put("message", "获取字典信息成功");
-			List<Dict> dicts = DictUtils.getDictList(m.get("type"));
-			map.put("result", dicts);
-		} catch (Exception e) {
-			map.put("status", "99999999");
-			map.put("message", e.getMessage());
-			renderString(response, map);
-		}
-		return map;
-	}
 	
-	@RequestMapping(value = "getDictByTypeAndValue")
-	@ResponseBody
-	public Map<String, Object> getDictByTypeAndValue(HttpServletRequest request,HttpServletResponse response) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			Map<String,String>  m = getRequest(request,response,Map.class);
-			map.put("status", "00000000");
-			map.put("message", "获取字典信息成功");
-			Dict dict = new Dict();
-			dict.setType(m.get("type"));
-			dict.setValue(m.get("value"));
-			Dict entity = dictService.get(dict);
-			map.put("result", entity);
-		} catch (Exception e) {
-			map.put("status", "99999999");
-			map.put("message", e.getMessage());
-			renderString(response, map);
-		}
-		return map;
-	}
-	
-	@RequestMapping(value = "getDictByTypeAndLabel")
-	@ResponseBody
-	public Map<String, Object> getDictByTypeAndLabel(HttpServletRequest request,HttpServletResponse response) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		try {
-			Map<String,String>  m = getRequest(request,response,Map.class);
-			map.put("status", "00000000");
-			map.put("message", "获取字典信息成功");
-			Dict dict = new Dict();
-			dict.setType(m.get("type"));
-			dict.setLabel(m.get("label"));
-			Dict entity = dictService.get(dict);
-			map.put("result", entity);
-		} catch (Exception e) {
-			map.put("status", "99999999");
-			map.put("message", e.getMessage());
-			renderString(response, map);
-		}
-		return map;
-	}
 	
 	@RequestMapping(value = "getClass")
 	@ResponseBody

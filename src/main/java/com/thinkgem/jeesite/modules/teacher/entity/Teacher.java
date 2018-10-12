@@ -39,6 +39,16 @@ public class Teacher extends DataEntity<Teacher> {
 	private String tchrTitle;		// 职称
 	private User teacher;		// 教师号
 	private String teacherNumber;//教师号
+	private String info;
+	
+	public String getInfo() {
+		return info;
+	}
+
+	public void setInfo(String info) {
+		this.info = info;
+	}
+
 	public Teacher() {
 		super();
 	}

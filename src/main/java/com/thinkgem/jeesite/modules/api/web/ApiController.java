@@ -221,16 +221,17 @@ public class ApiController extends BaseController {
 	private String getInfo(String teacherNumber) {
 		User user = systemService.getCasByLoginName(teacherNumber);
 		if(!StringUtils.isEmpty(user)) {
-			Office office = user.getOffice();
-			String officeId = "00";
+			Office office = user.getCompany();
+			String officeId = "0";
 			if(!StringUtils.isEmpty(office)) {
 				officeId = office.getId();
 			}
-			Office major = user.getCompany();
+			Office major = user.getOffice();
 			String majorId = "00";
 			if(!StringUtils.isEmpty(major)) {
 				majorId = major.getId();
 			}
+			
 			String userType = "00";
 			if(!StringUtils.isEmpty(user.getUserType())) {
 				userType = user.getUserType();

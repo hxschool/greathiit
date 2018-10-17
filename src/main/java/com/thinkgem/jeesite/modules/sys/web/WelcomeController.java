@@ -18,6 +18,7 @@ import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
 public class WelcomeController extends BaseController {
 	@Autowired
 	private SysAppconfigService sysAppconfigService;
+	
 	@RequestMapping(value = {"index", ""})
 	public String list(SysAppconfig sysAppconfig, HttpServletRequest request, HttpServletResponse response, Model model) {
         List<SysAppconfig> list = sysAppconfigService.findList(sysAppconfig);
@@ -25,4 +26,5 @@ public class WelcomeController extends BaseController {
 		return "modules/sys/welcome";
 	}
 
+	
 }

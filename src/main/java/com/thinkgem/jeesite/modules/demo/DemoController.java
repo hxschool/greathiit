@@ -2,7 +2,9 @@ package com.thinkgem.jeesite.modules.demo;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.persistence.CostGreeNode;
+import com.thinkgem.jeesite.common.persistence.GreeNode;
+import com.thinkgem.jeesite.common.utils.GreeHelper;
 import com.thinkgem.jeesite.modules.api.service.ApiService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -40,7 +45,7 @@ public class DemoController {
 	private UcStudentService ucStudentService;
 	@Autowired
 	private OfficeService officeService;
-	
+ 
 	@RequestMapping
 	@ResponseBody
 	public String list(TmVisitor tmVisitor, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -122,6 +127,21 @@ public class DemoController {
 		
 		
 		return "ok";
+	}
+	@RequestMapping("node")
+	@ResponseBody
+	public GreeNode list( HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+		List<Office> list = officeService.findAll();
+		Map<String,GreeNode> greeNodes = new HashMap<String,GreeNode>();
+		for(Office office:list) {
+			CostGreeNode node = new CostGreeNode();
+			node.setId(office.getId());
+			node.setName(office.getName());
+			node.setParentId(office.getParentId());
+			greeNodes.put(node.getId(), node);
+		}
+		GreeHelper.generateTree(greeNodes);
+		return greeNodes.get("1");
 	}
 	public static void main(String[] args) {
 		String aa = "230302198402175312";

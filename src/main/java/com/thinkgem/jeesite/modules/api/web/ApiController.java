@@ -285,6 +285,26 @@ public class ApiController extends BaseController {
 		return map;
 	}
 	
+	@RequestMapping(value = "getDict")
+	@ResponseBody
+	public Map<String, Object> getDict(HttpServletRequest request,HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			Map<String,String>  m = getRequest(request,response,Map.class);
+			map.put("status", "00000000");
+			map.put("message", "获取字典信息成功");
+			Dict dict = new Dict();
+			dict.setType(m.get("type"));
+			dict.setValue(m.get("value"));
+			Dict entity = dictService.get(dict);
+			map.put("result", entity);
+		} catch (Exception e) {
+			map.put("status", "99999999");
+			map.put("message", e.getMessage());
+			renderString(response, map);
+		}
+		return map;
+	}
 	
 	
 	@RequestMapping(value = "getClass")

@@ -36,7 +36,7 @@
 		<!-- Content Header (Page header) -->
 		<section class="content-header">
 			<h1>
-				哈尔滨信息工程学院 <small>Version 2.0</small>
+				哈尔滨信息工程学院 <small>Version 1.0</small>
 			</h1>
 			<ol class="breadcrumb">
 				<li><a href="#"></a></li>
@@ -406,7 +406,7 @@
 							<!-- 应用系统 -->
 							<div class="box box-info">
 								<div class="box-header with-border">
-									<h3 class="box-title">Latest Orders</h3>
+									<h3 class="box-title">应用系统</h3>
 
 									<div class="box-tools pull-right">
 										<button type="button" class="btn btn-box-tool"
@@ -477,11 +477,11 @@
 						<div class="box-body">
 							<form action="#" method="post">
 								<div class="form-group">
-									<input class="form-control" name="emailto"
+									<input class="form-control" id="emailto" name="emailto"
 										placeholder="Email to:" type="email">
 								</div>
 								<div class="form-group">
-									<input class="form-control" name="subject"
+									<input class="form-control" id="subject" name="subject"
 										placeholder="Subject" type="text">
 								</div>
 								<div>
@@ -639,7 +639,7 @@
 										</a>
 										</li>
 									</ul>
-									<textarea class="textarea"
+									<textarea class="textarea" id="textarea"
 										style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid rgb(221, 221, 221); padding: 10px; "
 										placeholder="Message"></textarea>
 									
@@ -677,6 +677,11 @@
 
 	<script type="text/javascript">
 	$(function(){
+		$("#sendEmail").bind("click",function(){
+			$.post("${ctx}/mail/send",{email:$("#emailto").val(),subject:$("#subject").val(),textarea:$("#textarea").val()},function(result){
+			    alert("send is ok");
+			  });
+		});
 		var yearChart = echarts.init(document.getElementById('edu-line-markers'));
 		yearChart.showLoading();
 		$.get('${ctx}/uc/student/year.json', function (data) {

@@ -66,6 +66,15 @@ public class UcStudentController extends BaseController {
 		return ucStudentService.studentGroup(beginDate, endDate);
 	}
 	
+
+	
+	
+	@RequestMapping("year.json")
+	@ResponseBody
+	public List<Map<String,Object>> year(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentUser();
+	}
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("sex")
 	public String sex(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {

@@ -272,4 +272,8 @@
 		select  count(major_name) as TOTAL,major_name as NAME  from uc_student  where del_flag=0 group by major_name
 	</select>
 	
+	<select id="studentUser" resultType="map">
+		<![CDATA[select count(year) as TOTAL,year as LABEL from (select case when length(no)<10 then left(concat('20',no),4) else left(no,4) end as year from sys_user where user_type='99' and length(no)!=11 ) as tt group by year]]>
+	</select>
+	
 </mapper>

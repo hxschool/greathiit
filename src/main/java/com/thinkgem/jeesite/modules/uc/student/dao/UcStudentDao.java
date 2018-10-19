@@ -80,7 +80,12 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @return
 	 */
 	public List<Map<String,Object>> studentEdu(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
-
+	/**
+	 * 学生信息表用户信息不全,缺少2017和2018数据.直接读取用户数据表数据
+	 * @return
+	 */
+	public List<Map<String,Object>> studentUser();
+	
 /**
  * 根据导出做查询
  * @param ucStudent

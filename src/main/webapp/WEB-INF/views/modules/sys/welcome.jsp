@@ -440,7 +440,7 @@
 														<c:set var="v" value="已停止" />
 													</c:if>
 													<tr>
-														<td><a href="${appconfig.url }">${appconfig.id }</a></td>
+														<td><a href="${appconfig.url }" target="_blank">${appconfig.id }</a></td>
 														<td>${appconfig.name }</td>
 														<td><span class="label ${j }">${v }</span></td>
 

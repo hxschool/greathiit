@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -59,6 +60,12 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/studentGroup";
 	}
 	
+	@RequestMapping("group.json")
+	@ResponseBody
+	public List<Map<String,Object>> ajaxGroup(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentGroup(beginDate, endDate);
+	}
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("sex")
 	public String sex(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -68,6 +75,13 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/studentSex";
 	}
 	
+	@RequestMapping("sex.json")
+	@ResponseBody
+	public List<Map<String,Object>> ajaxSex(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentSex(beginDate, endDate);
+	}
+	
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("region")
 	public String region(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -75,6 +89,12 @@ public class UcStudentController extends BaseController {
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentRegion";
+	}
+	
+	@RequestMapping("region.json")
+	@ResponseBody
+	public List<Map<String,Object>> ajaxRegion(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentRegion(beginDate, endDate);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -86,6 +106,12 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/studentEdu";
 	}
 	
+	@RequestMapping("edu.json")
+	@ResponseBody
+	public List<Map<String,Object>> ajaxEdu(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentEdu(beginDate, endDate);
+	}
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("major")
 	public String major(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -95,6 +121,12 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/studentMajor";
 	}
 	
+	@RequestMapping("major.json")
+	@ResponseBody
+	public List<Map<String,Object>>  ajaxMajor(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentMajor(beginDate, endDate);
+	}
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("department")
 	public String department(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
@@ -102,6 +134,12 @@ public class UcStudentController extends BaseController {
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentDepartment";
+	}
+	
+	@RequestMapping("department.json")
+	@ResponseBody
+	public List<Map<String,Object>> ajaxDepartment(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentDepartment(beginDate, endDate);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")

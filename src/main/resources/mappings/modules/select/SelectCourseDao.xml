@@ -208,4 +208,7 @@
 		WHERE id = #{id}
 	</update>
 	
+	<select id="totalSelectCourse" resultType="map">
+		select count(a.course_id) as TOTAL,b.curs_name as NAME from select_course a left join course b on a.course_id=b.id where year(a.create_date)= year(now()) group by a.course_id having(count(a.course_id))>60
+	</select>
 </mapper>

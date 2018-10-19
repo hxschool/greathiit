@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.select.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,11 @@ import com.thinkgem.jeesite.modules.select.dao.SelectCourseDao;
 public class SelectCourseService extends CrudService<SelectCourseDao, SelectCourse> {
 	@Autowired
 	private SelectCourseDao selectCourseDao;
+	
+	public List<Map<String,Object>> totalSelectCourse(){
+		return selectCourseDao.totalSelectCourse();
+	}
+	
 	public SelectCourse get(String id) {
 		return super.get(id);
 	}

@@ -182,7 +182,7 @@
         	$("#repairType").val(data.data.values);
         } 
         });
-    </script
+    </script>
 </body>
 </html>
 

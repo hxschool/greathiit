@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,12 +15,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.CourseEducational;
 import com.thinkgem.jeesite.modules.course.service.CourseEducationalService;
 
@@ -80,6 +83,12 @@ public class CourseEducationalController extends BaseController {
 		courseEducationalService.delete(courseEducational);
 		addMessage(redirectAttributes, "删除教务课程信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/courseEducational/?repage";
+	}
+	
+	@RequestMapping(value = "ajaxCourseEducational")
+	@ResponseBody
+	public List<CourseEducational> ajaxCourseEducational(CourseEducational courseEducational, HttpServletRequest request, HttpServletResponse response, Model model) {
+		return courseEducationalService.findList(courseEducational);
 	}
 
 }

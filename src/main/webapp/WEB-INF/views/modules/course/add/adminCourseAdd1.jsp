@@ -61,7 +61,7 @@
 </script>
 </head>
 
-<body>
+<body>			
 	<div class="container">
 		<div class="row">
 			<div class="span12">
@@ -91,24 +91,14 @@
 							</div>
 						</div>
 						</div>
-						<div class="control-group control-group-left">
-							<label class="control-label">课程编号：</label>
-							<div class="controls">
-								<input type="text" name="cursNum">
-							</div>
-						</div>
-						<div class="control-group control-group-left">
+						<div class="control-group control-group-left" id="element_course_educational">
 							<label class="control-label">课程名称：</label>
 							<div class="controls">
-								<input type="text" name="cursName">
+								<select id="cursNum" name="cursNum" class="cursNum input-medium" style="width:200px;"><option>请选择</option></select>
+								<input type="hidden" id="cursName" name="cursName"  readonly="readonly">
 							</div>
 						</div>
-						<div class="control-group control-group-left">
-							<label class="control-label">英文名称：</label>
-							<div class="controls">
-								<input type="text" name="cursEngName">
-							</div>
-						</div>
+						
 						<div class="control-group control-group-left">
 							<label class="control-label">学时：</label>
 							<div class="controls">
@@ -210,6 +200,15 @@
 			  jsonValue: 'value',
 			  jsonSub: 'sub'
 			}); 
+			$('#element_course_educational').cxSelect({ 
+				  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
+				  selects: ['cursNum'], 
+				  jsonName: 'cursName',
+				  jsonValue: 'cursNum'
+			}); 
+			$('#cursNum').change(function(){  
+			　	$('#cursName').val($(this).children('option:selected').text()); 
+			});
 		});
 		</script>
 </body>

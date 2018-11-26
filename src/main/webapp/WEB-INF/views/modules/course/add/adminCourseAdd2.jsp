@@ -37,7 +37,7 @@ function addTarget() {
 					</h6>
 				</div>
 				<form action="adminCourseAdd3" method="post" class="form-horizontal">
-				<input type="text" name="courseId" value="${courseId}"/>
+				<input type="hidden" name="courseId" value="${courseId}"/>
 					<div class="div-inf">
 					<p>通过本课程的理论教学，使学生具备以下能力：</p>
 					<div id="div-targets">

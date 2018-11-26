@@ -35,19 +35,19 @@
 			<tr>
 				<th>课程编号</th>
 				<th>课程名称</th>
-				<th>英文名称</th>
+				<th>任课教师</th>
 				<th>专业</th>
 				<th>学时</th>
 				<th>学分</th>
 				<th>开设学期</th>
-				<th>课程简介</th>
+				
 				<th>与相关课程的分工衔接</th>
 				<th>其他说明</th>
 				<th>先修课程</th>
 				<th>课程性质</th>
 				<th>课程类型</th>
 				<th>更新时间</th>
-				<th>remarks</th>
+				<th>课程简介</th>
 				<shiro:hasPermission name="course:course:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -61,7 +61,7 @@
 					${course.cursName}
 				</td>
 				<td>
-					${course.cursEngName}
+					${course.teacher}
 				</td>
 				<td>
 					${course.cursMajor}
@@ -75,9 +75,7 @@
 				<td>
 					${course.cursCurrTerm}
 				</td>
-				<td>
-					${course.cursIntro}
-				</td>
+				
 				<td>
 					${course.cursNote1}
 				</td>
@@ -98,7 +96,7 @@
 					<fmt:formatDate value="${course.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${course.remarks}
+					${course.cursIntro}
 				</td>
 				<shiro:hasPermission name="course:course:edit"><td>
     				<a href="${ctx}/course/course/form?id=${course.id}">修改</a>

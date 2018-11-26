@@ -69,7 +69,7 @@
 					</h6>
 				</div>
 				<form action="adminCourseAdd4" method="post" class="form-horizontal">
-					<input type="text" name="courseId" value="${courseId}"/>
+					<input type="hidden" name="courseId" value="${courseId}"/>
 					
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->

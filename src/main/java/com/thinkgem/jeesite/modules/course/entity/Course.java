@@ -5,8 +5,6 @@ package com.thinkgem.jeesite.modules.course.entity;
 
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -194,7 +192,7 @@ public class Course extends DataEntity<Course> {
 		this.cursForm = cursForm;
 	}
 
-	@NotNull(message="教师号不能为空")
+
 	public User getTeacher() {
 		return teacher;
 	}

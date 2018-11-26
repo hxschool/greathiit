@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.course.entity;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 教务课程信息Entity
@@ -27,6 +30,8 @@ public class CourseEducational extends DataEntity<CourseEducational> {
 	}
 
 	@Length(min=1, max=255, message="课程编码长度必须介于 1 和 255 之间")
+	@NotNull(message="课程编码不能为空")
+	@ExcelField(title="课程编码",  align=2, sort=1)
 	public String getCursNum() {
 		return cursNum;
 	}
@@ -36,6 +41,8 @@ public class CourseEducational extends DataEntity<CourseEducational> {
 	}
 	
 	@Length(min=1, max=255, message="课程名称长度必须介于 1 和 255 之间")
+	@NotNull(message="课程名称")
+	@ExcelField(title="课程名称", align=2, sort=2)
 	public String getCursName() {
 		return cursName;
 	}

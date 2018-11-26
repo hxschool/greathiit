@@ -131,6 +131,13 @@
 							<label class="control-label">开设学期：</label>
 							<div class="controls">
 								<input type="text" name="cursCurrTerm">
+								
+								<select name="cursCurrTerm" style="width:200px;">
+									
+									<c:forEach items="${fns:getDictList('curs_type')}" var="dict">
+										<option value="${dict.value}">${dict.label}</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
 						<div class="control-group control-group-left">
@@ -169,6 +176,19 @@
 							</div>
 						</div>
 						
+						<div class="control-group control-group-left">
+							<label class="control-label">班额下限：</label>
+							<div class="controls">
+								<input type="text" name="lowerLimit">
+							</div>
+						</div>
+						
+						<div class="control-group control-group-left">
+							<label class="control-label">班额上限：</label>
+							<div class="controls">
+								<input type="text" name="upperLimit">
+							</div>
+						</div>
 						
 						<div class="control-group control-group-left">
 							<label class="control-label">课程负责人：</label>

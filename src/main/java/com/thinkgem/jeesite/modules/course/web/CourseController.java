@@ -126,6 +126,7 @@ public class CourseController extends BaseController {
 			if(StringUtils.isEmpty(course.getCursCredit())) {
 				course.setCursCredit("100");
 			}
+			course.setCursEduNum(course.getCursNum());
 			course.setIsNewRecord(true);
 			course.setId(courseId);
 			course.setTeacher(UserUtils.getUser());

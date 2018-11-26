@@ -27,14 +27,15 @@
 		a.curs_learning_model AS "cursLearningModel",
 		a.upper_limit AS "upperLimit",
 		a.lower_limit AS "lowerLimit",
-		a.teacher_number AS "teacher.no",
+		b.no AS "teacher.no",
+		b.name as "teacher.name",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
-		a.del_flag AS "delFlag",
-		b.name as "teacher.name"
+		a.del_flag AS "delFlag"
+
 	</sql>
 	
 	<sql id="courseJoins">

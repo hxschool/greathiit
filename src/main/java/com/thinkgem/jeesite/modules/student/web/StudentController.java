@@ -202,8 +202,10 @@ public class StudentController extends BaseController {
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Performance")
 	public String Student_Performance(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User student = UserUtils.getUser();
-		studentCourse.setStudentNumber(student.getNo());
+		User user = UserUtils.getUser();
+		Student student = new Student();
+		student.setStudent(user);
+		studentCourse.setStudent(student);
 		studentCourseService.findList(studentCourse);
 		return "modules/student/StudentPerformance";
 	}

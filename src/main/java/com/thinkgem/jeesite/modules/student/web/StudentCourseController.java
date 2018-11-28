@@ -3,22 +3,37 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -35,7 +50,9 @@ public class StudentCourseController extends BaseController {
 
 	@Autowired
 	private StudentCourseService studentCourseService;
-	
+	@Autowired
+	private CourseService courseService;
+
 	@ModelAttribute
 	public StudentCourse get(@RequestParam(required=false) String id) {
 		StudentCourse entity = null;
@@ -50,8 +67,10 @@ public class StudentCourseController extends BaseController {
 	
 	@RequestMapping(value = "wechat")
 	public String wechat(StudentCourse studentCourse, Model model) {
-		User student = UserUtils.getUser();
-		studentCourse.setStudentNumber(student.getNo());
+		User user = UserUtils.getUser();
+		Student student = new Student();
+		student.setStudent(user);
+		studentCourse.setStudent(student);
 		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
 		return "modules/student/studentcourse/StudentCourseWechat";
 	}
@@ -99,4 +118,114 @@ public class StudentCourseController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
 	}
 
+	@RequiresPermissions("student:studentCourse:edit")
+    @RequestMapping(value = "export", method=RequestMethod.POST)
+    public String exportFile(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "成绩数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
+    		new ExportExcel("成绩数据", StudentCourse.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/sys/user/list?repage";
+    }
+	
+	@RequiresPermissions("student:studentCourse:edit")
+    @RequestMapping(value = "import", method=RequestMethod.POST)
+    public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
+		
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 1, 0);
+			Row row = ei.getRow(1);
+			Cell cell = row.getCell(1);
+			String termYear = cell.getStringCellValue();
+
+			Cell courseCell = row.getCell(3);
+			String courseId = courseCell.getStringCellValue();
+			Course course = courseService.get(courseId);
+			ImportExcel ei1 = new ImportExcel(file, 2, 0);
+			List<StudentCourse> list = ei1.getDataList(StudentCourse.class);
+			for (StudentCourse studentCourse : list){
+				try{
+					studentCourse.setTermYear(termYear);
+					studentCourse.setCourse(course);
+					StudentCourse entity = studentCourseService.getStudentCourseByStudentCourse(studentCourse);
+					if (org.springframework.util.StringUtils.isEmpty(entity)){
+						studentCourseService.save(studentCourse);
+						successNum++;
+					}else{
+						if(org.springframework.util.StringUtils.isEmpty(entity.getClassEvaValue())) {
+							entity.setClassEvaValue(studentCourse.getClassEvaValue());
+						}
+						if(org.springframework.util.StringUtils.isEmpty(entity.getEvaValue())) {
+							entity.setEvaValue(studentCourse.getEvaValue());
+						}
+						if(org.springframework.util.StringUtils.isEmpty(entity.getExpEvaValue())) {
+							entity.setExpEvaValue(studentCourse.getExpEvaValue());
+						}
+						if(org.springframework.util.StringUtils.isEmpty(entity.getFinEvaValue())) {
+							entity.setFinEvaValue(studentCourse.getFinEvaValue());
+						}
+						if(org.springframework.util.StringUtils.isEmpty(entity.getMidEvaValue())) {
+							entity.setMidEvaValue(studentCourse.getMidEvaValue());
+						}
+						if(org.springframework.util.StringUtils.isEmpty(entity.getWorkEvaValue())) {
+							entity.setWorkEvaValue(studentCourse.getWorkEvaValue());
+						}
+						studentCourseService.save(entity);
+						failureMsg.append("<br/>学生成绩已存在,请不要重复操作"+studentCourse.getStudentName()+" 已存在; ");
+						failureNum++;
+						
+					}
+				}catch(ConstraintViolationException ex){
+					failureMsg.append("<br/>学生 "+studentCourse.getStudentName()+" 导入失败：");
+					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+					for (String message : messageList){
+						failureMsg.append(message+"; ");
+						failureNum++;
+					}
+				}catch (Exception ex) {
+					failureMsg.append("<br/>学生 "+studentCourse.getStudentName()+" 导入失败："+ex.getMessage());
+				}
+			}
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条用户，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入成绩失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
+    }
+	
+	@RequiresPermissions("student:studentCourse:edit")
+    @RequestMapping(value = "import/template")
+    public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "成绩数据导入模板.xlsx";
+    		List<StudentCourse> list = Lists.newArrayList(); list.add(new StudentCourse());
+    		ExportExcel exportExcel = new ExportExcel();
+    		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
+    		exportExcel.init("成绩数据",headerList);
+    		Row row = exportExcel.addRow();
+    		Cell cell = row.createCell(0);
+    		cell.setCellValue("学期");
+    		Cell clazzCell = row.createCell(2);
+    		clazzCell.setCellValue("课程");
+
+    		
+    		exportExcel.setHeader(headerList);
+    		
+    		exportExcel.setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
+    }
 }

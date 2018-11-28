@@ -68,7 +68,7 @@
 				
 				<td>
 					
-					${fns:getDictLabel(course.cursProperty, 'course_property', '暂无信息')}
+					${fns:getDictLabel(course.cursProperty, 'course_curs_property', '暂无信息')}
 				</td>
 
 				<td>

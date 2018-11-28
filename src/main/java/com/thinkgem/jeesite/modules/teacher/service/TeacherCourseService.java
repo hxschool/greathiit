@@ -122,13 +122,14 @@ public class TeacherCourseService {
 				if (!studentNumber.equals("")) {
 					student = studentDao.getStudentByStudentNumber(studentNumber);
 					if (student != null) {
-						studentCourse.setStudentNumber(studentNumber);
+						studentCourse.setStudent(student);
+						//studentCourse.setStudentNumber(studentNumber);
 					} else {
 						throw new Exception("学号为" + studentNumber
 								+ "的学生不存在");
 					}
 
-					studentCourse.setCourseId(course.getId());
+					studentCourse.setCourse(course);
 
 					StudentCourse sc = studentCourseService.findStudentCourseByStudentNumberAndCourseId(course.getId(), studentNumber);
 					if (sc != null) {
@@ -177,7 +178,7 @@ public class TeacherCourseService {
 					studentCourse.setWorkEvaValue(String.valueOf(workEvaValue));
 					studentCourse.setExpEvaValue(String.valueOf(expEvaValue));
 					studentCourse.setEvaValue(String.valueOf(evaValue));
-					studentCourse.setSchoolYear(cursCurrTerm);
+					studentCourse.setTermYear(cursCurrTerm);
 					studentCourse.setStatus("0");
 					stuCurs.add(studentCourse);
 				}

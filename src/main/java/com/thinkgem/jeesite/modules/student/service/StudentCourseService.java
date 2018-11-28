@@ -30,6 +30,11 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	public StudentCourse findStudentCourseByStudentNumberAndCourseId(String studentNumber,String courseId) {
 		return studentCourseDao.findStudentCourseByStudentNumberAndCourseId(studentNumber, courseId);
 	}
+	
+	public StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse) {
+		return studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
+	}
+	
 	public StudentCourse get(String id) {
 		return super.get(id);
 	}

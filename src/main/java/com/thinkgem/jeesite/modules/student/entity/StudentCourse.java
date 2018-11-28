@@ -6,6 +6,9 @@ package com.thinkgem.jeesite.modules.student.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 学生成绩Entity
@@ -20,13 +23,14 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String expEvaValue;		// 实验成绩
 	private String finEvaValue;		// 期末成绩
 	private String midEvaValue;		// 期中成绩
-	private String schoolYear;		// school_year
+	private String termYear;		// termYear
 	private String workEvaValue;		// 作业成绩
-	private String courseId;		// 课程号
-	private String courseName;		//课程名称
-	private String studentNumber;		// 学号
+	
+	private Course course;		//课程名称
+	private Student student;		// 学号
+	private Teacher teacher;		// 学号
 	private String status;		// 状态标记
-	private String studentName;
+	private String clazzId;
 	private String cursType;
 	public StudentCourse() {
 		super();
@@ -36,22 +40,6 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		super(id);
 	}
 
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-	public String getStudentName() {
-		return studentName;
-	}
-
-	public void setStudentName(String studentName) {
-		this.studentName = studentName;
-	}
-
 	public String getCursType() {
 		return cursType;
 	}
@@ -59,7 +47,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setCursType(String cursType) {
 		this.cursType = cursType;
 	}
-
+	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=1)
 	public String getClassEvaValue() {
 		return classEvaValue;
 	}
@@ -68,6 +56,23 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.classEvaValue = classEvaValue;
 	}
 	
+	@ExcelField(title="学号", type=0, align=2, sort=7)
+	public String getStudentNumber() {
+		return student.getStudentNumber();
+	}
+	
+	public void setStudentNumber(String studentNumber) {
+		student = new Student();
+		student.setStudentNumber(studentNumber);
+	}
+	
+	@ExcelField(title="姓名", type=1, align=2, sort=8)
+	public String getStudentName() {
+		return student.getName();
+	}
+
+	
+	@ExcelField(title="综合成绩", type=0, align=2, sort=6)
 	public String getEvaValue() {
 		return evaValue;
 	}
@@ -75,7 +80,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setEvaValue(String evaValue) {
 		this.evaValue = evaValue;
 	}
-	
+	@ExcelField(title="实验成绩", type=0, align=2, sort=5)
 	public String getExpEvaValue() {
 		return expEvaValue;
 	}
@@ -83,7 +88,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setExpEvaValue(String expEvaValue) {
 		this.expEvaValue = expEvaValue;
 	}
-	
+	@ExcelField(title="期末成绩", type=0, align=2, sort=4)
 	public String getFinEvaValue() {
 		return finEvaValue;
 	}
@@ -92,6 +97,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.finEvaValue = finEvaValue;
 	}
 	
+	@ExcelField(title="期中成绩", type=0, align=2, sort=3)
 	public String getMidEvaValue() {
 		return midEvaValue;
 	}
@@ -101,14 +107,14 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	}
 	
 	@Length(min=0, max=255, message="school_year长度必须介于 0 和 255 之间")
-	public String getSchoolYear() {
-		return schoolYear;
+	public String getTermYear() {
+		return termYear;
 	}
 
-	public void setSchoolYear(String schoolYear) {
-		this.schoolYear = schoolYear;
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
 	}
-	
+	@ExcelField(title="作业成绩", type=0, align=2, sort=2)
 	public String getWorkEvaValue() {
 		return workEvaValue;
 	}
@@ -117,24 +123,24 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.workEvaValue = workEvaValue;
 	}
 	
-	@Length(min=1, max=64, message="课程号长度必须介于 1 和 64 之间")
-	public String getCourseId() {
-		return courseId;
+
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
-	}
-	
-	@Length(min=1, max=64, message="学号长度必须介于 1 和 64 之间")
-	public String getStudentNumber() {
-		return studentNumber;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
-	public void setStudentNumber(String studentNumber) {
-		this.studentNumber = studentNumber;
+
+	public Student getStudent() {
+		return student;
 	}
-	
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
 	@Length(min=0, max=1, message="状态标记长度必须介于 0 和 1 之间")
 	public String getStatus() {
 		return status;
@@ -142,6 +148,22 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public String getClazzId() {
+		return clazzId;
+	}
+
+	public void setClazzId(String clazzId) {
+		this.clazzId = clazzId;
 	}
 	
 }

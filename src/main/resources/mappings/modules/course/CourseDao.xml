@@ -107,6 +107,10 @@
 			and a.curs_name  LIKE concat(concat('%',#{cursName}),'%')
 			</if>
 			
+			<if test="cursCurrTerm!=null and cursCurrTerm!=''">
+			and a.curs_curr_term=#{cursCurrTerm}
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

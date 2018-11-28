@@ -25,6 +25,25 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+		
+		<li><label>课程名称：</label>
+					<form:input path="cursName" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			
+		
+		<li><label>教师姓名：</label>
+					<form:input path="teacher.name" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			
+					<li><label>学期：</label>
+					<select name="cursCurrTerm" class="input-medium">
+						<option value="">请选择</option>
+						<c:forEach items="${fns:termYear()}" var="term">
+							<option value="${term.key}">${term.value}</option>
+						</c:forEach>
+					</select>
+			</li>
+		
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -41,12 +60,13 @@
 				<th>学分</th>
 				<th>开设学期</th>
 				
-				<th>与相关课程的分工衔接</th>
-				<th>其他说明</th>
+				<!--<th>与相关课程的分工衔接</th>
+				<th>其他说明</th>  -->
 				<th>先修课程</th>
 				<th>课程性质</th>
 				<th>课程类型</th>
-				<th>更新时间</th>
+				<th>考核</th>
+
 				<th>课程简介</th>
 				<shiro:hasPermission name="course:course:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -61,7 +81,7 @@
 					${course.cursName}
 				</td>
 				<td>
-					${course.teacher}
+					${course.teacher.name}
 				</td>
 				<td>
 					${course.cursMajor}
@@ -73,34 +93,40 @@
 					${course.cursCredit}
 				</td>
 				<td>
-					${course.cursCurrTerm}
+					${fns:getDictLabel(course.cursType, 'course_curs_curr_term', '')}
 				</td>
 				
-				<td>
+				<!-- <td>
 					${course.cursNote1}
 				</td>
 				<td>
 					${course.cursNote2}
-				</td>
+				</td> -->
 				<td>
 					${course.cursPreCourses}
 				</td>
 				<td>
-					${course.cursProperty}
+		
+					${fns:getDictLabel(course.cursType, 'course_curs_property', '')}
 				</td>
 
 				<td>
-					${course.cursType}
+					
+					${fns:getDictLabel(course.cursType, 'course_curs_type', '')}
 				</td>
 				<td>
-					<fmt:formatDate value="${course.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					
+					${fns:getDictLabel(course.cursForm, 'course_curs_form', '')}
 				</td>
+
 				<td>
-					${course.cursIntro}
+					
+					<a href ="javascript:return false;" onclick="return false;" style="cursor: default;" title="${course.cursIntro}">${fns:abbr(course.cursIntro,10)}</a>
 				</td>
 				<shiro:hasPermission name="course:course:edit"><td>
     				<a href="${ctx}/course/course/form?id=${course.id}">修改</a>
 					<a href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
+					<a href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

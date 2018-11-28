@@ -28,5 +28,5 @@ public interface StudentCourseDao extends CrudDao<StudentCourse> {
 	List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(@Param("teacherNumber")String studentNumber,@Param("clazzId")String clazzId,@Param("cursType")String cursType);
 	
 	List<StudentCourse> findListByStudentNumber(@Param("studentNumber")String studentNumber);
-
+	StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse);
 }

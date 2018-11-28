@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
@@ -34,6 +38,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
+import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -597,5 +602,34 @@ public class CourseController extends BaseController {
 	public String selectNoteByCursId(Course course, RedirectAttributes redirectAttributes) {
 		return "modules/course/detail/courseDetail8";
 	}
+	
+	@RequiresPermissions("student:studentCourse:edit")
+    @RequestMapping(value = "import/studentCourse")
+    public String importFileTemplate(Course course,HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "成绩数据导入模板.xlsx";
+    		List<StudentCourse> list = Lists.newArrayList(); list.add(new StudentCourse());
+    		ExportExcel exportExcel = new ExportExcel();
+    		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
+    		exportExcel.init("成绩数据",headerList);
+    		Row row = exportExcel.addRow();
+    		Cell cell = row.createCell(0);
+    		cell.setCellValue("学期");
+    		Cell xueqiCell = row.createCell(1);
+    		xueqiCell.setCellValue(course.getCursCurrTerm());
+    		Cell clazzCell = row.createCell(2);
+    		clazzCell.setCellValue("课程");
+    		Cell courseCell = row.createCell(3);
+    		courseCell.setCellValue(course.getId());
+    		exportExcel.setHeader(headerList);
+    		
+    		exportExcel.setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
+    }
+	
 
 }

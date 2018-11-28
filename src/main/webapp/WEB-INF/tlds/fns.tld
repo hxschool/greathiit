@@ -260,6 +260,15 @@
     <example>${fns:pastDays(date)}</example>  
   </function>
   
+  
+    <function>
+    <description>获取当前年份前后5年</description>
+    <name>termYear</name>
+    <function-class>com.thinkgem.jeesite.common.utils.DateUtils</function-class>
+    <function-signature>java.util.Map termYear()</function-signature>
+    <example>${fns:termYear()}</example>  
+  </function>
+  
   <!-- JsonMapper -->
   <function>
     <description>对象转换JSON字符串</description>

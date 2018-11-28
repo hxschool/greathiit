@@ -7,8 +7,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -199,18 +202,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		   }
 		   return dateList;
 		}
-	/**
-	 * @param args
-	 * @throws ParseException
-	 */
-	public static void main(String[] args) throws ParseException {
-//		System.out.println(formatDate(parseDate("2010/3/6")));
-//		System.out.println(getDate("yyyy年MM月dd日 E"));
-//		long time = new Date().getTime()-parseDate("2012-11-19").getTime();
-//		System.out.println(time/(24*60*60*1000));
-		System.out.println(getWeekOfDate());
-	}
-	
+
 	public static boolean isEffectiveDate(String startDate, String endDate) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date startTime;
@@ -308,4 +300,29 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 	public static long getWeek(Date dateStart, Date dateEnd) {
 		return (dateEnd.getTime() - dateStart.getTime()) / 86400000 / 7;
 	}
+	
+	public static Map<String,String> termYear() {
+		Calendar date = Calendar.getInstance();
+        int year = date.get(Calendar.YEAR);
+        int start = year - 5;
+        int end = year + 1;
+        Map<String,String> ll = new TreeMap<String,String>(
+                new Comparator<String>() {
+                    public int compare(String obj1, String obj2) {
+                        return obj2.compareTo(obj1);
+                    }
+                });
+        for(int i=start;i<=end; i ++) {
+        	for(int j=1;j<=2;j++) {
+        		if(j==1) {
+        			ll.put(i + "" + j,i +"年第一学期");
+        		}else {
+        			ll.put(i + "" + j,i +"年第二学期");
+        			
+        		}
+        	}
+        }
+        return ll;
+	}
+
 }

@@ -14,14 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.HttpClientUtil;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
-import com.thinkgem.jeesite.modules.dorm.entity.UcDormRecord;
 import com.thinkgem.jeesite.modules.dorm.entity.UcDormRepair;
-import com.thinkgem.jeesite.modules.dorm.service.UcDormRecordService;
 import com.thinkgem.jeesite.modules.dorm.service.UcDormRepairService;
 import com.thinkgem.jeesite.modules.oa.entity.OaNotify;
 import com.thinkgem.jeesite.modules.oa.service.OaNotifyService;
@@ -87,7 +84,7 @@ public class WelcomeController extends BaseController {
         List<UcDormRepair> ucDormRepairs = ucDormRepairService.findList(ucDormRepair);
 		model.addAttribute("ucDormRepairs", ucDormRepairs);
 		
-		
+		/*
 		if(!StringUtils.isEmpty(user.getNo())){
 			String url = "http://book.greathiit.com/api/getReaderByStudentNumber?studentNumber="+user.getNo();
 			String result = HttpClientUtil.get(url);
@@ -95,7 +92,7 @@ public class WelcomeController extends BaseController {
 			List<Map<String,String>> books = gson.fromJson(result, new TypeToken<List<Map<String,String>>>(){}.getType()); 
 			model.addAttribute("books", books);
 		}
-		
+		*/
 		
 		
         model.addAttribute("studentCourses", studentCourses);

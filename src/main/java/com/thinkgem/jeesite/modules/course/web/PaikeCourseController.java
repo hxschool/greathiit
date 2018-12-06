@@ -264,7 +264,7 @@ public class PaikeCourseController extends BaseController {
 					}
 					
 					if(!StringUtils.isEmpty(courseClass)) {
-						if(courseClass.equals("00000000")) {
+						if(courseClass.indexOf("00000000")>-1) {
 							ps.write("<div class=\"course_text\">公共课</div>");
 						}else {
 							String[] courseArray = courseClass.split(",");

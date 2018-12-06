@@ -322,6 +322,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	}
 	
 
+	public static void main(String[] args) {
+		System.out.println(entryptPassword("888888"));
+	}
 	
 	
 	

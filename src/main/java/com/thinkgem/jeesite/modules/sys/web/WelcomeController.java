@@ -37,8 +37,7 @@ public class WelcomeController extends BaseController {
 	private SysAppconfigService sysAppconfigService;
 	@Autowired
 	private StudentCourseService studentCourseService;
-	@Autowired
-	private CourseScheduleService courseScheduleService;
+
 	@Autowired
 	private OaNotifyService oaNotifyService;
 	
@@ -64,14 +63,7 @@ public class WelcomeController extends BaseController {
         student.setStudent(user);
         studentCourse.setStudent(student);
         List<StudentCourse>  studentCourses = studentCourseService.findList(studentCourse);
-        Office cla = user.getClazz();
-        //课表
-        if(!StringUtils.isEmpty(cla)) {
-        	CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-     		courseScheduleExt.setCourseClass(cla.getId());
-     		List<CourseScheduleExt> courseSchedules =  courseScheduleService.getCourseScheduleExt(courseScheduleExt);
-     		model.addAttribute("courseSchedules", courseSchedules);
-        }
+       
         //公告~
         OaNotify oaNotify = new OaNotify();
         oaNotify.setSelf(true);

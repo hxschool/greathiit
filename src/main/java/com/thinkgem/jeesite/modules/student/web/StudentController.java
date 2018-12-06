@@ -261,7 +261,7 @@ public class StudentController extends BaseController {
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Course_Grade")
 	public String Student_Course_Grade(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		return "modules/student/StudentCourseGrade";
+		return "modules/student/studentcourse/StudentCourseGrade";
 	}
 	//获奖记录	30	/student/student/Student_Award
 	@RequiresPermissions("student:student:edit")

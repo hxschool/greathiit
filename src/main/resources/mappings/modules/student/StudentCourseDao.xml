@@ -54,6 +54,10 @@
   	 <if test="cursType != null and cursType != ''">
   		AND b.curs_type = #{cursType}
   	 </if>
+  	 
+  	 <if test="student != null and student.studentNumber != ''">
+  		AND a.student_number  = #{student.studentNumber}
+  	 </if>
     </select>
     
     <select id="findListByStudentNumber" resultType="StudentCourse">

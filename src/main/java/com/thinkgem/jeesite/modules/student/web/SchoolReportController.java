@@ -33,7 +33,7 @@ public class SchoolReportController {
 	}
 	
 	@RequestMapping("export")
-	public void export(String startYear,String endYear,String n,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+	public String export(String startYear,String endYear,String n,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
 		String filename = "成绩单.xls";
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		
@@ -57,5 +57,6 @@ public class SchoolReportController {
 		List<UcStudent> list = ucStudentService.exportList(ucStudent);
 		
 		excelUtil.oper(file, departmentMap, dateMap,list,response.getOutputStream());
+		return "modules/school/schoolReport?repage";
 	}
 }

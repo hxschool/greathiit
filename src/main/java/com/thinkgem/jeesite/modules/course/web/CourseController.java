@@ -624,7 +624,7 @@ public class CourseController extends BaseController {
     		exportExcel.setHeader(headerList);
     		
     		exportExcel.setDataList(list).write(response, fileName).dispose();
-    		return null;
+    		
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
 		}

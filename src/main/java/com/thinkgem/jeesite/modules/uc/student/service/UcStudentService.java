@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,9 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	@Autowired
 	private UcStudentDao ucStudentDao;
 	
+	public UcStudent findBystudentNumber(String studentNumber) {
+		return ucStudentDao.findBystudentNumber(studentNumber);
+	}
 	
 	public UcStudent get(String id) {
 		return super.get(id);

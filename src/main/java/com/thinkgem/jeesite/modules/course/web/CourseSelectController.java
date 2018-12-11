@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +36,15 @@ import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.course.web.param.SelectCourseOfficeExt;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.student.web.StudentReportUtil;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
 /**
  * 课程基本信息Controller
@@ -56,6 +63,8 @@ public class CourseSelectController extends BaseController {
 	private UserOperationLogService userOperationLogService;
 	@Autowired
 	private OfficeService officeService;
+	@Autowired
+	private UcStudentService ucStudentService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
 		Course entity = null;
@@ -236,6 +245,45 @@ public class CourseSelectController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/course/select/exportView?repage";
     }
+
+    @RequestMapping(value = "studentCourse")
+    public String studentCourse(Course course, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes ,Model model) throws FileNotFoundException, IOException {
+		SelectCourse  selectCourse = new  SelectCourse();
+		selectCourse.setCourse(course);
+		List<SelectCourse>  ll = selectCourseService.findList(selectCourse);
+		
+		
+		String filename = "成绩单.xls";
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
+		
+		File file = new File(modelPath);
+		StudentReportUtil excelUtil = new StudentReportUtil();
+		Map<String,String> departmentMap = new HashMap<String,String>();
+		departmentMap.put("{department}", "");
+		departmentMap.put("{specialty}","");
+		departmentMap.put("{clazz}", "");
+		Map<String,String> dateMap = new HashMap<String,String>();
+		dateMap.put("{startYear}", "");
+		dateMap.put("{endYear}", "");
+		dateMap.put("{n}", "");
+		response.setHeader("content-disposition", "attachment;filename="  
+                + URLEncoder.encode(filename, "UTF-8"));
+		
+		List<UcStudent> list = new ArrayList<UcStudent>();
+		
+		for(SelectCourse sc :ll) {
+			User user = sc.getStudent();
+			if(!org.springframework.util.StringUtils.isEmpty(user)&&!org.springframework.util.StringUtils.isEmpty(user.getNo())) {
+				UcStudent uc = ucStudentService.findBystudentNumber(user.getNo());
+				list.add(uc);
+			}
+		}
+		
+		excelUtil.oper(file, departmentMap, dateMap,list,response.getOutputStream());
+		
+		return "redirect:" + adminPath + "/course/select/exportView?repage";
+    }
+	
 
 	
 	

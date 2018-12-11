@@ -72,7 +72,7 @@
         	and a.course_id = #{course.id}
       	</if>
       	
-      	<if test="course != null and course.teacher.no!=null and course.teacher.no!=''" >
+      	<if test="course != null and course.teacher!=null and course.teacher.no!=''" >
         	and c.teacher_number = #{course.teacher.no}
       	</if>
       	

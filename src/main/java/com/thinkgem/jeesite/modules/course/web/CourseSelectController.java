@@ -270,15 +270,24 @@ public class CourseSelectController extends BaseController {
                 + URLEncoder.encode(filename, "UTF-8"));
 		
 		List<UcStudent> list = new ArrayList<UcStudent>();
-		
+		int failureNum = 0;
+		StringBuilder failureMsg = new StringBuilder();
 		for(SelectCourse sc :ll) {
 			User user = sc.getStudent();
 			if(!org.springframework.util.StringUtils.isEmpty(user)&&!org.springframework.util.StringUtils.isEmpty(user.getNo())) {
-				UcStudent uc = ucStudentService.findBystudentNumber(user.getNo());
-				list.add(uc);
+				UcStudent uc = new UcStudent();
+				uc.setUsername(user.getName());
+				uc.setStudentNumber(user.getNo());
+				if(org.springframework.util.StringUtils.isEmpty(uc)) {
+					failureMsg.append("<br/>学号 "+user.getNo()+" 教务处数据未查找到当前学号数据; ");
+					failureNum++;
+					
+				}else {
+					list.add(uc);
+				}
 			}
 		}
-		
+		addMessage(redirectAttributes, "失败"+failureNum+" 条"+failureMsg);
 		excelUtil.oper(file, departmentMap, dateMap,list,response.getOutputStream());
 		
 		return "redirect:" + adminPath + "/course/select/exportView?repage";

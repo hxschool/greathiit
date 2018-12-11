@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.school.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;

@@ -44,7 +44,6 @@ import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
-import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
 /**
  * 课程基本信息Controller
@@ -63,8 +62,7 @@ public class CourseSelectController extends BaseController {
 	private UserOperationLogService userOperationLogService;
 	@Autowired
 	private OfficeService officeService;
-	@Autowired
-	private UcStudentService ucStudentService;
+
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id) {
 		Course entity = null;
@@ -248,8 +246,9 @@ public class CourseSelectController extends BaseController {
 
     @RequestMapping(value = "studentCourse")
     public String studentCourse(Course course, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes ,Model model) throws FileNotFoundException, IOException {
+    	Course entity = courseService.get(course);
 		SelectCourse  selectCourse = new  SelectCourse();
-		selectCourse.setCourse(course);
+		selectCourse.setCourse(entity);
 		List<SelectCourse>  ll = selectCourseService.findList(selectCourse);
 		
 		
@@ -258,6 +257,13 @@ public class CourseSelectController extends BaseController {
 		
 		File file = new File(modelPath);
 		StudentReportUtil excelUtil = new StudentReportUtil();
+		
+		Map<String,String> courseNameMap = new HashMap<String,String>();
+		courseNameMap.put("{course_name}", entity.getCursName());
+		
+		Map<String,String> courseIdMap = new HashMap<String,String>();
+		courseIdMap.put("{course_id}", entity.getId());
+		
 		Map<String,String> departmentMap = new HashMap<String,String>();
 		departmentMap.put("{department}", "");
 		departmentMap.put("{specialty}","");
@@ -288,7 +294,7 @@ public class CourseSelectController extends BaseController {
 			}
 		}
 		addMessage(redirectAttributes, "失败"+failureNum+" 条"+failureMsg);
-		excelUtil.oper(file, departmentMap, dateMap,list,response.getOutputStream());
+		excelUtil.oper(file,courseNameMap,courseIdMap, departmentMap, dateMap,list,response.getOutputStream());
 		
 		return "redirect:" + adminPath + "/course/select/exportView?repage";
     }

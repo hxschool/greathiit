@@ -22,13 +22,28 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 
 public class StudentReportUtil {
-	public void oper(File file,Map<String,String> departmentMap,Map<String,String> dateMap,List<UcStudent> list,OutputStream os) throws FileNotFoundException, IOException {
+	public void oper(File file,Map<String,String> courseNameMap,Map<String,String> courseIdMap,Map<String,String> departmentMap,Map<String,String> dateMap,List<UcStudent> list,OutputStream os) throws FileNotFoundException, IOException {
 		
 		 POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));  
 		 HSSFWorkbook  wb = new HSSFWorkbook(fs);  
 		 HSSFSheet sheet = wb.getSheetAt(0);
 		 Row schoolreportRow =   sheet.getRow(0);
-		 Cell schoolreportCell = schoolreportRow.getCell(0);
+		 Cell courseNameCell = schoolreportRow.getCell(0);
+		 String courseNameValue = courseNameCell.getStringCellValue();
+		 
+		 for (Map.Entry<String, String> entry : courseNameMap.entrySet()) {  
+			 courseNameValue = courseNameValue.replace(entry.getKey(),entry.getValue());
+		 }  
+		 courseNameCell.setCellValue(courseNameValue);
+		 
+		 Row courseIdRow =   sheet.getRow(1);
+		 Cell courseIdCell = courseIdRow.getCell(0);
+		 String courseIdValue = courseIdCell.getStringCellValue();
+		 
+		 for (Map.Entry<String, String> entry : courseIdMap.entrySet()) {  
+			 courseIdValue = courseIdValue.replace(entry.getKey(),entry.getValue());
+		 }  
+		 courseIdCell.setCellValue(courseIdValue);
 		 
 		 Row departmentRow =   sheet.getRow(2);
 		 Cell departmentCell = departmentRow.getCell(0);

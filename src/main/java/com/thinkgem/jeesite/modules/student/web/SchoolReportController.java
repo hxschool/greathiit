@@ -39,6 +39,13 @@ public class SchoolReportController {
 		
 		File file = new File(modelPath);
 		StudentReportUtil excelUtil = new StudentReportUtil();
+		
+		Map<String,String> courseNameMap = new HashMap<String,String>();
+		courseNameMap.put("{course_name}", "");
+		
+		Map<String,String> courseIdMap = new HashMap<String,String>();
+		courseIdMap.put("{course_id}", "");
+		
 		Map<String,String> departmentMap = new HashMap<String,String>();
 		departmentMap.put("{department}", officeService.get(department).getName());
 		departmentMap.put("{specialty}",officeService.get(specialty).getName());
@@ -56,7 +63,7 @@ public class SchoolReportController {
 		ucStudent.setClassNumber(classNumber);
 		List<UcStudent> list = ucStudentService.exportList(ucStudent);
 		
-		excelUtil.oper(file, departmentMap, dateMap,list,response.getOutputStream());
+		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,list,response.getOutputStream());
 		return "modules/school/schoolReport?repage";
 	}
 }

@@ -364,12 +364,12 @@
 
 						<div class="info-box-content">
 							<span class="info-box-text">商学院</span> <span
-								class="info-box-number">1,008</span>
+								class="info-box-number">1,276</span>
 
 							<div class="progress">
-								<div class="progress-bar" style="width: 17%"></div>
+								<div class="progress-bar" style="width: 16%"></div>
 							</div>
-							<span class="progress-description"> 17% member in 8142
+							<span class="progress-description"> 16% member in 8142
 								 </span>
 						</div>
 						<!-- /.info-box-content -->
@@ -384,9 +384,9 @@
 								class="info-box-number">406</span>
 
 							<div class="progress">
-								<div class="progress-bar" style="width: 7%"></div>
+								<div class="progress-bar" style="width: 5%"></div>
 							</div>
-							<span class="progress-description"> 7% member in 8142 </span>
+							<span class="progress-description"> 5% member in 8142 </span>
 						</div>
 						<!-- /.info-box-content -->
 					</div>

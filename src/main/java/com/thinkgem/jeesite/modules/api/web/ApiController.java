@@ -374,7 +374,7 @@ public class ApiController extends BaseController {
 			String otherPublicKey = sysAppconfig.getPublickey();
 			String retVal = SecureUtil.decryptTradeInfo(appid, cer, data, sign, Global.privateKey, otherPublicKey);
 			String loginName = new Gson().fromJson(retVal, String.class);
-			User user = systemService.getUserByLoginName(loginName);
+			User user = systemService.getCasByLoginName(loginName);
 			if(!StringUtils.isEmpty(user)) {
 				SecureUser secureUser = new SecureUser();
 				BeanUtils.copyProperties(user, secureUser);

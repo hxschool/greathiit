@@ -21,11 +21,10 @@
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
 		c.curs_name AS "course.cursName",
-		c.teacher_number AS "course.teacher.no",
+		c.teacher_number AS "course.teacher.teacherNumber",
 		t.tchr_name AS "course.teacher.tchrName",
 		s.student_number AS "student.studentNumber",
-		s.name AS "student.name",
-		t.tchr_name as "teacher.tchrName"
+		s.name AS "student.name"
 	</sql>
 	
 	<sql id="studentCourseJoins">
@@ -252,8 +251,13 @@
 			credit = #{credit},
 			term_year = #{termYear},
 			work_eva_value = #{workEvaValue},
+			
+			<if test="course != null and course != '' and course.id!=null and course.id!=''">
 			course_id = #{course.id},
+			</if>
+			<if test="student != null and student != '' and student.studentNumber!=null and student.studentNumber!=''">
 			student_number = #{student.studentNumber},
+			</if>
 			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},

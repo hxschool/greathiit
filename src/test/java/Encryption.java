@@ -20,10 +20,13 @@ import org.springframework.web.client.RestTemplate;
 
 public class Encryption {
 	
-	private final static String $aic_id = "taketourstest";	
-	private final static String $secret_key = "102d63d1cKD5d6f03361#5a2H60434";
-	private final static String $url = "https://testopenapi.aichotels-service.com";
 	
+	private final static String $aic_id = "hotelsys";	
+	private final static String $secret_key = "De6abc4!33da566f#856A0eC*640AF8AQ";
+	private final static String $url = "https://api.aichotels.net.cn";
+	//https://api.aichotels.net.cn/rate/public,
+	//https://api.aichotels.net.cn
+	//https://api.aichotels.net.cn
 	public static String generateSignature(String method, String path_only, String date, String secret) {
 	
 		String[] urlArray = path_only.split("[?]",1000);
@@ -97,7 +100,7 @@ public class Encryption {
 		return result.getBody();
 	}
 	
-	public static void main(String[] agrs) {
+	public static void main2(String[] agrs) {
 		String path_only = "/rate/public/ping";
 		
 		String json = "{\"message\":\"Connect Successfully.恭喜连接成功！\"}";
@@ -105,11 +108,23 @@ public class Encryption {
 		String str = post(path_only,json);
 		System.out.println(str);
 	}
+	
+	public static void main(String[] agrs) {
+		String path_only = "/rate/public/search/room_availability";
+		
+		String json = "{		\"hotel_id\": \"113049\",		\"check_in\": \"2018-12-15\",		\"check_out\": \"2018-12-16\",		\"room_number\": 1,		\"adult_number\": 2,		\"kids_number\": 0	}";
+		//String json = "{\"hotel_ids\":[],\"latitude\":\"40.70958800\",\"longitude\":\"-74.18888100\",\"radius\":10,\"number\":100}";
+		String str = post(path_only,json);
+		System.out.println(str);
+	}
+	
+	
+	
 	public static void main1(String[] agrs) {
 		String path_only = "/content/public/multi_hotels?locale=en_US";
 		
 		//String json = "{\"message\":\"Connect Successfully.恭喜连接成功！\"}";
-		String json = "{\"hotel_ids\":[],\"latitude\":\"40.70958800\",\"longitude\":\"-74.18888100\",\"radius\":10,\"number\":100}";
+		String json = "{		\"hotel_id\": \"113049\",		\"check_in\": \"2018-12-15\",		\"check_out\": \"2018-12-16\",		\"room_number\": 1,		\"adult_number\": 2,		\"kids_number\": 0	}";
 		String str = post(path_only,json);
 		System.out.println(str);
 	}

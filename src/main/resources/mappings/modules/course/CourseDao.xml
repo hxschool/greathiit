@@ -27,8 +27,8 @@
 		a.curs_learning_model AS "cursLearningModel",
 		a.upper_limit AS "upperLimit",
 		a.lower_limit AS "lowerLimit",
-		b.no AS "teacher.no",
-		b.name as "teacher.name",
+		t.teacher_number AS "teacher.teacherNumber",
+		t.tchr_name as "teacher.tchrName",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -39,7 +39,7 @@
 	</sql>
 	
 	<sql id="courseJoins">
-	LEFT JOIN sys_user b on a.teacher_number=b.no
+	LEFT JOIN teacher t on a.teacher_number=t.teacher_number
 	</sql>
     
 	<select id="get" resultType="Course">
@@ -59,8 +59,8 @@
 			1=1 and
 			a.del_flag = #{DEL_FLAG_NORMAL}
 	
-			<if test="teacher.no!=null and teacher.no!=''">
-				and a.teacher_number=#{teacher.no}
+			<if test="teacher.teacherNumber!=null and teacher.teacherNumber!=''">
+				and a.teacher_number=#{teacher.teacherNumber}
 			</if>
 	
 			<if test="cursName!=null and cursName!=''">
@@ -91,11 +91,11 @@
             	#{item}
         	</foreach>
 			</if>
-			<if test="teacher!=null and teacher.no!=null and teacher.no!=''">
-			and b.no=#{teacher.no}
+			<if test="teacher!=null and teacher.teacherNumber!=null and teacher.teacherNumber!=''">
+			and t.teacher_number=#{teacher.teacherNumber}
 			</if>
-			<if test="teacher!=null and teacher.name!=null and teacher.name!=''">
-			and b.name=#{teacher.name}
+			<if test="teacher!=null and teacher.tchrName!=null and teacher.tchrName!=''">
+			and b.name=#{teacher.tchrName}
 			</if>
 			<if test="cursStatus!=null and cursStatus!=''">
 			and a.curs_status=#{cursStatus}
@@ -233,7 +233,7 @@
 			#{cursLearningModel},
 			#{upperLimit},
 			#{lowerLimit},
-			#{teacher.no},
+			#{teacher.teacherNumber},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -268,7 +268,7 @@
 			upper_limit = #{upperLimit},
 			lower_limit = #{lowerLimit},
 			curs_form = #{cursForm},
-			teacher_number = #{teacher.no},
+			teacher_number = #{teacher.teacherNumber},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

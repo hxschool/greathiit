@@ -13,20 +13,25 @@ import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 
 /**
  * 学生成绩DAO接口
+ * 
  * @author 赵俊飞
  * @version 2018-01-30
  */
 @MyBatisDao
 public interface StudentCourseDao extends CrudDao<StudentCourse> {
-	StudentCourse findStudentCourseByStudentNumberAndCourseId(@Param("studentNumber")String studentNumber,@Param("courseId")String courseId);
+	StudentCourse findStudentCourseByStudentNumberAndCourseId(@Param("studentNumber") String studentNumber,
+			@Param("courseId") String courseId);
+
 	/**
 	 * 教师查询成绩
+	 * 
 	 * @param studentNumber
 	 * @param clazzId
 	 * @return
 	 */
-	List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(@Param("teacherNumber")String teacherNumber,@Param("clazzId")String clazzId,@Param("cursType")String cursType);
-	
-	List<StudentCourse> findListByStudentNumber(@Param("studentNumber")String studentNumber);
+	List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(@Param("teacherNumber") String teacherNumber,@Param("clazzId") String clazzId, @Param("cursType") String cursType);
+
+	List<StudentCourse> findListByStudentNumber(@Param("studentNumber") String studentNumber);
+
 	StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse);
 }

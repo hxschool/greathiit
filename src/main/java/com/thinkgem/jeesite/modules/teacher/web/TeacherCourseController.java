@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.FileUtils;
@@ -79,9 +82,9 @@ public class TeacherCourseController extends BaseController {
 		return "modules/teacher/course/TeacherManagement4";
 	}
 
-	@RequiresPermissions("teacher:course:view")
-	@RequestMapping(value = {"upload","FileUpload"})
-	public String upload(@RequestParam("file") MultipartFile multipartFile,String term,String course,String clazz,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	//@RequiresPermissions("teacher:course:view")
+	//@RequestMapping(value = {"upload","FileUpload"})
+	public String upload_old(@RequestParam("file") MultipartFile multipartFile,String term,String course,String clazz,HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		
 		if (!multipartFile.isEmpty()) {
 			String oldname = multipartFile.getOriginalFilename();
@@ -106,7 +109,19 @@ public class TeacherCourseController extends BaseController {
 		
 		return "";
 	}
-	
+	@RequiresPermissions("teacher:course:view")
+	@RequestMapping(value = {"upload","FileUpload"})
+	public String upload(@RequestParam("file") MultipartFile multipartFile,HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) throws Exception {
+		String folder=System.getProperty("java.io.tmpdir");
+		File file = new File(folder,multipartFile.getOriginalFilename()); 
+		FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);  
+       
+		String str = studentCourseService.upload(file);
+		addMessage(redirectAttributes, str);
+		return "redirect:" + adminPath + "/teacher/course/Teacher_Management_4_excute?repage";
+	}
+		
+		
 	
 	
 	@RequiresPermissions("teacher:course:view")

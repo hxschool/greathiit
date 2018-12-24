@@ -86,7 +86,7 @@
 			
 			</div>
 			<li><label>教师姓名：</label>
-					<form:input path="course.teacher.name" htmlEscape="false" maxlength="64" class="input-medium"/>
+					<form:input path="course.teacher.tchrName" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li class="clearfix"></li>
 			
@@ -152,7 +152,6 @@
 					${studentCourse.course.id } ${studentCourse.course.cursName}
 				</td>
 				<td>
-				
 					${studentCourse.course.teacher.tchrName}
 				</td>
 				<td>

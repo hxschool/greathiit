@@ -86,7 +86,7 @@
 			
 			</div>
 			<li><label>教师姓名：</label>
-					<form:input path="teacher.tchrName" htmlEscape="false" maxlength="64" class="input-medium"/>
+					<form:input path="course.teacher.name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li class="clearfix"></li>
 			
@@ -127,16 +127,13 @@
 				<th>学期</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
-				<th>姓名</th>
+				<th>学生姓名</th>
 				<th>课堂表现成绩</th>
 				<th>综合成绩</th>
 				<th>实验成绩</th>
 				<th>期末成绩</th>
 				<th>期中成绩</th>
-				
 				<th>作业成绩</th>
-				
-				
 				<th>状态标记</th>
 				<th>更新时间</th>
 
@@ -152,10 +149,11 @@
 					</a>
 				</td>
 				<td>
-					${studentCourse.course.cursName}
+					${studentCourse.course.id } ${studentCourse.course.cursName}
 				</td>
 				<td>
-					${studentCourse.teacher.tchrName}
+				
+					${studentCourse.course.teacher.tchrName}
 				</td>
 				<td>
 					${studentCourse.student.name}

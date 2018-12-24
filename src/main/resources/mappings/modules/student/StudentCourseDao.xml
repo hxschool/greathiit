@@ -9,6 +9,7 @@
 		a.exp_eva_value AS "expEvaValue",
 		a.fin_eva_value AS "finEvaValue",
 		a.mid_eva_value AS "midEvaValue",
+		a.credit AS "credit",
 		a.term_year AS "termYear",
 		a.work_eva_value AS "workEvaValue",
 		
@@ -21,6 +22,7 @@
 		a.del_flag AS "delFlag",
 		c.curs_name AS "course.cursName",
 		c.teacher_number AS "course.teacher.no",
+		t.tchr_name AS "course.teacher.tchrName",
 		s.student_number AS "student.studentNumber",
 		s.name AS "student.name",
 		t.tchr_name as "teacher.tchrName"
@@ -33,31 +35,28 @@
 	</sql>
     
     <select id="findListByTeacherIdAndClassIdAndCursType" resultType="StudentCourse">
-    select a.*,s.name as student_name,b.curs_type from student_course a left join course b on a.course_id=b.id left join student s on a.student_number=s.student_number
- where 1=1
-	 <if test="clazzId != null and clazzId != ''">
-	 and 
-		 case length(student_number) 
-		  when 7 then 
-		 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
-		  when 8 then
-		 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
-		   when 10 then
-		   SUBSTRING(a.student_number,1,8)=#{clazzId}  
-		   when 12 then
-		  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
-		 end
-	 </if>
-	 <if test="teacherNumber != null and teacherNumber != ''">
-  		and b.teacher_number=#{teacherNumber}
-  	 </if>
-  	 <if test="cursType != null and cursType != ''">
-  		AND b.curs_type = #{cursType}
-  	 </if>
-  	 
-  	 <if test="student != null and student.studentNumber != ''">
-  		AND a.student_number  = #{student.studentNumber}
-  	 </if>
+    	select a.*,s.name as student_name,c.curs_type from student_course a left join course c on a.course_id=c.id left join student s on a.student_number=s.student_number
+		 		where 1=1
+			 <if test="clazzId != null and clazzId != ''">
+			 and 
+				 case length(student_number) 
+				  when 7 then 
+				 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
+				  when 8 then
+				 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
+				   when 10 then
+				   SUBSTRING(a.student_number,1,8)=#{clazzId}  
+				   when 12 then
+				  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
+				 end
+			 </if>
+			 <if test="teacherNumber != null and teacherNumber!=null">
+		  		and c.teacher_number=#{teacherNumber}
+		  	 </if>
+		  	 <if test="cursType != null and cursType != ''">
+		  		AND c.curs_type = #{cursType}
+		  	 </if>
+		  	 
     </select>
     
     <select id="findListByStudentNumber" resultType="StudentCourse">
@@ -131,6 +130,10 @@
 			<if test="midEvaValue != null and midEvaValue != ''">
 				AND a.mid_eva_value = #{midEvaValue}
 			</if>
+			<if test="credit != null and credit != ''">
+				AND a.credit = #{credit}
+			</if>
+			
 			<if test="termYear != null and termYear != ''">
 				AND a.term_year = #{termYear}
 			</if>
@@ -151,8 +154,8 @@
 				AND a.status = #{status}
 			</if>
 			
-			<if test="teacher != null and teacher.tchrName!=null and teacher.tchrName != ''">
-				AND t.tchr_name = #{teacher.tchrName}
+			<if test="course!=null and course!='' and course.teacher != null and course.teacher.tchrName!=null and course.teacher.tchrName != ''">
+				AND t.tchr_name = #{course.teacher.tchrName}
 			</if>
 			
 			 	<if test="clazzId != null and clazzId != ''">
@@ -205,6 +208,7 @@
 			exp_eva_value,
 			fin_eva_value,
 			mid_eva_value,
+			credit,
 			term_year,
 			work_eva_value,
 			course_id,
@@ -223,6 +227,7 @@
 			#{expEvaValue},
 			#{finEvaValue},
 			#{midEvaValue},
+			#{credit},
 			#{termYear},
 			#{workEvaValue},
 			#{course.id},
@@ -244,6 +249,7 @@
 			exp_eva_value = #{expEvaValue},
 			fin_eva_value = #{finEvaValue},
 			mid_eva_value = #{midEvaValue},
+			credit = #{credit},
 			term_year = #{termYear},
 			work_eva_value = #{workEvaValue},
 			course_id = #{course.id},

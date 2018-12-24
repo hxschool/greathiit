@@ -92,7 +92,7 @@ public class CourseSelectController extends BaseController {
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
-			course.setTeacher(user);
+			course.setTeacher(UserUtils.getTeacher());
 		}
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
@@ -112,7 +112,7 @@ public class CourseSelectController extends BaseController {
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
 			Course course = new Course();
-			course.setTeacher(user);
+			course.setTeacher(UserUtils.getTeacher());
 			selectCourse.setCourse(course);
 		}
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
@@ -187,7 +187,7 @@ public class CourseSelectController extends BaseController {
 	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
-			courseSelectExcel.getCourse().setTeacher(user);
+			courseSelectExcel.getCourse().setTeacher(UserUtils.getTeacher());
 		}
 		model.addAttribute("list", selectCourseService.exportSelectCourse(courseSelectExcel));
 		return "modules/course/select/exportView";

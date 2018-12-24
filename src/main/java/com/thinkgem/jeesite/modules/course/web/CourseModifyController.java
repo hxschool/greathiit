@@ -109,8 +109,7 @@ public class CourseModifyController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacher_Management_1_selectTchrCourse")
 	public String selectTchrCourse(Course course, Model model) {
-		User teacher = UserUtils.getUser();
-		course.setTeacher(teacher);
+		course.setTeacher(UserUtils.getTeacher());
 		List<Course> teachCourses = courseService.findList(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_1_selectTchrCourse";

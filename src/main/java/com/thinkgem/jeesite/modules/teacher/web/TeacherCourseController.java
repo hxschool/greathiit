@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
@@ -32,6 +33,7 @@ import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherCourseService;
 
 /**
@@ -52,13 +54,17 @@ public class TeacherCourseController extends BaseController {
 	private TeacherCourseService teacherCourseService;
 	@Autowired
 	private StudentCourseService studentCourseService;
+	
 	@RequiresPermissions("teacher:course:view")
 	@RequestMapping(value = {"Teacher_Management_4_excute","", "Teacher_Management_2_selectStuPer"})
 	public String list(Course course ,String clazzId,HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
-			course.setTeacher(UserUtils.getUser());
+			course.setTeacher(UserUtils.getTeacher());
 		}
+		Teacher u = new Teacher();
+		u.setTeacherNumber("0063");
+		course.setTeacher(u);
 		List<Course> courses = courseService.findList(course);
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
 		if(StringUtils.isEmpty(course.getCursType())) {
@@ -69,7 +75,7 @@ public class TeacherCourseController extends BaseController {
 		model.addAttribute("studentCourses", studentCourses);
 		model.addAttribute("course", course);
 		model.addAttribute("courses", courses);
-		model.addAttribute("yearTerm", courseYearTerm.getYearTerm());
+		model.addAttribute("yearTerm", DateUtils.termYear().get(courseYearTerm.getYearTerm()));
 		return "modules/teacher/course/TeacherManagement4";
 	}
 

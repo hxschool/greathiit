@@ -40,7 +40,7 @@
 			<li><label>期中成绩：</label>
 				<form:input path="midEvaValue" htmlEscape="false" class="input-medium"/>
 			</li>
-			<li><label>term_year：</label>
+			<li><label>学期：</label>
 				<form:input path="termYear" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li><label>作业成绩：</label>
@@ -68,7 +68,7 @@
 				<th>实验成绩</th>
 				<th>期末成绩</th>
 				<th>期中成绩</th>
-				<th>term_year</th>
+				<th>学期</th>
 				<th>作业成绩</th>
 				<th>课程号</th>
 				<th>学号</th>

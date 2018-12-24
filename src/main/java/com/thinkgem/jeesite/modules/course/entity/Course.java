@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 课程基本信息Entity
@@ -46,7 +47,7 @@ public class Course extends DataEntity<Course> {
 	private String cursLearningModel;//学习模式
 	private int upperLimit;//班额上限
 	private int lowerLimit;//班额下限
-	private User teacher;		// 教师号
+	private Teacher teacher;		// 教师号
 
 	private List<String> item;
 	
@@ -193,11 +194,12 @@ public class Course extends DataEntity<Course> {
 	}
 
 
-	public User getTeacher() {
+
+	public Teacher getTeacher() {
 		return teacher;
 	}
 
-	public void setTeacher(User teacher) {
+	public void setTeacher(Teacher teacher) {
 		this.teacher = teacher;
 	}
 

@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.course.entity.Course;
-import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 学生成绩Entity
@@ -23,15 +22,25 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String expEvaValue;		// 实验成绩
 	private String finEvaValue;		// 期末成绩
 	private String midEvaValue;		// 期中成绩
-	private String termYear;		// termYear
+	private String credit;			// 学分
+	private String termYear;		// 年份
 	private String workEvaValue;		// 作业成绩
 	
 	private Course course;		//课程名称
 	private Student student;		// 学号
-	private Teacher teacher;		// 学号
+
 	private String status;		// 状态标记
 	private String clazzId;
 	private String cursType;
+	@ExcelField(title="学分", type=0, align=2, sort=7)
+	public String getCredit() {
+		return credit;
+	}
+
+	public void setCredit(String credit) {
+		this.credit = credit;
+	}
+
 	public StudentCourse() {
 		super();
 	}
@@ -47,7 +56,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setCursType(String cursType) {
 		this.cursType = cursType;
 	}
-	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=1)
+	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=3)
 	public String getClassEvaValue() {
 		return classEvaValue;
 	}
@@ -56,7 +65,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.classEvaValue = classEvaValue;
 	}
 	
-	@ExcelField(title="学号", type=0, align=2, sort=7)
+	@ExcelField(title="学号", type=0, align=2, sort=0)
 	public String getStudentNumber() {
 		return student.getStudentNumber();
 	}
@@ -66,11 +75,15 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		student.setStudentNumber(studentNumber);
 	}
 	
-	@ExcelField(title="姓名", type=1, align=2, sort=8)
+	@ExcelField(title="姓名", type=0, align=2, sort=1)
 	public String getStudentName() {
 		return student.getName();
 	}
 
+	
+	public void setStudentName(String name) {
+			student.setName(name);
+	}
 	
 	@ExcelField(title="综合成绩", type=0, align=2, sort=6)
 	public String getEvaValue() {
@@ -80,7 +93,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setEvaValue(String evaValue) {
 		this.evaValue = evaValue;
 	}
-	@ExcelField(title="实验成绩", type=0, align=2, sort=5)
+	@ExcelField(title="实验成绩", type=0, align=2, sort=6)
 	public String getExpEvaValue() {
 		return expEvaValue;
 	}
@@ -88,7 +101,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setExpEvaValue(String expEvaValue) {
 		this.expEvaValue = expEvaValue;
 	}
-	@ExcelField(title="期末成绩", type=0, align=2, sort=4)
+	@ExcelField(title="期末成绩", type=0, align=2, sort=5)
 	public String getFinEvaValue() {
 		return finEvaValue;
 	}
@@ -97,7 +110,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.finEvaValue = finEvaValue;
 	}
 	
-	@ExcelField(title="期中成绩", type=0, align=2, sort=3)
+	@ExcelField(title="期中成绩", type=0, align=2, sort=4)
 	public String getMidEvaValue() {
 		return midEvaValue;
 	}
@@ -150,20 +163,17 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.status = status;
 	}
 
-	public Teacher getTeacher() {
-		return teacher;
-	}
-
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
-
 	public String getClazzId() {
 		return clazzId;
 	}
 
 	public void setClazzId(String clazzId) {
 		this.clazzId = clazzId;
+	}
+
+	@ExcelField(title="备注", type=0, align=2, sort=9)
+	public String getRemarks() {
+		return super.getRemarks();
 	}
 	
 }

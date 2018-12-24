@@ -24,8 +24,8 @@ import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 public class StudentCourseService extends CrudService<StudentCourseDao, StudentCourse> {
 	@Autowired
 	private StudentCourseDao studentCourseDao;
-	public List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(String studentNumber,String clazzId,String cursType){
-		return studentCourseDao.findListByTeacherIdAndClassIdAndCursType(studentNumber, clazzId, cursType);
+	public List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(String teacherNumber,String clazzId,String cursType){
+		return studentCourseDao.findListByTeacherIdAndClassIdAndCursType(teacherNumber, clazzId, cursType);
 	}
 	public StudentCourse findStudentCourseByStudentNumberAndCourseId(String studentNumber,String courseId) {
 		return studentCourseDao.findStudentCourseByStudentNumberAndCourseId(studentNumber, courseId);

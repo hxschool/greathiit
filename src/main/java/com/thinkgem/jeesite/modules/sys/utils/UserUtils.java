@@ -26,6 +26,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.security.SystemAuthorizingRealm.Principal;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 用户工具类
@@ -134,6 +135,18 @@ public class UserUtils {
 		}
 		// 如果没有登录，则返回实例化空的User对象。
 		return new User();
+	}
+	
+	public static Teacher getTeacher(){
+		Principal principal = getPrincipal();
+		if (principal!=null){
+			User user = get(principal.getId());
+			Teacher teacher = new Teacher();
+			teacher.setTeacher(user);
+			return new Teacher();
+		}
+		// 如果没有登录，则返回实例化空的User对象。
+		return new Teacher();
 	}
 
 	/**

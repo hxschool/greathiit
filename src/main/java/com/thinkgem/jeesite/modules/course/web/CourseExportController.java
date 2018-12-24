@@ -169,9 +169,9 @@ public class CourseExportController extends BaseController {
 			String corseId = courseSchedule.getCourseId();
 			
 			Course course = courseService.get(corseId);
-			if(!org.springframework.util.StringUtils.isEmpty(course)&&indexMap.containsKey(course.getTeacher().getNo())) {
+			if(!org.springframework.util.StringUtils.isEmpty(course)&&indexMap.containsKey(course.getTeacher().getTeacherNumber())) {
 				
-				int cIndex = indexMap.get(course.getTeacher().getNo());
+				int cIndex = indexMap.get(course.getTeacher().getTeacherNumber());
 				Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
 				String zhou = $col_a.get("zhou");
 				String jie  = $col_a.get("jie");

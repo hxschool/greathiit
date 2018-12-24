@@ -259,7 +259,7 @@ public class PaikeCourseController extends BaseController {
 					Course course = courseService.get(courseSchedule.getCourseId());
 					if(!StringUtils.isEmpty(course)) {
 						ps.write("<div class=\"course_text\">课程:"+course.getCursName()+"</div>");
-						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getTeacherNumber());
 						ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
 					}
 					
@@ -339,7 +339,7 @@ public class PaikeCourseController extends BaseController {
 						ps.write("<div class=\"course_text\">"+courseClass+"</div>");
 					}else {
 						
-						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getNo());
+						Teacher teacher = teacherService.getTeacherByTeacherNumber(course.getTeacher().getTeacherNumber());
 						ps.write("<div class=\"course_text\">教师:"+teacher.getTchrName()+"</div>");
 						String grade = courseClass.substring(0,4);
 						String school = courseClass.substring(4,5);
@@ -367,9 +367,9 @@ public class PaikeCourseController extends BaseController {
 		Course course = courseService.get(courseId);
 		List<TeacherClass> tcs = new ArrayList<TeacherClass>();
 		if(!StringUtils.isEmpty(course)) {
-			User teacher = course.getTeacher();
+			Teacher teacher = course.getTeacher();
 			TeacherClass teacherClass = new TeacherClass();
-			teacherClass.setTeacherNumber(teacher.getNo());
+			teacherClass.setTeacherNumber(teacher.getTeacherNumber());
 			tcs = teacherClassService.findList(teacherClass);
 		}
 		return tcs;
@@ -384,7 +384,7 @@ public class PaikeCourseController extends BaseController {
 		for(Course course:list1) {
 			TreeLink treeLink = new TreeLink();
 			treeLink.setValue(course.getId());
-			String teacherNumber = course.getTeacher().getNo();
+			String teacherNumber = course.getTeacher().getTeacherNumber();
 			Teacher teacher = teacherService.getTeacherByTeacherNumber(teacherNumber);
 			if(!StringUtils.isEmpty(teacher)) {
 				treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
@@ -484,9 +484,10 @@ public class PaikeCourseController extends BaseController {
 							teacherClassService.save(teacherClass);
 						}
 					}
-					
+					Teacher tt = new Teacher();
+					tt.setTeacher(user);
 					Course course = new Course();
-					course.setTeacher(user);
+					course.setTeacher(tt);
 					course.setCursNum(curs_num);
 					course.setCursName(curs_name);
 					Course entity = courseService.getCourse(course);
@@ -499,7 +500,7 @@ public class PaikeCourseController extends BaseController {
 						entity.setCursCurrTerm(currTerm);
 						entity.setCursWeekTotal(new Double(week_count).intValue()+"");
 						entity.setCursWeekHour(new Double(week).intValue()+"");
-						entity.setTeacher(user);
+						entity.setTeacher(tt);
 						entity.setCursNum(curs_num);
 						entity.setCursName(curs_name);
 						entity.setCursTotal(new Double(count).intValue()+"");
@@ -584,8 +585,10 @@ public class PaikeCourseController extends BaseController {
 					if(StringUtils.isEmpty(curs_num)||curs_num.equals("——")) {
 						curs_num = curs_edu_num;
 					}
+					Teacher tt = new Teacher();
+					tt.setTeacher(user);
 					Course course = new Course();
-					course.setTeacher(user);
+					course.setTeacher(tt);
 					course.setCursNum(curs_num);
 					course.setCursName(curs_name);
 					Course entity = courseService.getCourse(course);
@@ -605,7 +608,7 @@ public class PaikeCourseController extends BaseController {
 						entity.setCursSelectCourseType(select_course_type_item_id);
 						entity.setCursCurrTerm(currTerm);
 						entity.setCursCredit(curs_credit);
-						entity.setTeacher(user);
+						entity.setTeacher(tt);
 						entity.setCursNum(curs_num);
 						entity.setCursEduNum(curs_edu_num);
 						entity.setCursName(curs_name);

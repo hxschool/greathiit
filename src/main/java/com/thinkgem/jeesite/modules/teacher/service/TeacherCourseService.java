@@ -73,7 +73,7 @@ public class TeacherCourseService {
 			Course courseQuery = new Course();
 			courseQuery.setCursCurrTerm(cursCurrTerm);
 			courseQuery.setCursName(cursName);
-			courseQuery.setTeacher(UserUtils.getUser());
+			courseQuery.setTeacher(UserUtils.getTeacher());
 			course = courseDao.getCourse(courseQuery);
 			for (int i = 0; i < clazzArray.length; i++) {
 				Office clazz = null;

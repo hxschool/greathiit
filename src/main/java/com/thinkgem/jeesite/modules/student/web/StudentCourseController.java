@@ -194,9 +194,9 @@ public class StudentCourseController extends BaseController {
 				}
 			}
 			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条用户，导入信息如下：");
+				failureMsg.insert(0, "，失败 "+failureNum+" 条成绩信息，导入信息如下：");
 			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条用户"+failureMsg);
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条成绩信息"+failureMsg);
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入成绩失败！失败信息："+e.getMessage());
 		}

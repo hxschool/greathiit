@@ -134,7 +134,7 @@ public class CourseController extends BaseController {
 			course.setCursEduNum(course.getCursNum());
 			course.setIsNewRecord(true);
 			course.setId(courseId);
-			course.setTeacher(UserUtils.getUser());
+			course.setTeacher(UserUtils.getTeacher());
 			courseService.save(course);
 		}catch(Exception e) {
 			addMessage(model,"添加信息异常"+e.getMessage());
@@ -250,8 +250,7 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacher_Management_1_selectTchrCourse")
 	public String teacher_Management_1_selectTchrCourse(Course course, Model model) {
-		User teacher = UserUtils.getUser();
-		course.setTeacher(teacher);
+		course.setTeacher(UserUtils.getTeacher());
 		List<Course> teachCourses = courseService.findList(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_1_selectTchrCourse";
@@ -260,8 +259,7 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacher_Management_2_selectTchrCourse")
 	public String teacher_Management_2_selectTchrCourse(Course course, Model model) {
-		User teacher = UserUtils.getUser();
-		course.setTeacher(teacher);
+		course.setTeacher(UserUtils.getTeacher());
 		List<Course> teachCourses = courseService.findList(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_2_selectTchrCourse";
@@ -510,8 +508,8 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacher_Management_3_selectTchrCourse")
 	public String teacher_Management_3_selectTchrCourse(Course course, Model model) {
-		User teacher = UserUtils.getUser();
-		course.setTeacher(teacher);
+		
+		course.setTeacher(UserUtils.getTeacher());
 		List<Course> teachCourses = courseService.findList(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_3_selectTchrCourse";

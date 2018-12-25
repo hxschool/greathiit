@@ -117,28 +117,15 @@
 											<tr>
 												<th class="th1">学号</th>
 												<th class="th2">姓名</th>
-												<c:if test="${course.cursType=='normal'}">
-													<th>课堂表现</th>
-													<th>平时作业</th>
-													<th>实验成绩</th>
-													<th>期中成绩</th>
-													<th>期末成绩</th>
-												</c:if>
-												<c:if test="${course.cursType=='experiment'}">
-													<th>协作答辩</th>
-													<th>技术方案</th>
-													<th style="display:none"></th>
-													<th>设计报告</th>
-													<th>查阅文献</th>
-												</c:if>
-												<c:if test="${course.cursType=='graduation-project'}">
-													<th>中期</th>
-													<th>软硬件验收</th>
-													<th>翻译</th>
-													<th>论文</th>
-													<th>答辩</th>
-												</c:if>
+												<th>学分</th>
+												<th>课堂表现</th>
+												<!-- <th>平时作业</th>
+												<th>实验成绩</th> -->
+												<th>期中成绩</th>
+												<th>期末成绩</th>
 												<th class="th8">综合成绩</th>
+												<th>绩点(综合-60)*0.1</th>
+												
 											</tr>
 										</thead>
 										<tbody>
@@ -147,23 +134,14 @@
 												<tr>
 													<td>${item.studentNumber }</td>
 													<td>${item.studentName }</td>
+													<td>${item.credit }</td>
 													<td>${item.classEvaValue }</td>
-													<td>${item.workEvaValue }</td>
-													
-													<c:choose>
-													   <c:when test="${item.cursType=='experiment' }"> 
-													     <td style="display:none">${item.expEvaValue }</td>
-													   </c:when>
-													   <c:otherwise>
-													    <td>${item.expEvaValue }</td>
-													    </c:otherwise>
-													</c:choose>
-																										
-												
+													<!-- <td>${item.workEvaValue }</td>
+													<td>${item.expEvaValue }</td> -->
 													<td>${item.midEvaValue }</td>
 													<td>${item.finEvaValue }</td>
 													<td>${item.evaValue }</td>
-													
+													<td>${item.point }</td>
 												</tr>
 											</c:forEach>
 										</tbody>

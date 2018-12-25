@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.course.dao.CoursePointDao">
+    
+	<sql id="coursePointColumns">
+		a.id AS "id",
+		a.percentage AS "percentage",
+		a.point AS "point",
+		a.clazz_id AS "office.id",
+		a.course_id AS "course.id",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="coursePointJoins">
+	</sql>
+    
+	<select id="get" resultType="CoursePoint">
+		SELECT 
+			<include refid="coursePointColumns"/>
+		FROM course_point a
+		<include refid="coursePointJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="getCoursePointByCourseId" resultType="CoursePoint">
+		SELECT 
+			<include refid="coursePointColumns"/>
+		FROM course_point a
+		<include refid="coursePointJoins"/>
+		WHERE a.course_id = #{course.id}
+	</select>
+	
+	<select id="findList" resultType="CoursePoint">
+		SELECT 
+			<include refid="coursePointColumns"/>
+		FROM course_point a
+		<include refid="coursePointJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="office != null and office.id != null and office.id != ''">
+				AND a.clazz_id = #{office.id}
+			</if>
+			<if test="course != null and course.id != null and course.id != ''">
+				AND a.course_id = #{course.id}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CoursePoint">
+		SELECT 
+			<include refid="coursePointColumns"/>
+		FROM course_point a
+		<include refid="coursePointJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_point(
+			id,
+			percentage,
+			point,
+			clazz_id,
+			course_id,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{percentage},
+			#{point},
+			#{office.id},
+			#{course.id},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_point SET 	
+			percentage = #{percentage},
+			point = #{point},
+			clazz_id = #{office.id},
+			course_id = #{course.id},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_point SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

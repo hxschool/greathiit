@@ -70,11 +70,8 @@ public class TeacherCourseController extends BaseController {
 		course.setTeacher(u);
 		List<Course> courses = courseService.findList(course);
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		if(StringUtils.isEmpty(course.getCursType())) {
-			course.setCursType("normal");
-		}
 		
-		List<StudentCourse>  studentCourses = studentCourseService.findListByTeacherIdAndClassIdAndCursType(UserUtils.getUser().getNo(), clazzId, course.getCursType());
+		List<StudentCourse>  studentCourses = studentCourseService.findListByTeacherIdAndClassIdAndCursType("0063", clazzId, course.getCursType());
 		model.addAttribute("studentCourses", studentCourses);
 		model.addAttribute("course", course);
 		model.addAttribute("courses", courses);

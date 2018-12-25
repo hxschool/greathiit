@@ -51,9 +51,9 @@
 			onsubmit="loading('正在导入，请稍等...');">
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
-			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+			<!-- <br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="${ctx}/student/studentCourse/import/template">下载模板</a>
+				href="${ctx}/student/studentCourse/import/template">下载模板</a> -->
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
@@ -134,10 +134,12 @@
 				<th>期末成绩</th>
 				<th>期中成绩</th>
 				<th>作业成绩</th>
+				<th>学分</th>
+				<th>绩点</th>
 				<th>状态标记</th>
-				<th>更新时间</th>
+				<th>导入时间</th>
 
-				<shiro:hasPermission name="student:studentCourse:edit"><th>操作</th></shiro:hasPermission>
+				<!--<shiro:hasPermission name="student:studentCourse:edit"><th>操作</th></shiro:hasPermission>-->
 			</tr>
 		</thead>
 		<tbody>
@@ -177,7 +179,12 @@
 					${studentCourse.workEvaValue}
 				</td>
 				
-				
+				<td>
+					${studentCourse.credit}
+				</td>
+				<td>
+					${studentCourse.point}
+				</td>
 				<td>
 					${studentCourse.status}
 				</td>
@@ -185,10 +192,10 @@
 					<fmt:formatDate value="${studentCourse.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 
-				<shiro:hasPermission name="student:studentCourse:edit"><td>
+				<!-- <shiro:hasPermission name="student:studentCourse:edit"><td>
     				<a href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">修改</a>
 					<a href="${ctx}/student/studentCourse/delete?id=${studentCourse.id}" onclick="return confirmx('确认要删除该学生成绩吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				</td></shiro:hasPermission> -->
 			</tr>
 		</c:forEach>
 		</tbody>

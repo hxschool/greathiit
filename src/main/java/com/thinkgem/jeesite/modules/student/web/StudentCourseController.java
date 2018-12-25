@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.student.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
@@ -137,11 +139,11 @@ public class StudentCourseController extends BaseController {
 	
 	@RequiresPermissions("student:studentCourse:edit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
-    public String importFile(MultipartFile multipartFile, RedirectAttributes redirectAttributes) {
+    public String importFile(MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
 		
-		CommonsMultipartFile cf = (CommonsMultipartFile) multipartFile;
-		DiskFileItem fi = (DiskFileItem) cf.getFileItem();
-		File file = fi.getStoreLocation();
+		String folder=System.getProperty("java.io.tmpdir");
+		File file = new File(folder,multipartFile.getOriginalFilename()); 
+		FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);  
 		String str = studentCourseService.upload(file);
 		addMessage(redirectAttributes, str);
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";

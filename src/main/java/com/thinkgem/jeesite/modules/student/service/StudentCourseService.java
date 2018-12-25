@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.student.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
@@ -24,8 +27,12 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
+import com.thinkgem.jeesite.modules.course.dao.CoursePointDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
+import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
 import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -42,6 +49,10 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private StudentCourseDao studentCourseDao;
 	@Autowired
 	private CourseDao courseDao;
+	@Autowired
+	private CourseCompositionRulesDao courseCompositionRulesDao;
+	@Autowired
+	private CoursePointDao coursePointDao; 
 	public List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(String teacherNumber,String clazzId,String cursType){
 		return studentCourseDao.findListByTeacherIdAndClassIdAndCursType(teacherNumber, clazzId, cursType);
 	}
@@ -99,7 +110,18 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			}
 			Row termRow = ei.getRow(3);
 			Cell termCell = termRow.getCell(0);
-			String termYear = termCell.getStringCellValue().replaceAll("\\s*", "").replace("—", "").replace("学年度第学期", "");
+			String title = termCell.getStringCellValue().replaceAll("\\s*", "").replaceAll("学年度第.*学期", "");
+			String[] arrays = title.split("——");
+			String termYear = null;
+			if(arrays.length==2) {
+				String start = arrays[0];
+				String end = arrays[1];
+				termYear = start.concat("2");
+				if(!start.equals(end)) {
+					termYear = start.concat("1");
+				}
+			}
+
 			if(StringUtils.isEmpty(termYear)) {
 				String year = DateUtils.getYear();
 				String month = DateUtils.getMonth();
@@ -116,17 +138,73 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
 			int successNum = 0;
 			int failureNum = 0;
+			CourseCompositionRules rules = courseCompositionRulesDao.getCourseCompositionRulesByCourseId(course.getId());
+			DecimalFormat df = new DecimalFormat("#.00");// 用于格式化Double类型数据，保留两位小数
 			StringBuilder failureMsg = new StringBuilder();
+			
+			CoursePoint cp = new CoursePoint();
+			cp.setCourse(course);;
+			CoursePoint coursePoint = coursePointDao.getCoursePointByCourseId(cp);
+			if(StringUtils.isEmpty(coursePoint)) {
+				coursePoint = new CoursePoint();
+				coursePoint.setPercentage("60");
+				coursePoint.setPoint("0.1");
+			}
+			
 			for (StudentCourse studentCourse : list) {
 				if(!StringUtils.isEmpty(studentCourse.getStudentNumber())) {
 					studentCourse.setTermYear(termYear);
 					studentCourse.setCourse(course);
+					studentCourse.setStatus("0");
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
+					
+					if(!StringUtils.isEmpty(rules)) {
+						Double midEvaPer = Double.valueOf(rules.getMidTermPer()) / 100;// 期中成绩百分比
+						Double finEvaPer = Double.valueOf(rules.getFinalExamper()) / 100;// 期末成绩百分比
+						Double classEvaPer = Double.valueOf(rules.getClazzPer()) / 100;// 课堂表现百分比
+						Double workEvaPer = Double.valueOf( rules.getHomeworkResultPer()) / 100;// 平时作业百分比
+						Double expEvaPer = Double.valueOf( rules.getExpResultPer()) / 100;// 实验成绩百分比
+						
+						Double midEvaValue = Double.parseDouble(studentCourse.getMidEvaValue());// 期中成绩
+						Double finEvaValue = Double.parseDouble(studentCourse.getFinEvaValue());// 期末成绩
+						Double classEvaValue = Double.parseDouble(studentCourse.getClassEvaValue());// 课堂表现
+						Double workEvaValue = Double.parseDouble(studentCourse.getWorkEvaValue());// 平时作业成绩
+						Double expEvaValue = Double.parseDouble(studentCourse.getExpEvaValue());// 实验成绩
+						
+						
+						Double evaValue = midEvaValue * midEvaPer + finEvaValue
+								* finEvaPer + classEvaValue * classEvaPer
+								+ workEvaValue * workEvaPer + expEvaValue
+								* expEvaPer;
 
+						evaValue = Double.valueOf(df.format(evaValue));
+						studentCourse.setMidEvaValue(String.valueOf(midEvaValue));
+						studentCourse.setFinEvaValue(String.valueOf(finEvaValue));
+						studentCourse.setClassEvaValue(String.valueOf(classEvaValue));
+						studentCourse.setWorkEvaValue(String.valueOf(workEvaValue));
+						studentCourse.setExpEvaValue(String.valueOf(expEvaValue));
+						studentCourse.setEvaValue(String.valueOf(evaValue));
+						studentCourse.setPoint("1");
+						this.save(studentCourse);
+						failureNum++;
+						continue;
+					}
+					
+					String point = "0";
+					if(isNumeric(studentCourse.getEvaValue())) {
+						if (Double.parseDouble(studentCourse.getEvaValue()) - Double.parseDouble(coursePoint.getPercentage()) > 0) {
+							Double value = Double.parseDouble(studentCourse.getEvaValue());
+							Double percentage = Double.parseDouble(coursePoint.getPercentage());
+							point = String.valueOf((value - percentage) * 0.1);
+						}
+					}
+					if(!StringUtils.isEmpty(studentCourse.getPoint())) {
+						point = studentCourse.getPoint();
+					}
 					try {
 						if (StringUtils.isEmpty(sc)) {
-							studentCourse.setTermYear(termYear);
-							studentCourse.setCourse(course);
+							
+							studentCourse.setPoint(point);
 							this.save(studentCourse);
 							successNum++;
 						} else {
@@ -151,6 +229,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							if (StringUtils.isEmpty(sc.getCredit())) {
 								sc.setCredit(studentCourse.getCredit());
 							}
+							sc.setPoint(point);
 							this.save(sc);
 							failureNum++;
 						}
@@ -180,6 +259,19 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			throw new GITException("50000404","系统异常,请联系管理员 : 18801029695");
 		}
 		
+	}
+	
+	public static boolean isNumeric(String str) {
+		try {
+			Double.parseDouble(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+	public static void main(String[] args) {
+		double bb = Double.parseDouble("1.01");
+		System.out.println(bb);
 	}
 	
 }

@@ -23,16 +23,16 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String finEvaValue;		// 期末成绩
 	private String midEvaValue;		// 期中成绩
 	private String credit;			// 学分
+	private String point;			//计数点
 	private String termYear;		// 年份
 	private String workEvaValue;		// 作业成绩
-	
 	private Course course;		//课程名称
 	private Student student;		// 学号
-
 	private String status;		// 状态标记
 	private String clazzId;
 	private String cursType;
-	@ExcelField(title="学分", type=0, align=2, sort=7)
+	
+	@ExcelField(title="学分", type=0, align=2, sort=6)
 	public String getCredit() {
 		return credit;
 	}
@@ -56,7 +56,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setCursType(String cursType) {
 		this.cursType = cursType;
 	}
-	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=3)
+	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=2)
 	public String getClassEvaValue() {
 		return classEvaValue;
 	}
@@ -85,7 +85,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 			student.setName(name);
 	}
 	
-	@ExcelField(title="综合成绩", type=0, align=2, sort=6)
+	@ExcelField(title="综合成绩", type=0, align=2, sort=5)
 	public String getEvaValue() {
 		return evaValue;
 	}
@@ -93,7 +93,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setEvaValue(String evaValue) {
 		this.evaValue = evaValue;
 	}
-	@ExcelField(title="实验成绩", type=0, align=2, sort=6)
+
 	public String getExpEvaValue() {
 		return expEvaValue;
 	}
@@ -101,7 +101,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setExpEvaValue(String expEvaValue) {
 		this.expEvaValue = expEvaValue;
 	}
-	@ExcelField(title="期末成绩", type=0, align=2, sort=5)
+	@ExcelField(title="期末成绩", type=0, align=2, sort=4)
 	public String getFinEvaValue() {
 		return finEvaValue;
 	}
@@ -110,7 +110,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.finEvaValue = finEvaValue;
 	}
 	
-	@ExcelField(title="期中成绩", type=0, align=2, sort=4)
+	@ExcelField(title="期中成绩", type=0, align=2, sort=3)
 	public String getMidEvaValue() {
 		return midEvaValue;
 	}
@@ -127,7 +127,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setTermYear(String termYear) {
 		this.termYear = termYear;
 	}
-	@ExcelField(title="作业成绩", type=0, align=2, sort=2)
+	
 	public String getWorkEvaValue() {
 		return workEvaValue;
 	}
@@ -171,9 +171,19 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.clazzId = clazzId;
 	}
 
-	@ExcelField(title="备注", type=0, align=2, sort=9)
+	@ExcelField(title="备注", type=0, align=2, sort=8)
 	public String getRemarks() {
 		return super.getRemarks();
 	}
+	@ExcelField(title="绩点", type=0, align=2, sort=7)
+	public String getPoint() {
+		return point;
+	}
+
+	public void setPoint(String point) {
+		this.point = point;
+	}
+
+	
 	
 }

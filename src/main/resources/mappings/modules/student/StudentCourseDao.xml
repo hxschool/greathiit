@@ -10,6 +10,7 @@
 		a.fin_eva_value AS "finEvaValue",
 		a.mid_eva_value AS "midEvaValue",
 		a.credit AS "credit",
+		a.point AS "point",
 		a.term_year AS "termYear",
 		a.work_eva_value AS "workEvaValue",
 		
@@ -147,7 +148,10 @@
 				AND c.curs_name = #{course.cursName}
 			</if>
 			<if test="student!=null and student.studentNumber != null and student.studentNumber != ''">
-				AND a.student_number = #{student.studentNumber}
+				AND s.student_number = #{student.studentNumber}
+			</if>
+			<if test="student!=null and student.name != null and student.name != ''">
+				AND s.name = #{student.name}
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
@@ -208,6 +212,7 @@
 			fin_eva_value,
 			mid_eva_value,
 			credit,
+			point,
 			term_year,
 			work_eva_value,
 			course_id,
@@ -227,6 +232,7 @@
 			#{finEvaValue},
 			#{midEvaValue},
 			#{credit},
+			#{point},
 			#{termYear},
 			#{workEvaValue},
 			#{course.id},
@@ -249,6 +255,7 @@
 			fin_eva_value = #{finEvaValue},
 			mid_eva_value = #{midEvaValue},
 			credit = #{credit},
+			point = #{point},
 			term_year = #{termYear},
 			work_eva_value = #{workEvaValue},
 			

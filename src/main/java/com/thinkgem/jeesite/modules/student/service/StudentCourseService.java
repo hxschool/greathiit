@@ -129,9 +129,9 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				Integer m = Integer.valueOf(month);;
 				if (m > 0b0011 && m < 0b1001) {
 					y = y-1 ; 
-					termYear = termYear.concat(String.valueOf(y)).concat("2");
+					termYear = String.valueOf(y).concat("2");
 				}else {
-					termYear = termYear.concat(year).concat("1");
+					termYear = year.concat("1");
 				}
 			}
 			ei = new ImportExcel(file, 13, 0);

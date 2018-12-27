@@ -57,7 +57,7 @@
 											<h5>
 												${yearTerm}
 											</h5>
-											<div class="div-select">
+											<!-- <div class="div-select">
 												课程&nbsp;&nbsp;<select id="course" name="course" style="width:200px;">
 													
 													<c:forEach var="item" items="${courses}" varStatus="status">
@@ -73,7 +73,7 @@
 												<select id="example-multiple-selected" name="clazz"  multiple="multiple" style="width:200px;">
 													
 												</select>
-											</div>
+											</div> -->
 											<a class="btn btn-file">选择文件<input type="file"
 												name="file" id="filename"></a>
 											<input name="uploadUrl" value="/excel" type="hidden"  />

@@ -142,8 +142,9 @@ public class UserUtils {
 		if (principal!=null){
 			User user = get(principal.getId());
 			Teacher teacher = new Teacher();
+			teacher.setTeacherNumber(user.getNo());
 			teacher.setTeacher(user);
-			return new Teacher();
+			return teacher;
 		}
 		// 如果没有登录，则返回实例化空的User对象。
 		return new Teacher();

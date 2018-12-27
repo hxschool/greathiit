@@ -187,7 +187,8 @@ public class CourseSelectController extends BaseController {
 	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
-			courseSelectExcel.getCourse().setTeacher(UserUtils.getTeacher());
+			Course course = new Course();
+			course.setTeacher(UserUtils.getTeacher());
 		}
 		model.addAttribute("list", selectCourseService.exportSelectCourse(courseSelectExcel));
 		return "modules/course/select/exportView";

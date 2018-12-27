@@ -195,6 +195,8 @@ public class Course extends DataEntity<Course> {
 
 
 
+
+
 	public Teacher getTeacher() {
 		return teacher;
 	}

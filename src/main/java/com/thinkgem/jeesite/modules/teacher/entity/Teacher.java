@@ -234,5 +234,4 @@ public class Teacher extends DataEntity<Teacher> {
 	}
 
 	
-	
 }

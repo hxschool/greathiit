@@ -73,7 +73,7 @@
       	</if>
       	
       	<if test="course != null and course.teacher!=null and course.teacher.teacherNumber!=''" >
-        	and c.teacher_number = #{course.teacher.teacherNumber!=}
+        	and c.teacher_number = #{course.teacher.teacherNumber}
       	</if>
       	
       	<if test="student != null and student.no!=null and student.no!=''" >

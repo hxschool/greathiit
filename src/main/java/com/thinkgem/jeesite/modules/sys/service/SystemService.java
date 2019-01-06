@@ -670,6 +670,10 @@ public class SystemService extends BaseService implements InitializingBean {
 		}
 	}
 	
+	public User findUserByNumber(String no){
+		return userDao.findUserByNumber(no);
+	}
+	
 	public User findUserbyMobileOrStudentNumberOrMail(String loginname){
 		return userDao.findUserbyMobileOrStudentNumberOrMail(loginname);
 	}

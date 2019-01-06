@@ -173,6 +173,39 @@
 		WHERE a.name = #{name} AND a.login_name = #{loginName}
 	</select>
 	
+	
+	<select id="findUserByNumber" resultType="User" parameterType="String">
+	SELECT
+			a.id,
+    	a.company_id AS "company.id",
+    	a.office_id AS "office.id",
+    	a.login_name,
+    	a.password,
+    	a.no,
+		a.name,
+		a.email,
+		a.phone,
+		a.mobile,
+		a.user_type,
+		a.login_ip,
+		a.login_date,
+		a.remarks,
+		a.login_flag,
+		a.photo,
+		a.create_by AS "createBy.id",
+		a.create_date,
+		a.update_by AS "updateBy.id",
+		a.update_date,
+		a.del_flag,
+		a.pay_status,
+		a.account_no
+		
+		FROM sys_user a
+		
+		WHERE a.no=#{no}
+		
+		 AND a.del_flag = 0
+	</select>
 	<!-- 根据登录名查询用户 -->
 	<select id="getCasByLoginName" resultType="User" parameterType="User">
 		SELECT

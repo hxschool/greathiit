@@ -219,7 +219,7 @@ public class ApiController extends BaseController {
 	}
 	
 	private String getInfo(String teacherNumber) {
-		User user = systemService.getCasByLoginName(teacherNumber);
+		User user = systemService.findUserByNumber(teacherNumber);
 		if(!StringUtils.isEmpty(user)) {
 			Office office = user.getCompany();
 			String officeId = "0";

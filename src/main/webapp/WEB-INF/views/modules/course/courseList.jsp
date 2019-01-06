@@ -32,7 +32,7 @@
 			
 		
 		<li><label>教师姓名：</label>
-					<form:input path="teacher.name" htmlEscape="false" maxlength="64" class="input-medium"/>
+					<form:input path="teacher.tchrName" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			
 					<li><label>学期：</label>
@@ -81,7 +81,7 @@
 					${course.cursName}
 				</td>
 				<td>
-					${course.teacher.name}
+					${course.teacher.tchrName}
 				</td>
 				<td>
 					${course.cursMajor}

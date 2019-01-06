@@ -23,6 +23,7 @@
 		a.tchr_eng_self_introduce AS "tchrEngSelfIntroduce",
 		a.tchr_title AS "tchrTitle",
 		a.teacher_number AS "teacher.no",
+		a.teacher_number AS "teacherNumber",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -33,6 +34,51 @@
 	
 	<sql id="teacherJoins">
 	</sql>
+    <select id="getTeacherInfos" resultType="Teacher">
+    	select <include refid="teacherColumns"/>,
+concat(
+(case   when b.company_id = ''  then '0'
+                      when b.company_id is NULL then '0' 
+                    
+                             else b.company_id end  ) 
+,
+(case  when b.office_id = ''  then '00'
+                      when b.office_id is NULL then '00'
+                     
+                             else b.office_id end  ) 
+,
+(case when  b.user_type  = ''  then '00'
+                      when b.user_type is NULL then '00' 
+                     
+                             else b.user_type end  ) 
+) as info
+from teacher a left join sys_user b on a.teacher_number = b.no where length(b.no)=4 and b.no!='9999'
+
+    </select>
+    
+        <select id="getTeacherInfo" resultType="Teacher">
+    	select <include refid="teacherColumns"/>,
+concat(
+(case   when b.company_id = ''  then '0'
+                      when b.company_id is NULL then '0' 
+                    
+                             else b.company_id end  ) 
+,
+(case  when b.office_id = ''  then '00'
+                      when b.office_id is NULL then '00'
+                     
+                             else b.office_id end  ) 
+,
+(case when  b.user_type  = ''  then '00'
+                      when b.user_type is NULL then '00' 
+                     
+                             else b.user_type end  ) 
+) as info
+from teacher a left join sys_user b on a.teacher_number = b.no where 1=1
+<if test="teacherNumber!=null and teacherNumber!=''">  
+and a.teacher_number=#{teacherNumber}
+</if>
+    </select>
     
 	<select id="get" resultType="Teacher">
 		SELECT 

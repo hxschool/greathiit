@@ -22,5 +22,7 @@ public interface TeacherDao extends CrudDao<Teacher> {
 	public Teacher getTeacherByTeacherNumber(@Param("teacherNumber") String teacherNumber);
 	public List<Teacher> findListByYearTerm(@Param("yearTerm")String yearTerm);
 	public List<Teacher> getAllCourseTeacher();
+	public List<Teacher> getTeacherInfos();
+	public Teacher getTeacherInfo(Teacher teacher);
 	
 }

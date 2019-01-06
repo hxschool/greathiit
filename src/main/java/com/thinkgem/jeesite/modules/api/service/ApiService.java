@@ -58,7 +58,12 @@ public class ApiService {
 	public Student getStudent(String studentNumber) {
 		return studentDao.getStudentByStudentNumber(studentNumber);
 	}
-	
+	public List<Teacher> getTeacherInfos(){
+		return teacherDao.getTeacherInfos();
+	}
+	public Teacher getTeacherInfo(Teacher teacher){
+		return teacherDao.getTeacherInfo(teacher);
+	}
 	public List<Teacher> getTeachers(Teacher teacher) {
 		return teacherDao.findAllList(teacher);
 	}

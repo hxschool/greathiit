@@ -200,15 +200,8 @@ public class ApiController extends BaseController {
 			LogUtils.saveLog(request, "APPID:"+baseRequest.getAppid()+"获取全部教师数据");
 			map.put("status", "00000000");
 			map.put("message", "获取教师信息成功");
-			List<Teacher> teachers = apiService.getTeachers(new Teacher());
-			for(Teacher teacher:teachers) {
-				if(!StringUtils.isEmpty(teacher.getTeacher())) {
-					String teacherNumber = teacher.getTeacher().getNo();
-					teacher.setTeacher(null);
-					teacher.setTeacherNumber(teacherNumber);
-					teacher.setInfo(getInfo(teacherNumber));
-				}
-			}
+			List<Teacher> teachers = apiService.getTeacherInfos();
+
 			map.put("result", teachers);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -217,31 +210,7 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
-	
-	private String getInfo(String teacherNumber) {
-		User user = systemService.findUserByNumber(teacherNumber);
-		if(!StringUtils.isEmpty(user)) {
-			Office office = user.getCompany();
-			String officeId = "0";
-			if(!StringUtils.isEmpty(office)) {
-				officeId = office.getId();
-			}
-			Office major = user.getOffice();
-			String majorId = "00";
-			if(!StringUtils.isEmpty(major)) {
-				majorId = major.getId();
-			}
-			
-			String userType = "00";
-			if(!StringUtils.isEmpty(user.getUserType())) {
-				userType = user.getUserType();
-			}
-			String info = officeId.concat(majorId).concat(userType).concat(teacherNumber);
-			return info;
-		}
-		return "";
-	}
-	
+
 	@RequestMapping(value = "getTeacher")
 	@ResponseBody
 	public Map<String, Object> getTeacher(HttpServletRequest request,HttpServletResponse response) {
@@ -250,14 +219,11 @@ public class ApiController extends BaseController {
 			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
 			map.put("status", "00000000");
 			map.put("message", "获取教师信息成功");
-			Teacher teacher = apiService.getTeacher(baseRequest.getTeacherNumber());
+			Teacher tt = new Teacher();
+			tt.setTeacherNumber(baseRequest.getTeacherNumber());
+			Teacher teacher = apiService.getTeacherInfo(tt);
 			teacher.setTchrIdcard(null);
-			if(!StringUtils.isEmpty(teacher.getTeacher())) {
-				String teacherNumber = teacher.getTeacher().getNo();
-				teacher.setTeacher(null);
-				teacher.setTeacherNumber(teacherNumber);
-				teacher.setInfo(getInfo(teacherNumber));
-			}
+			
 			map.put("result", teacher);
 		} catch (Exception e) {
 			map.put("status", "99999999");

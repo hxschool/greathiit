@@ -148,7 +148,7 @@
 												<td>${status.index+1 }</td>
 												<td>${course.cursName}</td>
 
-												<td>${course.teacher.name}</td>
+												<td>${course.teacher.tchrName}</td>
 
 												<td>${course.cursClassHour }</td>
 

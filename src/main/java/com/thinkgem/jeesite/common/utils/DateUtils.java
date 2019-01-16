@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.common.utils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.joda.time.DateTime;
+import org.springframework.util.StringUtils;
 
 /**
  * 日期工具类, 继承org.apache.commons.lang.time.DateUtils类
@@ -323,5 +326,32 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 		}
         return ll;
 	}
-
+	/**
+	 * 需要转换五位term标识
+	 * @param term
+	 * @return
+	 */
+	public String getFiveTerm(String term) {
+		if(StringUtils.isEmpty(term)) {
+			return term;
+		}
+		DateTime nowDate = DateTime.now(); 
+		
+		if(term.length()==5) {
+			return term;
+		}
+		return "";
+	}
+	
+	public static  int getTerm(){
+		 List<Integer> nextTermList = Arrays.asList(3,4,5,6,7); 
+		 DateTime nowDate = DateTime.now(); 
+		 int month = nowDate.getMonthOfYear(); 
+		 int day = nowDate.getDayOfMonth();
+		 return (nextTermList.contains(month) || (month == 1 && day > 15) || (month == 7 && day < 15)) ? 2 : 1; 
+	}
+	 
+	 public static void main(String[] args) {
+		 System.out.println(termYear());
+	 }
 }

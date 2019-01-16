@@ -123,6 +123,7 @@ public class XuankeController extends BaseController {
 		if(StringUtils.isEmpty(course.getCursProperty())) {
 			course.setCursProperty("20");
 		}
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
 		List<Course> courses = courseService.findList(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		
@@ -138,6 +139,7 @@ public class XuankeController extends BaseController {
 			isIndex = false;
 			SelectCourse selectCourse = new SelectCourse();
 			selectCourse.setStudent(user);
+			selectCourse.setCourse(course);
 			selectCourses = selectCourseService.findList(selectCourse);
 			
 			for(Role r:user.getRoleList()) {

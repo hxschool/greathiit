@@ -103,6 +103,18 @@
 			<if test="idCard != null and idCard != ''">
 				AND a.id_card = #{idCard}
 			</if>
+			
+			<if test="schoolSystem != null and schoolSystem != ''">
+				AND a.school_system = #{schoolSystem}
+			</if>
+			
+			<if test="edu != null and edu != ''">
+				AND a.edu = #{edu}
+			</if>
+			
+			<if test="currentLevel != null and currentLevel != ''">
+				AND a.current_level = #{currentLevel}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

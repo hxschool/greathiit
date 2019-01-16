@@ -77,7 +77,7 @@
 						<div class="panel-body">
 							<!-- Nav tabs -->
 							<div id="myAlert" class="alert alert-danger">
-								<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>选课时间:9月4日7:00-9月5日00:00
+								<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>选课时间:1月16日7:00-1月21日07:00
 									未在规定时间段选课同学的选课数据系统将自动清除。</strong>
 
 							</div>
@@ -102,7 +102,7 @@
 											<label>任课老师：</label>
 										</div>
 										<div class="form-input col-md-2">
-											<input type="text" value="" name="teacher.name" size="10" />
+											<input type="text" value="" name="teacher.tchrName" size="10" />
 										</div>
 
 										<button type="submit" class="btn medium bg-blue">
@@ -148,7 +148,7 @@
 												<td>${status.index+1 }</td>
 												<td>${course.cursName}</td>
 
-												<td>${course.teacher.name}</td>
+												<td>${course.teacher.tchrName}</td>
 
 												<td>${course.cursClassHour }</td>
 
@@ -216,7 +216,7 @@
 																		role="progressbar" aria-valuenow="60"
 																		aria-valuemin="0" aria-valuemax="100"
 																		style="width: 100%;">
-																		<span class="sr-only">100% 完成（危险）</span>
+																		<span class="sr-only">100% 完成</span>
 																	</div>
 																</div>
 															</c:when>
@@ -227,7 +227,7 @@
 																		role="progressbar" aria-valuenow="60"
 																		aria-valuemin="0" aria-valuemax="100"
 																		style="width: ${(count/upperLimit)*100}%;">
-																		<span class="sr-only">40% 完成</span>
+																		<span class="sr-only">100% 完成</span>
 																	</div>
 																</div>
 															</c:otherwise>

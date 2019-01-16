@@ -34,7 +34,6 @@ import com.thinkgem.jeesite.modules.api.web.adapter.IntegerDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.LongDefault0Adapter;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysAppconfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;

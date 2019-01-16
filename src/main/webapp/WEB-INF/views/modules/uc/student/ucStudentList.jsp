@@ -6,7 +6,26 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			
+			$("#btnExport").click(function() {
+				top.$.jBox.confirm("确认要导出学籍数据吗？", "系统提示", function(v, h, f) {
+					if (v == "ok") {
+						$("#searchForm").attr("action", "${ctx}/uc/student/export");
+						$("#searchForm").submit();
+					}
+				}, {
+					buttonsFocus : 1
+				});
+				top.$('.jbox-body .jbox-icon').css('top', '55px');
+			});
+			$("#btnImport").click(function() {
+				$.jBox($("#importBox").html(), {
+					title : "导入数据",
+					buttons : {
+						"关闭" : true
+					},
+					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+				});
+			});
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -17,6 +36,20 @@
 	</script>
 </head>
 <body>
+
+<div id="importBox" class="hide">
+		<form id="importForm" action="${ctx}/uc/student/import" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " /> <a
+				href="${ctx}/uc/student/import/template">下载模板</a>
+		</form>
+	</div>
+
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/uc/student/">学籍信息列表</a></li>
 		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍信息添加</a></li></shiro:hasPermission>
@@ -34,7 +67,41 @@
 			<li><label>身份证号码：</label>
 				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="clearfix"></li>
+			<li><label>年级：</label>
+				<form:input path="currentLevel" htmlEscape="false" maxlength="18" class="input-medium"/>
+			</li>
+			
+			
+			<li><label>学历：</label>
+				
+				<form:select path="edu"
+					class="input-medium" style="width:178px">
+					<form:option value="" label="请选择" />
+					<form:option value="本科" label="本科" />
+					<form:option value="专科" label="专科" />
+				</form:select>
+			</li>
+			<li><label>学制：</label>
+				
+				
+				<form:select path="schoolSystem"
+					class="input-medium" style="width:178px">
+					<form:option value="" label="请选择" />
+					<form:option value="2" label="2" />
+					<form:option value="3" label="3" />
+					<form:option value="4" label="4" />
+					<form:option value="5" label="5" />
+				</form:select>
+			</li>
+			
+			<li class="clearfix"></li>
+			
+			<li class="btns"><label></label><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
+				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

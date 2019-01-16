@@ -95,7 +95,7 @@
 			and t.teacher_number=#{teacher.teacherNumber}
 			</if>
 			<if test="teacher!=null and teacher.tchrName!=null and teacher.tchrName!=''">
-			and b.name=#{teacher.tchrName}
+			and t.tchr_name=#{teacher.tchrName}
 			</if>
 			<if test="cursStatus!=null and cursStatus!=''">
 			and a.curs_status=#{cursStatus}

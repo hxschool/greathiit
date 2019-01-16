@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 学籍信息Entity
@@ -16,31 +17,57 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class UcStudent extends DataEntity<UcStudent> {
 	
 	private static final long serialVersionUID = 1L;
+	@ExcelField(title="考试号", align=2, sort=1)
 	private String exaNumber;		// 考试号
+	@ExcelField(title="生源所在地", align=2, sort=2)
 	private String location;		// 生源所在地
+	@ExcelField(title="学号", align=2, sort=3)
 	private String studentNumber;		// 学号
+	@ExcelField(title="真实姓名", align=2, sort=4)
 	private String username;		// 真实姓名
+	@ExcelField(title="性别", align=2, sort=5)
 	private String gender;		// 性别
+	@ExcelField(title="出生日期", align=2, sort=6)
 	private String birthday;		// 出生日期
+	@ExcelField(title="身份证号码", align=2, sort=7)
 	private String idCard;		// 身份证号码
+	@ExcelField(title="政治面貌", align=2, sort=8)
 	private String political;		// 政治面貌
+	@ExcelField(title="民族", align=2, sort=9)
 	private String nation;		// 民族
+	@ExcelField(title="学院标注代码", align=2, sort=10)
 	private String departmentCode;		// 标注代码
+	@ExcelField(title="学院代码", align=2, sort=11)
 	private String departmentId;		// 学院代码
+	@ExcelField(title="学院名称", align=2, sort=12)
 	private String departmentName;		// 学院名称
+	@ExcelField(title="专业标注代码", align=2, sort=13)
 	private String majorCode;		// 标注代码
+	@ExcelField(title="专业代码", align=2, sort=14)
 	private String majorId;		// 专业代码
+	@ExcelField(title="专业名称", align=2, sort=15)
 	private String majorName;		// 专业名称
+	@ExcelField(title="班号", align=2, sort=16)
 	private String classNumber;		// 班号
+	@ExcelField(title="学历", align=2, sort=17)
 	private String edu;		// 学历
+	@ExcelField(title="学制", align=2, sort=18)
 	private String schoolSystem;		// 学制
+	@ExcelField(title="学习形式", align=2, sort=19)
 	private String learning;		// 学习形式
+	@ExcelField(title="入学日期", align=2, sort=20)
 	private String startDate;		// 入学日期
+	@ExcelField(title="当前所在年级", align=2, sort=21)
 	private String currentLevel;		// 当前所在年级
+	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
 	private String overDate;		// 结业日期(预计毕业日期)
+	@ExcelField(title="状态", align=2, sort=23)
 	private String status;		// 状态
+	@ExcelField(title="身份所在城市代码", align=2, sort=24)
 	private String regionCode;		// 身份所在城市代码
+	@ExcelField(title="身份所在城市信息", align=2, sort=25)
 	private String regionName;		// 身份所在城市信息
+	
 	
 	public UcStudent() {
 		super();

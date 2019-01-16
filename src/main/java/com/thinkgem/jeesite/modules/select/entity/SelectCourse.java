@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.select.entity;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -17,8 +19,16 @@ public class SelectCourse extends DataEntity<SelectCourse> {
 	private static final long serialVersionUID = 1L;
 	private Course course;		// 课程编号
 	private User student;		// 学号
+	private List<Course> courses;
 
-	
+	public List<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
+
 	public SelectCourse() {
 		super();
 	}

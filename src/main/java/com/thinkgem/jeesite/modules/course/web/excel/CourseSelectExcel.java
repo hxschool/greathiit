@@ -1,9 +1,10 @@
 package com.thinkgem.jeesite.modules.course.web.excel;
 
+import java.util.List;
+
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.course.entity.Course;
-import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -16,7 +17,17 @@ public class CourseSelectExcel {
 	private Office cla;
 	private User user;
 	private Course course;
+	private List<Course> courses;
 	private StudentCourse studentCourse;
+	
+	
+	
+	public List<Course> getCourses() {
+		return courses;
+	}
+	public void setCourses(List<Course> courses) {
+		this.courses = courses;
+	}
 	@ExcelField(title="ID", type=1, align=2, sort=1)
 	public String getId() {
 		return id;

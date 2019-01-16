@@ -94,6 +94,7 @@ public class CourseSelectController extends BaseController {
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/select/courseList";
@@ -101,6 +102,7 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "student")
 	public String student(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(course);
 		model.addAttribute("list", selectCourseService.findList(selectCourse));
@@ -110,11 +112,14 @@ public class CourseSelectController extends BaseController {
 	@RequestMapping(value = "clazz")
 	public String clazz(SelectCourse selectCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
+		Course course = new Course();
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
+		List<Course> courses = new ArrayList<Course>();
 		if(!user.isAdmin()) {
-			Course course = new Course();
 			course.setTeacher(UserUtils.getTeacher());
-			selectCourse.setCourse(course);
 		}
+		courses = courseService.findList(course);
+		selectCourse.setCourses(courses);
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		Map<String,SelectCourseOfficeExt> cls = new HashMap<String,SelectCourseOfficeExt>();
 		
@@ -153,8 +158,19 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "info")
 	public String info(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
 		String clsId = courseSelectExcel.getCla().getId();
-		List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+		SelectCourse selectCourse = new SelectCourse();
+		Course course = new Course();
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
+		List<Course> courses = new ArrayList<Course>();
+		if(!user.isAdmin()) {
+			course.setTeacher(UserUtils.getTeacher());
+		}
+		courses = courseService.findList(course);
+		selectCourse.setCourses(courses);
+		
+		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		for(SelectCourse sc:list) {
 			String studentNumber = sc.getStudent().getNo();
@@ -186,10 +202,14 @@ public class CourseSelectController extends BaseController {
 	@RequestMapping(value = "exportView")
 	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
 		User user = UserUtils.getUser();
+		Course course = new Course();
+		course.setCursCurrTerm(String.valueOf(DateUtils.getTerm()));
+		List<Course> courses = new ArrayList<Course>();
 		if(!user.isAdmin()) {
-			Course course = new Course();
 			course.setTeacher(UserUtils.getTeacher());
 		}
+		courses = courseService.findList(course);
+		courseSelectExcel.setCourses(courses);
 		model.addAttribute("list", selectCourseService.exportSelectCourse(courseSelectExcel));
 		return "modules/course/select/exportView";
 	}

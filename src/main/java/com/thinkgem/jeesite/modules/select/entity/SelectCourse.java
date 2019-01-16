@@ -19,7 +19,7 @@ public class SelectCourse extends DataEntity<SelectCourse> {
 	private static final long serialVersionUID = 1L;
 	private Course course;		// 课程编号
 	private User student;		// 学号
-	private List<Course> courses;
+	private List<Course> courses;//选择学期课程
 
 	public List<Course> getCourses() {
 		return courses;

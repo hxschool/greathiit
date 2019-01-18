@@ -36,7 +36,9 @@ import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.course.web.param.SelectCourseOfficeExt;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
-import com.thinkgem.jeesite.modules.student.web.StudentReportUtil;
+import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
+import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
+import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
@@ -277,7 +279,7 @@ public class CourseSelectController extends BaseController {
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		
 		File file = new File(modelPath);
-		StudentReportUtil excelUtil = new StudentReportUtil();
+		StudentScoreBuilder excelUtil = new StudentScoreBuilder();
 		
 		Map<String,String> courseNameMap = new HashMap<String,String>();
 		courseNameMap.put("{course_name}", entity.getCursName());
@@ -315,7 +317,9 @@ public class CourseSelectController extends BaseController {
 			}
 		}
 		addMessage(redirectAttributes, "失败"+failureNum+" 条"+failureMsg);
-		excelUtil.oper(file,courseNameMap,courseIdMap, departmentMap, dateMap,list,response.getOutputStream());
+		AbsStudentScoreAdapter<UcStudent> classScore = new ClassScore();
+		classScore.setList(list);
+		excelUtil.oper(file,courseNameMap,courseIdMap, departmentMap, dateMap,response.getOutputStream(),classScore);
 		
 		return "redirect:" + adminPath + "/course/select/exportView?repage";
     }

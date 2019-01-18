@@ -31,6 +31,8 @@ public class CourseUtil {
 	                return "7-8节";
 	        if($j.equals("5"))
 	                return "9-10节";
+	        if($j.equals("6"))
+                return "11-12节";
 			return $j;
 	}
 	//返回周

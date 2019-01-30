@@ -9,9 +9,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,18 +21,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
-import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
-import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -43,6 +38,7 @@ import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 学生成绩Controller
@@ -92,6 +88,14 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			Course course = new Course();
+			Teacher teacher = new Teacher();
+			teacher.setTeacherNumber(user.getNo());
+			course.setTeacher(teacher);
+			studentCourse.setCourse(course);
+		}
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		model.addAttribute("page", page);
 		return "modules/student/studentcourse/studentCourseList";

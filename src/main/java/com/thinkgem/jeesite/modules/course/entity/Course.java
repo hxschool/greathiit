@@ -8,7 +8,6 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
@@ -32,19 +31,17 @@ public class Course extends DataEntity<Course> {
 	private String cursWeekHour;		// 周学时
 	private String cursClassHour;		// 学时
 	private String cursCredit;		// 学分
-	private String cursCurrTerm;		// curs_curr_term
+	private String cursYearTerm;		// 
 	private String cursIntro;		// 课程简介
 	private String cursNote1;		// 与相关课程的分工衔接
 	private String cursNote2;		// 其他说明
 	private String cursPreCourses;		// 先修课程
 	private String cursProperty;		// 课程性质
 	private String cursSelectCourseType;//功课选课类型
-
 	private String cursType;		// 课程类型
 	private String cursTotal;
 	private String cursForm;
 	private String cursStatus;
-	private String cursLearningModel;//学习模式
 	private int upperLimit;//班额上限
 	private int lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
@@ -121,12 +118,12 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="curs_curr_term长度必须介于 0 和 255 之间")
-	public String getCursCurrTerm() {
-		return cursCurrTerm;
+	public String getCursYearTerm() {
+		return cursYearTerm;
 	}
 
-	public void setCursCurrTerm(String cursCurrTerm) {
-		this.cursCurrTerm = cursCurrTerm;
+	public void setCursYearTerm(String cursCurrTerm) {
+		this.cursYearTerm = cursCurrTerm;
 	}
 	
 	@Length(min=0, max=255, message="课程简介长度必须介于 0 和 2000 之间")
@@ -193,10 +190,6 @@ public class Course extends DataEntity<Course> {
 		this.cursForm = cursForm;
 	}
 
-
-
-
-
 	public Teacher getTeacher() {
 		return teacher;
 	}
@@ -243,14 +236,6 @@ public class Course extends DataEntity<Course> {
 
 	public void setCursSelectCourseType(String cursSelectCourseType) {
 		this.cursSelectCourseType = cursSelectCourseType;
-	}
-
-	public String getCursLearningModel() {
-		return cursLearningModel;
-	}
-
-	public void setCursLearningModel(String cursLearningModel) {
-		this.cursLearningModel = cursLearningModel;
 	}
 
 	public String getCursEduNum() {

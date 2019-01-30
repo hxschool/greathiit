@@ -6,7 +6,9 @@ package com.thinkgem.jeesite.modules.student.web;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
+import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
@@ -203,10 +206,14 @@ public class StudentController extends BaseController {
 	@RequestMapping("Student_Performance")
 	public String Student_Performance(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
-		Student student = new Student();
-		student.setStudent(user);
-		studentCourse.setStudent(student);
-		studentCourseService.findList(studentCourse);
+		studentCourse.setStudentNumber(user.getNo());
+		List<StudentCourse> studentCourses = studentCourseService.findList(studentCourse);
+		Set<Course> courses = new HashSet();
+		for(StudentCourse sc:studentCourses) {
+			courses.add(sc.getCourse());
+		}
+		model.addAttribute("studentCourses",studentCourses);
+		model.addAttribute("courses",courses);
 		return "modules/student/StudentPerformance";
 	}
 	

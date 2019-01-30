@@ -96,7 +96,7 @@
 						<div class="control-group control-group-left">
 							<label class="control-label">开设学期：</label>
 							<div class="controls">
-								<input type="text" name="cursCurrTerm" value="${course.cursCurrTerm}" id="input-term" class="input-isEmpty">
+								<input type="text" name="cursYearTerm" value="${course.cursYearTerm}" id="input-term" class="input-isEmpty">
 							</div>
 						</div>
 						<div class="control-group control-group-left">

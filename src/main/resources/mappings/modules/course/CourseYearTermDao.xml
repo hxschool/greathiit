@@ -5,6 +5,7 @@
 	<sql id="courseYearTermColumns">
 		a.id AS "id",
 		a.year_term AS "yearTerm",
+		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -15,15 +16,17 @@
 	
 	<sql id="courseYearTermJoins">
 	</sql>
+	
 	<select id="systemConfig" resultType="CourseYearTerm">
-		SELECT <include refid="courseYearTermColumns"/> FROM course_year_term a order by a.update_date desc limit 1
+		SELECT <include refid="courseYearTermColumns"/> FROM course_year_term a WHERE A.status='DEFAULT'
     </select>
+    
 	<select id="get" resultType="CourseYearTerm">
 		SELECT 
 			<include refid="courseYearTermColumns"/>
 		FROM course_year_term a
 		<include refid="courseYearTermJoins"/>
-		WHERE  a.year_term = #{yearTerm}
+		WHERE a.id=#{id}
 		
 	</select>
 
@@ -67,6 +70,7 @@
 		INSERT INTO course_year_term(
 			id,
 			year_term,
+			status,
 			create_by,
 			create_date,
 			update_by,
@@ -76,6 +80,7 @@
 		) VALUES (
 			#{id},
 			#{yearTerm},
+			#{status},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -88,6 +93,7 @@
 	<update id="update">
 		UPDATE course_year_term SET 	
 			year_term = #{yearTerm},
+			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

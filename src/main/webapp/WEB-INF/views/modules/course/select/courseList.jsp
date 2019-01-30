@@ -57,7 +57,7 @@
 				</td>
 		
 			<td>
-					${course.cursCurrTerm}
+					${course.cursYearTerm}
 				</td>
 				<td>
 					${course.cursClassHour}

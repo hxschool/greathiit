@@ -5,13 +5,14 @@ package com.thinkgem.jeesite.modules.course.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.dao.CourseTeachingModeDao;
+import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 
 /**
  * 教学方式Service
@@ -21,7 +22,11 @@ import com.thinkgem.jeesite.modules.course.dao.CourseTeachingModeDao;
 @Service
 @Transactional(readOnly = true)
 public class CourseTeachingModeService extends CrudService<CourseTeachingModeDao, CourseTeachingMode> {
-
+	@Autowired
+	private CourseTeachingModeDao courseTeachingModeDao;
+	public CourseTeachingMode getCourseTeachingModeByCourse(String courseId) {
+		return courseTeachingModeDao.getCourseTeachingModeByCourse(courseId);
+	}
 	public CourseTeachingMode get(String id) {
 		return super.get(id);
 	}
@@ -43,5 +48,7 @@ public class CourseTeachingModeService extends CrudService<CourseTeachingModeDao
 	public void delete(CourseTeachingMode courseTeachingMode) {
 		super.delete(courseTeachingMode);
 	}
+	
+	
 	
 }

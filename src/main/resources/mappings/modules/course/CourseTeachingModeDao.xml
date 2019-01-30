@@ -27,6 +27,14 @@
 		WHERE a.id = #{id}
 	</select>
 	
+	<select id="getCourseTeachingModeByCourse" resultType="CourseTeachingMode">
+		SELECT 
+			<include refid="courseTeachingModeColumns"/>
+		FROM course_teaching_mode a
+		<include refid="courseTeachingModeJoins"/>
+		a.course_id = #{courseId}
+	</select>
+	
 	<select id="findList" resultType="CourseTeachingMode">
 		SELECT 
 			<include refid="courseTeachingModeColumns"/>

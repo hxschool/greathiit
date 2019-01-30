@@ -31,20 +31,13 @@
 			<li><label>综合成绩：</label>
 				<form:input path="evaValue" htmlEscape="false" class="input-medium"/>
 			</li>
-			<li><label>实验成绩：</label>
-				<form:input path="expEvaValue" htmlEscape="false" class="input-medium"/>
-			</li>
+
 			<li><label>期末成绩：</label>
 				<form:input path="finEvaValue" htmlEscape="false" class="input-medium"/>
 			</li>
-			<li><label>期中成绩：</label>
-				<form:input path="midEvaValue" htmlEscape="false" class="input-medium"/>
-			</li>
+			
 			<li><label>学期：</label>
 				<form:input path="termYear" htmlEscape="false" maxlength="255" class="input-medium"/>
-			</li>
-			<li><label>作业成绩：</label>
-				<form:input path="workEvaValue" htmlEscape="false" class="input-medium"/>
 			</li>
 			<li><label>课程号：</label>
 				<form:input path="courseId" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -64,12 +57,9 @@
 		<thead>
 			<tr>
 				<th>课堂表现成绩</th>
-				<th>综合成绩</th>
-				<th>实验成绩</th>
 				<th>期末成绩</th>
-				<th>期中成绩</th>
+				<th>综合成绩</th>
 				<th>学期</th>
-				<th>作业成绩</th>
 				<th>课程号</th>
 				<th>学号</th>
 				<th>状态标记</th>
@@ -84,23 +74,18 @@
 				<td><a href="${ctx}/student/course/studentCourse/form?id=${studentCourse.id}">
 					${studentCourse.classEvaValue}
 				</a></td>
-				<td>
-					${studentCourse.evaValue}
-				</td>
-				<td>
-					${studentCourse.expEvaValue}
-				</td>
+				
+
 				<td>
 					${studentCourse.finEvaValue}
 				</td>
+				
 				<td>
-					${studentCourse.midEvaValue}
+					${studentCourse.evaValue}
 				</td>
+
 				<td>
 					${studentCourse.termYear}
-				</td>
-				<td>
-					${studentCourse.workEvaValue}
 				</td>
 				<td>
 					${studentCourse.courseId}

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,20 +36,20 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		return UserUtils.getOfficeList();
 	}
 	
-	
+	@Cacheable(value = "officeGroup", key = "#parnetId")
 	public List<Office> findByParentIdGroupByYear(String parnetId){
 		Office office = new Office();
 		office.setParent(new Office(parnetId));
 		return officeDao.findByParentIdGroupByYear(office);
 	}
-	
+	@Cacheable(value = "offices", key = "#parnetId.concat('-').concat(#year)")
 	public List<Office> findByParentIdAndYear(String parnetId,String year){
 		Office office = new Office();
 		office.setParent(new Office(parnetId));
 		office.setId(year);
 		return officeDao.findByParentIdAndYear(office);
 	}
-	
+	@Cacheable(value = "offices", key = "#parnetId")
 	public List<Office> findByParentId(String parnetId){
 		Office office = new Office();
 		office.setParent(new Office(parnetId));
@@ -85,6 +86,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		super.delete(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
+	@Cacheable(value = "treeLinks", key = "#parnetId")
 	public List<TreeLink> treeLink(String parnetId){
 		List<Office> list1 = findByParentId(parnetId);
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
@@ -116,6 +118,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		return treeLinks1;
 	}
 	
+	@Cacheable(value = "classLinks", key = "#parnetId")
 	public List<TreeLink> treeClassLink(String parnetId){
 		List<Office> list1 = findByParentId(parnetId);
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();

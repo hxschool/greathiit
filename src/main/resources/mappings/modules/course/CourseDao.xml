@@ -13,7 +13,7 @@
 		a.curs_week_total AS "cursWeekHour",
 		a.curs_class_hour AS "cursClassHour",
 		a.curs_credit AS "cursCredit",
-		a.curs_curr_term AS "cursCurrTerm",
+		a.curs_year_term AS "cursYearTerm",
 		a.curs_intro AS "cursIntro",
 		a.curs_note1 AS "cursNote1",
 		a.curs_note2 AS "cursNote2",
@@ -24,7 +24,6 @@
 		a.curs_total AS "cursTotal",
 		a.curs_form AS "cursForm",
 		a.curs_status AS "cursStatus",
-		a.curs_learning_model AS "cursLearningModel",
 		a.upper_limit AS "upperLimit",
 		a.lower_limit AS "lowerLimit",
 		t.teacher_number AS "teacher.teacherNumber",
@@ -67,8 +66,8 @@
 				and a.curs_name=#{cursName}
 			</if>
 	
-			<if test="cursCurrTerm and cursCurrTerm''">
-				and a.curs_curr_term =#{cursCurrTerm}
+			<if test="cursYearTerm and cursYearTerm''">
+				and a.curs_year_term =#{cursYearTerm}
 			</if>
 	
 			<if test="cursNum!=null and cursNum!=''">
@@ -107,8 +106,8 @@
 			and a.curs_name  LIKE concat(concat('%',#{cursName}),'%')
 			</if>
 			
-			<if test="cursCurrTerm!=null and cursCurrTerm!=''">
-			and a.curs_curr_term=#{cursCurrTerm}
+			<if test="cursYearTerm!=null and cursYearTerm!=''">
+			and a.curs_year_term=#{cursYearTerm}
 			</if>
 			
 		</where>
@@ -187,7 +186,7 @@
 			curs_week_hour,
 			curs_class_hour,
 			curs_credit,
-			curs_curr_term,
+			curs_year_term,
 			curs_intro,
 			curs_note1,
 			curs_note2,
@@ -198,7 +197,6 @@
 			curs_total,
 			curs_form,
 			curs_status,
-			curs_learning_model,
 			upper_limit,
 			lower_limit,
 			teacher_number,
@@ -219,7 +217,7 @@
 			#{cursWeekHour},
 			#{cursClassHour},
 			#{cursCredit},
-			#{cursCurrTerm},
+			#{cursYearTerm},
 			#{cursIntro},
 			#{cursNote1},
 			#{cursNote2},
@@ -230,7 +228,6 @@
 			#{cursTotal},
 			#{cursForm},
 			#{cursStatus},
-			#{cursLearningModel},
 			#{upperLimit},
 			#{lowerLimit},
 			#{teacher.teacherNumber},
@@ -254,7 +251,7 @@
 			curs_week_hour = #{cursWeekHour},
 			curs_class_hour = #{cursClassHour},
 			curs_credit = #{cursCredit},
-			curs_curr_term = #{cursCurrTerm},
+			curs_year_term = #{cursYearTerm},
 			curs_intro = #{cursIntro},
 			curs_note1 = #{cursNote1},
 			curs_note2 = #{cursNote2},
@@ -264,7 +261,6 @@
 			curs_type = #{cursType},
 			curs_total = #{cursTotal},
 			curs_status = #{cursStatus},
-			curs_learning_model = #{cursLearningModel},
 			upper_limit = #{upperLimit},
 			lower_limit = #{lowerLimit},
 			curs_form = #{cursForm},

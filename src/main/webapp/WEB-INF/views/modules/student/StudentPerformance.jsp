@@ -40,62 +40,64 @@
 					<label>学生成绩查询</label>
 				</div>
 				<div class="div-inf-tbl">
-					<form action="Student_Performance_1_selectStuPer" method="post"
-						enctype="multipart/form-data">
+
+						<form:form id="searchForm" modelAttribute="studentCourse"
+		action="${ctx}/student/student/Student_Performance" method="post"
+		class="breadcrumb form-search">
 						<h5>
-							<s:property value="currentTerm" />
+							
 						</h5>
 						<div class="row">
-							<div class="span2">
-								年份&nbsp;&nbsp;<select id="year" name="year" class="form-control"
-									style="width: 80px">
-									<option value="" selected="selected">全部</option>
-								</select>
+							<div class="span3">
+								<form:select path="termYear" class="input-medium" style="width: 235px">
+									<form:option value="" label="--学期--" />
+									<form:options items="${fns:termYear()}" htmlEscape="false" />
+								</form:select>
 							</div>
-							<div class="span2">
-								学期&nbsp;&nbsp;<select id="term" name="term">
-									<option value="" selected="selected">全部</option>
-									<option value="1">秋</option>
-									<option value="2">春</option>
-								</select>
-							</div>
+
 							<div class="span4">
-								课程&nbsp;&nbsp;<select id="course" name="stuCursLimit.cursName" style="width: 200px">
-
+								<select id="course" name="course.id" style="width: 315px">
+										<option value="">--课程--</option>
+									<c:forEach items="${courses}" var="course">
+										<option value="${course.id}">${course.cursName}</option>
+									</c:forEach>
 								</select>
 
 							</div>
-							<div >
+							<div class="span1">
 								<input class="btn" type="submit" style="margin-top:0px" value="查询成绩">
 							</div>
 						</div>
 
-					</form>
+					</form:form>
 					<table class="table table-bordered table-condensed">
 						<thead>
 							<tr>
 								<th>课程名称</th>
-								<th>课程性质</th>
+								<th>平时成绩</th>
+								<th>期末成绩</th>
+								<th>综合成绩</th>
 								<th>学分</th>
-								<th>成绩</th>
-								<th>开课学院</th>
+								<th>绩点</th>
+								<th>开课年份</th>
+								<th>授课教师</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td colspan="6">系统升级中</td>
-							</tr>
 
-							<!-- <s:iterator value="stuCurs" var="p">
-											<tr>
-												<td><s:property value="#p.course.cursNum" /></td>
-												<td><s:property value="#p.course.cursName" /></td>
-												<td><s:property value="#p.course.cursProperty" /></td>
-												<td><s:property value="#p.course.cursCredit" /></td>
-												<td><s:property value="#p.EvaValue" /></td>
-												<td><s:property value="#p.course.dept.deptName" /></td>
-											</tr>
-										</s:iterator> -->
+							<c:forEach items="${studentCourses}" var="sc">
+								<tr>
+									<td>${sc.course.cursName}</td>
+									<td>${sc.classEvaValue}</td>
+									<td>${sc.finEvaValue}</td>
+									<td>${sc.evaValue}</td>
+									<td>${sc.credit}</td>
+									<td>${sc.point}</td>
+									<td>${sc.termYear}</td>
+									<td>${sc.course.teacher.tchrName}</td>
+								</tr>
+							</c:forEach>
+
 						</tbody>
 					</table>
 				</div>

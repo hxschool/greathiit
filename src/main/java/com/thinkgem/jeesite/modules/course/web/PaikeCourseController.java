@@ -88,7 +88,7 @@ public class PaikeCourseController extends BaseController {
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm="20181";
+		String yearTerm="2018-2019-02";
 		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
 			yearTerm = courseYearTerm.getYearTerm();
 		}
@@ -142,7 +142,7 @@ public class PaikeCourseController extends BaseController {
 	@RequestMapping(value = "addCourse")
 	public String addCourse(CourseCalendar courseCalendar, Model model) {
 		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm="20181";
+		String yearTerm="2018-2019-01";
 		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
 			yearTerm = courseYearTerm.getYearTerm();
 		}
@@ -303,6 +303,7 @@ public class PaikeCourseController extends BaseController {
 			ps.write("@");
 		}
 		ps.flush();
+		ps.close();
 	}
 	
 	
@@ -497,7 +498,7 @@ public class PaikeCourseController extends BaseController {
 						entity.setId(systemService.getSequence("serialNo10"));
 						entity.setIsNewRecord(true);
 						entity.setCursMajor(major_name);
-						entity.setCursCurrTerm(currTerm);
+						entity.setCursYearTerm(currTerm);
 						entity.setCursWeekTotal(new Double(week_count).intValue()+"");
 						entity.setCursWeekHour(new Double(week).intValue()+"");
 						entity.setTeacher(tt);
@@ -606,7 +607,7 @@ public class PaikeCourseController extends BaseController {
 							select_course_type_item_id = DictUtils.getDictValue(label,"select_course_type_item","01");
 						}
 						entity.setCursSelectCourseType(select_course_type_item_id);
-						entity.setCursCurrTerm(currTerm);
+						entity.setCursYearTerm(currTerm);
 						entity.setCursCredit(curs_credit);
 						entity.setTeacher(tt);
 						entity.setCursNum(curs_num);
@@ -641,9 +642,7 @@ public class PaikeCourseController extends BaseController {
 								break;
 							}
 						}
-						String course_learning_model_id = DictUtils.getDictValue(course_learning_model,"course_learning_model","01");
-						
-						entity.setCursLearningModel(course_learning_model_id);
+
 						entity.setCursForm(cursForm);
 
 						entity.setCursClassHour(new Double(curs_class_hour).intValue() + "");

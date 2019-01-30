@@ -36,7 +36,7 @@
 			</li>
 			
 					<li><label>学期：</label>
-					<select name="cursCurrTerm" class="input-medium">
+					<select name="cursYearTerm" class="input-medium">
 						<option value="">请选择</option>
 						<c:forEach items="${fns:termYear()}" var="term">
 							<option value="${term.key}">${term.value}</option>

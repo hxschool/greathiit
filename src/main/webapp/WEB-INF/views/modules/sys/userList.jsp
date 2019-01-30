@@ -108,8 +108,8 @@
 		class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>所属学院</th>
-				<th>所属专业</th>
+				<th>学院-专业-班级</th>
+				
 				<th class="sort-column login_name">用户类型</th>
 				<th class="sort-column name">学号/教师号</th>
 				<th class="sort-column login_name">登录名</th>
@@ -125,14 +125,14 @@
 		<tbody>
 			<c:forEach items="${page.list}" var="user">
 				<tr>
-					<td>${user.company.name}</td>
-					<td>${user.office.name}</td>
+					<td>${user.company.name} <c:if test="${user.office!=null }"> - ${user.office.name}</c:if> <c:if test="${user.clazz!=null }"> - ${user.clazz.name}</c:if> </td>
 					<td>
 					${fns:getDictLabel(user.userType,'sys_user_type','')}
 					
 					</td>
-					<td><a href="${ctx}/sys/user/form?id=${user.id}">${user.loginName}</a></td>
 					<td>${user.no}</td>
+					<td><a href="${ctx}/sys/user/form?id=${user.id}">${user.loginName}</a></td>
+					
 					<td>${user.name}</td>
 					<td>${user.phone}</td>
 					<td>${user.mobile}</td>

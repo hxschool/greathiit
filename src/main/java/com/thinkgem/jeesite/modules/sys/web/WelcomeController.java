@@ -59,9 +59,7 @@ public class WelcomeController extends BaseController {
         
         //成绩
         StudentCourse studentCourse = new StudentCourse();
-        Student student = new Student();
-        student.setStudent(user);
-        studentCourse.setStudent(student);
+        studentCourse.setStudentNumber(user.getNo());
         List<StudentCourse>  studentCourses = studentCourseService.findList(studentCourse);
        
         //公告~

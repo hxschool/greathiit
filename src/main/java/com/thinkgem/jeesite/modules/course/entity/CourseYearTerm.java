@@ -16,7 +16,7 @@ public class CourseYearTerm extends DataEntity<CourseYearTerm> {
 	
 	private static final long serialVersionUID = 1L;
 	private String yearTerm;		// 前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几
-	
+	private String status;
 	public CourseYearTerm() {
 		super();
 	}
@@ -32,6 +32,14 @@ public class CourseYearTerm extends DataEntity<CourseYearTerm> {
 
 	public void setYearTerm(String yearTerm) {
 		this.yearTerm = yearTerm;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 }

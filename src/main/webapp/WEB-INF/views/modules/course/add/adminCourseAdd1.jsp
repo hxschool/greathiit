@@ -130,9 +130,9 @@
 						<div class="control-group control-group-left">
 							<label class="control-label">开设学期：</label>
 							<div class="controls">
-								<input type="text" name="cursCurrTerm">
+								<input type="text" name="cursYearTerm">
 								
-								<select name="cursCurrTerm" style="width:200px;">
+								<select name="cursYearTerm" style="width:200px;">
 									
 									<c:forEach items="${fns:getDictList('course_curs_curr_term')}" var="dict">
 										<option value="${dict.value}">${dict.label}</option>

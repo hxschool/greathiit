@@ -33,7 +33,10 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>年份</th>
+				<th>序号</th>
+				<th>学期</th>
+				<th>开始</th>
+				<th>结束</th>
 				<th>学期</th>
 				<th>更新时间</th>
 				<th>remarks</th>
@@ -41,13 +44,18 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="courseYearTerm">
+		<c:forEach items="${page.list}" var="courseYearTerm" varStatus="xh">
 			<tr>
-				<td><a href="${ctx}/course/courseYearTerm/form?id=${courseYearTerm.id}">
-					${fn:substring(courseYearTerm.yearTerm,0,4)}
-				</a></td>
+			<td> ${xh.index+1}</td>
 				<td>
-					${fn:substring(courseYearTerm.yearTerm,4,5)}
+					${courseYearTerm.yearTerm}</td>
+				<td>
+					${fn:substring(courseYearTerm.yearTerm,0,4)}</td>
+				<td>
+					${fn:substring(courseYearTerm.yearTerm,5,9)}
+				</a>
+				<td>
+					${fn:substring(courseYearTerm.yearTerm,10,12)}
 				</td>
 				<td>
 					<fmt:formatDate value="${courseYearTerm.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

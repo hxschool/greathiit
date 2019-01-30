@@ -75,7 +75,7 @@
 		<div class="control-group">
 			<label class="control-label">curs_curr_term：</label>
 			<div class="controls">
-				<form:input path="cursCurrTerm" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="cursYearTerm" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -111,7 +111,7 @@
 		<div class="control-group">
 			<label class="control-label">开设学期：</label>
 			<div class="controls">
-				<form:input path="cursCurrTerm" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="cursYearTerm" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">

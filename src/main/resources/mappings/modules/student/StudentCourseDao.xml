@@ -21,17 +21,16 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
-		c.curs_name AS "course.cursName",
-		c.teacher_number AS "course.teacher.teacherNumber",
-		t.tchr_name AS "course.teacher.tchrName",
-		s.student_number AS "student.studentNumber",
-		s.name AS "student.name"
+		a.course_id AS "course.id",
+		a.course_name AS "course.cursName",
+		a.teacher_number AS "course.teacher.teacherNumber",
+		a.teacher_name AS "course.teacher.tchrName",
+		a.student_number AS "student.studentNumber",
+		a.student_name AS "student.name"
 	</sql>
 	
 	<sql id="studentCourseJoins">
-		LEFT JOIN student s on s.student_number=a.student_number 
-		LEFT JOIN course c on c.id=a.course_id
-		LEFT JOIN teacher t on c.teacher_number=t.teacher_number
+		
 	</sql>
     
     <select id="findListByTeacherIdAndClassIdAndCursType" resultType="StudentCourse">
@@ -50,11 +49,11 @@
 				  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
 				 end
 			 </if>
-			 <if test="teacherNumber != null and teacherNumber!=null">
-		  		and c.teacher_number=#{teacherNumber}
+			 <if test="course.teacher!=null and course.teacher.teacherNumber != null and course.teacher.teacherNumber!=null">
+		  		and a.teacher_number=#{teacherNumber}
 		  	 </if>
 		  	 <if test="cursType != null and cursType != ''">
-		  		AND c.curs_type = #{cursType}
+		  		AND a.curs_type = #{cursType}
 		  	 </if>
 		  	 
     </select>
@@ -114,7 +113,7 @@
 		FROM student_course a
 		<include refid="studentCourseJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = 1
 			<if test="classEvaValue != null and classEvaValue != ''">
 				AND a.class_eva_value = #{classEvaValue}
 			</if>
@@ -145,20 +144,20 @@
 			</if>
 			
 			<if test="course!=null and course.cursName != null and course.cursName != ''">
-				AND c.curs_name = #{course.cursName}
+				AND a.course_name = #{course.cursName}
 			</if>
 			<if test="student!=null and student.studentNumber != null and student.studentNumber != ''">
-				AND s.student_number = #{student.studentNumber}
+				AND a.student_number = #{student.studentNumber}
 			</if>
 			<if test="student!=null and student.name != null and student.name != ''">
-				AND s.name = #{student.name}
+				AND a.student_name = #{student.name}
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
 			
 			<if test="course!=null and course!='' and course.teacher != null and course.teacher.tchrName!=null and course.teacher.tchrName != ''">
-				AND t.tchr_name = #{course.teacher.tchrName}
+				AND a.teacher_name = #{course.teacher.tchrName}
 			</if>
 			
 			 	<if test="clazzId != null and clazzId != ''">
@@ -177,10 +176,10 @@
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
-				ORDER BY ${page.orderBy}
+				ORDER BY ${page.orderBy},
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.term_year DESC
 			</otherwise>
 		</choose>
 	</select>
@@ -216,7 +215,11 @@
 			term_year,
 			work_eva_value,
 			course_id,
+			course_name,
+			teacher_number,
+			teacher_name,
 			student_number,
+			student_name,
 			status,
 			create_by,
 			create_date,
@@ -236,7 +239,11 @@
 			#{termYear},
 			#{workEvaValue},
 			#{course.id},
+			#{course.cursName},
+			#{course.teacher.teacherNumber},
+			#{course.teacher.tchrName},
 			#{student.studentNumber},
+			#{student.name},
 			#{status},
 			#{createBy.id},
 			#{createDate},
@@ -261,9 +268,14 @@
 			
 			<if test="course != null and course != '' and course.id!=null and course.id!=''">
 			course_id = #{course.id},
+			
+			course_name = #{course.cursName},
+			teacher_number = #{course.teacher.teacherNumber},
+			teacher_name = #{course.teacher.tchrName},
 			</if>
 			<if test="student != null and student != '' and student.studentNumber!=null and student.studentNumber!=''">
-			student_number = #{student.studentNumber},
+				student_number = #{student.studentNumber},
+				student_name = #{student.name},
 			</if>
 			status = #{status},
 			update_by = #{updateBy.id},

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>校历校准管理</title>
+	<title>锁定课程</title>
 	<meta name="decorator" content="default"/>
 	
 	<style>
@@ -82,8 +82,8 @@ td{
 }
 #up{
 	position:absolute;
-	background-color:#ffffff;
-	left:50%;
+	
+	left:40%;
 	top:300px;
 	margin-top:-205px;
 	margin-left:-200px;
@@ -116,7 +116,16 @@ td{
 	line-height:30px;
 	color:#999;
 }
+.container{
+	width: 90%;
+}
+.span12{
+	width:100%;
+}
 </style>
+
+<link href="${ctxStatic}/admin/css/table.css" type="text/css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -162,7 +171,7 @@ td{
 								class="address" onchange="change_address()"
 								style="width: 200px;">
 							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
-								; onclick="window_print()" ; name="win_print" ; id="win_print"
+								 onclick="window_print()"  name="win_print"  id="win_print"
 								value="打印" class="button" />
 						</div>
 						<p>
@@ -181,7 +190,7 @@ td{
 								//生成空表格
 								int i = 1;
 								int j = 2;
-								for (int $row = 1; $row <= 5; $row++) {
+								for (int $row = 1; $row <= 6; $row++) {
 									out.println("<tr height=\"100px;\">");
 									out.println("<td align=\"center\">" + i + "-" + j + "节</td>");
 									i += 2;
@@ -200,20 +209,28 @@ td{
 	</div>
 
 	<!-- div层[排一个课]-->
-<div id="up"; style="display:none; width:400px; height:400px;">
-<form action="" name="form" style="margin-left:30px; margin-top:50px;">
-	<input  type="hidden" style="display:none" name="time" id="time" /> <!-- 存放时间地址字段-->
-    <p>
-	相关说明:&nbsp;&nbsp;<p>
-  	<textarea name="tips" id="tips" style="height:100px; width:300px;"></textarea>
-	<p>
-	<input  name="add" type="button" value="添加" onclick="resure()" class="button" />&nbsp;&nbsp;&nbsp;&nbsp;
-	<input  name="over" type="button" value="返回" onclick="cancel()" class="button"/>
-</form>
+<div id="up" style="display:none; width:50%; padding-top:50px;">
 
+    <form action="" method="post" class="basic-grey">
+    <input  type="hidden" style="display:none" name="time" id="time" />
+    <h1>锁定课程
+    <span>请输入锁定课程备注信息</span>
+    </h1>
+
+
+    <label>
+    <span>备注 :</span>
+    <textarea name="tips" id="tips" placeholder="请输入原因"></textarea>
+    </label>
+    
+    <label>
+    <span>&nbsp;</span>
+    <input type="button" class="button" onclick="resure()" value="添加" />
+     <input type="button" class="button" onclick="cancel()" value="返回" />
+    </label>
+    </form>
 
 </div>
-
 
 <script>
 var time_array = new Array();//日历数组
@@ -282,7 +299,7 @@ function window_print()
 {
 	 $("#win_print").fadeOut(0);
 	var table_temp = document.getElementById("s_week");
-	for(i=1;i<=5;i++)
+	for(i=1;i<=6;i++)
 	{
 		for(j=1;j<=7;j++)
 		{	if(table_temp.rows[i].cells[j].innerHTML.indexOf("点此加锁")!=-1)
@@ -317,6 +334,7 @@ function change()
 	var table_temp = document.getElementById("s_week");//表格 
 	var year = $("#year").val();//获取年份
 	var h_school = $("#h_school").children('option:selected').val();
+	
 	var address = $("#address").children('option:selected').val();
 	var temp = document.getElementById("week_select");//获取周次
 	week= temp.options[temp.selectedIndex].value;
@@ -338,9 +356,11 @@ function change()
 	table_temp.rows[0].cells[5].innerHTML = "星期五 ["+time_array[week_rili][5]+"]";
 	table_temp.rows[0].cells[6].innerHTML = "星期六 ["+time_array[week_rili][6]+"]";
 	table_temp.rows[0].cells[7].innerHTML = "星期日 ["+time_array[week_rili][7]+"]";
-	//调用动态填写表格函数
-	chuancan(time);
 
+	//调用动态填写表格函数
+	if(h_school!=null&&address!=null){
+		chuancan(time);
+	}
 }
 
 function chuancan(selected)
@@ -358,16 +378,16 @@ function chuancan(selected)
 			var temp = document.getElementById("s_week");
 			var change,cnt=0;
 			change=msg.split("@");//分割返回数据
-			//alert(msg);
+	
 			if(msg  == '')
 			{
-				for(i=1;i<=5;i++)
+				for(i=1;i<=6;i++)
 					for(j=1;j<=7;j++)
 						temp.rows[i].cells[j].innerHTML="";
 			}
 			else
 			{
-				for(i=1;i<=5;i++)
+				for(i=1;i<=6;i++)
 				{
 					for(j=1;j<=7;j++)
 					{
@@ -375,19 +395,18 @@ function chuancan(selected)
 						lock = change[cnt].substr(0,1);
 						change[cnt] = change[cnt].substr(1);
 						tips = change[cnt].split("备注:");
-						//alert(lock);
 						if(lock=='2')
 						{
-							temp.rows[i].cells[j].innerHTML=change[cnt]+"<div class=\"course_text\"><a class=\"btn btn-mini btn-danger\" onclick=\"deleted("+selected+","+i+","+j+")\">删除</a></div>";
+							temp.rows[i].cells[j].innerHTML=change[cnt]+"<div class=\"course_text\"><a class=\"btn btn-mini btn-danger\" onclick=\"deleted('"+selected+"',"+i+","+j+")\">删除</a></div>";
 						}
 						else if(lock=='0')
 						{
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\" >管理员已加锁<p style=\"margin:0px;\">备注:"+tips[1]+"<p></div><div class=\"course_text\" ><a class=\"btn btn-mini btn-danger\" onclick=\"deleted("+selected+","+i+","+j+")\">删除</a></div>"
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\" ondblclick='alert(\""+tips[1]+"\")'>管理员已加锁<p style=\"margin:0px;width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\" >备注:"+tips[1]+"<p></div><div class=\"course_text\" ><a class=\"btn btn-mini btn-danger\" onclick=\"deleted('"+selected+"',"+i+","+j+")\">删除</a></div>"
 						}
 						else
 						{
 							var temp = document.getElementById("s_week");
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike("+selected+","+i+","+j+")\"  class=\"btn btn-mini btn-info\">加锁</a>   <div>";
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\"><a onclick=\"paike('"+selected+"',"+i+","+j+")\"  class=\"btn btn-mini btn-info\">加锁</a>   <div>";
 						}
 						cnt++;
 					}
@@ -413,7 +432,6 @@ function time_limit(xingqi)
 
 	if(servers_mon<local_mon)
 	{
-		//alert(servers_mon+"<"+local_mon);
 		return 1;
 	}
 	else if(servers_mon==local_mon && servers_day<=local_day)
@@ -434,12 +452,9 @@ function time_limit(xingqi)
 function paike(time,row,cell)
 {
 time_add = time+''+row+''+cell;
-$("#time").val(time_add);//给存储时间地址ID赋值
-//alert(time_add);
-
-	$('#mask').css({'zIndex':'5'});
-	$('#mask').animate({'opacity':'0.8'},200);
-
+$("#time").val(time_add);
+$('#mask').css({'zIndex':'5'});
+$('#mask').animate({'opacity':'0.8'},200);
 $('#up').fadeIn(200);
 }
 
@@ -447,6 +462,7 @@ $('#up').fadeIn(200);
 function deleted(time,row,cell)
 {
 	time_add = time+''+row+''+cell;
+	
 	var conf = confirm("是否删除此排课");
 	if(conf)
 	{
@@ -460,14 +476,14 @@ function deleted(time,row,cell)
 			if(msg=='1')
 			{
 				//$('#up').fadeOut(100)
-				chuancan(time_add.substr(0,12));
+				chuancan(time_add.substr(0,19));
 				
 			}
 			else
 			{
 				alert("删除失败");
 				//$('#up').fadeOut(100);
-				chuancan(time_add.substr(0,12));
+				chuancan(time_add.substr(0,19));
 			}
    		}
 	   }); 
@@ -501,7 +517,8 @@ function resure()
 			if(msg=='1')
 			{
 				alert("加锁成功");
-				chuancan(time_add.substr(0,12));
+				
+				chuancan(time_add.substr(0,19));
 				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
 				$("#up").fadeOut(100);
 				
@@ -511,7 +528,7 @@ function resure()
 				alert("加锁失败");
 				$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
 				$('#up').fadeOut(100);
-				chuancan(time_add.substr(0,12));
+				chuancan(time_add.substr(0,19));
 			}
    		}
 	   });
@@ -527,7 +544,7 @@ function cancel()
 	$('#mask').animate({'opacity':'0'},function(){$('#mask').css({'zIndex':'-5'});});
 	$('#up').fadeOut(500);
 	time_add = $("#time").val();
-	chuancan(time_add.substr(0,12));
+	chuancan(time_add.substr(0,19));
 	
 }
 

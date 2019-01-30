@@ -71,7 +71,7 @@ public class TeacherCourseService {
 		if ((!cursName.trim().equals("")) && (!cursCurrTerm.trim().equals(""))
 				&& (!cursClazz.equals(""))) {
 			Course courseQuery = new Course();
-			courseQuery.setCursCurrTerm(cursCurrTerm);
+			courseQuery.setCursYearTerm(cursCurrTerm);
 			courseQuery.setCursName(cursName);
 			courseQuery.setTeacher(UserUtils.getTeacher());
 			course = courseDao.getCourse(courseQuery);
@@ -122,7 +122,7 @@ public class TeacherCourseService {
 				if (!studentNumber.equals("")) {
 					student = studentDao.getStudentByStudentNumber(studentNumber);
 					if (student != null) {
-						studentCourse.setStudent(student);
+						studentCourse.setStudentNumber(student.getStudentNumber());
 						//studentCourse.setStudentNumber(studentNumber);
 					} else {
 						throw new Exception("学号为" + studentNumber

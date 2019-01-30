@@ -6,14 +6,19 @@ package com.thinkgem.jeesite.modules.course.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
+import com.thinkgem.jeesite.modules.course.dao.CourseYearTermDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
+import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
+import com.thinkgem.jeesite.modules.school.dao.SchoolRootDao;
+import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 
 /**
  * 计划教室Service
@@ -25,6 +30,11 @@ import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 public class CourseScheduleService extends CrudService<CourseScheduleDao, CourseSchedule> {
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
+	@Autowired
+	private CourseYearTermDao courseYearTermDao;
+	@Autowired
+	private SchoolRootDao schoolRootDao;
+	
 	public List<CourseScheduleExt> findCoursesByParam(CourseScheduleExt courseScheduleExt){
 		return courseScheduleDao.findCoursesByParam(courseScheduleExt.getList(), courseScheduleExt.getCourseClass(), courseScheduleExt.getTeacherNumber());
 	}
@@ -64,6 +74,43 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	
 	public Page<CourseSchedule> findPage(Page<CourseSchedule> page, CourseSchedule courseSchedule) {
 		return super.findPage(page, courseSchedule);
+	}
+
+	@Transactional(readOnly = false)
+	@Async
+	public void executeAsyncJsonAvailability() {
+		CourseYearTerm courseYearTerm = courseYearTermDao.systemConfig();
+
+		List<SchoolRoot> schoolRoots = schoolRootDao.findByParentId("0");
+		for (SchoolRoot schoolRoot : schoolRoots) {
+			List<SchoolRoot> roots = schoolRootDao.findByParentId(schoolRoot.getId());
+			String schoolNumber = schoolRoot.getValue();
+			for (SchoolRoot root : roots) {
+
+				for (int $i = 1; $i <= 20; $i++) {
+					for (int $j = 1; $j <= 6; $j++) {
+						for (int $k = 1; $k <= 7; $k++) {
+							CourseSchedule courseSchedule = new CourseSchedule();
+							String rootNumber = root.getValue();
+							String $id = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
+							String timeAdd = "";
+
+							if ($i <= 9)
+								timeAdd = $id + '0' + $i + $j + $k;
+							else
+								timeAdd = $id + $i + $j + $k;
+
+							courseSchedule.setTimeAdd(timeAdd);
+							courseSchedule.setCourseId("00000000");
+							courseSchedule.setScLock("1");
+							courseSchedule.setCourseClass("");
+							courseSchedule.setTips("");
+							super.save(courseSchedule);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Transactional(readOnly = false)

@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.course.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
@@ -15,4 +17,5 @@ import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 @MyBatisDao
 public interface CourseTeachingModeDao extends CrudDao<CourseTeachingMode> {
 	
+	public CourseTeachingMode getCourseTeachingModeByCourse(@Param("courseId")String courseId);
 }

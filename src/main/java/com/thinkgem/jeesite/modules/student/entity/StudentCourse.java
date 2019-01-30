@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -27,6 +29,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String termYear;		// 年份
 	private String workEvaValue;		// 作业成绩
 	private Course course;		//课程名称
+
 	private Student student;		// 学号
 	private String status;		// 状态标记
 	private String clazzId;
@@ -184,6 +187,5 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.point = point;
 	}
 
-	
 	
 }

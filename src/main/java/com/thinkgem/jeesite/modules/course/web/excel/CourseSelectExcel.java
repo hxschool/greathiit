@@ -58,7 +58,8 @@ public class CourseSelectExcel {
 	}
 	@ExcelField(title="学习模式", type=1, align=2, sort=7)
 	public String getLearningModel() {
-		return DictUtils.getDictLabel(course.getCursLearningModel(), "course_learning_model", "未知模式");
+		//gaiyuyan
+		return "";
 	}
 	@ExcelField(title="选修课程", type=1, align=2, sort=8)
 	public String getCourseName() {

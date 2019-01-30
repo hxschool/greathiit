@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -40,21 +41,17 @@ public class CourseYearTermController extends BaseController {
 	@Autowired
 	private CourseYearTermService courseYearTermService;
 	@Autowired
-	private SchoolRootService schoolRootService;
-	@Autowired
 	private CourseScheduleService courseScheduleService;
 	 
-	@ModelAttribute
-	public CourseYearTerm get(@RequestParam(required=false) String id,@RequestParam(required=false) String yearTerm) {
-		CourseYearTerm entity = null;
+	@ModelAttribute(value="courseYearTerm")
+	public CourseYearTerm get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
-			entity = courseYearTermService.get(id);
+			CourseYearTerm courseYearTerm = courseYearTermService.get(id);
+			if(courseYearTerm!=null) {
+				return courseYearTermService.get(id);
+			}
 		}
-		
-		if (entity == null){
-			entity = new CourseYearTerm();
-		}
-		return entity;
+		return new CourseYearTerm();
 	}
 	
 	@RequiresPermissions("course:courseYearTerm:view")
@@ -74,55 +71,17 @@ public class CourseYearTermController extends BaseController {
 
 	@RequiresPermissions("course:courseYearTerm:edit")
 	@RequestMapping(value = "save")
-	public String save(String yearTerm, Model model, RedirectAttributes redirectAttributes) {
-		
-		CourseYearTerm courseYearTerm = courseYearTermService.get(yearTerm);
-		if(org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
-			courseYearTerm = new CourseYearTerm(); 
-		}
-		courseYearTerm.setYearTerm(yearTerm);
+	public String save(CourseYearTerm courseYearTerm, Model model, RedirectAttributes redirectAttributes) {
 		courseYearTermService.save(courseYearTerm);
-		
-		//学期初始化过程需要讲全部的教学楼以及班级添加到courseSchedule
-		
-		List<SchoolRoot> schoolRoots = schoolRootService.findByParentId("0");
-		for(SchoolRoot schoolRoot: schoolRoots) {
-			List<SchoolRoot> roots = schoolRootService.findByParentId(schoolRoot.getId());
-			String schoolNumber = schoolRoot.getValue();
-			for(SchoolRoot root: roots) {
-				
-				for(int $i = 1;$i<=20;$i++)
-				{
-					for(int $j = 1;$j<=5;$j++)
-					{
-						for(int $k = 1;$k<=7;$k++)
-						{
-							CourseSchedule courseSchedule = new CourseSchedule();
-							String rootNumber = root.getValue();
-							String $id = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
-							String timeAdd ="";
-							
-							if($i<=9)
-								timeAdd = $id + '0' + $i + $j + $k;
-							else
-								timeAdd = $id + $i + $j + $k;
-							
-							courseSchedule.setTimeAdd(timeAdd);
-							courseSchedule.setCourseId("00000000");
-							courseSchedule.setScLock("1");
-							courseSchedule.setCourseClass("");
-							courseSchedule.setTips("");
-							courseScheduleService.save(courseSchedule);
-						}
-					}
-				}
-				
-			}
-		}
-		
 		addMessage(redirectAttributes, "保存学期初始化成功");
 		return "redirect:"+Global.getAdminPath()+"/course/courseYearTerm/?repage";
 	}
+	
+	@RequestMapping(value = "batch")
+	public void executeAsyncJsonAvailability() {
+		courseScheduleService.executeAsyncJsonAvailability();
+	}
+	
 	
 	@RequiresPermissions("course:courseYearTerm:edit")
 	@RequestMapping(value = "delete")

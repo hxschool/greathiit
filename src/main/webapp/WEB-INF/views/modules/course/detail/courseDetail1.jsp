@@ -59,7 +59,7 @@
 						<label>适用专业：</label> <label>试用单位</label>
 					</div>
 					<div class="div-detail">
-						<label>开设学期：</label> <label>${course.cursCurrTerm}</label>
+						<label>开设学期：</label> <label>${course.cursYearTerm}</label>
 					</div>
 					<div class="div-detail">
 						<label>先修课程：</label> <label>${course.cursPreCourses}</label>

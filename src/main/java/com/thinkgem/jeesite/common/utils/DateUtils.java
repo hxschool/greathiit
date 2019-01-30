@@ -317,11 +317,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
                 });
 		for (int i = start; i <= end; i++) {
 			for (int j = 1; j <= 2; j++) {
-				if (j == 1) {
-					ll.put(i + "" + j, i + "年第一学期");
-				} else {
-					ll.put(i + "" + j, i + "年第二学期");
-				}
+				String term = i + "-" + (i+1) + "-0"+j;
+				ll.put(term, term);
 			}
 		}
         return ll;

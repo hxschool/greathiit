@@ -75,12 +75,13 @@ public class CourseUtil {
 	
 	public static Map<String,String> GetTimeCol(String $time_add){
 	    Map<String,String> $time = new HashMap<String,String>();
-	    $time.put("year", $time_add.substring(0, 4));
-	    $time.put("term", $time_add.substring(4, 5));
-	    $time.put("school", $time_add.substring(5,10));
-	    $time.put("week", $time_add.substring(10, 12));
-	    $time.put("jie", $time_add.substring(12, 13));
-	    $time.put("zhou", $time_add.substring(13, 14));
+	    $time.put("start", $time_add.substring(0, 4));
+	    $time.put("end", $time_add.substring(5, 9));
+	    $time.put("term", $time_add.substring(10, 12));
+	    $time.put("school", $time_add.substring(12,17));
+	    $time.put("week", $time_add.substring(17, 19));
+	    $time.put("jie", $time_add.substring(19, 20));
+	    $time.put("zhou", $time_add.substring(20, 21));
 	    return $time;
 	}
 	
@@ -88,12 +89,17 @@ public class CourseUtil {
 		String school = "02302";
 		System.out.println(jiaoxuelou(school));
 		System.out.println(jiaoshi(school));
-		String time_add = "20181023020146";
-		
-		System.out.println(time_add.substring(0,4));
-		System.out.println(time_add.substring(4,5));
-		System.out.println(time_add.substring(5,10));
-		System.out.println(time_add.substring(7,10));
+		String time_add = "2018-2019-01023020146";
+		Map<String,String> $time = GetTimeCol(time_add);
+		System.out.println($time.get("start"));
+		System.out.println($time.get("end"));
+		System.out.println($time.get("term"));
+		System.out.println($time.get("school"));
+		System.out.println($time.get("week"));
+		System.out.println(jie($time.get("jie")));
+		System.out.println(zhou($time.get("zhou")));
+
+
 		
 //		int w = 20;
 //		

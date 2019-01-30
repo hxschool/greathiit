@@ -39,7 +39,6 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -614,7 +613,7 @@ public class CourseController extends BaseController {
     		Cell cell = row.createCell(0);
     		cell.setCellValue("学期");
     		Cell xueqiCell = row.createCell(1);
-    		xueqiCell.setCellValue(course.getCursCurrTerm());
+    		xueqiCell.setCellValue(course.getCursYearTerm());
     		Cell clazzCell = row.createCell(2);
     		clazzCell.setCellValue("课程");
     		Cell courseCell = row.createCell(3);

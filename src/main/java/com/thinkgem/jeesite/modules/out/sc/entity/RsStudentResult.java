@@ -24,6 +24,7 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 	private String hcFormZonghe;		// 职业技能
 	private String hcFormCj;		// 成绩
 	private String hcFormStatus;		// 状态
+	private String yearTerm;
 	
 	public RsStudentResult() {
 		super();
@@ -110,6 +111,14 @@ public class RsStudentResult extends DataEntity<RsStudentResult> {
 
 	public void setHcFormStatus(String hcFormStatus) {
 		this.hcFormStatus = hcFormStatus;
+	}
+
+	public String getYearTerm() {
+		return yearTerm;
+	}
+
+	public void setYearTerm(String yearTerm) {
+		this.yearTerm = yearTerm;
 	}
 	
 }

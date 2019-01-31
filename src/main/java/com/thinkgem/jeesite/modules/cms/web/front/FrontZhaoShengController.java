@@ -25,6 +25,8 @@ import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackResponse;
 import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackTraces;
 import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
+import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
+import com.thinkgem.jeesite.modules.out.config.service.RsStudentConfigService;
 import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
 import com.thinkgem.jeesite.modules.out.ems.service.RsStudentEmsService;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
@@ -59,13 +61,16 @@ public class FrontZhaoShengController extends BaseController{
 	private RsStudentEmsService rsStudentEmsService;
 	@Autowired
 	private RecruitStudentService recruitStudentService;
-	
+	@Autowired
+	private RsStudentConfigService rsStudentConfigService;
 	/**
 	 * 网站首页
 	 */
 	@RequestMapping(value = {"index", ""})
 	public String index(Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		RsStudentConfig config = rsStudentConfigService.get("1");
+		model.addAttribute("config", config);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
 		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/index";
@@ -200,6 +205,8 @@ public class FrontZhaoShengController extends BaseController{
 			model.addAttribute("no", "报专业顺序号"+no+"，考生需牢记。");
 		}
 		try{
+			RsStudentConfig config = rsStudentConfigService.get("1");
+			rsStudent.setYearTerm(config.getYearTerm());
 			rsStudentService.save(rsStudent);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -230,9 +237,7 @@ public class FrontZhaoShengController extends BaseController{
 		}
 		String operation = request.getParameter("operation");
 		if(!StringUtils.isEmpty(operation)) {
-			//查询ems成绩信息
-			
-			
+
 			switch (operation) {
 			case "tongzhao": {
 				RecruitStudent recruitStudent = new RecruitStudent();

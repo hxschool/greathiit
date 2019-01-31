@@ -4,6 +4,7 @@
     
 	<sql id="rsJcdColumns">
 		a.id AS "id",
+		a.year_term as "yearTerm",
 		a.ksh AS "ksh",
 		a.xm AS "xm",
 		a.sfzh AS "sfzh",
@@ -55,11 +56,12 @@
 		<include refid="rsJcdJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			
+			<if test="yearTerm != null and yearTerm != '' ">
+				AND a.year_term = #{yearTerm}
+			</if>
 			<if test="ksh != null and ksh != '' ">
 				AND a.ksh = #{ksh}
 			</if>
-			
 			<if test="xm != null and xm != '' ">
 				AND a.xm like CONCAT('%',#{xm},'%')
 			</if>
@@ -97,7 +99,6 @@
 		<include refid="rsJcdJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			
 			<if test="status != null and status != '' and status=='all'">
 				AND a.status != 1
 			</if>
@@ -120,6 +121,7 @@
 	<insert id="insert">
 		INSERT INTO rs_jcd(
 			id,
+			year_term,
 			ksh,
 			xm,
 			sfzh,
@@ -145,6 +147,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{yearTerm},
 			#{ksh},
 			#{xm},
 			#{sfzh},
@@ -173,6 +176,7 @@
 	
 	<update id="update">
 		UPDATE rs_jcd SET 	
+		    year_term = #{yearTerm},
 			ksh = #{ksh},
 			xm = #{xm},
 			sfzh = #{sfzh},

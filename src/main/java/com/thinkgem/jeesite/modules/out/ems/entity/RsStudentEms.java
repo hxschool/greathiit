@@ -16,6 +16,7 @@ import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 public class RsStudentEms extends DataEntity<RsStudentEms> {
 	
 	private static final long serialVersionUID = 1L;
+	private String yearTerm;
 	private String hcFormEms;		// EMS邮件编号
 	private String hcFormBkh;		// 报考号
 	private String hcFormXm;		// 姓名
@@ -109,6 +110,14 @@ public class RsStudentEms extends DataEntity<RsStudentEms> {
 
 	public void setHcFormStatus(String hcFormStatus) {
 		this.hcFormStatus = hcFormStatus;
+	}
+
+	public String getYearTerm() {
+		return yearTerm;
+	}
+
+	public void setYearTerm(String yearTerm) {
+		this.yearTerm = yearTerm;
 	}
 	
 }

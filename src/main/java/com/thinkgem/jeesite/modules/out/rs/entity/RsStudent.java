@@ -16,6 +16,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class RsStudent extends DataEntity<RsStudent> {
 	
 	private static final long serialVersionUID = 1L;
+	private String yearTerm;
 	private String hc_form_add1;		// 希望就读地区
 	private String hc_form_add2;		// 就读地市
 	private String hc_form_kuasheng;		// 外地就读
@@ -534,5 +535,14 @@ public class RsStudent extends DataEntity<RsStudent> {
 	public void setHc_form_zhuangtai(String hc_form_zhuangtai) {
 		this.hc_form_zhuangtai = hc_form_zhuangtai;
 	}
+
+	public String getYearTerm() {
+		return yearTerm;
+	}
+
+	public void setYearTerm(String yearTerm) {
+		this.yearTerm = yearTerm;
+	}
+
 	
 }

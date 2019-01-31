@@ -35,6 +35,8 @@ public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 	private String status;		// 意向专业6
 	private String zytj;		// 是否服从专业调剂
 	
+	private String yearTerm;
+	
 	public RsJcd() {
 		super();
 	}
@@ -228,4 +230,14 @@ public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 			return 0;
 		}
 	}
+
+	public String getYearTerm() {
+		return yearTerm;
+	}
+
+	public void setYearTerm(String yearTerm) {
+		this.yearTerm = yearTerm;
+	}
+	
+	
 }

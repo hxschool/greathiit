@@ -67,9 +67,9 @@
 </head>
 
 
-<c:if test="${fns:getDictValue('switch', 'greathiit_zhaosheng', '关')=='no'}">  
+<c:if test="${config.sw=='NO'}">  
 <script>
-alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
+alert("${config.tip}");
 </script>
 </c:if>
 <body class=" layout-home">
@@ -106,7 +106,7 @@ alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
 				<div class="panel-body"
 											style="border-bottom: 1px solid #337AB7;">
 											
-		${fns:getDictDescription('2018', 'greathiit_zhaosheng', '暂无')}
+		${config.description}
 		
 		<p class="text-s16">
 		<a href="http://www.hxci.com.cn/zy/"
@@ -147,7 +147,7 @@ alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
 														<div class="text-center">
 
 															
-																<c:if test="${fns:getDictValue('switch', 'greathiit_zhaosheng', '')=='yes'}">  
+																<c:if test="${config.sw=='YES'}">  
 																<input type="checkbox" class="pc" name="agreebbrule" id="agreebbrule" >
 																<label for="agreebbrule">同意<!--  <a
 																href="javascript:;" style="color:red" onclick="showBBRule()"> 特别提示 </a> --></label> 
@@ -158,7 +158,7 @@ alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
 																</c:if>
 																
 																
-																<c:if test="${fns:getDictValue('switch', 'greathiit_zhaosheng', '关')=='no'}">  
+																<c:if test="${config.sw=='NO'}">  
 																	<button class="btn btn-danger"
 																	>报考系统已关闭</button>
 																</c:if>

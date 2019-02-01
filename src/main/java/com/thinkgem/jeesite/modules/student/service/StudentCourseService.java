@@ -5,7 +5,6 @@ package com.thinkgem.jeesite.modules.student.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
@@ -29,9 +27,11 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
+import com.thinkgem.jeesite.modules.course.dao.CourseGpaDao;
 import com.thinkgem.jeesite.modules.course.dao.CoursePointDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
+import com.thinkgem.jeesite.modules.course.entity.CourseGpa;
 import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
 import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
@@ -53,6 +53,20 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private CourseCompositionRulesDao courseCompositionRulesDao;
 	@Autowired
 	private CoursePointDao coursePointDao; 
+	@Autowired
+	private CourseGpaDao courseGpaDao;
+
+	
+	public void gpa(List<StudentCourse> studentCourses) {
+		List<CourseGpa> groupCourseGpas = courseGpaDao.groupList(new CourseGpa());
+		for(CourseGpa entity:groupCourseGpas) {
+			List<CourseGpa> courseGpas = courseGpaDao.findList(entity);
+			for(CourseGpa courseGpa : courseGpas) {
+				
+			}
+		}
+	}
+	
 	public List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(String teacherNumber,String clazzId,String cursType){
 		return studentCourseDao.findListByTeacherIdAndClassIdAndCursType(teacherNumber, clazzId, cursType);
 	}
@@ -274,8 +288,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		}
 	}
 	public static void main(String[] args) {
-		double bb = Double.parseDouble("1.01");
-		System.out.println(bb);
+		System.out.println(((92*4+80*3+98*2+70*6+89*3)*4)/((4+3+2+6+3)*100));
 	}
 	
 }

@@ -85,43 +85,6 @@ public class CourseUtil {
 	    return $time;
 	}
 	
-	public static void main(String[] args) {
-		String school = "02302";
-		System.out.println(jiaoxuelou(school));
-		System.out.println(jiaoshi(school));
-		String time_add = "2018-2019-01023020146";
-		Map<String,String> $time = GetTimeCol(time_add);
-		System.out.println($time.get("start"));
-		System.out.println($time.get("end"));
-		System.out.println($time.get("term"));
-		System.out.println($time.get("school"));
-		System.out.println($time.get("week"));
-		System.out.println(jie($time.get("jie")));
-		System.out.println(zhou($time.get("zhou")));
-
-
-		
-//		int w = 20;
-//		
-//		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
-//		if(StringUtils.isEmpty(w)||w==0) {
-//			w = s;
-//		}
-//		
-//		for(;s<=w;s++) {
-//			String week="";
-//			if(s<=9) {
-//				week = "0".concat(String.valueOf(s));
-//			}else {
-//				week =  String.valueOf(s);
-//			}
-//			String zhou = time_add.substring(12);
-//			
-//			time_add = time_add.substring(0,10).concat(week).concat(zhou);
-//			System.out.println(time_add);
-//			System.out.println(week);
-//		}
-	}
 	
 	public static String addDate(String today,int day) {
 		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  

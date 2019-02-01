@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.course.dao.CourseGpaDao">
+    
+	<sql id="courseGpaColumns">
+		a.id AS "id",
+		a.groupid AS "groupid",
+		a.groupname AS "groupname",
+		a.score AS "score",
+		a.credit AS "credit",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="courseGpaJoins">
+	</sql>
+    
+	<select id="get" resultType="CourseGpa">
+		SELECT 
+			<include refid="courseGpaColumns"/>
+		FROM course_gpa a
+		<include refid="courseGpaJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CourseGpa">
+		SELECT 
+			<include refid="courseGpaColumns"/>
+		FROM course_gpa a
+		<include refid="courseGpaJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="groupid != null and groupid != ''">
+				AND a.groupid = #{groupid}
+			</if>
+			<if test="groupname != null and groupname != ''">
+				AND a.groupname = #{groupname}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="groupList" resultType="CourseGpa">
+		SELECT 
+			a.groupid,a.groupname
+		FROM course_gpa a
+		<include refid="courseGpaJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="groupid != null and groupid != ''">
+				AND a.groupid = #{groupid}
+			</if>
+			<if test="groupname != null and groupname != ''">
+				AND a.groupname = #{groupname}
+			</if>
+		</where>
+		GROUP BY a.groupid,a.groupname
+	</select>
+	
+	
+	<select id="findAllList" resultType="CourseGpa">
+		SELECT 
+			<include refid="courseGpaColumns"/>
+		FROM course_gpa a
+		<include refid="courseGpaJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_gpa(
+			id,
+			groupid,
+			groupname,
+			score,
+			credit,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{groupid},
+			#{groupname},
+			#{score},
+			#{credit},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_gpa SET 	
+			groupid = #{groupid},
+			groupname = #{groupname},
+			score = #{score},
+			credit = #{credit},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_gpa SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

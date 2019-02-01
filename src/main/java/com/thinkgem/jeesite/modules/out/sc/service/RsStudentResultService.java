@@ -5,11 +5,15 @@ package com.thinkgem.jeesite.modules.out.sc.service;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.out.config.dao.RsStudentConfigDao;
+import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
 import com.thinkgem.jeesite.modules.out.sc.dao.RsStudentResultDao;
 import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
 
@@ -21,7 +25,8 @@ import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
 @Service
 @Transactional(readOnly = true)
 public class RsStudentResultService extends CrudService<RsStudentResultDao, RsStudentResult> {
-
+	@Resource
+	private RsStudentConfigDao rsStudentConfigDao;
 	public RsStudentResult get(String id) {
 		return super.get(id);
 	}
@@ -36,6 +41,8 @@ public class RsStudentResultService extends CrudService<RsStudentResultDao, RsSt
 	
 	@Transactional(readOnly = false)
 	public void save(RsStudentResult rsStudentResult) {
+		RsStudentConfig config = rsStudentConfigDao.get("1");
+		rsStudentResult.setYearTerm(config.getYearTerm());
 		super.save(rsStudentResult);
 	}
 	

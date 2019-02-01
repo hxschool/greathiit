@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.out.config.dao.RsStudentConfigDao;
+import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
 import com.thinkgem.jeesite.modules.out.ems.dao.RsStudentEmsDao;
 import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
 
@@ -25,6 +27,9 @@ import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
 public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentEms> {
 	@Resource
 	private RsStudentEmsDao rsStudentEmsDao;
+	
+	@Resource
+	private RsStudentConfigDao rsStudentConfigDao;
 
 	public RsStudentEms getByUsernameAndIdCard(String username,String idCard) {
 		return rsStudentEmsDao.getByUsernameAndIdCard(username,idCard);
@@ -43,6 +48,8 @@ public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentE
 	
 	@Transactional(readOnly = false)
 	public void save(RsStudentEms rsStudentEms) {
+		RsStudentConfig config = rsStudentConfigDao.get("1");
+		rsStudentEms.setYearTerm(config.getYearTerm());
 		rsStudentEms.setIsNewRecord(true);
 		super.save(rsStudentEms);
 	}

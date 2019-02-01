@@ -26,6 +26,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.out.config.service.RsStudentConfigService;
 import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
 import com.thinkgem.jeesite.modules.out.ems.service.RsStudentEmsService;
 
@@ -40,7 +41,6 @@ public class RsStudentEmsController extends BaseController {
 
 	@Autowired
 	private RsStudentEmsService rsStudentEmsService;
-	
 	@ModelAttribute
 	public RsStudentEms get(@RequestParam(required=false) String id) {
 		RsStudentEms entity = null;

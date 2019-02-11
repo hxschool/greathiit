@@ -520,7 +520,7 @@ comment = '初始化'
 
 CREATE TABLE course_schedule  ( 
     id         	varchar(64) COMMENT '编号'  NOT NULL,
-	time_add    	varchar(14) COMMENT '前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几'  NOT NULL,
+	time_add    	varchar(14) COMMENT '前12位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几'  NOT NULL,
 	course_id   	varchar(64) NOT NULL DEFAULT '00000000',
 	course_class	varchar(64) COMMENT '7个解析一个班级'  NOT NULL,
 	`lock`       	varchar(1) COMMENT '0表示管理员加的课,1表示可排课,2表示已排课'  NOT NULL DEFAULT '1',

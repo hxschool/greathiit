@@ -33,8 +33,8 @@
 		
 	</sql>
     
-    <select id="findListByTeacherIdAndClassIdAndCursType" resultType="StudentCourse">
-    	select a.*,s.name as student_name,c.curs_type from student_course a left join course c on a.course_id=c.id left join student s on a.student_number=s.student_number
+    <select id="findListByStudentCourseAndCourse" resultType="StudentCourse">
+    	select a.*,c.curs_type from student_course a left join course c on a.course_id=c.id 
 		 		where 1=1
 			 <if test="clazzId != null and clazzId != ''">
 			 and 
@@ -49,22 +49,20 @@
 				  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
 				 end
 			 </if>
-			 <if test="course.teacher!=null and course.teacher.teacherNumber != null and course.teacher.teacherNumber!=null">
-		  		and a.teacher_number=#{teacherNumber}
+			 <if test="termYear != null and termYear != ''">
+			AND a.term_year = #{termYear}
+			</if>
+			 <if test="course!=null and course.teacher!=null and course.teacher.teacherNumber != null and course.teacher.teacherNumber!=null">
+		  		and a.teacher_number=#{course.teacher.teacherNumber}
 		  	 </if>
-		  	 <if test="cursType != null and cursType != ''">
-		  		AND a.curs_type = #{cursType}
+		  	 <if test="course!=null and course.id != null and course.id != ''">
+		  		AND a.course_id = #{course.id}
 		  	 </if>
-		  	 
+		  	 <if test="course!=null and course.cursType != null and course.cursType != ''">
+		  		AND c.curs_type = #{course.cursType}
+		  	 </if>
+		  	 limit 200
     </select>
-    
-    <select id="findListByStudentNumber" resultType="StudentCourse">
-    	SELECT
-		<include refid="studentCourseColumns" />
-		FROM student_course a
-		<include refid="studentCourseJoins" />
-		WHERE a.student_number = #{studentNumber} 
-     </select>
     
     
 	<select id="get" resultType="StudentCourse">
@@ -74,34 +72,30 @@
 		<include refid="studentCourseJoins"/>
 		WHERE a.id = #{id}
 	</select>
-	
-		<select id="getStudentCourseByStudentCourse" resultType="StudentCourse">
-		SELECT 
-			<include refid="studentCourseColumns"/>
-		FROM student_course a
-		<include refid="studentCourseJoins"/>
-		WHERE 1=1
-		<if test="termYear != null and termYear != ''">
-			AND a.term_year = #{termYear}
-		</if>
-		<if test="student != null and student.studentNumber != null and student.studentNumber != ''">
-			AND a.student_number = #{student.studentNumber}
-		</if>
-		
-		<if test="course != null and course.id != null and course.id != ''">
-			AND a.course_id = #{course.id}
-		</if>
-	</select>
 
 
-	<select id="findStudentCourseByStudentNumberAndCourseId"
+
+	<select id="getStudentCourseByStudentCourse"
 		resultType="StudentCourse">
 		SELECT
 		<include refid="studentCourseColumns" />
 		
 		FROM student_course a
 		<include refid="studentCourseJoins" />
-		WHERE a.student_number = #{studentNumber} and a.course_id=#{courseId}
+		
+		
+		<where>
+			a.del_flag = 1
+			<if test="termYear != null and termYear != ''">
+			AND a.term_year = #{termYear}
+			</if>
+			<if test="student != null and student.studentNumber!= null and student.studentNumber != ''">
+				and a.student_number = #{student.studentNumber}
+			</if>
+			<if test="course != null and course.id!= null and course.id != ''">
+				and a.course_id = #{course.id}
+			</if>
+		</where>
 	</select>
 	
 	
@@ -160,19 +154,19 @@
 				AND a.teacher_name = #{course.teacher.tchrName}
 			</if>
 			
-			 	<if test="clazzId != null and clazzId != ''">
-	 				and 
-				 case length(a.student_number) 
-				  when 7 then 
-				 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
-				  when 8 then
-				 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
-				   when 10 then
-				   SUBSTRING(a.student_number,1,8)=#{clazzId}  
-				   when 12 then
-				  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
-				 end
-	 			</if>
+		 	<if test="clazzId != null and clazzId != ''">
+ 				and 
+			 case length(a.student_number) 
+			  when 7 then 
+			 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
+			  when 8 then
+			 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
+			   when 10 then
+			   SUBSTRING(a.student_number,1,8)=#{clazzId}  
+			   when 12 then
+			  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
+			 end
+ 			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

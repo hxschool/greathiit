@@ -22,6 +22,7 @@ import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreCourse;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.student.adapter.score.CourseScore;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
@@ -116,7 +117,11 @@ public class SchoolReportController {
 		for(UcStudent uc:list) {
 			StudentScoreCourse ssc = new StudentScoreCourse();
 			ssc.setUcStudent(uc);
-			List<StudentCourse> studentCourses = studentCourseService.findListByStudentNumber(uc.getStudentNumber());
+			StudentCourse studentCourse = new StudentCourse();
+			Student student = new Student();
+			student.setStudentNumber(uc.getStudentNumber());
+			studentCourse.setStudent(student);
+			List<StudentCourse> studentCourses = studentCourseService.findList(studentCourse);
 			ssc.setStudentCourses(studentCourses);
 			studentScoreCourses.add(ssc);
 		}

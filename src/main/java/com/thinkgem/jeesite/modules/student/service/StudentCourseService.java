@@ -67,12 +67,10 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		}
 	}
 	
-	public List<StudentCourse> findListByTeacherIdAndClassIdAndCursType(String teacherNumber,String clazzId,String cursType){
-		return studentCourseDao.findListByTeacherIdAndClassIdAndCursType(teacherNumber, clazzId, cursType);
+	public List<StudentCourse> findListByStudentCourseAndCourse(StudentCourse studentCourse){
+		return studentCourseDao.findListByStudentCourseAndCourse(studentCourse);
 	}
-	public StudentCourse findStudentCourseByStudentNumberAndCourseId(String studentNumber,String courseId) {
-		return studentCourseDao.findStudentCourseByStudentNumberAndCourseId(studentNumber, courseId);
-	}
+
 	
 	public StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse) {
 		return studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
@@ -86,10 +84,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		return super.findList(studentCourse);
 	}
 	
-	
-	public List<StudentCourse> findListByStudentNumber(String studentNumber) {
-		return studentCourseDao.findListByStudentNumber(studentNumber);
-	}
+
 	public Page<StudentCourse> findPage(Page<StudentCourse> page, StudentCourse studentCourse) {
 		return super.findPage(page, studentCourse);
 	}

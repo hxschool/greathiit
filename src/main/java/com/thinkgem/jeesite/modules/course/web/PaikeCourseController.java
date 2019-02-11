@@ -115,9 +115,9 @@ public class PaikeCourseController extends BaseController {
 			}else {
 				week =  String.valueOf(s);
 			}
-			String zhou = time_add.substring(12);
+			String zhou = time_add.substring(20);
 			
-			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+			time_add = time_add.substring(0,17).concat(week).concat(zhou);
 			CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
 			if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
 				courseSchedule.setScLock("0");
@@ -175,9 +175,9 @@ public class PaikeCourseController extends BaseController {
 			}else {
 				week =  String.valueOf(s);
 			}
-			String zhou = time_add.substring(12);
+			String zhou = time_add.substring(19);
 			
-			time_add = time_add.substring(0,10).concat(week).concat(zhou);
+			time_add = time_add.substring(0,17).concat(week).concat(zhou);
 			CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
 			if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
 				courseSchedule.setScLock("2");

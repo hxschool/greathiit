@@ -10,7 +10,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
@@ -36,7 +34,6 @@ import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherCourseService;
 
 /**
@@ -60,20 +57,25 @@ public class TeacherCourseController extends BaseController {
 	
 	@RequiresPermissions("teacher:course:view")
 	@RequestMapping(value = {"Teacher_Management_4_excute","", "Teacher_Management_2_selectStuPer"})
-	public String list(Course course ,String clazzId,HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String list(StudentCourse studentCourse,HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
+		Course course = new Course();
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 
 		List<Course> courses = courseService.findList(course);
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
 		
-		List<StudentCourse>  studentCourses = studentCourseService.findListByTeacherIdAndClassIdAndCursType(UserUtils.getTeacher().getTeacherNumber(), clazzId, course.getCursType());
+		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
+		String termYear = courseYearTerm.getYearTerm();
+		if(!StringUtils.isEmpty(studentCourse.getTermYear())) {
+			termYear = studentCourse.getTermYear();
+		}
+		studentCourse.setTermYear(termYear);
+		List<StudentCourse>  studentCourses = studentCourseService.findListByStudentCourseAndCourse(studentCourse);
 		model.addAttribute("studentCourses", studentCourses);
-		model.addAttribute("course", course);
 		model.addAttribute("courses", courses);
-		model.addAttribute("yearTerm", DateUtils.termYear().get(courseYearTerm.getYearTerm()));
+		model.addAttribute("yearTerm", DateUtils.termYear().get(termYear));
 		return "modules/teacher/course/TeacherManagement4";
 	}
 

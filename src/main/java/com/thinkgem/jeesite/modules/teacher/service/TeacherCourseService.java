@@ -131,7 +131,7 @@ public class TeacherCourseService {
 
 					studentCourse.setCourse(course);
 
-					StudentCourse sc = studentCourseService.findStudentCourseByStudentNumberAndCourseId(course.getId(), studentNumber);
+					StudentCourse sc = studentCourseService.getStudentCourseByStudentCourse(studentCourse);
 					if (sc != null) {
 						studentCourseService.delete(sc);
 					}

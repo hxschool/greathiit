@@ -95,14 +95,14 @@
 											</h5>
 											<div class="div-select">
 												课程&nbsp;&nbsp;<select 
-													name="stuCursLimit.cursName" style="width:200px;">
+													name="course.id" style="width:200px;">
 													<c:forEach var="item" items="${courses}" varStatus="status">
 													     <option value="${item.id}">${fns:abbr(item.cursName,22)}</option>
 													</c:forEach>
 												</select>
 											</div>
 											<div class="div-select">
-												班级&nbsp;&nbsp;<select id="class" name="stuCursLimit.claName" style="width:200px;">
+												班级&nbsp;&nbsp;<select id="class" name="clazzId" style="width:200px;">
 													<option value="" selected="selected">全部</option>
 													
 												</select>
@@ -159,9 +159,9 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-		
+		/*
 		$('#course').change(function() {
-	
+			
 				$.ajax({
 					url : '${ctx}/teacher/course/ajaxAllClass',
 					async : false,
@@ -172,14 +172,15 @@
 						
 						$("#example-multiple-selected").empty();
 						var optionString = "";
-						for(var i=0; i<data.length; i++){ //遍历，动态赋值
+						for(var i=0; i<data.length; i++){
 	                        optionString +="<option  value=\""+data[i]+"\"";  
-	                        optionString += ">"+data[i]+"</option>";  //动态添加数据  
+	                        optionString += ">"+data[i]+"</option>";  
 	                    }   
 	                	$("#example-multiple-selected").append(optionString);
 					}
 				});
 			});
+		*/
 	});
 </script>
 </body>

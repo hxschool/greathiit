@@ -112,17 +112,7 @@ public class AnsweringController extends BaseController {
 			int completed = asAnsweringStudentService.count(cs);
 			answeringResponse.setTotal(total);
 			answeringResponse.setCompleted(completed);
-			StringBuffer sb = new StringBuffer();
-			String[] teacherIds = asAnswering.getTeacherIds().split(",");
-			for(String teacherNumber:teacherIds) {
-				User teacher = UserUtils.getByLoginName(teacherNumber);
-				sb.append(teacher.getName());
-				sb.append(",");
-			}
-			String teachers= "";
-			if(!StringUtils.isEmpty(sb)) {
-				teachers = sb.substring(0, sb.length()-1);
-			}
+			String teachers = UserUtils.getTeachers(asAnswering.getTeacherIds());
 			answeringResponse.setAsAnsweringId(asAnswering.getId());
 			answeringResponse.setTeachers(teachers);
 			list.add(answeringResponse);

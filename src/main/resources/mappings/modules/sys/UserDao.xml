@@ -354,6 +354,17 @@
 		<if test="clazz != null and clazz != ''">
 		and	a.clazz_id= #{clazz.id}
 		</if>
+		
+		<if test="userType != null and userType != ''">
+			<if test="userType != null and userType == '99'">
+				and	length(a.no) != 4
+			</if>
+			<if test="userType != null and userType = '99'">
+				and	length(a.no) = 4
+			</if>
+		
+		</if>
+		
 		and a.del_flag = #{DEL_FLAG_NORMAL}
 		ORDER BY c.code, o.code, a.name
 	</select>

@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.CourseUtil;
 
 /**
  * 计划教室Entity
@@ -82,6 +83,11 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 
 	public void setTips(String tips) {
 		this.tips = tips;
+	}
+	
+	public String getTimeAddDesc() {
+		String school = CourseUtil.GetTimeCol(timeAdd).get("school");
+		return CourseUtil.jiaoxuelou(school).concat(CourseUtil.jiaoshi(school));
 	}
 	
 }

@@ -11,6 +11,7 @@ import org.apache.shiro.UnavailableSecurityManagerException;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
@@ -139,6 +140,25 @@ public class UserUtils {
 		}
 		// 如果没有登录，则返回实例化空的User对象。
 		return new User();
+	}
+	
+
+	
+	public static String getTeachers(String str) {
+		String[] teacherIds = str.split(",");
+		StringBuffer sb = new StringBuffer();
+		for(String teacherNumber:teacherIds) {
+			User teacher = UserUtils.getCasByLoginName(teacherNumber);
+			if(!StringUtils.isEmpty(teacher)) {
+				sb.append(teacher.getName());
+				sb.append(",");
+			}
+		}
+		String teachers= "";
+		if(!StringUtils.isEmpty(sb)) {
+			teachers = sb.substring(0, sb.length()-1);
+		}
+		return teachers;
 	}
 	
 	public static Teacher getTeacher(){

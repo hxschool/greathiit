@@ -100,8 +100,10 @@
 		        		
 		        		title = item.title;
 		        		current = item.current.name;
-		        		if( item.current !='undefined'){
-			        		next = item.next.name;
+		        		if( item.current!=null && item.current !='undefined'){
+		        			if(item.next!= null && item.next !='undefined'){
+		        				next = item.next.name;
+		        			}
 			        	}
 		        	}
 		        	msg  = msg + $("#answeringTemplate").html().replace("{asAnsweringId}",item.asAnsweringId).replace("{title}",title).replace("{teachers}",item.teachers).replace("{school}",item.school).replace(new RegExp("{current.name}","g"),current).replace(new RegExp("{next.name}","g"),next).replace("{total}",item.total).replace("{completed}",(item.completed/item.total)*100);

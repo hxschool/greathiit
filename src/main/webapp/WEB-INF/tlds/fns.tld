@@ -55,6 +55,15 @@
     <function-signature>com.thinkgem.jeesite.modules.sys.entity.User getUser()</function-signature>
     <example>${fns:getUser()}</example>  
   </function>
+
+   <function>
+    <description>获取教师名称</description>
+    <name>getTeachers</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-signature>java.lang.String getTeachers(java.lang.String)</function-signature>
+    <example>${fns:getTeachers(id)}</example>  
+  </function>
+  
   
   <function>
     <description>根据编码获取用户对象</description>

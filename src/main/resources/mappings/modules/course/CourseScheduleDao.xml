@@ -155,6 +155,9 @@
 		<include refid="courseScheduleJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="tips != null and tips != ''">
+				AND a.tips = #{tips}
+			</if>
 			<if test="timeAdd != null and timeAdd != ''">
 				AND a.time_add like #{timeAdd}
 			</if>

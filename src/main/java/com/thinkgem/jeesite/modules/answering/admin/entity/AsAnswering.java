@@ -19,7 +19,6 @@ public class AsAnswering extends DataEntity<AsAnswering> {
 	private static final long serialVersionUID = 1L;
 	private String title;		// 标题
 	private Office office;		// 分类
-	private String courseScheduleId;		// 计划编码
 	private String timeAdd;		// 前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几
 	private String teacherIds;		// 教师编码
 	private String description;		// 描述、摘要
@@ -48,15 +47,6 @@ public class AsAnswering extends DataEntity<AsAnswering> {
 
 	public void setOffice(Office office) {
 		this.office = office;
-	}
-	
-	@Length(min=1, max=64, message="计划编码长度必须介于 1 和 64 之间")
-	public String getCourseScheduleId() {
-		return courseScheduleId;
-	}
-
-	public void setCourseScheduleId(String courseScheduleId) {
-		this.courseScheduleId = courseScheduleId;
 	}
 	
 	@Length(min=1, max=64, message="前四位是年份,接着一位是学期,接着两位是学院号,接着三位是教室号,接着两位是周次,接着一位是次,接着一位是星期几长度必须介于 1 和 64 之间")

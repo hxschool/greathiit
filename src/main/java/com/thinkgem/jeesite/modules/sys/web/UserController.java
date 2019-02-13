@@ -82,6 +82,22 @@ public class UserController extends BaseController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "noData")
+	public List<Map<String, Object>> nodata( User user, HttpServletResponse response) {
+		List<Map<String, Object>> mapList = Lists.newArrayList();
+		List<User> list = systemService.findAllList(user);
+		for (int i=0; i<list.size(); i++){
+			User e = list.get(i);
+			Map<String, Object> map = Maps.newHashMap();
+			map.put("id",e.getNo());
+			map.put("name", StringUtils.replace(e.getName(), " ", ""));
+			mapList.add(map);
+		}
+		return mapList;
+	}
+	
+	
+	@ResponseBody
 	@RequiresPermissions("sys:user:view")
 	@RequestMapping(value = {"listData"})
 	public Page<User> listData(User user, HttpServletRequest request, HttpServletResponse response, Model model) {

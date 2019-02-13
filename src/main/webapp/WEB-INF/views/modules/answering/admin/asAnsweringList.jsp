@@ -19,7 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/answering/admin/asAnswering/">答辩抽签列表</a></li>
-		<shiro:hasPermission name="answering:admin:asAnswering:edit"><li><a href="${ctx}/answering/admin/asAnswering/form">答辩抽签添加</a></li></shiro:hasPermission>
+		<li><a href="${ctx}/answering/admin/asAnswering/form">答辩抽签添加</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="asAnswering" action="${ctx}/answering/admin/asAnswering/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -37,9 +37,10 @@
 		<thead>
 			<tr>
 				<th>标题</th>
-				<th>更新时间</th>
+				<th>教师</th>
+				<th>教室</th>
 				<th>备注信息</th>
-				<shiro:hasPermission name="answering:admin:asAnswering:edit"><th>操作</th></shiro:hasPermission>
+				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,15 +50,20 @@
 					${asAnswering.title}
 				</a></td>
 				<td>
-					<fmt:formatDate value="${asAnswering.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${fns:getTeachers(asAnswering.teacherIds)}
+				</td>
+				<td>
+					${fnc:jiaoxuelou(fnc:GetTimeCol(asAnswering.timeAdd).school)}${fnc:jiaoshi(fnc:GetTimeCol(asAnswering.timeAdd).school)}
 				</td>
 				<td>
 					${asAnswering.remarks}
 				</td>
-				<shiro:hasPermission name="answering:admin:asAnswering:edit"><td>
+				<td>
+				
+					<a href="${ctx}/answering/admin/asAnsweringStudent/list?asAnsweringId=${asAnswering.id}">查看队列详情</a>
     				<a href="${ctx}/answering/admin/asAnswering/form?id=${asAnswering.id}">修改</a>
 					<a href="${ctx}/answering/admin/asAnswering/delete?id=${asAnswering.id}" onclick="return confirmx('确认要删除该答辩抽签吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				</td>
 			</tr>
 		</c:forEach>
 		</tbody>

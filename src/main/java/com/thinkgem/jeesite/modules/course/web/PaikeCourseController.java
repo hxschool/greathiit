@@ -115,7 +115,7 @@ public class PaikeCourseController extends BaseController {
 			}else {
 				week =  String.valueOf(s);
 			}
-			String zhou = time_add.substring(20);
+			String zhou = time_add.substring(19);
 			
 			time_add = time_add.substring(0,17).concat(week).concat(zhou);
 			CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);

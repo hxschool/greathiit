@@ -1,137 +1,128 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>锁定课程</title>
-	<meta name="decorator" content="default"/>
-	
-	<style>
+<title>锁定课程</title>
+<meta name="decorator" content="default" />
 
-body
-{
-	font-family:'微软雅黑';
-	background-color:#EBEAEB;
+<style>
+body {
+	font-family: '微软雅黑';
+	background-color: #EBEAEB;
 }
 
-#contest{
-	background-color:#FFF;
+#contest {
+	background-color: #FFF;
 	/*position:absolute;
 	top:7%;
 	left:13%;
 	margin-left:auto;
 	margin-right:auto;*/
-	position:relative;
-	top:20px;
-	margin:0 auto;
-	width:1000px;
-	height:800px;
-	
-	box-shadow:0px 0px 50px #000;
-	border-radius:5px;
+	position: relative;
+	top: 20px;
+	margin: 0 auto;
+	width: 1000px;
+	height: 800px;
+	box-shadow: 0px 0px 50px #000;
+	border-radius: 5px;
 }
 
-.psw
-{
-	width:160px;
-	height:25px;
-	background-color:#6e6e6e;
-	border-radius:3px;
-	border:0px;
-	color:#f9f9f9;
-	font-family:'微软雅黑';
-	padding-left:5px;
+.psw {
+	width: 160px;
+	height: 25px;
+	background-color: #6e6e6e;
+	border-radius: 3px;
+	border: 0px;
+	color: #f9f9f9;
+	font-family: '微软雅黑';
+	padding-left: 5px;
 }
 
-.a
-{
-	display:block;
-
-	border:1px solid;
-	border-radius:3px;
-	border-color:#09F;
-	color:#000;
-	padding:4px 10px;
-	margin-top:2px;
-
-	box-shadow:#6e6e6e 0 0 3px;
-	text-decoration:none;
-}
-.a:hover
-{
-	background-color:#C6B19A;
-	color:#FFF;
-	box-shadow:#2d2d2d 0 0 3px;	
+.a {
+	display: block;
+	border: 1px solid;
+	border-radius: 3px;
+	border-color: #09F;
+	color: #000;
+	padding: 4px 10px;
+	margin-top: 2px;
+	box-shadow: #6e6e6e 0 0 3px;
+	text-decoration: none;
 }
 
-.prime_a:hover
-{
-	color:#0CF;
+.a:hover {
+	background-color: #C6B19A;
+	color: #FFF;
+	box-shadow: #2d2d2d 0 0 3px;
 }
 
-table
-{
-	border-collapse:collapse;
-	font-size:15px;
+.prime_a:hover {
+	color: #0CF;
+}
+
+table {
+	border-collapse: collapse;
+	font-size: 15px;
 	/*border-color:#000;*/
 }
 
-td{
-	width:200px;
-	height:50px;
-	border:1px solid #000000;
+td {
+	width: 200px;
+	height: 50px;
+	border: 1px solid #000000;
 }
-#up{
-	position:absolute;
-	
-	left:40%;
-	top:300px;
-	margin-top:-205px;
-	margin-left:-200px;
-	z-index:6;
-	border-radius:6px;
-	-webkit-box-shadow:0 3px 7px rgba(0, 0, 0, 0.3);
+
+#up {
+	position: absolute;
+	left: 40%;
+	top: 300px;
+	margin-top: -205px;
+	margin-left: -200px;
+	z-index: 6;
+	border-radius: 6px;
+	-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
 }
 
-#mask
-{
-	background-color:#2d2d2d;
-	opacity:0;
-	filter:alpha(opacity=0);
-	position:fixed;
-	width:100%;
-	height:100%;
-	top:0px;
-	left:0px;
-	z-index:-5;
+#mask {
+	background-color: #2d2d2d;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	z-index: -5;
 }
 
-.course_text{
-	text-align:center;
+.course_text {
+	text-align: center;
 }
 
-.admin_tips
-{
-	font-size:14px;
-	line-height:30px;
-	color:#999;
+.admin_tips {
+	font-size: 14px;
+	line-height: 30px;
+	color: #999;
 }
-.container{
+
+.container {
 	width: 90%;
 }
-.span12{
-	width:100%;
+
+.span12 {
+	width: 100%;
 }
 </style>
 
-<link href="${ctxStatic}/admin/css/table.css" type="text/css" rel="stylesheet" />
+<link href="${ctxStatic}/admin/css/table.css" type="text/css"
+	rel="stylesheet" />
 
 </head>
 <body>
-
 <body>
-<br>
-<br>
+	<br>
+	<br>
 	<div class="container">
 		<div class="row">
 			<div class="span12">
@@ -140,53 +131,52 @@ td{
 				<fmt:formatDate value="<%=new java.util.Date()%>" pattern="dd"
 					var="dd" />
 				<div id="mask"></div>
-				
-					<form name="form0">
-						<input type="text" id="year" name="year" style="display: none;"
-							value="${yearTerm}" /> <input type="text" id="servers_time"
-							name="servers_time" style="display: none;" value="${mm}@${dd}">
-						<input type="text" name="year_rili" id="year_rili"
-							style="display: none;" value="${courseCalendar.calendarYear}" />
-						<input type="text" name="month_rili" id="month_rili"
-							style="display: none;" value="${courseCalendar.calendarMonth}" />
-						<input type="text" name="day_rili" id="day_rili"
-							style="display: none;" value="${courseCalendar.calendarDay}" />
+
+				<form name="form0">
+					<input type="text" id="year" name="year" style="display: none;"
+						value="${yearTerm}" /> <input type="text" id="servers_time"
+						name="servers_time" style="display: none;" value="${mm}@${dd}">
+					<input type="text" name="year_rili" id="year_rili"
+						style="display: none;" value="${courseCalendar.calendarYear}" />
+					<input type="text" name="month_rili" id="month_rili"
+						style="display: none;" value="${courseCalendar.calendarMonth}" />
+					<input type="text" name="day_rili" id="day_rili"
+						style="display: none;" value="${courseCalendar.calendarDay}" />
 
 
-						<div id="top">
-							第&nbsp;<select id="week_select" onchange="change_week()"
-								style="width: 100px;">
-								<option value="01" selected>1</option>
-								<%
+					<div id="top">
+						第&nbsp;<select id="week_select" onchange="change_week()"
+							style="width: 100px;">
+							<option value="01" selected>1</option>
+							<%
 									for (int $i = 2; $i <= 9; $i++)
 										out.println("<option value=\"" + '0' + $i + "\">" + $i + "</option>");
 									for (int $i = 10; $i <= 20; $i++)
 										out.println("<option value=\"" + $i + "\">" + $i + "</option>");
 								%>
-							</select>&nbsp;周 &nbsp;&nbsp;&nbsp;&nbsp; 学院:&nbsp;&nbsp;<select
-								name="h_school" id="h_school" class="h_school"
-								onchange="change()" style="width: 100px;">
+						</select>&nbsp;周 &nbsp;&nbsp;&nbsp;&nbsp; 学院:&nbsp;&nbsp;<select
+							name="h_school" id="h_school" class="h_school"
+							onchange="change()" style="width: 100px;">
 
-							</select> &nbsp;&nbsp;&nbsp;&nbsp;教室:&nbsp;&nbsp; <select id="address"
-								class="address" onchange="change_address()"
-								style="width: 200px;">
-							</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
-								 onclick="window_print()"  name="win_print"  id="win_print"
-								value="打印" class="button" />
-						</div>
-						<p>
-						<table id="s_week" style="font-size: 10px; height: 550px;">
-							<tr align="center">
-								<td></td>
-								<td>星期一</td>
-								<td>星期二</td>
-								<td>星期三</td>
-								<td>星期四</td>
-								<td>星期五</td>
-								<td>星期六</td>
-								<td>星期日</td>
-							</tr>
-							<%
+						</select> &nbsp;&nbsp;&nbsp;&nbsp;教室:&nbsp;&nbsp; <select id="address"
+							class="address" onchange="change_address()" style="width: 200px;">
+						</select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="button"
+							onclick="window_print()" name="win_print" id="win_print"
+							value="打印" class="button" />
+					</div>
+					<p>
+					<table id="s_week" style="font-size: 10px; height: 550px;">
+						<tr align="center">
+							<td></td>
+							<td>星期一</td>
+							<td>星期二</td>
+							<td>星期三</td>
+							<td>星期四</td>
+							<td>星期五</td>
+							<td>星期六</td>
+							<td>星期日</td>
+						</tr>
+						<%
 								//生成空表格
 								int i = 1;
 								int j = 2;
@@ -201,38 +191,34 @@ td{
 									out.println("</tr>");
 								}
 							%>
-						</table>
-					</form>
-				
+					</table>
+				</form>
+
 			</div>
 		</div>
 	</div>
 
 	<!-- div层[排一个课]-->
-<div id="up" style="display:none; width:50%; padding-top:50px;">
+	<div id="up" style="display: none; width: 50%; padding-top: 50px;">
 
-    <form action="" method="post" class="basic-grey">
-    <input  type="hidden" style="display:none" name="time" id="time" />
-    <h1>锁定课程
-    <span>请输入锁定课程备注信息</span>
-    </h1>
+		<form action="" method="post" class="basic-grey">
+			<input type="hidden" style="display: none" name="time" id="time" />
+			<h1>
+				锁定课程 <span>请输入锁定课程备注信息</span>
+			</h1>
+			<label> <span></span>
+				<button class="btn btn-mini" type="button" onclick="$('#tips').val('答辩')">答辩</button>
+			</label> <label> <span>备注 :</span> <textarea name="tips" id="tips"
+					placeholder="请输入原因"></textarea>
+			</label> <label> <span>&nbsp;</span> <input type="button"
+				class="button" onclick="resure()" value="添加" /> <input
+				type="button" class="button" onclick="cancel()" value="返回" />
+			</label>
+		</form>
 
+	</div>
 
-    <label>
-    <span>备注 :</span>
-    <textarea name="tips" id="tips" placeholder="请输入原因"></textarea>
-    </label>
-    
-    <label>
-    <span>&nbsp;</span>
-    <input type="button" class="button" onclick="resure()" value="添加" />
-     <input type="button" class="button" onclick="cancel()" value="返回" />
-    </label>
-    </form>
-
-</div>
-
-<script>
+	<script>
 var time_array = new Array();//日历数组
 //页面加载完成后执行change()填表格操作
 $(document).ready(function()
@@ -343,7 +329,7 @@ function change()
 	//日历相关
 	var week_rili = temp.options[temp.selectedIndex].text;
 	
-	//alert(time);
+	
 	var year_rili = $("#year_rili").val();
 	var month_rili = $("#month_rili").val(); 
 	var day_rili  = $("#day_rili").val();
@@ -365,7 +351,6 @@ function change()
 
 function chuancan(selected)
 {
-	
 	//selected为前12位，即没有节次和第几周
 	//JQ的ajax返回id为selected的数据
 	$.ajax({
@@ -401,7 +386,8 @@ function chuancan(selected)
 						}
 						else if(lock=='0')
 						{
-							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\" ondblclick='alert(\""+tips[1]+"\")'>管理员已加锁<p style=\"margin:0px;width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\" >备注:"+tips[1]+"<p></div><div class=\"course_text\" ><a class=\"btn btn-mini btn-danger\" onclick=\"deleted('"+selected+"',"+i+","+j+")\">删除</a></div>"
+							tips[1] = tips[1].replace('</div>','')
+							temp.rows[i].cells[j].innerHTML="<div class=\"course_text\" ondblclick='alert(\""+tips[1]+"\")'>管理员已加锁<p style=\"margin:0px;width: 180px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;\" >备注:" + tips[1] + " <p></div><div class=\"course_text\" ><a class=\"btn btn-mini btn-danger\" onclick=\"deleted('"+selected+"',"+i+","+j+")\">删除</a></div>"
 						}
 						else
 						{
@@ -472,7 +458,6 @@ function deleted(time,row,cell)
   	 	data: "time_add="+time_add,
    		success: function(msg)
 		{
-			//alert(msg);
 			if(msg=='1')
 			{
 				//$('#up').fadeOut(100)
@@ -505,7 +490,7 @@ function resure()
 		var course_id = "00000000";
 		time_add = $("#time").val();
 		tips =  $("#tips").val();;
-		//alert(time_add);
+		
 		//通过ajax给数据库添加一个课程安排
 		$.ajax({
    		type: "POST",
@@ -513,7 +498,7 @@ function resure()
   	 	data: "time_add="+time_add+"&course_id="+course_id+"&student_id="+student_id+"&tips="+tips,
    		success: function(msg)
 		{
-			//alert(msg);
+			
 			if(msg=='1')
 			{
 				alert("加锁成功");
@@ -533,7 +518,7 @@ function resure()
    		}
 	   });
 	} 
-	//alert(student_id+''+time_add+course_id);
+	
 }
 
 

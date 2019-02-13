@@ -3,6 +3,7 @@ package com.thinkgem.jeesite.modules.answering.home.response;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 
 public class AnsweringResponse {
+	private String asAnsweringId;
 	private String title;//标题
 	private String school;//教室
 	private String teachers;//教师
@@ -10,6 +11,14 @@ public class AnsweringResponse {
 	private User next;//下一个
 	private int completed;//已完成
 	private int total;//总数
+	
+	
+	public String getAsAnsweringId() {
+		return asAnsweringId;
+	}
+	public void setAsAnsweringId(String asAnsweringId) {
+		this.asAnsweringId = asAnsweringId;
+	}
 	public String getTitle() {
 		return title;
 	}

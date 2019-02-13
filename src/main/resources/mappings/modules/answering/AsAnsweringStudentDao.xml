@@ -47,15 +47,12 @@
 			1=1 and
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			
-			<if test="id!=null and id!=''">
-				and a.id = #{id}
-			</if>
 			<if test="asAnsweringId!=null and asAnsweringId!=''">
 				and a.as_answering_id = #{asAnsweringId}
 			</if>
 			 <if test="status!=null and status!=''">
 				and a.status = #{status}
-			</if>
+			 </if>
 		</where>
     </select>
 	<select id="findList" resultType="AsAnsweringStudent">
@@ -65,13 +62,19 @@
 		<include refid="asAnsweringStudentJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="asAnsweringId!=null and asAnsweringId!=''">
+				and a.as_answering_id = #{asAnsweringId}
+			</if>
+			<if test="status!=null and status!=''">
+				and a.status = #{status}
+			</if>
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
-				ORDER BY a.update_date DESC
+				ORDER BY a.student_number DESC
 			</otherwise>
 		</choose>
 	</select>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -32,13 +33,34 @@ public class AnsweringController extends BaseController {
 	private AsAnsweringService asAnsweringService;
 	@Autowired
 	private AsAnsweringStudentService asAnsweringStudentService;
-	@RequestMapping(value = {"index", ""})
+	@RequestMapping
 	public String index(HttpServletRequest request,HttpServletResponse response, Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
-		return "modules/answering/home/index";
+		return "modules/answering/home/answeringIndex";
 	}
+	
+	@RequestMapping(value = "list-{id}")
+	public String list_id(@PathVariable("id") String id,Model model) {
+		model.addAttribute("id", id);
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("site", site);
+		model.addAttribute("isIndex", true);
+		return "modules/answering/home/answeringList";
+	}
+	
+	@RequestMapping(value = "list")
+	@ResponseBody
+	public List<AsAnsweringStudent> list(AsAnsweringStudent asAnsweringStudent) {
+		asAnsweringStudent.setAsAnsweringId(asAnsweringStudent.getAsAnsweringId());
+		asAnsweringStudent.setStatus(AsAnsweringService.HAVE_IN_HAND);
+		List<AsAnsweringStudent> list = asAnsweringStudentService.findList(asAnsweringStudent);
+		asAnsweringStudent.setStatus(AsAnsweringService.READY);
+		list.addAll(asAnsweringStudentService.findList(asAnsweringStudent));
+		return list;
+	}
+	
 	@RequestMapping(value = "get")
 	@ResponseBody
 	public List<AnsweringResponse> get() {
@@ -55,7 +77,9 @@ public class AnsweringController extends BaseController {
 			asAnsweringStudent.setAsAnsweringId(asAnswering.getId());
 			asAnsweringStudent.setStatus(AsAnsweringService.HAVE_IN_HAND);
 			AsAnsweringStudent as = asAnsweringStudentService.get(asAnsweringStudent);
+			
 			if(StringUtils.isEmpty(as)) {
+				asAnsweringStudent.setAsAnsweringId(asAnswering.getId());
 				asAnsweringStudent.setStatus(AsAnsweringService.READY);
 				List<AsAnsweringStudent> ass = asAnsweringStudentService.findList(asAnsweringStudent);
 				if(!CollectionUtils.isEmpty(ass)) {
@@ -65,25 +89,26 @@ public class AnsweringController extends BaseController {
 					as = haveInHand;
 				}
 			}
-			if(StringUtils.isEmpty(as)) {
-				User current = UserUtils.getByLoginName(as.getStudentNumber());
-				
+			
+			if(!StringUtils.isEmpty(as)) {
+				User current = UserUtils.getCasByLoginName(as.getStudentNumber());
+				answeringResponse.setCurrent(current);
 				User next = null;
 				asAnsweringStudent.setAsAnsweringId(asAnswering.getId());
 				asAnsweringStudent.setStatus(AsAnsweringService.READY);
 				List<AsAnsweringStudent> ass = asAnsweringStudentService.findList(asAnsweringStudent);
 				if(!CollectionUtils.isEmpty(ass)) {
-					next = UserUtils.getByLoginName(ass.get(0).getStudentNumber());
+					next = UserUtils.getCasByLoginName(ass.get(0).getStudentNumber());
 				}
-	
-				
-				answeringResponse.setCurrent(current);
 				answeringResponse.setNext(next);
 			}
+			
+			
+			
 			AsAnsweringStudent cs = new AsAnsweringStudent();
 			cs.setAsAnsweringId(asAnswering.getId());
 			int total = asAnsweringStudentService.count(cs);
-			asAnsweringStudent.setStatus(AsAnsweringService.COMPLETE);
+			cs.setStatus(AsAnsweringService.COMPLETE);
 			int completed = asAnsweringStudentService.count(cs);
 			answeringResponse.setTotal(total);
 			answeringResponse.setCompleted(completed);
@@ -98,6 +123,7 @@ public class AnsweringController extends BaseController {
 			if(!StringUtils.isEmpty(sb)) {
 				teachers = sb.substring(0, sb.length()-1);
 			}
+			answeringResponse.setAsAnsweringId(asAnswering.getId());
 			answeringResponse.setTeachers(teachers);
 			list.add(answeringResponse);
 		}

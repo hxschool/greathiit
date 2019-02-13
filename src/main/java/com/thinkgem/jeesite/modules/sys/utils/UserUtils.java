@@ -91,6 +91,10 @@ public class UserUtils {
 		return user;
 	}
 	
+	public static User getCasByLoginName(String loginname){
+		return userDao.getCasByLoginName(loginname);
+	}
+	
 	public static User getUser(User user) {
 		return  userDao.getByLoginName(user);
 	}

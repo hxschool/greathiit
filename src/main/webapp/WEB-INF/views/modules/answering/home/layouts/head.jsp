@@ -13,6 +13,9 @@
 <meta name="keyword" content="哈尔滨信息工程学院  选课系统">
 <link rel="icon" href="${ctxStatic}/favicon.ico" />
 
+<script src="${ctxStatic}/admin/js/jquery.min.js"></script>
+<script src="${ctxStatic}/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
 
 <!-- Bootstrap core CSS -->
 <link href="${ctxStatic}/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -23,4 +26,3 @@
 <link href="${ctxStatic}/bootstrap/2.3.1/button/buttons.css"
 	rel="stylesheet">
 
-<script src="${ctxStatic}/bootstrap/4.0.0/js/bootstrap.min.js"></script>

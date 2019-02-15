@@ -6,6 +6,7 @@ package com.thinkgem.jeesite.modules.answering.admin.entity;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 答辩Entity
@@ -38,7 +39,7 @@ public class AsAnsweringStudent extends DataEntity<AsAnsweringStudent> {
 	public void setAsAnsweringId(String asAnsweringId) {
 		this.asAnsweringId = asAnsweringId;
 	}
-	
+	@ExcelField(title="学号", align=2, sort=1)
 	@Length(min=1, max=64, message="学号长度必须介于 1 和 64 之间")
 	public String getStudentNumber() {
 		return studentNumber;
@@ -47,7 +48,7 @@ public class AsAnsweringStudent extends DataEntity<AsAnsweringStudent> {
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
-	
+	@ExcelField(title="姓名", align=2, sort=2)
 	@Length(min=1, max=64, message="姓名长度必须介于 1 和 64 之间")
 	public String getUsername() {
 		return username;

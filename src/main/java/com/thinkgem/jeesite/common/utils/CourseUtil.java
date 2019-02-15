@@ -9,8 +9,11 @@ import java.util.Map;
 
 import org.springframework.util.StringUtils;
 
+import com.thinkgem.jeesite.modules.calendar.dao.CourseCalendarDao;
+import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
+
 public class CourseUtil {
-	
+	private static CourseCalendarDao courseCalendarDao = SpringContextHolder.getBean(CourseCalendarDao.class);
 	public static Map<String,String> schoolRootMap = new HashMap<String,String>();
 	
 	static{
@@ -85,6 +88,48 @@ public class CourseUtil {
 	    return $time;
 	}
 	
+	public static String getTimeAdd(String timeAdd) {
+		CourseCalendar courseCalendar = courseCalendarDao.get("1");
+		int calendarYear = Integer.valueOf(courseCalendar.getCalendarYear());
+		int calendarMonth = Integer.valueOf(courseCalendar.getCalendarMonth()); // 月
+		int calendarDay = Integer.valueOf(courseCalendar.getCalendarDay());
+		int week = Integer.valueOf(GetTimeCol(timeAdd).get("week"));
+		int xq = Integer.valueOf(GetTimeCol(timeAdd).get("zhou"));
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(calendarYear, calendarMonth - 1, calendarDay);
+		calendar.add(calendar.WEEK_OF_MONTH, week - 1);
+		calendar.add(calendar.DAY_OF_WEEK, xq - 1);
+		Date date = calendar.getTime();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+		return format.format(date);
+	}
+	
+	public static String getCompleteTimeAdd(String timeAdd) {
+		String school = GetTimeCol(timeAdd).get("school");
+		String $j = GetTimeCol(timeAdd).get("jie");
+		String xq = GetTimeCol(timeAdd).get("zhou");
+		//getTimeAdd(timeAdd)
+		return getTimeAdd(timeAdd).concat(" ").concat(zhou(xq)).concat(" ").concat(jiaoxuelou(school)).concat(jiaoshi(school)).concat("教室").concat(jie($j));
+	}
+
+	public static void main(String[] args) {
+		int calendarYear = 2019;
+		int calendarMonth = 2; // 月
+		int calendarDay = 13; // 日
+		int week = 2;
+		int xq = 1;
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(calendarYear, calendarMonth - 1, calendarDay);
+		calendar.add(calendar.WEEK_OF_MONTH, week - 1);
+		calendar.add(calendar.DAY_OF_WEEK, xq - 1);
+		Date date = calendar.getTime();
+		System.out.println(date);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+		String str = format.format(date);
+		System.out.println(str);
+		String timeAdd = "2018-2019-01015010327";
+		System.out.println(getCompleteTimeAdd(timeAdd));
+	}
 	
 	public static String addDate(String today,int day) {
 		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  

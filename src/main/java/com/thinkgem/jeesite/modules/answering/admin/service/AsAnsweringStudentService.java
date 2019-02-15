@@ -12,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.answering.admin.dao.AsAnsweringStudentDao;
+import com.thinkgem.jeesite.modules.answering.admin.entity.AsAnswering;
 import com.thinkgem.jeesite.modules.answering.admin.entity.AsAnsweringStudent;
+import com.thinkgem.jeesite.modules.sys.dao.UserDao;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 答辩Service
@@ -25,13 +29,41 @@ public class AsAnsweringStudentService extends CrudService<AsAnsweringStudentDao
 	
 	@Autowired
 	private AsAnsweringStudentDao asAnsweringStudentDao;
+	@Autowired
+	private UserDao userDao;
+	 
 	public AsAnsweringStudent get(String id) {
 		return super.get(id);
+	}
+	@Transactional(readOnly = false)
+	public void batchInsert( AsAnswering asAnswering) {
+		Office office = asAnswering.getOffice();
+		if(!org.springframework.util.StringUtils.isEmpty(office)) {
+			String[] ids = office.getId().split(",");
+			for(String clazzId : ids) {
+				User user = new User();
+				Office clazz = new Office();
+				clazz.setId(clazzId);
+				user.setClazz(clazz);
+				List<User> users  = userDao.findAllList(user);
+				String asAnsweringId = asAnswering.getId();
+				for(User u : users) {
+					AsAnsweringStudent asAnsweringStudent = new AsAnsweringStudent();
+					asAnsweringStudent.setAsAnsweringId(asAnsweringId);
+					asAnsweringStudent.setStatus("0");
+					asAnsweringStudent.setStudentNumber(u.getNo());
+					asAnsweringStudent.setUsername(u.getName());
+					super.save(asAnsweringStudent);
+				}
+			}
+		}
 	}
 	
 	public List<AsAnsweringStudent> findList(AsAnsweringStudent asAnsweringStudent) {
 		return super.findList(asAnsweringStudent);
 	}
+	
+	
 	
 	public int count(AsAnsweringStudent asAnsweringStudent) {
 		return asAnsweringStudentDao.count(asAnsweringStudent);

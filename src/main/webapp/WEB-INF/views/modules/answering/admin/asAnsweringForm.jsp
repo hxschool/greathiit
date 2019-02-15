@@ -53,9 +53,9 @@
 			<label class="control-label">教室：</label>
 			<div class="controls">
 				
-				<form:select path="timeAdd" class="input-medium">  
+				<form:select path="timeAdd" class="input-medium" style="width:265px">  
 			    <form:option value="" label=""/>  
-			    <form:options items="${courseSchedules }" itemLabel="timeAddDesc" itemValue="timeAdd" htmlEscape="false"/>  
+			    <form:options items="${courseSchedules }" itemLabel="completeTimeAdd" itemValue="timeAdd" htmlEscape="false"/>  
 			    </form:select>  
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>

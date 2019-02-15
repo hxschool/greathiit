@@ -90,4 +90,10 @@ public class CourseSchedule extends DataEntity<CourseSchedule> {
 		return CourseUtil.jiaoxuelou(school).concat(CourseUtil.jiaoshi(school));
 	}
 	
+	public String getCompleteTimeAdd() {
+		return CourseUtil.getCompleteTimeAdd(timeAdd);
+	}
+	
+	
+	
 }

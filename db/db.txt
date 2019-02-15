@@ -786,3 +786,8 @@ where 姓名 not in (select name from sys_user)
 
 ALTER TABLE select_course
 ADD UNIQUE KEY(course_id, student_number);
+
+
+ALTER TABLE as_answering ADD INDEX index_as_timeadd (time_add);
+ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_status (as_answering_id,status);
+ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_student_number_status (as_answering_id,student_number,status);

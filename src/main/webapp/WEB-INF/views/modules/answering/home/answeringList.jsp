@@ -52,7 +52,7 @@
 		});
 	function consoleLog(){
 		$.ajax({
-		    url:'list?id=${id}',
+		    url:'list?asAnsweringId=${id}',
 		    type:'POST',
 		    async:true,
 		    timeout:5000,

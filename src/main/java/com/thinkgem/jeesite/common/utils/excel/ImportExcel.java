@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -282,6 +279,18 @@ public class ImportExcel {
 			if (cell != null){
 				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
 					val = cell.getNumericCellValue();
+					
+					if (val != null&&!val.equals("")) {
+						String value = val.toString();
+						if(value.indexOf("E")>0) {
+							DecimalFormat df = new DecimalFormat("0");  
+							val = df.format(cell.getNumericCellValue());  
+						}else if(value.indexOf(".")>0) {
+							DecimalFormat df = new DecimalFormat("0.00");  
+							val = df.format(cell.getNumericCellValue());  
+						}
+					}
+					
 				}else if (cell.getCellType() == Cell.CELL_TYPE_STRING){
 					val = cell.getStringCellValue();
 				}else if (cell.getCellType() == Cell.CELL_TYPE_FORMULA){
@@ -295,6 +304,7 @@ public class ImportExcel {
 		}catch (Exception e) {
 			return val;
 		}
+		
 		return val;
 	}
 	

@@ -100,10 +100,10 @@
 		</mvc:interceptor>
 		<!-- 手机视图拦截器 -->
 		
-		<!-- <mvc:interceptor>
+		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<bean class="com.thinkgem.jeesite.modules.sys.interceptor.MobileInterceptor" />
-		</mvc:interceptor> -->
+		</mvc:interceptor>
 		 
 	</mvc:interceptors>
 	

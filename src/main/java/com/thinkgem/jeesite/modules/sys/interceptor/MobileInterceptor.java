@@ -31,8 +31,11 @@ public class MobileInterceptor extends BaseService implements HandlerInterceptor
 			ModelAndView modelAndView) throws Exception {
 		if (modelAndView != null){
 			// 如果是手机或平板访问的话，则跳转到手机视图页面。
-			if(UserAgentUtils.isMobileOrTablet(request) && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")){
-				modelAndView.setViewName("mobile/" + modelAndView.getViewName());
+			String str = request.getServletPath();
+			if (str != null && str.indexOf("f/2018") > -1) {
+				if(UserAgentUtils.isMobileOrTablet(request) && !StringUtils.startsWithIgnoreCase(modelAndView.getViewName(), "redirect:")){
+					modelAndView.setViewName("mobile/" + modelAndView.getViewName());
+				}
 			}
 		}
 	}

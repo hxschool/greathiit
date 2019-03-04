@@ -438,7 +438,7 @@ public class CourseExportController extends BaseController {
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursCurrTerm(yearTerm);
+		courseScheduleExt.setCursYearTerm(yearTerm);
 		courseScheduleExt.setRoot(id);
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
@@ -534,7 +534,7 @@ public class CourseExportController extends BaseController {
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursCurrTerm(yearTerm);
+		courseScheduleExt.setCursYearTerm(yearTerm);
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
@@ -720,7 +720,7 @@ public class CourseExportController extends BaseController {
 	}
 
 	@RequestMapping(value = "getCourseScheduleExt")
-	public String getCourseScheduleExt(String cursCurrTerm,String courseClass,String teacherName, Model model) {
+	public String getCourseScheduleExt(String cursYearTerm,String courseClass,String teacherName, Model model) {
 		
 		if(org.springframework.util.StringUtils.isEmpty(courseClass)&&org.springframework.util.StringUtils.isEmpty(teacherName)) {
 			model.addAttribute("courseScheduleExt", new ArrayList<CourseScheduleExt>());
@@ -740,7 +740,7 @@ public class CourseExportController extends BaseController {
 			teacherNumber = sb.substring(0, sb.length() - ",".length());
 		}
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursCurrTerm(cursCurrTerm);
+		courseScheduleExt.setCursYearTerm(cursYearTerm);
 		courseScheduleExt.setCourseClass(courseClass);
 		courseScheduleExt.setTeacherNumber(teacherNumber);
 		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(courseScheduleExt));

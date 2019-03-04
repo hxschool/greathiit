@@ -14,7 +14,6 @@
 		c.id as "course.id",
 		c.curs_num as "course.cursNum",
 		c.curs_name as "course.cursName",
-		c.curs_learning_model as "course.cursLearningModel",
 		u.no as "student.no",
 		u.name as "student.name",
 		a.del_flag AS "delFlag"
@@ -79,8 +78,8 @@
         	and a.course_id = #{course.id}
       	</if>
       	
-      		<if test="course != null and course.cursCurrTerm!=null and course.cursCurrTerm!=''" >
-        	and c.curs_curr_term = #{course.cursCurrTerm}
+      		<if test="course != null and course.cursYearTerm!=null and course.cursYearTerm!=''" >
+        	and c.curs_year_term = #{course.cursYearTerm}
       	</if>
       	
       	<if test="course != null and course.teacher!=null and course.teacher.teacherNumber!=''" >
@@ -130,7 +129,6 @@
 	c.curs_num AS "course.cursNum",
 	c.curs_edu_num AS "course.cursEduNum",
 	c.curs_name AS "course.cursName",
-	c.curs_learning_model AS "course.cursLearningModel",
 	dept.id AS "dept.id",
 	dept.name AS "dept.name",
 	major.id AS "major.id",
@@ -163,9 +161,9 @@
 		<if test="course!=null and course.teacher!=null and course.teacher.teacherNumber!=''">
 			AND c.teacher_number=#{course.teacher.teacherNumber}
 		</if>
-		<if test="course!=null and course.cursLearningModel!=null and course.cursLearningModel!=''">
-			AND c.curs_learning_model=#{course.cursLearningModel}
-		</if>
+		
+		AND c.curs_year_term=1
+	
 		<if test="dept!=null and dept.id!=null and dept.id!=''">
 			AND dept.id=#{dept.id}
 		</if>

@@ -117,13 +117,13 @@ public class Course extends DataEntity<Course> {
 		this.cursCredit = cursCredit;
 	}
 	
-	@Length(min=0, max=255, message="curs_curr_term长度必须介于 0 和 255 之间")
+	@Length(min=0, max=255, message="curs_year_term长度必须介于 0 和 255 之间")
 	public String getCursYearTerm() {
 		return cursYearTerm;
 	}
 
-	public void setCursYearTerm(String cursCurrTerm) {
-		this.cursYearTerm = cursCurrTerm;
+	public void setCursYearTerm(String cursYearTerm) {
+		this.cursYearTerm = cursYearTerm;
 	}
 	
 	@Length(min=0, max=255, message="课程简介长度必须介于 0 和 2000 之间")

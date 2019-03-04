@@ -8,7 +8,6 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 public class CourseSelectExcel {
 	private String id;
@@ -19,8 +18,6 @@ public class CourseSelectExcel {
 	private Course course;
 	private List<Course> courses;
 	private StudentCourse studentCourse;
-	
-	
 	
 	public List<Course> getCourses() {
 		return courses;
@@ -56,11 +53,7 @@ public class CourseSelectExcel {
 	public String getName() {
 		return user.getName();
 	}
-	@ExcelField(title="学习模式", type=1, align=2, sort=7)
-	public String getLearningModel() {
-		//gaiyuyan
-		return "";
-	}
+
 	@ExcelField(title="选修课程", type=1, align=2, sort=8)
 	public String getCourseName() {
 		return course.getCursName();

@@ -791,3 +791,5 @@ ADD UNIQUE KEY(course_id, student_number);
 ALTER TABLE as_answering ADD INDEX index_as_timeadd (time_add);
 ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_status (as_answering_id,status);
 ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_student_number_status (as_answering_id,student_number,status);
+--生成选课相关统计信息
+select a.id,a.curs_edu_num,a.curs_name,b.name,a.upper_limit,a.lower_limit,c.time_add,(select count(1) from select_course c where c.course_id=a.id) as 实际报名人数 from course a left join sys_user b on a.teacher_number=b.no left join course_schedule c on a.id=c.course_id where a.curs_curr_term=1 order by c.time_add;

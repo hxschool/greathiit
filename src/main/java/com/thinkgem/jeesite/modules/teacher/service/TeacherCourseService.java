@@ -54,7 +54,7 @@ public class TeacherCourseService {
 		result = importExecl.read(path);
 		String studentNumber = "";
 		String cursName = "";
-		String cursCurrTerm = "";
+		String cursYearTerm = "";
 		String cursClazz = "";
 		Student student = null;
 		Course course = null;
@@ -62,16 +62,16 @@ public class TeacherCourseService {
 		// 从路径中截取文件名，再截取课程学期及课程名，班级，找到课程对象、班级对象，为空则抛异常
 		path = path.replaceAll("\\\\","/");
 		String fileName = path.substring(path.lastIndexOf("/") + 1,path.length());// 截取文件名
-		cursCurrTerm = fileName.substring(0, fileName.indexOf("_"));// 截取课程学期
+		cursYearTerm = fileName.substring(0, fileName.indexOf("_"));// 截取课程学期
 		cursName = fileName.substring(fileName.indexOf("_") + 1,fileName.lastIndexOf("_"));// 截取课程名
 		cursClazz = fileName.substring(fileName.lastIndexOf("_") + 1,
 				fileName.lastIndexOf("."));
 		String[] clazzArray = null;
 		clazzArray = cursClazz.split(",");
-		if ((!cursName.trim().equals("")) && (!cursCurrTerm.trim().equals(""))
+		if ((!cursName.trim().equals("")) && (!cursYearTerm.trim().equals(""))
 				&& (!cursClazz.equals(""))) {
 			Course courseQuery = new Course();
-			courseQuery.setCursYearTerm(cursCurrTerm);
+			courseQuery.setCursYearTerm(cursYearTerm);
 			courseQuery.setCursName(cursName);
 			courseQuery.setTeacher(UserUtils.getTeacher());
 			course = courseDao.getCourse(courseQuery);
@@ -178,7 +178,7 @@ public class TeacherCourseService {
 					studentCourse.setWorkEvaValue(String.valueOf(workEvaValue));
 					studentCourse.setExpEvaValue(String.valueOf(expEvaValue));
 					studentCourse.setEvaValue(String.valueOf(evaValue));
-					studentCourse.setTermYear(cursCurrTerm);
+					studentCourse.setTermYear(cursYearTerm);
 					studentCourse.setStatus("0");
 					stuCurs.add(studentCourse);
 				}

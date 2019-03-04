@@ -147,9 +147,11 @@ public class XuankeController extends BaseController {
 			selectCourses = selectCourseService.findList(selectCourse);
 			
 			for(Role r:user.getRoleList()) {
-				int id = Integer.valueOf(r.getId());
-				if (id >= 90) {
-					isIndex = true;
+				if(org.apache.commons.lang3.StringUtils.isNumeric(r.getId())) {
+					int id = Integer.valueOf(r.getId());
+					if (id >= 90) {
+						isIndex = true;
+					}
 				}
 			}
 		}
@@ -206,7 +208,6 @@ public class XuankeController extends BaseController {
 		}
 		return "modules/xuanke/themes/"+site.getTheme()+"/index";
 	}
-	
 
 	@RequestMapping("select")
 	public String select(Course course, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {

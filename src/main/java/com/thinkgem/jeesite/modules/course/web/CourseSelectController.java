@@ -259,12 +259,13 @@ public class CourseSelectController extends BaseController {
     public String exportFile(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
             String fileName = "公共选课"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-    		new ExportExcel("公共选课", CourseSelectExcel.class).setDataList(selectCourseService.exportSelectCourse(courseSelectExcel)).write(response, fileName).dispose();
+            List<CourseSelectExcel> courseSelectExcels = selectCourseService.exportSelectCourse(courseSelectExcel);
+    		new ExportExcel("公共选课", CourseSelectExcel.class).setDataList(courseSelectExcels).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出公共选课失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/course/select/exportView?repage";
+		return "redirect:" + adminPath + "/course/select/?cursProperty=20&repage";
     }
 
     @RequestMapping(value = "studentCourse")

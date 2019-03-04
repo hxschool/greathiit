@@ -165,7 +165,7 @@ public class XuankeController extends BaseController {
 				while(it.hasNext()){
 					Course c = it.next();
 					String courseId = c.getId();
-					if(studentNumber.length()==10) {//本科
+					if(studentNumber.length()==10||studentNumber.length()==12) {//本科
 						courseTeachingModes.add(courseTeachingModeService.getCourseTeachingModeByCourse(courseId));
 						if(!c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
 							it.remove();

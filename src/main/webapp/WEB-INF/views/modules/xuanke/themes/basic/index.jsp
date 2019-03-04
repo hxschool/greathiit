@@ -132,6 +132,7 @@
 									<thead>
 										<tr>
 											<th>序号</th>
+											<th>课程类别</th>
 											<th>课程名称</th>
 
 											<th>任课老师</th>
@@ -146,6 +147,17 @@
 										<c:forEach items="${courses}" var="course" varStatus="status">
 											<tr>
 												<td>${status.index+1 }</td>
+												<td>
+												<c:choose>
+												    <c:when test="${fns:startsWith(course.cursEduNum,'B')}">
+												        	本科课程
+												    </c:when>
+												    <c:otherwise>
+												       		高职/专科 课程
+												    </c:otherwise>
+												</c:choose>
+												
+												</td>
 												<td>${course.cursName}</td>
 
 												<td>${course.teacher.tchrName}</td>
@@ -190,6 +202,12 @@
 																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
 														</c:if>
 														
+														<c:if test="${bgColor='bg-orange'}">
+															<button
+															class="btn small bg-blue" target="ajaxTodo"><span
+															class="button-content"><i
+																class="glyph-icon ${bgIcon }"></i> ${label }</span></button>
+														</c:if>
 
 													</c:if> <!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
 													<a href="javascript:void(0)"

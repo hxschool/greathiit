@@ -361,8 +361,9 @@ public class XuankeController extends BaseController {
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}String s = "G010313042";
+		boolean ret = org.apache.commons.lang3.StringUtils.startsWith(s, "G");
+		System.out.println(ret);
 		
 	}
 }

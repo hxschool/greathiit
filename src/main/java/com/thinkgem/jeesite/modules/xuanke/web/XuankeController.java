@@ -127,7 +127,7 @@ public class XuankeController extends BaseController {
 		if(StringUtils.isEmpty(course.getCursProperty())) {
 			course.setCursProperty("20");
 		}
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		//course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
 		List<Course> courses = courseService.findList(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		

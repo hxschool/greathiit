@@ -42,7 +42,7 @@ public class RsStudentResultService extends CrudService<RsStudentResultDao, RsSt
 	@Transactional(readOnly = false)
 	public void save(RsStudentResult rsStudentResult) {
 		RsStudentConfig config = rsStudentConfigDao.get("1");
-		rsStudentResult.setYearTerm(config.getYearTerm());
+		rsStudentResult.setTermYear(config.getTermYear());
 		super.save(rsStudentResult);
 	}
 	

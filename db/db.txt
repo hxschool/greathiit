@@ -793,3 +793,30 @@ ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_status (as_answ
 ALTER TABLE as_answering_student ADD INDEX index_as_answering_id_student_number_status (as_answering_id,student_number,status);
 --生成选课相关统计信息
 select a.id,a.curs_edu_num,a.curs_name,b.name,a.upper_limit,a.lower_limit,c.time_add,(select count(1) from select_course c where c.course_id=a.id) as 实际报名人数 from course a left join sys_user b on a.teacher_number=b.no left join course_schedule c on a.id=c.course_id where a.curs_curr_term=1 order by c.time_add;
+
+
+
+select
+	
+	c.id AS "course.id",
+	c.curs_num AS "course.cursNum",
+	c.curs_edu_num AS "course.cursEduNum",
+	c.curs_name AS "course.cursName",
+	dept.id AS "dept.id",
+	dept.name AS "dept.name",
+	major.id AS "major.id",
+	major.name AS "major.name",
+	cla.id AS "cla.id",
+	cla.name AS "cla.name",
+	b.no as "user.no",
+	b.login_name as "user.loginName",
+	b.phone as "user.phone",
+	b.name as "user.name"
+	from  select_course a
+	LEFT JOIN sys_user b on a.student_number=b.no
+	LEFT JOIN sys_office dept on b.company_id=dept.id
+	LEFT JOIN sys_office major on b.office_id=major.id
+	LEFT JOIN sys_office cla on b.clazz_id=cla.id
+	LEFT JOIN course c on a.course_id=c.id
+	
+	where a.del_flag = 0 and c.curs_year_term=2

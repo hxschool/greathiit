@@ -15,7 +15,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class RsStudentConfig extends DataEntity<RsStudentConfig> {
 	
 	private static final long serialVersionUID = 1L;
-	private String yearTerm;		// 学期
+	private String termYear;		// 学期
 	private String sw;		// sw
 	private String scoreSw;		// sw
 	private String tip;		// 关闭提示
@@ -29,15 +29,16 @@ public class RsStudentConfig extends DataEntity<RsStudentConfig> {
 		super(id);
 	}
 
-	@Length(min=0, max=20, message="学期长度必须介于 0 和 20 之间")
-	public String getYearTerm() {
-		return yearTerm;
+
+
+	public String getTermYear() {
+		return termYear;
 	}
 
-	public void setYearTerm(String yearTerm) {
-		this.yearTerm = yearTerm;
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
 	}
-	
+
 	@Length(min=0, max=10, message="sw长度必须介于 0 和 10 之间")
 	public String getSw() {
 		return sw;

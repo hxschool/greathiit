@@ -267,7 +267,16 @@ public class StudentController extends BaseController {
 	//学生课程等级	10	/student/student/Student_Course_Grade
 	@RequiresPermissions("student:student:edit")
 	@RequestMapping("Student_Course_Grade")
-	public String Student_Course_Grade(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
+	public String Student_Course_Grade(Student student,String termYear, HttpServletRequest request, HttpServletResponse response, Model model) {
+		String studentNumber = student.getStudentNumber();
+		if(org.springframework.util.StringUtils.isEmpty(studentNumber)) {
+			User user = UserUtils.getUser();
+			studentNumber = user.getNo();
+		}
+		StudentCourse studentCourse = new StudentCourse();
+		studentCourse.setStudentNumber(studentNumber);
+		studentCourse.setTermYear(termYear);
+		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
 		return "modules/student/studentcourse/StudentCourseGrade";
 	}
 	//获奖记录	30	/student/student/Student_Award

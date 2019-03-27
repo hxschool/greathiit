@@ -64,9 +64,9 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">school_year：</label>
+			<label class="control-label">termYear：</label>
 			<div class="controls">
-				<form:input path="schoolYear" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="termYear" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
 		</div>
 		<div class="control-group">

@@ -49,7 +49,7 @@ public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentE
 	@Transactional(readOnly = false)
 	public void save(RsStudentEms rsStudentEms) {
 		RsStudentConfig config = rsStudentConfigDao.get("1");
-		rsStudentEms.setYearTerm(config.getYearTerm());
+		rsStudentEms.setTermYear(config.getTermYear());
 		rsStudentEms.setIsNewRecord(true);
 		super.save(rsStudentEms);
 	}

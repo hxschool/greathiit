@@ -5,7 +5,7 @@
 	<sql id="rsStudentEmsColumns">
 		a.id AS "id",
 		a.hc_form_ems AS "hcFormEms",
-		a.year_term AS "yearTerm",
+		a.term_year AS "termYear",
 		a.hc_form_bkh AS "hcFormBkh",
 		a.hc_form_xm AS "hcFormXm",
 		a.hc_form_sfzh AS "hcFormSfzh",
@@ -44,8 +44,8 @@
 			<if test="hcFormEms != null and hcFormEms != ''">
 				AND a.hc_form_ems = #{hcFormEms}
 			</if>
-			<if test="yearTerm != null and yearTerm != ''">
-				AND a.year_term = #{yearTerm}
+			<if test="termYear != null and termYear != ''">
+				AND a.term_year = #{termYear}
 			</if>
 			
 			<if test="hcFormBkh != null and hcFormBkh != ''">
@@ -96,7 +96,7 @@
 	<insert id="insert">
 		INSERT INTO rs_student_ems(
 			id,
-			year_term,
+			term_year,
 			hc_form_ems,
 			hc_form_bkh,
 			hc_form_xm,
@@ -107,7 +107,7 @@
 			hc_form_status
 		) VALUES (
 			#{id},
-			#{yearTerm},
+			#{termYear},
 			#{hcFormEms},
 			#{hcFormBkh},
 			#{hcFormXm},
@@ -121,7 +121,7 @@
 	
 	<update id="update">
 		UPDATE rs_student_ems SET 	
-			year_term = #{yearTerm},
+			term_year = #{termYear},
 			hc_form_ems = #{hcFormEms},
 			hc_form_bkh = #{hcFormBkh},
 			hc_form_xm = #{hcFormXm},

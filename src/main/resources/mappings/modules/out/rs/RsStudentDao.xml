@@ -4,7 +4,7 @@
     
 	<sql id="rsStudentColumns">
 		a.id AS "id",
-		a.year_term AS "yearTerm",
+		a.term_year AS "termYear",
 		a.hc_form_add1 AS "hc_form_add1",
 		a.hc_form_add2 AS "hc_form_add2",
 		a.hc_form_kuasheng AS "hc_form_kuasheng",

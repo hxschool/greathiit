@@ -30,7 +30,7 @@
 	</sql>
 	
 	<sql id="studentCourseJoins">
-		
+		  left join course c on a.course_id=c.id 
 	</sql>
     
     <select id="findListByStudentCourseAndCourse" resultType="StudentCourse">

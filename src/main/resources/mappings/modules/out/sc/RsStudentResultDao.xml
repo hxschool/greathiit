@@ -4,7 +4,7 @@
     
 	<sql id="rsStudentResultColumns">
 		a.id AS "id",
-		a.year_term AS "yearTerm",
+		a.term_year AS "termYear",
 		a.hc_form_bkh AS "hcFormBkh",
 		a.hc_form_xm AS "hcFormXm",
 		a.hc_form_sfzh AS "hcFormSfzh",
@@ -30,6 +30,10 @@
 		<if test="hcFormSfzh != null and hcFormSfzh != ''">
 			AND a.hc_form_sfzh = #{hcFormSfzh}
 		</if>
+		<if test="termYear != null and termYear != ''">
+			AND a.term_year = #{termYear}
+		</if>
+		
 		<if test="id != null and id != ''">
 			AND a.id = #{id}
 		</if>
@@ -43,8 +47,8 @@
 		<include refid="rsStudentResultJoins"/>
 		<where>
 			
-			<if test="yearTerm != null and yearTerm != ''">
-				AND a.year_term = #{yearTerm}
+			<if test="termYear != null and termYear != ''">
+				AND a.term_year = #{termYear}
 			</if>
 			<if test="hcFormBkh != null and hcFormBkh != ''">
 				AND a.hc_form_bkh = #{hcFormBkh}
@@ -85,7 +89,7 @@
 	<insert id="insert">
 		INSERT INTO rs_student_result(
 			id,
-			year_term,
+			term_year,
 			hc_form_bkh,
 			hc_form_xm,
 			hc_form_sfzh,
@@ -96,7 +100,7 @@
 			hc_form_status
 		) VALUES (
 			#{id},
-			#{yearTerm},
+			#{termYear},
 			#{hcFormBkh},
 			#{hcFormXm},
 			#{hcFormSfzh},
@@ -110,7 +114,7 @@
 	
 	<update id="update">
 		UPDATE rs_student_result SET 	
-			year_term = #{yearTerm},
+			term_year = #{termYear},
 			hc_form_bkh = #{hcFormBkh},
 			hc_form_xm = #{hcFormXm},
 			hc_form_sfzh = #{hcFormSfzh},

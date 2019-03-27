@@ -206,7 +206,7 @@ public class FrontZhaoShengController extends BaseController{
 		}
 		try{
 			RsStudentConfig config = rsStudentConfigService.get("1");
-			rsStudent.setYearTerm(config.getYearTerm());
+			rsStudent.setTermYear(config.getTermYear());
 			rsStudentService.save(rsStudent);
 		}catch(Exception e){
 			e.printStackTrace();

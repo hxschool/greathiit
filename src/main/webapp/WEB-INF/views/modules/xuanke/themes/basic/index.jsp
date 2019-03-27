@@ -202,12 +202,12 @@
 																class="glyph-icon ${bgIcon }"></i> ${label }</span></a>
 														</c:if>
 														
-														<c:if test="${bgColor='bg-orange'}">
-															<button
-															class="btn small bg-blue" target="ajaxTodo"><span
-															class="button-content"><i
-																class="glyph-icon ${bgIcon }"></i> ${label }</span></button>
-														</c:if>
+														<c:if test="${!ret and bgColor=='bg-orange'}">
+                                                                <button
+                                                                class="btn small bg-green" target="ajaxTodo"><span
+                                                                class="button-content">已选</span></button>
+                                                        </c:if>
+
 
 													</c:if> <!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
 													<a href="javascript:void(0)"

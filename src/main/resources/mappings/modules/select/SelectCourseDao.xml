@@ -161,8 +161,6 @@
 		<if test="course!=null and course.teacher!=null and course.teacher.teacherNumber!=''">
 			AND c.teacher_number=#{course.teacher.teacherNumber}
 		</if>
-		
-		AND c.curs_year_term=1
 	
 		<if test="dept!=null and dept.id!=null and dept.id!=''">
 			AND dept.id=#{dept.id}
@@ -179,6 +177,9 @@
 		</if>
 		<if test="user!=null and user.phone!=null and user.phone!=''">
 			AND b.phone=#{user.phone}
+		</if>
+		<if test="course!=null and course.cursYearTerm!=null and course.cursYearTerm!=''">
+			AND c.curs_year_term=#{course.cursYearTerm}
 		</if>
 		
 	</where>

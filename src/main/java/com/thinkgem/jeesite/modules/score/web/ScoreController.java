@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sun.image.codec.jpeg.JPEGCodec;
@@ -43,8 +44,16 @@ public class ScoreController {
 	private StudentCourseService studentCourseService;
 	@Autowired
 	private SystemService systemService;
-	@RequestMapping(value = {"login", ""})
-	public String index(String username,String idcard, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
+	
+	@RequestMapping(value = {"login", ""},method=RequestMethod.GET)
+	public String index(HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
+		
+		return "modules/chengji/login";
+	}
+	
+	@RequestMapping(value = {"login", ""},method=RequestMethod.POST)
+	public String login(String username,String idcard, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
+		
 		if(org.springframework.util.StringUtils.isEmpty(username)||org.springframework.util.StringUtils.isEmpty(idcard)) {
 			model.addAttribute("message", "姓名或者身份证号为空");
 			return "modules/chengji/login";
@@ -54,8 +63,12 @@ public class ScoreController {
 		String userinfo = request.getSession().getServletContext().getRealPath("userinfo");
 		File file = new File(userinfo,studentNumber);
 		if(file.exists()) {
-			String[] chengji = file.list();
-			model.addAttribute("chengji", chengji);
+			String[] chengjis = file.list();
+			List<String> lcs = new ArrayList<String>();
+			for(String cjs : chengjis) {
+				lcs.add( studentNumber + "/" +cjs);
+			}
+			model.addAttribute("chengjis", lcs);
 		}
 		StudentCourse studentCourse = new StudentCourse();
 		Student student = new Student();
@@ -76,6 +89,8 @@ public class ScoreController {
 		
 		return "modules/chengji/chengji";
 	}
+	
+	
 	
 	@RequestMapping(value ="print")
 	public String print(HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) throws IOException {

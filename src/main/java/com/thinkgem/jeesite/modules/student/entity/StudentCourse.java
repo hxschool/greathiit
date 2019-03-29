@@ -3,8 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
-import java.util.List;
-
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -122,7 +120,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.midEvaValue = midEvaValue;
 	}
 	
-	@Length(min=0, max=255, message="school_year长度必须介于 0 和 255 之间")
+	@Length(min=0, max=255, message="学期不允许为空,且长度大于0小于255")
 	public String getTermYear() {
 		return termYear;
 	}

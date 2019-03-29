@@ -282,6 +282,11 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			return false;
 		}
 	}
+	
+	public List<String> groupTermYear(StudentCourse studentCourse){
+		return studentCourseDao.groupTermYear(studentCourse);
+	}
+	
 	public static void main(String[] args) {
 		System.out.println(((92*4+80*3+98*2+70*6+89*3)*4)/((4+3+2+6+3)*100));
 	}

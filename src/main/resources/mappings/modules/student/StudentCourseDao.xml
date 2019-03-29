@@ -98,6 +98,16 @@
 		</where>
 	</select>
 	
+	<select id="groupTermYear" resultType="java.lang.String">
+		select term_year from student_course where 1=1
+			<if test="student != null and student.studentNumber!= null and student.studentNumber != ''">
+				and student_number = #{student.studentNumber}
+			</if>
+			<if test="termYear != null and termYear!= ''">
+				and term_year = #{termYear}
+			</if>
+		 group by term_year order by term_year desc
+	</select>
 	
 	
 	

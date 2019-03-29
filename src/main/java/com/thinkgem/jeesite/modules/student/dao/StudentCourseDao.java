@@ -30,4 +30,6 @@ public interface StudentCourseDao extends CrudDao<StudentCourse> {
 	
 
 	StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse);
+	
+	List<String> groupTermYear(StudentCourse studentCourse);
 }

@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.utils.DateUtils;
@@ -89,9 +91,35 @@ public class ScoreController {
 	
 	
 	@RequestMapping(value ="print")
+	@ResponseBody
 	public String print(HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) throws IOException {
 		User user = UserUtils.getUser();
 		String userinfo = request.getSession().getServletContext().getRealPath("userinfo");
+		if(user.isAdmin()) {
+			String op = request.getParameter("op");
+			if(!StringUtils.isEmpty(op)) {
+				if(op.equals("ALL")) {
+					List<User> users = systemService.findAllList(new User());
+					for(User u : users) {
+						write(u,  userinfo);
+					}
+				}else {
+					String st = request.getParameter("st");
+					if(!StringUtils.isEmpty(st)) {
+						User u = systemService.getCasByLoginName(st);
+						write(u,  userinfo);
+					}
+				}
+			}
+			
+		}
+		write(user,  userinfo);
+		
+		return "ok";
+	}
+	
+	
+	private void write(User user , String userinfo) throws IOException {
 		String studentNumber = user.getNo();
 		File file = new File(userinfo,studentNumber);
 		if(!file.exists()) {
@@ -252,8 +280,6 @@ public class ScoreController {
 		ImageIO.write(img, "jpg", otherFos);
 		out.flush();
         out.close();
-		
-		return "";
 	}
 	
 	private String ellipsis(String str, int len) {

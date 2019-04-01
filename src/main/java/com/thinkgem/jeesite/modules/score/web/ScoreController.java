@@ -101,14 +101,20 @@ public class ScoreController {
 				if(op.equals("ALL")) {
 					List<User> users = systemService.findAllList(new User());
 					for(User u : users) {
-						write(u,  userinfo);
+						if(!StringUtils.isEmpty(u)&&!StringUtils.isEmpty(u.getLoginName())&&u.getLoginName().length()==18) {
+							write(u,  userinfo);
+						}
+						
 					}
+					return "all";
 				}else {
 					String st = request.getParameter("st");
 					if(!StringUtils.isEmpty(st)) {
 						User u = systemService.getCasByLoginName(st);
 						write(u,  userinfo);
+						return "student";
 					}
+					
 				}
 			}
 			

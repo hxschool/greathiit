@@ -16,7 +16,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,9 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.modules.student.entity.Student;
@@ -192,11 +188,14 @@ public class ScoreController {
 		}
 		
 		FileOutputStream out=new FileOutputStream(new File(file,studentNumber + "_default.jpg"));
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out); 
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image); 
-		param.setQuality(100, true);  //
-		encoder.encode(image, param); 
-		out.close(); 
+//		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out); 
+//		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image); 
+//		param.setQuality(100, true);  //
+//		encoder.encode(image, param); 
+//		out.close(); 
+		ImageIO.write(image, "jpg", out);
+		out.flush();
+        out.close();
 		
 		
 		BufferedImage img =  ImageIO.read(ScoreController.class.getResource("/chengji_other.png"));
@@ -248,12 +247,11 @@ public class ScoreController {
 			ret=!ret;
 		}
 		
-		FileOutputStream otherFos=new FileOutputStream(new File(file,studentNumber + "_other.jpg"));
-		JPEGImageEncoder otherEncoder = JPEGCodec.createJPEGEncoder(otherFos); 
-		JPEGEncodeParam otherParam = otherEncoder.getDefaultJPEGEncodeParam(img); 
-		otherParam.setQuality(100, true);  //
-		otherEncoder.encode(img, otherParam); 
-		otherFos.close(); 
+		FileOutputStream otherFos=new FileOutputStream(new File(file,studentNumber + "_other.jpg")); 
+		
+		ImageIO.write(img, "jpg", otherFos);
+		out.flush();
+        out.close();
 		
 		return "";
 	}
@@ -269,55 +267,6 @@ public class ScoreController {
 		}
 	}
 	
-	public static void main(String[] args) {
-		try {
-			BufferedImage image =  ImageIO.read(new File("D:/chengji.png"));
-			Color color = Color.BLACK;
-			Font font = new Font("宋体",Font.PLAIN,12);
-			//姓名
-			image = draw(image, color, font, 155, 235, "赵俊飞");
-			//编号
-			image = draw(image, color, font, 480, 235, "20190328");
-			//性别
-			image = draw(image, color, font, 155, 260, "男");
-			//打印日期
-			image = draw(image, color, font, 480, 260, "20190328");
-			//身份证号
-			image = draw(image, color, font, 155, 285, "230302198402175312");
-			//报告页码
-			image = draw(image, color, font, 480, 285, "1/2");
-			
-			image = draw(image, color, font, 155, 308, "哈尔滨信息工程学院");
-			image = draw(image, color, font, 155, 332, "本科");
-			image = draw(image, color, font, 155, 355, "软件工程");
-			image = draw(image, color, font, 155, 380, "3.0");
-			
-			
-			image = draw(image, color, font, 88, 462,"2018-2019-01");
-			image = draw(image, color, font, 88, 482,StringUtils.rightPad("人际沟通与交往礼仪*",19," ") + StringUtils.rightPad("中",5," ") + "1.5");
-			image = draw(image, color, font, 88, 502,StringUtils.rightPad("人际沟通与交往礼仪*",19," ") + StringUtils.rightPad("中",5," ") + "1.5");
-			
-			image = draw(image, color, font, 335, 462,"2018-2019-02");
-			image = draw(image, color, font, 335, 482,StringUtils.rightPad("人际沟通与交往礼仪*",19," ") + StringUtils.rightPad("中",5," ") + "1.5");
-			image = draw(image, color, font, 335, 502,StringUtils.rightPad("人际沟通与交往礼仪*",19," ") + StringUtils.rightPad("中",5," ") + "1.5");
-			
-			FileOutputStream out=new FileOutputStream("D:/chengji1.jpg"); //先用一个特定的输出文件名 
-			JPEGImageEncoder encoder =JPEGCodec.createJPEGEncoder(out); 
-			JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image); 
-			param.setQuality(100, true);  //
-			encoder.encode(image, param); 
-			out.close(); 
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		int[] arr1 ={1,2,3,4,5};
-		int[] dest = {};
-		System.arraycopy(arr1, 0, dest, 2, 2);
-		for(int i:dest) {
-			System.out.println(i);
-		}
-	}
 	
 	public static BufferedImage draw(BufferedImage image,Color color,Font font,int w,int h,String content) {
 		int height = image.getHeight();

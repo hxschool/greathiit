@@ -95,13 +95,13 @@
 								<div class="panel-heading">&nbsp;</div>
 								<div class="panel-body">
 									<p id="chengji_default">
-										<img src="../userinfo/${chengjis[0]}"  />
+										<img src="${pageContext.request.contextPath}/userinfo/${chengjis[0]}"  />
 									</p>
 								</div>
 								<div class="panel-footer">
 									<a href="javascript:void(0)" onclick="printImg($('#chengji_default'))"  class="btn btn-primary"><span
 										class="glyphicon glyphicon-print"> </span> 打印</a> <a
-										href="../userinfo/${chengjis[0]}"
+										href="${pageContext.request.contextPath}/userinfo/${chengjis[0]}"
 										download="chengji_default.jpg" class="btn btn-success"><span
 										class="glyphicon glyphicon-download-alt"> </span> 下载</a>
 								</div>
@@ -117,13 +117,13 @@
 								<div class="panel-heading">&nbsp;</div>
 								<div class="panel-body">
 									<p id="chengji_default">
-										<img src="../userinfo/${chengjis[0]}" width="525px" />
+										<img src="${pageContext.request.contextPath}/userinfo/${chengjis[0]}" width="525px" />
 									</p>
 								</div>
 								<div class="panel-footer">
 									<a href="javascript:void(0)" onclick="printImg($('#chengji_default'))"  class="btn btn-primary"><span
 										class="glyphicon glyphicon-print"> </span> 打印</a> <a
-										href="../userinfo/${chengjis[0]}"
+										href="${pageContext.request.contextPath}/userinfo/${chengjis[0]}"
 										download="chengji_default.jpg" class="btn btn-success"><span
 										class="glyphicon glyphicon-download-alt"> </span> 下载</a>
 								</div>
@@ -134,13 +134,13 @@
 								<div class="panel-heading">&nbsp;</div>
 								<div class="panel-body">
 									<p id="chengji_other">
-										<img src="../userinfo/${chengjis[1]}" width="525px" />
+										<img src="${pageContext.request.contextPath}/userinfo/${chengjis[1]}" width="525px" />
 									</p>
 								</div>
 								<div class="panel-footer">
 									<a href="javascript:void(0)" onclick="printImg($('#chengji_other'))"  class="btn btn-primary"><span
 										class="glyphicon glyphicon-print"> </span> 打印</a> <a
-										href="../userinfo/${chengjis[1]}"
+										href="${pageContext.request.contextPath}/userinfo/${chengjis[1]}"
 										download="chengji_other.jpg" class="btn btn-success"><span
 										class="glyphicon glyphicon-download-alt"> </span> 下载</a>
 								</div>

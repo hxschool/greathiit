@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -165,13 +166,16 @@ public class XuankeController extends BaseController {
 				while(it.hasNext()){
 					Course c = it.next();
 					String courseId = c.getId();
+					CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(courseId);
+					if(!StringUtils.isEmpty(courseTeachingMode)) {
+						courseTeachingModes.add(courseTeachingMode);
+					}
+					
 					if(studentNumber.length()==10||studentNumber.length()==12) {//本科
-						courseTeachingModes.add(courseTeachingModeService.getCourseTeachingModeByCourse(courseId));
 						if(!c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
 					}else if(studentNumber.length()==7||studentNumber.length()==8){
-						courseTeachingModes.add(courseTeachingModeService.getCourseTeachingModeByCourse(courseId));
 						if(c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
@@ -179,20 +183,22 @@ public class XuankeController extends BaseController {
 				}
 			}
 		}
+		if(!CollectionUtils.isEmpty(courseTeachingModes)) {
+			Collections.sort(courseTeachingModes, new Comparator<CourseTeachingMode>(){
+				 public int compare(CourseTeachingMode p1, CourseTeachingMode p2) {
+					 if(StringUtils.isEmpty(p1.getPeriod())) {
+						 return 0;
+					 }
+					 if(Integer.valueOf(p1.getPeriod())>Integer.valueOf(p2.getPeriod())) {
+						 return 1;
+					 }else {
+						 return -1;
+					 }
+					 
+				 }
+			});
+		}
 		
-		Collections.sort(courseTeachingModes, new Comparator<CourseTeachingMode>(){
-			 public int compare(CourseTeachingMode p1, CourseTeachingMode p2) {
-				 if(StringUtils.isEmpty(p1.getPeriod())) {
-					 return 0;
-				 }
-				 if(Integer.valueOf(p1.getPeriod())>Integer.valueOf(p2.getPeriod())) {
-					 return 1;
-				 }else {
-					 return -1;
-				 }
-				 
-			 }
-		});
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("courseScheduleMap", courseScheduleMap);
 		model.addAttribute("site", site);

@@ -26,7 +26,7 @@ $(function () {
 </script>
 <body>
 	<div class="top-menu-wrap">
-	<div class="container" style="position: relative"><!-- logo -->
+	<div class="container-fluid" style="position: relative"><!-- logo -->
 		<div class="logo hidden-xs"><a href="http://xuanke.greathiit.com"></a></div>
 		<!-- end logo --> <!-- 导航 -->
 
@@ -74,7 +74,7 @@ $(function () {
 	<div class="row hidden-xs">
 			</div>
 	<div class="copyright">
-		${site.copyright} -选课系统 	</div>
+		Copyright © 2012-2013 选课系统 - Powered By 哈尔滨信息工程学院 V1.1	</div>
 </div>
 </footer>
 

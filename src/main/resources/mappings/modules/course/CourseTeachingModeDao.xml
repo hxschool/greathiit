@@ -32,7 +32,12 @@
 			<include refid="courseTeachingModeColumns"/>
 		FROM course_teaching_mode a
 		<include refid="courseTeachingModeJoins"/>
-		a.course_id = #{courseId}
+		<where>
+			1=1
+		<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+		</where>
 	</select>
 	
 	<select id="findList" resultType="CourseTeachingMode">

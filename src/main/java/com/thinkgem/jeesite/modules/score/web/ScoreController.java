@@ -222,11 +222,6 @@ public class ScoreController {
 		}
 		
 		FileOutputStream out=new FileOutputStream(new File(file,studentNumber + "_default.jpg"));
-//		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out); 
-//		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(image); 
-//		param.setQuality(100, true);  //
-//		encoder.encode(image, param); 
-//		out.close(); 
 		ImageIO.write(image, "jpg", out);
 		out.flush();
         out.close();

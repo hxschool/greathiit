@@ -304,7 +304,7 @@ public class XuankeController extends BaseController {
 		log.setModuleName(course.getCursName());
 		log.setUserNumber(userno);
 		log.setUserType("99");
-		log.setStatus(status);;
+		log.setStatus(status);
 		log.setRemoteAddr(com.thinkgem.jeesite.common.utils.StringUtils.getRemoteAddr(request));
 		log.setUserAgent(request.getHeader("user-agent"));
 		log.setRequestUri(request.getRequestURI());
@@ -337,6 +337,14 @@ public class XuankeController extends BaseController {
 		operationLog.setModule("course");
 		operationLog.setUserNumber(UserUtils.getUser().getNo());
 		operationLog.setUserType("99");
+		String cursName = request.getParameter("cursName");
+		String status = request.getParameter("status");
+		if(!StringUtils.isEmpty(cursName)) {
+			operationLog.setModuleName(cursName);
+		}
+		if(!StringUtils.isEmpty(status)) {
+			operationLog.setStatus(status);
+		}
 		Page<UserOperationLog> page = userOperationLogService.findPage(new Page<UserOperationLog>(request, response), operationLog);
         model.addAttribute("page", page);
         model.addAttribute("site", site);

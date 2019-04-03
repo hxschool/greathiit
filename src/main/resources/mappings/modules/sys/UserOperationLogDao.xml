@@ -42,6 +42,12 @@
 			<if test="module!=null and module!=''">
 			and a.module=#{module}
 			</if>
+			<if test="moduleId!=null and moduleId!=''">
+			and a.module_id=#{moduleId}
+			</if>
+			<if test="moduleName!=null and moduleName!=''">
+			and a.module_name LIKE CONCAT('%',#{moduleName},'%') 
+			</if>
 			<if test="userNumber!=null and userNumber!=''">
 			and a.user_number=#{userNumber}
 			</if>

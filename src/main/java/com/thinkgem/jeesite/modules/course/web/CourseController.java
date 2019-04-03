@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
@@ -627,6 +628,13 @@ public class CourseController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
+	
+	@RequestMapping(value = "ajaxCourse")
+	@ResponseBody
+	public Course ajaxCourse(Course course, RedirectAttributes redirectAttributes) {
+		return courseService.get(course);
+	}
+	
 	
 
 }

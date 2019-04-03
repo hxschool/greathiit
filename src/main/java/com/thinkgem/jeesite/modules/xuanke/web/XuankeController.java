@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aliyuncs.http.HttpRequest;
+import com.google.gson.Gson;
+import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -133,6 +135,7 @@ public class XuankeController extends BaseController {
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		
 		Map<String,CourseScheduleExt> courseScheduleMap = new HashMap<String,CourseScheduleExt>();
+		Map<String,String> selectedCourseMap = new HashMap<String,String>();
 		CourseScheduleExt cse = new CourseScheduleExt();
 		cse.setCourseClass("00000000");
 		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.getCourseScheduleExt(cse);
@@ -146,6 +149,10 @@ public class XuankeController extends BaseController {
 			selectCourse.setStudent(user);
 			selectCourse.setCourse(course);
 			selectCourses = selectCourseService.findList(selectCourse);
+			
+			for(SelectCourse sc : selectCourses) {
+				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
+			}
 			
 			for(Role r:user.getRoleList()) {
 				if(org.apache.commons.lang3.StringUtils.isNumeric(r.getId())) {
@@ -204,7 +211,7 @@ public class XuankeController extends BaseController {
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", isIndex);
 		model.addAttribute("courses", courses);
-		model.addAttribute("selectCourses", selectCourses);
+		model.addAttribute("selectedCourseMap", selectedCourseMap);
 		
 		Map<String, Object> map= model.asMap();
 		if(!StringUtils.isEmpty(map.get("message"))) {
@@ -290,16 +297,19 @@ public class XuankeController extends BaseController {
 		}
 		return "";
 	}
-	private void saveSelectCourseLog(HttpServletRequest request, Course entity,String status,String userno) {
+	private void saveSelectCourseLog(HttpServletRequest request, Course course,String status,String userno) {
 		UserOperationLog log = new UserOperationLog();
 		log.setModule("course");
-		log.setModuleId(entity.getId());
+		log.setModuleId(course.getId());
+		log.setModuleName(course.getCursName());
 		log.setUserNumber(userno);
 		log.setUserType("99");
 		log.setStatus(status);;
 		log.setRemoteAddr(com.thinkgem.jeesite.common.utils.StringUtils.getRemoteAddr(request));
 		log.setUserAgent(request.getHeader("user-agent"));
 		log.setRequestUri(request.getRequestURI());
+		Gson gson = new Gson();
+		log.setRemarks(gson.toJson(course));
 		userOperationLogService.save(log);
 	}
 	
@@ -318,6 +328,20 @@ public class XuankeController extends BaseController {
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
 		return "modules/xuanke/themes/"+site.getTheme()+"/kebiao";
+	}
+	
+	@RequestMapping("history")
+	public String history(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
+		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		UserOperationLog operationLog = new UserOperationLog();
+		operationLog.setModule("course");
+		operationLog.setUserNumber(UserUtils.getUser().getNo());
+		operationLog.setUserType("99");
+		Page<UserOperationLog> page = userOperationLogService.findPage(new Page<UserOperationLog>(request, response), operationLog);
+        model.addAttribute("page", page);
+        model.addAttribute("site", site);
+		model.addAttribute("isIndex", true);
+        return "modules/xuanke/themes/"+site.getTheme()+"/history";
 	}
 	
 	@ResponseBody

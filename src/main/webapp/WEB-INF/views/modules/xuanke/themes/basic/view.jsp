@@ -26,50 +26,9 @@
 
 	<div class="wrap maincontent">
 
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-12 col-md-3 mt30 side hidden-xs ">
-
-					<div class="widget-box clearfix"
-						style="margin: 3px; border-style: solid; border-color: #CC9900; text-align: center;">
-						<script type="text/javascript" charset="utf-8"
-							src="${ctxStatic}/xuanke/home/Js/showtime.js"></script>
-					</div>
-
-					<div class="widget-box clearfix">
-						<h2 class="h4 widget-box__title">分类列表(1)</h2>
-						<div class="pcss3mm ">
-							<ul id="pcss3mm" class="nav nav-pills" role="tablist">
-								<li id="cate1"><a href="/xuanke/list-${category.id }.html">常见问题与解答</a></li>
-								<li id="cate2"><a href="tel:18801029695">反馈消息</a></li>
-							</ul>
-						</div>
-					</div>
-
-
-
-					<div class="widget-box no-border">
-						<h2 class="h4 widget-box__title">最新公告</h2>
-						<ul class="widget-links list-unstyled">
-							<c:forEach items="${articles}" var="article" varStatus="status">
-								<c:set var="link"
-									value="/xuanke/view-${article.category.id}-${article.id}${urlSuffix}"
-									scope="session"></c:set>
-								<c:if test="${!empty article.link }">
-									<c:set var="link" value="${article.link}" scope="session"></c:set>
-								</c:if>
-								<li class="widget-links__item"><a href="${link }"
-									title="${article.title }">${article.title }</a> <small
-									class="text-muted"> ， ${article.hits } 浏览 </small></li>
-							</c:forEach>
-
-						</ul>
-					</div>
-
-
-				</div>
-
-
+				<%@include file="/WEB-INF/views/modules/xuanke/include/left.jsp"%>
 
 				<div class="col-xs-12 col-md-9 main mt30">
 

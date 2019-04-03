@@ -41,6 +41,7 @@ $(function () {
 						<li class="active"><a  href="/xuanke/index">首页</a></li>
 						<li><a href="/xuanke/list-${category.id }.html">动态</a></li>
 						<li><a href="/xuanke/kebiao">课表</a></li>
+						<li><a href="/xuanke/history">选课记录</a></li>
 					</ul>
 				</nav>
 			</div><!-- end 导航 -->

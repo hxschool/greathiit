@@ -17,6 +17,7 @@ public class UserOperationLog extends DataEntity<UserOperationLog> {
 	private static final long serialVersionUID = 1L;
 	private String module;		// 模块
 	private String moduleId;		// 模块编号
+	private String moduleName;		// 模块编号
 	private String userNumber;		// 用户号
 	private String userType;		// 用户类型
 	private String status;		// 状态
@@ -102,6 +103,14 @@ public class UserOperationLog extends DataEntity<UserOperationLog> {
 
 	public void setRequestUri(String requestUri) {
 		this.requestUri = requestUri;
+	}
+
+	public String getModuleName() {
+		return moduleName;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 	
 }

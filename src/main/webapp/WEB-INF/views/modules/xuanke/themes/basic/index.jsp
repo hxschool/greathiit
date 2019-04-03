@@ -23,59 +23,7 @@
 
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-12 col-md-3 mt30 side hidden-xs ">
-
-					<div class="widget-box clearfix"
-						style="margin: 5px; border: 1px solid #CC9900; text-align: center;">
-						<script type="text/javascript" charset="utf-8"
-							src="${ctxStatic}/xuanke/home/Js/showtime.js"></script>
-					</div>
-					<div class="widget-box clearfix"
-						style="margin: 5px; border: 1px solid #CC9900; text-align: center;">
-						<font
-							style="color: #000; font-family: 微软雅黑; font-size: 14pt; width: 100px;">距离选课结束还有
-							<br> <span id="_d">00</span> <span id="_h">00</span> <span
-							id="_m">00</span> <span id="_s">00</span>
-						</font>
-					</div>
-					<div class="widget-box clearfix">
-						<h2 class="h4 widget-box__title">分类列表(1)</h2>
-						<div class="pcss3mm ">
-							<ul id="pcss3mm" class="nav nav-pills" role="tablist">
-								<li id="cate1"><a href="/xuanke/list-${category.id }.html">常见问题与解答</a></li>
-								<li id="cate2"><a href="tel:18801029695">反馈消息</a></li>
-							</ul>
-						</div>
-					</div>
-
-
-
-
-					<div class="widget-box no-border">
-						<h2 class="h4 widget-box__title">最新公告</h2>
-						<ul class="widget-links list-unstyled">
-							<c:forEach items="${articles}" var="article" varStatus="status">
-								<c:set var="link"
-									value="/xuanke/view-${article.category.id}-${article.id}${urlSuffix}"
-									scope="session"></c:set>
-								<c:if test="${!empty article.link }">
-									<c:set var="link" value="${article.link}" scope="session"></c:set>
-								</c:if>
-								<li class="widget-links__item">${ status.index + 1}<a
-									href="${link }" title="${article.title }">
-										${fn:substring(article.title,0,25)}${fn:length(article.title)>25?'...':''}
-								</a>
-								</li>
-							</c:forEach>
-
-						</ul>
-					</div>
-
-
-				</div>
-
-
-
+				<%@include file="/WEB-INF/views/modules/xuanke/include/left.jsp"%>
 				<div class="col-xs-12 col-md-9 main mt30">
 					<div class="panel panel-default panel-archive">
 						<div class="panel-body">
@@ -86,10 +34,11 @@
 
 							</div>
 							<ul class=" nav nav-pills pb10 mb10 mt10">
-								<li class="active"><a href="">已选课程</a></li>
-								<c:forEach items="${selectCourses}" var="selectCourse"
+								<li><button class="btn btn-danger">已选课程</button> </li>
+								
+								<c:forEach items="${selectedCourseMap}" var="selectCourse"
 									varStatus="status">
-									<li><a>${selectCourse.course.cursName }</a></li>
+									<li><button class="btn btn-success" onclick="ajaxCourse('${selectCourse.key}');">${selectCourse.value}</button></li>
 								</c:forEach>
 							</ul>
 							
@@ -156,22 +105,25 @@
 														<th>学时</th>
 														<th>学分</th>
 														<th>时间(地点)</th>
-														<th class="text-center" width="120">操作</th>
+														<th class="text-center" width="170">操作</th>
 													</tr>
 												</thead>
 
 												<tbody>
 													<c:forEach items="${courses}" var="course"
 														varStatus="status">
-														<tr>
-															<td class="text-center">${status.index+1 }</td>
+														<tr <c:if test="${selectedCourseMap[course.id]!=null and selectedCourseMap[course.id]!=''}">  class="success"  </c:if> >
+															<td class="text-center">${status.index+1 }  
+															
+															
+															</td>
 															<td><c:choose>
 																	<c:when test="${fns:startsWith(course.cursEduNum,'B')}">
-												        	本科课程
-												    </c:when>
+												        				本科课程
+																    </c:when>
 																	<c:otherwise>
-												       		高职/专科 课程
-												    </c:otherwise>
+																       		高职/专科 课程
+																    </c:otherwise>
 																</c:choose></td>
 															<td>${course.cursName}</td>
 
@@ -182,7 +134,11 @@
 															<td>${course.cursCredit}</td>
 															<td></td>
 															<td>
-																<!-- ${isIndex } --> <c:if
+															<a href="javascript:void(0)"
+																onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
+																class="btn small bg-blue"><span
+																	class="button-content"><i class="glyph-icon icon-search"></i> 查看</span></a>
+																<c:if
 																	test="${not empty  fns:getUser().id}">
 
 																	<c:set var="bgColor" value="bg-green"
@@ -190,9 +146,8 @@
 																	<c:set var="bgIcon" value="icon-plus-sign"
 																		scope="application"></c:set>
 																	<c:set var="label" value="选课" scope="application"></c:set>
-																	<c:forEach items="${selectCourses}" var="selectCourse"
-																		varStatus="status">
-																		<c:if test="${course.id==selectCourse.course.id }">
+																	
+																		<c:if test="${selectedCourseMap[course.id]!=null and selectedCourseMap[course.id]!=''}">
 																			<c:set var="bgColor" value="bg-orange"
 																				scope="application"></c:set>
 																			<c:set var="label" value="退课" scope="application"></c:set>
@@ -200,7 +155,7 @@
 																				scope="application"></c:set>
 																		</c:if>
 
-																	</c:forEach>
+																	
 
 
 																	<c:if test="${ret}">
@@ -216,11 +171,8 @@
 																		</button>
 																	</c:if>
 
-																</c:if> <!-- <c:if test="${!isIndex or empty  fns:getUser().id}"></c:if> -->
-																<a href="javascript:void(0)"
-																onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
-																class="btn small bg-blue"><span
-																	class="button-content">查看</span></a>
+																</c:if> 
+																
 
 															</td>
 														</tr>
@@ -256,39 +208,23 @@ function showRemark(title,remark){
 		  shadeClose: true,
 		  shade: 0.8,
 		  area: ['380px', '320px'],
-		  content: "<div style='margin:10px;'>"+remark+"</div>" //iframe的url
+		  content: "<div style='margin:10px;'>"+remark+"</div>"
 		}); 
 }
-function countTime() {
-    //获取当前时间
-    var date = new Date();
-    var now = date.getTime();
-    //设置截止时间
-    var endDate = new Date("${fns:getDictLabel('end', 'select_course_end', '')}");
-    var end = endDate.getTime();
-    //时间差
-    var leftTime = end-now;
-    //定义变量 d,h,m,s保存倒计时的时间
-    var d='0',h='0',m='0',s='0';
-    if (leftTime>=0) {
-        d = Math.floor(leftTime/1000/60/60/24);
-        h = Math.floor(leftTime/1000/60/60%24);
-        m = Math.floor(leftTime/1000/60%60);
-        s = Math.floor(leftTime/1000%60);                   
-    }
-    //将倒计时赋值到div中
-    document.getElementById("_d").innerHTML = d+"天";
-    document.getElementById("_h").innerHTML = h+"时";
-    document.getElementById("_m").innerHTML = m+"分";
-    document.getElementById("_s").innerHTML = s+"秒";
-    //递归每秒调用countTime方法，显示动态时间效果
-    setTimeout(countTime,1000);
 
+function ajaxCourse(courseId){
+	  $.ajax({url:'/a/course/course/ajaxCourse?id='+courseId,success:function(course){
+		  layer.open({
+			  type: 1,
+			  title: course.cursName,
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['800px', '600px'],
+			  content: "<div style='margin:10px;'><p>课程名称:"+course.cursName+"</p><p>教师:"+course.teacher.tchrName+"</p><p>学时:"+course.cursClassHour+"</p><p>学分:"+course.cursCredit+"</p>"+course.cursIntro+"</div>"
+			}); 
+	    }});
 }
-$(function () {
-	countTime();
-})
-
 </script>
+
 </body>
 </html>

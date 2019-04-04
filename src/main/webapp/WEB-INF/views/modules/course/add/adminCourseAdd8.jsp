@@ -29,6 +29,7 @@
 				</div>
 				<form action="adminCourseAdd9"  method="post"
 					enctype="multipart/form-data" class="form-horizontal">
+					<input type="hidden" name="courseId" value="${courseId}"/>
 					<div class="div-inf">
 						<div class="div-inf-title">（一）与相关课程的分工衔接</div>
 						<div class="div-inner-text">

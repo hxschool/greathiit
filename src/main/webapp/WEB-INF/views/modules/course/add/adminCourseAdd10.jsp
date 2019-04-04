@@ -89,6 +89,7 @@
 					<div class="div-curs-plan">
 						<form action="adminCourseAddOk"
 							method="post" onsubmit="javascript:return validate()">
+							<input type="hidden" name="courseId" value="${courseId}"/>
 							<div class="div-tbl-title">表-2：教学目标与毕业要求指标点支撑权重设置表</div>
 							<table class="table table-bordered table-condensed">
 								<thead>

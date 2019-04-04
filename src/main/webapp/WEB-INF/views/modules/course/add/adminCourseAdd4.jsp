@@ -30,12 +30,12 @@
 			+ (i - 1) + "].period' class='input-long'></div>";
 		var div4 = document.createElement("div");
 		div4.setAttribute("class", "control-group");
-		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='checkbox' value='讲授' name='ctm["
+		div4.innerHTML += "<label class='control-label'>教学方式：</label><div class='controls'><input type='checkbox' value='01' name='ctm["
 			+ (i - 1)
-			+ "].teacMethod'>讲授&nbsp;&nbsp;<input type='checkbox' value='讨论' name='ctm["
+			+ "].teacMethod'>课堂讲授&nbsp;&nbsp;<input type='checkbox' value='02' name='ctm["
 			+ (i - 1)
-			+ "].teacMethod'>讨论&nbsp;&nbsp;<input type='checkbox' value='实验' name='ctm["
-			+ (i - 1) + "].teacMethod'>实验</div>";
+			+ "].teacMethod'>混合模式&nbsp;&nbsp;<input type='checkbox' value='03' name='ctm["
+			+ (i - 1) + "].teacMethod'>在线模式</div>";
 		var hr = document.createElement("hr");
 		document.getElementById("div-method").appendChild(div1);
 		document.getElementById("div-method").appendChild(div2);
@@ -59,7 +59,7 @@
 				</div>
 				<form action="adminCourseAdd5" method="post"
 					class="form-horizontal">
-									<input type="text" name="courseId" value="${courseId}"/>
+									<input type="hidden" name="courseId" value="${courseId}"/>
 					<div class="div-inf">
 						<!-- <p>课程具体内容及基本要求</p> -->
 						<div id="div-method">
@@ -84,9 +84,9 @@
 							<div class="control-group">
 								<label class="control-label">教学方式：</label>
 								<div class="controls">
-									<input type="checkbox" value="讲授" name="ctm[0].teacMethod">讲授&nbsp;&nbsp;
-									<input type="checkbox" value="讨论" name="ctm[0].teacMethod">讨论&nbsp;&nbsp;
-									<input type="checkbox" value="实验" name="ctm[0].teacMethod">实验&nbsp;&nbsp;
+									<input type="checkbox" value="01" name="ctm[0].teacMethod">课堂讲授&nbsp;&nbsp;
+									<input type="checkbox" value="02" name="ctm[0].teacMethod">混合模式&nbsp;&nbsp;
+									<input type="checkbox" value="03" name="ctm[0].teacMethod">在线模式&nbsp;&nbsp;
 								</div>
 							</div>
 							<hr>

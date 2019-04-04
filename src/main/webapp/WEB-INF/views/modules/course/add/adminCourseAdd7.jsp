@@ -51,6 +51,7 @@
 					</h6>
 				</div>
 				<form action="adminCourseAdd8" method="post" class="form-horizontal">
+				<input type="hidden" name="courseId" value="${courseId}"/>
 					<div class="div-inf">
 						<div id="div-content">
 							<div class="control-group">

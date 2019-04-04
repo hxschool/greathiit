@@ -131,8 +131,4 @@ public class StudentUtil {
 		}
 		return 0;
 	}
-	public static void main(String[] args) {
-		String s = getClassId("1551342");
-		
-	}
 }

@@ -71,7 +71,7 @@
 					</h6>
 				</div>
 				
-				<form action="adminCourseAdd2" method="post"
+				<form id="courseFrom" action="adminCourseAdd2" method="post"
 					enctype="multipart/form-data" class="form-horizontal" onsubmit="javascript:return isEmpty()">
 					
 					<div class="div-inf">
@@ -91,6 +91,24 @@
 							</div>
 						</div>
 						</div>
+						
+						<div class="control-group control-group-left" >
+							<label class="control-label">分类：</label>
+							<div class="controls">
+
+								<select name="cursSelectCourseType" style="width: 200px;">
+									<c:forEach items="${groupSelect}" var="groupSelect">
+										<optgroup label="${groupSelect.key}">
+											<c:forEach items="${groupSelect.value}" var="entry">  
+											<option value="${entry.value}">${entry.label}</option>
+											</c:forEach>
+										</optgroup>
+									</c:forEach>
+								</select>
+
+							</div>
+						</div>
+						
 						<div class="control-group control-group-left" id="element_course_educational">
 							<label class="control-label">课程名称：</label>
 							<div class="controls">
@@ -98,6 +116,8 @@
 								<input type="hidden" id="cursName" name="cursName"  readonly="readonly">
 							</div>
 						</div>
+						
+						
 						
 						<div class="control-group control-group-left">
 							<label class="control-label">学时：</label>
@@ -111,6 +131,21 @@
 								<input type="text" name="cursCredit" id="input-credit">
 							</div>
 						</div>
+						
+						<div class="control-group control-group-left">
+							<label class="control-label">开设学期：</label>
+							<div class="controls">
+								
+								
+								<select name="cursYearTerm" style="width:200px;">
+									
+									<c:forEach items="${fns:termYear()}" var="termYear">
+										<option value="${termYear.key}">${termYear.key}</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>
+						
 						<div class="control-group control-group-left">
 							<label class="control-label">课程性质：</label>
 							<div class="controls">
@@ -125,25 +160,12 @@
 							</div>
 						</div>
 						
-					
 						
-						<div class="control-group control-group-left">
-							<label class="control-label">开设学期：</label>
-							<div class="controls">
-								<input type="text" name="cursYearTerm">
-								
-								<select name="cursYearTerm" style="width:200px;">
-									
-									<c:forEach items="${fns:getDictList('course_curs_curr_term')}" var="dict">
-										<option value="${dict.value}">${dict.label}</option>
-									</c:forEach>
-								</select>
-							</div>
-						</div>
+						
 						<div class="control-group control-group-left">
 							<label class="control-label">先修课程：</label>
 							<div class="controls">
-								<input type="text" name="cursPreCourses">
+								<input type="text" name="cursPreCourses" value="暂无">
 							</div>
 						</div>
 						
@@ -159,6 +181,8 @@
 										<option value="${dict.value}">${dict.label}</option>
 									</c:forEach>
 								</select>
+								
+								
 							</div>
 						</div>
 						
@@ -176,24 +200,44 @@
 							</div>
 						</div>
 						
+						
+						
+						<div class="control-group control-group-left">
+							<label class="control-label">课程负责人：</label>
+							<div class="controls">
+								${fns:getUser().name}
+							</div>
+						</div>
+					</div>
+
+					<div class="div-inf">
+						<div class="div-inf-title">人数限制</div>
 						<div class="control-group control-group-left">
 							<label class="control-label">班额下限：</label>
 							<div class="controls">
 								<input type="text" name="lowerLimit">
 							</div>
 						</div>
-						
+
 						<div class="control-group control-group-left">
 							<label class="control-label">班额上限：</label>
 							<div class="controls">
 								<input type="text" name="upperLimit">
 							</div>
 						</div>
-						
-						<div class="control-group control-group-left">
-							<label class="control-label">课程负责人：</label>
+					</div>
+
+					<div class="div-inf">
+						<div class="div-inf-title">教学模式</div>
+							<div class="control-group control-group-left">
+							<label class="control-label">教学模式：</label>
 							<div class="controls">
-								${fns:getUser().name}
+								<select name="teacMethod" style="width:200px;">
+									<option value="" label=""/>
+									<c:forEach items="${fns:getDictList('course_learning_model')}" var="dict">
+										<option value="${dict.value}">${dict.label}</option>
+									</c:forEach>
+								</select>
 							</div>
 						</div>
 					</div>
@@ -204,6 +248,7 @@
 						</div>
 					</div>
 					<div class="div-btn">
+						<input type="button" class="btn" id="adminCourseAddOk" value="快捷添加">
 						<input type="submit" class="btn" value="添加">
 					</div>
 				</form>
@@ -212,7 +257,10 @@
 	</div>
 		<script type="text/javascript">
 		$(document).ready(function() {
-			
+		    $('#adminCourseAddOk').click(function(){
+		    	$("#courseFrom").attr("action","adminCourseAdd2?op=ok");
+		    	$("#courseFrom").submit();
+			});
 			$('#element_id').cxSelect({ 
 			  url: '${ctx}/sys/office/treeLink',
 			  selects: ['province', 'city', 'area'], 

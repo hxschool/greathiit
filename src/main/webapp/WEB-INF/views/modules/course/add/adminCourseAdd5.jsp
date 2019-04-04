@@ -31,6 +31,7 @@
 					<div class="div-inf-title">本课程对毕业要求指标点的支撑</div>
 					<div class="div-curs-plan">
 					<form action="adminCourseAdd7" method="post">
+						<input type="hidden" name="courseId" value="${courseId}"/>
 						<table class="table table-bordered table-condensed">
 							<thead>
 								<tr>

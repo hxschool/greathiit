@@ -137,7 +137,6 @@ public class CourseUtil {
 		 try {  
 		     date = format.parse(today);  
 		 } catch (ParseException e) {  
-		     // TODO Auto-generated catch block  
 		     e.printStackTrace();  
 		 }  
 		   

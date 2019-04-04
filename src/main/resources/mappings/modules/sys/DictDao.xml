@@ -17,6 +17,9 @@
 		<if test="type != null and type != ''">
 			AND type = #{type}
 		</if>
+		<if test="parentId != null and parentId != ''">
+			AND parent_id = #{parentId}
+		</if>
 		<if test="description != null and description != ''">
 			AND description LIKE 
 					<if test="dbName == 'oracle'">'%'||#{description}||'%'</if>
@@ -48,7 +51,8 @@
 			id, 
 			value, 
 			label, 
-			type, 
+			type,
+			parent_id, 
 			description, 
 			sort, 
 			create_by, 
@@ -62,6 +66,7 @@
 			#{value}, 
 			#{label}, 
 			#{type}, 
+			#{parentId}, 
 			#{description}, 
 			#{sort}, 
 			#{createBy.id}, 
@@ -78,6 +83,7 @@
 			value = #{value}, 
 			label = #{label}, 
 			type = #{type}, 
+			parent_id = #{parentId}, 
 			description = #{description}, 
 			sort = #{sort}, 
 			update_by = #{updateBy.id}, 

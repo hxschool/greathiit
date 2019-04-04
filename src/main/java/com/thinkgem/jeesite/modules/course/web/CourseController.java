@@ -3,7 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +42,12 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.DictService;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -66,9 +73,12 @@ public class CourseController extends BaseController {
 	private CourseSpecificContentService courseSpecificContentService;
 	@Autowired
 	private SystemService systemService;
-	
+	@Autowired
+	private SysConfigService sysConfigService;
+	@Autowired
+	private DictService dictService;
 	@ModelAttribute
-	public Course get(@RequestParam(required=false) String id) {
+	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = courseService.get(id);
@@ -82,6 +92,8 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/courseList";
@@ -117,14 +129,22 @@ public class CourseController extends BaseController {
 	
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "adminCourseAdd1")
-	public String adminCourseAdd1(Course course, RedirectAttributes redirectAttributes) {
+	public String adminCourseAdd1(Course course,Model model, RedirectAttributes redirectAttributes) {
+		Map<Dict,List<Dict>> groupSelect = new HashMap<Dict,List<Dict>>();
 		
+		List<Dict> dicts = DictUtils.getDictList("select_course_type");
+		for(Dict dict:dicts) {
+			Dict tmp = new Dict();
+			tmp.setParentId(dict.getId());
+			groupSelect.put(dict, dictService.findList(tmp));
+		}
+		model.addAttribute("groupSelect", groupSelect);
 		return "modules/course/add/adminCourseAdd1";
 	}
 	
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "adminCourseAdd2")
-	public String adminCourseAdd2(Course course, Model model) {
+	public String adminCourseAdd2(Course course,HttpServletRequest request,HttpServletResponse response, Model model) {
 		String courseId = systemService.getSequence("serialNo10");
 		try {
 			logger.info("新增课程基本信息,课程信息:{}",course);
@@ -136,13 +156,27 @@ public class CourseController extends BaseController {
 			course.setId(courseId);
 			course.setTeacher(UserUtils.getTeacher());
 			courseService.save(course);
+			String teacMethod = request.getParameter("teacMethod");
+			if(!org.springframework.util.StringUtils.isEmpty(teacMethod)) {
+				CourseTeachingMode courseTeachingMode = new CourseTeachingMode();
+				courseTeachingMode.setTeacMethod(teacMethod);
+				courseTeachingMode.setCourseId(courseId);
+				courseTeachingMode.setPeriod(course.getCursClassHour());
+				courseTeachingModeService.save(courseTeachingMode);
+			}
 		}catch(Exception e) {
 			addMessage(model,"添加信息异常"+e.getMessage());
 			return "modules/course/add/adminCourseAdd1";
 		}
 		model.addAttribute("courseId",courseId);
 		addMessage(model,"课程基本信息设置成功");
+		String op = request.getParameter("op");
+		if(!org.springframework.util.StringUtils.isEmpty(op)&&op.equals("ok")) {
+			return "redirect:"+Global.getAdminPath()+"/course/course/teacher_Management_1_selectTchrCourse?repage";
+		}
+		
 		return "modules/course/add/adminCourseAdd2";
+		
 	}
 	
 	@RequiresPermissions("course:course:edit")
@@ -241,8 +275,8 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "adminCourseAddOk")
 	public String adminCourseAddOk(Course course, Model model) {
-		addMessage(model,"添加课程贡献点");
-		return "modules/course/add/adminCourseAddOk";
+		addMessage(model,"添加课程成功");
+		return "redirect:"+Global.getAdminPath()+"/course/course/teacher_Management_1_selectTchrCourse?repage";
 	}
 	
 	

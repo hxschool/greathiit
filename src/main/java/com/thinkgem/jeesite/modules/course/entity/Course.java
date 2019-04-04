@@ -38,7 +38,7 @@ public class Course extends DataEntity<Course> {
 	private String cursPreCourses;		// 先修课程
 	private String cursProperty;		// 课程性质
 	private String cursSelectCourseType;//功课选课类型
-	private String cursType;		// 课程类型
+	private String cursType;		// 	类型
 	private String cursTotal;
 	private String cursForm;
 	private String cursStatus;

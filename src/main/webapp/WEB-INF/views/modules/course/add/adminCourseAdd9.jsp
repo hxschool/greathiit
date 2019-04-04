@@ -80,6 +80,7 @@
 				</div>
 				<form action="adminCourseAdd10"  method="post" enctype="multipart/form-data"
 					class="form-horizontal" onsubmit="javascript:return validate()">
+					<input type="hidden" name="courseId" value="${courseId}"/>
 					<div class="div-inf">
 						<div class="div-inf-title">设置评分标准</div>
 						<label class="title-per-rule">评分标准：</label>
@@ -121,17 +122,17 @@
 									</tr>
 								</thead>
 								<tbody>
-								<s:iterator value="targets" var="t" status="s">
+								<c:forEach items="${targets}" var="t" varStatus="s">
 									<tr>
-										<td class="hidden"><input name="targets[<s:property value="#s.index"/>].tchTargetId" value="<s:property value="#t.tchTargetId"/>" /></td>
-										<td>目标<s:property value="#s.index+1"/></td>
-										<td><input name="targets[<s:property value="#s.index"/>].tchtargetClassTargetValue" class="border0 colClass" /></td>
-					 					<td><input name="targets[<s:property value="#s.index"/>].tchtargetHomeworkTargetValue" class="border0 colWork" /></td>
-										<td><input name="targets[<s:property value="#s.index"/>].tchtargetExpTargetValue" class="border0 colExp" /></td>
-										<td><input name="targets[<s:property value="#s.index"/>].tchtargetMidTargetValue" class="border0 colMid" /></td>
-										<td><input name="targets[<s:property value="#s.index"/>].tchtargetFinTargetValue" class="border0 colFin" /></td>
+										<td class="hidden"><input name="targets[${s.index}].tchTargetId" value="${t.tchTargetId}" /></td>
+										<td>目标${s.index+1}</td>
+										<td><input name="targets[${s.index}].tchtargetClassTargetValue" class="border0 colClass" /></td>
+					 					<td><input name="targets[${s.index}].tchtargetHomeworkTargetValue" class="border0 colWork" /></td>
+										<td><input name="targets[${s.index}].tchtargetExpTargetValue" class="border0 colExp" /></td>
+										<td><input name="targets[${s.index}].tchtargetMidTargetValue" class="border0 colMid" /></td>
+										<td><input name="targets[${s.index}].tchtargetFinTargetValue" class="border0 colFin" /></td>
 									</tr>
-								</s:iterator>
+								</c:forEach>
 								</tbody>
 							</table>
 						</div>						

@@ -10,12 +10,13 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.out.config.dao.RsStudentConfigDao;
-import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
 import com.thinkgem.jeesite.modules.out.ems.dao.RsStudentEmsDao;
 import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 
 /**
  * 单招录取通知书Service
@@ -29,7 +30,7 @@ public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentE
 	private RsStudentEmsDao rsStudentEmsDao;
 	
 	@Resource
-	private RsStudentConfigDao rsStudentConfigDao;
+	private SysConfigService sysConfigService;
 
 	public RsStudentEms getByUsernameAndIdCard(String username,String idCard) {
 		return rsStudentEmsDao.getByUsernameAndIdCard(username,idCard);
@@ -48,7 +49,7 @@ public class RsStudentEmsService extends CrudService<RsStudentEmsDao, RsStudentE
 	
 	@Transactional(readOnly = false)
 	public void save(RsStudentEms rsStudentEms) {
-		RsStudentConfig config = rsStudentConfigDao.get("1");
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
 		rsStudentEms.setTermYear(config.getTermYear());
 		rsStudentEms.setIsNewRecord(true);
 		super.save(rsStudentEms);

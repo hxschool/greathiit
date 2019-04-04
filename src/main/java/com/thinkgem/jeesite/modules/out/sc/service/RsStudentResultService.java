@@ -9,13 +9,15 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.out.config.dao.RsStudentConfigDao;
-import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
 import com.thinkgem.jeesite.modules.out.sc.dao.RsStudentResultDao;
 import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 
 /**
  * 省成绩Service
@@ -26,7 +28,7 @@ import com.thinkgem.jeesite.modules.out.sc.entity.RsStudentResult;
 @Transactional(readOnly = true)
 public class RsStudentResultService extends CrudService<RsStudentResultDao, RsStudentResult> {
 	@Resource
-	private RsStudentConfigDao rsStudentConfigDao;
+	private SysConfigService sysConfigService;
 	public RsStudentResult get(String id) {
 		return super.get(id);
 	}
@@ -41,7 +43,7 @@ public class RsStudentResultService extends CrudService<RsStudentResultDao, RsSt
 	
 	@Transactional(readOnly = false)
 	public void save(RsStudentResult rsStudentResult) {
-		RsStudentConfig config = rsStudentConfigDao.get("1");
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
 		rsStudentResult.setTermYear(config.getTermYear());
 		super.save(rsStudentResult);
 	}

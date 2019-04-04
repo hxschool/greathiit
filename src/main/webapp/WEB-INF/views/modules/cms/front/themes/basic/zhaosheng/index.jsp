@@ -67,7 +67,7 @@
 </head>
 
 
-<c:if test="${config.sw=='NO'}">  
+<c:if test="${config.status==1}">  
 <script>
 alert("${config.tip}");
 </script>
@@ -147,7 +147,7 @@ alert("${config.tip}");
 														<div class="text-center">
 
 															
-																<c:if test="${config.sw=='YES'}">  
+																<c:if test="${config.sw==0}">  
 																<input type="checkbox" class="pc" name="agreebbrule" id="agreebbrule" >
 																<label for="agreebbrule">同意<!--  <a
 																href="javascript:;" style="color:red" onclick="showBBRule()"> 特别提示 </a> --></label> 
@@ -158,7 +158,7 @@ alert("${config.tip}");
 																</c:if>
 																
 																
-																<c:if test="${config.sw=='NO'}">  
+																<c:if test="${config.sw==1}">  
 																	<button class="btn btn-danger"
 																	>报考系统已关闭</button>
 																</c:if>

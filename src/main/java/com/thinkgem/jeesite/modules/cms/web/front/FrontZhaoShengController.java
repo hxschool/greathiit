@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.annotation.SameUrlData;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.servlet.ValidateCodeServlet;
 import com.thinkgem.jeesite.common.utils.AccountValidatorUtil;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
@@ -25,8 +26,6 @@ import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackResponse;
 import com.thinkgem.jeesite.modules.api.ems.KdniaoTrackTraces;
 import com.thinkgem.jeesite.modules.cms.entity.Site;
 import com.thinkgem.jeesite.modules.cms.utils.CmsUtils;
-import com.thinkgem.jeesite.modules.out.config.entity.RsStudentConfig;
-import com.thinkgem.jeesite.modules.out.config.service.RsStudentConfigService;
 import com.thinkgem.jeesite.modules.out.ems.entity.RsStudentEms;
 import com.thinkgem.jeesite.modules.out.ems.service.RsStudentEmsService;
 import com.thinkgem.jeesite.modules.out.rs.entity.RsStudent;
@@ -37,7 +36,9 @@ import com.thinkgem.jeesite.modules.out.system.entity.SystemStudent;
 import com.thinkgem.jeesite.modules.out.system.service.SystemStudentService;
 import com.thinkgem.jeesite.modules.recruit.entity.student.RecruitStudent;
 import com.thinkgem.jeesite.modules.recruit.service.student.RecruitStudentService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.security.FormAuthenticationFilter;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 /**
@@ -62,14 +63,14 @@ public class FrontZhaoShengController extends BaseController{
 	@Autowired
 	private RecruitStudentService recruitStudentService;
 	@Autowired
-	private RsStudentConfigService rsStudentConfigService;
+	private SysConfigService sysConfigService;
 	/**
 	 * 网站首页
 	 */
 	@RequestMapping(value = {"index", ""})
 	public String index(Model model) {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
-		RsStudentConfig config = rsStudentConfigService.get("1");
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
 		model.addAttribute("config", config);
 		model.addAttribute("site", site);
 		model.addAttribute("isIndex", true);
@@ -205,7 +206,7 @@ public class FrontZhaoShengController extends BaseController{
 			model.addAttribute("no", "报专业顺序号"+no+"，考生需牢记。");
 		}
 		try{
-			RsStudentConfig config = rsStudentConfigService.get("1");
+			SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
 			rsStudent.setTermYear(config.getTermYear());
 			rsStudentService.save(rsStudent);
 		}catch(Exception e){

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.aliyuncs.http.HttpRequest;
 import com.google.gson.Gson;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
@@ -49,9 +50,11 @@ import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
@@ -78,6 +81,10 @@ public class XuankeController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private UserOperationLogService userOperationLogService;
+	@Autowired
+	private SysConfigService sysConfigService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public void initalCategory(Model model) {
@@ -91,7 +98,9 @@ public class XuankeController extends BaseController {
 				articles.add(article);
 			}
 		}
-		boolean ret = DateUtils.isEffectiveDate(DictUtils.getDictLabel("start","select_course_start", ""), DictUtils.getDictLabel("end","select_course_end", ""));
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		boolean ret = DateUtils.isEffectiveDate(sysConfig.getStartDate(), sysConfig.getEndDate());
+		model.addAttribute("config", sysConfig);
 		model.addAttribute("ret", ret);	
 		model.addAttribute("category", category);	
 		model.addAttribute("articles", articles);
@@ -115,6 +124,7 @@ public class XuankeController extends BaseController {
 		Article entity = new Article();
 		entity.setCategory(category);
 		List<Article> articles = articleService.findList(entity);
+		
 		model.addAttribute("category", category);
 		model.addAttribute("articles", articles);
 		model.addAttribute("site", site);
@@ -130,7 +140,8 @@ public class XuankeController extends BaseController {
 		if(StringUtils.isEmpty(course.getCursProperty())) {
 			course.setCursProperty("20");
 		}
-		//course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(sysConfig.getTermYear());
 		List<Course> courses = courseService.findList(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		
@@ -357,8 +368,7 @@ public class XuankeController extends BaseController {
 	public List<TreeLink> treeClassLink(@RequestParam(required=false,defaultValue="1") String parnetId, HttpRequest request, HttpServletResponse response) {
 		return officeService.treeClassLink(parnetId);
 	}
-	@Autowired
-	private SystemService systemService;
+	
 	@ResponseBody
 	@RequestMapping(value = "checkPassword")
 	public String checkPassword(User user,String loginname, HttpRequest request, HttpServletResponse response) {
@@ -385,23 +395,5 @@ public class XuankeController extends BaseController {
 			}
 		}
 		return "成功";
-	}
-	
-	public static void main(String[] args) {
-		String startTime = "2018-09-04 16:00:00";
-		String endTime = "2018-09-04 18:00:00";
-		SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		try {
-			Date startDate = dateFormat.parse(startTime);
-			Date endDate = dateFormat.parse(endTime);
-			boolean ret = DateUtils.isEffectiveDate(new Date(), startDate, endDate);
-			System.out.println("开始结束时间"+ret);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}String s = "G010313042";
-		boolean ret = org.apache.commons.lang3.StringUtils.startsWith(s, "G");
-		System.out.println(ret);
-		
 	}
 }

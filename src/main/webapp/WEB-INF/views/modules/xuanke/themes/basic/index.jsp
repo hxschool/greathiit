@@ -29,9 +29,7 @@
 						<div class="panel-body">
 							<!-- Nav tabs -->
 							<div id="myAlert" class="alert alert-danger">
-								<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>选课时间:1月16日7:00-1月21日07:00
-									未在规定时间段选课同学的选课数据系统将自动清除。</strong>
-
+								<a href="#" class="close" data-dismiss="alert">&times;</a> <strong>${config.tip}</strong>
 							</div>
 							<ul class=" nav nav-pills pb10 mb10 mt10">
 								<li><button class="btn btn-danger">已选课程</button> </li>

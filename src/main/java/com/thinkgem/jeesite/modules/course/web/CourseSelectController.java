@@ -40,9 +40,11 @@ import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
@@ -64,9 +66,10 @@ public class CourseSelectController extends BaseController {
 	private UserOperationLogService userOperationLogService;
 	@Autowired
 	private OfficeService officeService;
-
+	@Autowired
+	private SysConfigService sysConfigService;
 	@ModelAttribute
-	public Course get(@RequestParam(required=false) String id) {
+	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = courseService.get(id);
@@ -74,6 +77,8 @@ public class CourseSelectController extends BaseController {
 		if (entity == null){
 			entity = new Course();
 		}
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		model.addAttribute("config", config);
 		return entity;
 	}
 	
@@ -96,7 +101,8 @@ public class CourseSelectController extends BaseController {
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/select/courseList";
@@ -104,7 +110,8 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "student")
 	public String student(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(course);
 		model.addAttribute("list", selectCourseService.findList(selectCourse));
@@ -115,7 +122,8 @@ public class CourseSelectController extends BaseController {
 	public String clazz(SelectCourse selectCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		Course course = new Course();
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
@@ -164,7 +172,8 @@ public class CourseSelectController extends BaseController {
 		String clsId = courseSelectExcel.getCla().getId();
 		SelectCourse selectCourse = new SelectCourse();
 		Course course = new Course();
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
@@ -205,7 +214,8 @@ public class CourseSelectController extends BaseController {
 	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
 		User user = UserUtils.getUser();
 		Course course = new Course();
-		course.setCursYearTerm(String.valueOf(DateUtils.getTerm()));
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
 		if(!user.isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());

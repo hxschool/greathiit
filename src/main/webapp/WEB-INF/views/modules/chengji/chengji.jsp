@@ -50,7 +50,7 @@
 				<div class="col-md-12">
 					<div class="navbar-collapse collapse ">
 						<ul id="menu-top" class="nav navbar-nav navbar-right">
-							<li><a href="index.html" class="menu-top-active">首页</a></li>
+							<li><a href="" class="menu-top-active">首页</a></li>
 							<li><a href="http://www.hxci.com.cn/">哈尔滨信息工程学院</a></li>
 							<li><a href="http://ar.greathiit.com/">数字校园</a></li>
 							<li><a href="http://www.greathiit.com/a">信息化中心</a></li>

@@ -84,6 +84,7 @@ public class ScoreController {
 			scs.put(termYear, studentCourseService.findList(sc));
 		}
 		model.addAttribute("scs", scs);
+		model.addAttribute("studentNumber", studentNumber);
 		
 		return "modules/chengji/chengji";
 	}

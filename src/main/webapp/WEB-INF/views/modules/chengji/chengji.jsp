@@ -79,7 +79,8 @@
 		<div class="container">
 			<div class="row pad-botm">
 				<div class="col-md-12">
-					<h4 class="header-line">哈尔滨信息工程学院-成绩查询系统</h4>
+					<h4 class="header-line">哈尔滨信息工程学院-成绩查询系统 <a href="javascript:void(0)" onclick="ajaxPrint('${studentNumber}')"  class="btn btn-primary"><span
+										class="glyphicon glyphicon-print"> </span> 生成电子成绩单</a></h4>
 				</div>
 
 			</div>
@@ -217,8 +218,7 @@
 	<script src="${ctxStatic}/chengji/assets/js/jquery-1.10.2.js"></script>
 	<!-- BOOTSTRAP SCRIPTS  -->
 	<script src="${ctxStatic}/chengji/assets/js/bootstrap.js"></script>
-	<!-- CUSTOM SCRIPTS  -->
-	<script src="${ctxStatic}/chengji/assets/js/custom.js"></script>
+	
 <script type="text/javascript">
 function printImg(object){
 	var printHtml = object.html();
@@ -226,6 +226,23 @@ function printImg(object){
 	newWindow.document.body.innerHTML = printHtml;
 	newWindow.print();
 }
+function ajaxPrint(st){
+	//var ret = $.ajax({url:"${pageContext.request.contextPath}/chengji/print?st="+st,async:false});
+	//if(!ret){
+	//	window.location.reload();
+	//}
+
+	$.ajax({
+			type : "post",
+			url : "${pageContext.request.contextPath}/chengji/print?st="+st,
+			cache : false,
+			async : false,
+			success : function(message) {
+				window.location.reload();
+			}
+
+		});
+	}
 </script>
 </body>
 </html>

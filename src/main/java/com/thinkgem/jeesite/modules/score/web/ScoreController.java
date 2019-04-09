@@ -107,18 +107,20 @@ public class ScoreController {
 						
 					}
 					return "all";
-				}else {
-					String st = request.getParameter("st");
-					if(!StringUtils.isEmpty(st)) {
-						User u = systemService.getCasByLoginName(st);
-						write(u,  userinfo);
-						return "student";
-					}
-					
 				}
 			}
 			
 		}
+		
+		String st = request.getParameter("st");
+		if(!StringUtils.isEmpty(st)) {
+			User u = systemService.getCasByLoginName(st);
+			if(!StringUtils.isEmpty(u)) {
+				write(u,  userinfo);
+				return "student";
+			}
+		}
+		
 		write(user,  userinfo);
 		
 		return "ok";
@@ -126,6 +128,9 @@ public class ScoreController {
 	
 	
 	private void write(User user , String userinfo) throws IOException {
+		if(StringUtils.isEmpty(user)) {
+			return;
+		}
 		String studentNumber = user.getNo();
 		File file = new File(userinfo,studentNumber);
 		if(!file.exists()) {

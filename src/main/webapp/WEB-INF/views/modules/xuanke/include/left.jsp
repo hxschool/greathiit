@@ -58,7 +58,8 @@
 				    var now = date.getTime();
 				    //设置截止时间
 				    //var endDate = new Date("${fns:getDictLabel('end', 'select_course_end', '')}");
-				    var endDate = ${config.endDate}
+				    var endDate = new Date("${config.endDate}");
+			
 				    var end = endDate.getTime();
 				    //时间差
 				    var leftTime = end-now;

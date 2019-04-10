@@ -4,6 +4,7 @@
     
 	<sql id="userOperationLogColumns">
 		a.id AS "id",
+		a.term_year AS "termYear",
 		a.module AS "module",
 		a.module_id AS "moduleId",
 		a.module_name AS "moduleName",
@@ -41,6 +42,9 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="module!=null and module!=''">
 			and a.module=#{module}
+			</if>
+			<if test="termYear!=null and termYear!=''">
+			and a.term_year=#{termYear}
 			</if>
 			<if test="moduleId!=null and moduleId!=''">
 			and a.module_id=#{moduleId}
@@ -86,6 +90,7 @@
 	<insert id="insert">
 		INSERT INTO user_operation_log(
 			id,
+			term_year,
 			module,
 			module_id,
 			module_name,
@@ -103,6 +108,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{termYear},
 			#{module},
 			#{moduleId},
 			#{moduleName},
@@ -123,6 +129,7 @@
 	
 	<update id="update">
 		UPDATE user_operation_log SET 	
+			term_year = #{termYear},
 			module = #{module},
 			module_id = #{moduleId},
 			module_name = #{moduleName},

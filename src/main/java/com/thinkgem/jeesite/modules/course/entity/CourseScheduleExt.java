@@ -7,7 +7,7 @@ public class CourseScheduleExt extends CourseSchedule {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String cursYearTerm;
+	private String termYear;
 	private String teacherNumber;
 	private String root;
 	private List<String> list;
@@ -44,12 +44,13 @@ public class CourseScheduleExt extends CourseSchedule {
 	public void setList(List<String> list) {
 		this.list = list;
 	}
-	public String getCursYearTerm() {
-		return cursYearTerm;
+	public String getTermYear() {
+		return termYear;
 	}
-	public void setCursYearTerm(String cursYearTerm) {
-		this.cursYearTerm = cursYearTerm;
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
 	}
+
 
 	
 }

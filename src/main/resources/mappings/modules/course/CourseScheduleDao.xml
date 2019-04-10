@@ -26,6 +26,9 @@
 			where a.sc_lock=2 
  		  <if test="courseClass!=null and courseClass!=''">  
           and   LOCATE(#{courseClass},a.course_class )>0
+          </if>
+          <if test="courseClass!=null and courseClass!=''">  
+          and   LOCATE(#{courseClass},a.course_class )>0
           </if>  
           <if test="teacherNumber!=null and teacherNumber!=''  ">  
           and   c.teacher_number in (#{teacherNumber})
@@ -51,8 +54,8 @@
           <if test="teacherNumber!=null and teacherNumber!=''  ">  
           and   c.teacher_number in (#{teacherNumber})
           </if> 
-           <if test="cursYearTerm!=null and cursYearTerm!=''">  
-          and   c.curs_year_term=#{cursYearTerm}  
+           <if test="termYear!=null and termYear!=''">  
+          and   c.curs_year_term=#{termYear}  
           </if> 
           
           <if test="timeAdd!=null and timeAdd!=''">  

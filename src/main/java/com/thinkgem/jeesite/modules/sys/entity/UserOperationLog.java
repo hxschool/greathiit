@@ -15,6 +15,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class UserOperationLog extends DataEntity<UserOperationLog> {
 	
 	private static final long serialVersionUID = 1L;
+	private String termYear;	//学期
 	private String module;		// 模块
 	private String moduleId;		// 模块编号
 	private String moduleName;		// 模块编号
@@ -25,6 +26,17 @@ public class UserOperationLog extends DataEntity<UserOperationLog> {
 	private String userAgent;		// 用户代理
 	private String requestUri;		// 请求URI
 	
+	
+	
+	
+	public String getTermYear() {
+		return termYear;
+	}
+
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
+	}
+
 	public UserOperationLog() {
 		super();
 	}

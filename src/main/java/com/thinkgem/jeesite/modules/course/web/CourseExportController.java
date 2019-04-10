@@ -438,7 +438,7 @@ public class CourseExportController extends BaseController {
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursYearTerm(yearTerm);
+		courseScheduleExt.setTermYear(yearTerm);
 		courseScheduleExt.setRoot(id);
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
@@ -534,7 +534,7 @@ public class CourseExportController extends BaseController {
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursYearTerm(yearTerm);
+		courseScheduleExt.setTermYear(yearTerm);
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(courseScheduleExt);
 		SXSSFWorkbook  wb = new SXSSFWorkbook();
 		Sheet sheet = wb.createSheet("Export");
@@ -740,7 +740,7 @@ public class CourseExportController extends BaseController {
 			teacherNumber = sb.substring(0, sb.length() - ",".length());
 		}
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setCursYearTerm(cursYearTerm);
+		courseScheduleExt.setTermYear(cursYearTerm);
 		courseScheduleExt.setCourseClass(courseClass);
 		courseScheduleExt.setTeacherNumber(teacherNumber);
 		model.addAttribute("courseScheduleExt", courseScheduleService.getCourseScheduleExt(courseScheduleExt));

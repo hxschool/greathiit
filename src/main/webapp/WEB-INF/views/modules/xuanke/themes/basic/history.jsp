@@ -134,7 +134,7 @@ div.center {
 									
 									
 										<div class="table-responsive">
-										asd
+										
 											<table class="table table-striped table-bordered table-hover">
 												<thead>
 													<tr>

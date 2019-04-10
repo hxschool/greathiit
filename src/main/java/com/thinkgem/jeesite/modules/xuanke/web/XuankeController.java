@@ -307,6 +307,7 @@ public class XuankeController extends BaseController {
 	private void saveSelectCourseLog(HttpServletRequest request, Course course,String status,String userno) {
 		UserOperationLog log = new UserOperationLog();
 		log.setModule("course");
+		log.setTermYear(course.getCursYearTerm());
 		log.setModuleId(course.getId());
 		log.setModuleName(course.getCursName());
 		log.setUserNumber(userno);
@@ -324,10 +325,13 @@ public class XuankeController extends BaseController {
 	@RequestMapping("kebiao")
 	public String kebiao(@RequestParam(value="list",required=false) List<String> list,@RequestParam(value="courseClass",required=false) String courseClass,@RequestParam(value="teacherNumber",required=false) String teacherNumber, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
 		
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
 		courseScheduleExt.setList(list);
 		courseScheduleExt.setCourseClass(courseClass);
 		courseScheduleExt.setTeacherNumber(teacherNumber);
+		courseScheduleExt.setTermYear(sysConfig.getTermYear());
 		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.findCoursesByParam(courseScheduleExt);
 		model.addAttribute("courseScheduleExts", courseScheduleExts);
 
@@ -339,11 +343,13 @@ public class XuankeController extends BaseController {
 	
 	@RequestMapping("history")
 	public String history(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		UserOperationLog operationLog = new UserOperationLog();
 		operationLog.setModule("course");
 		operationLog.setUserNumber(UserUtils.getUser().getNo());
 		operationLog.setUserType("99");
+		operationLog.setTermYear(sysConfig.getTermYear());
 		String cursName = request.getParameter("cursName");
 		String status = request.getParameter("status");
 		if(!StringUtils.isEmpty(cursName)) {

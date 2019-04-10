@@ -48,9 +48,10 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">设置年份：</label>
+			<label class="control-label">学期：</label>
 			<div class="controls">
 				<form:input path="termYear" htmlEscape="false" maxlength="12" class="input-xlarge required"/>
+				yyyy-yyyy-01
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -70,31 +71,37 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
+		
+		<div class="control-group">
+			<label class="control-label">是否关闭：</label>
+			<div class="controls">
+				<form:select path="status">
+					<form:options items="${fns:getDictList('yes_no')}" itemLabel="label" itemValue="value" htmlEscape="false"/>
+				</form:select>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		
 		<div class="control-group">
 			<label class="control-label">提示信息：</label>
 			<div class="controls">
-				<form:input path="message" htmlEscape="false" class="input-xlarge "/>
+				<form:textarea path="message" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">特别提示：</label>
 			<div class="controls">
-				<form:input path="description" htmlEscape="false" class="input-xlarge "/>
+				<form:textarea path="description" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">关闭提示：</label>
 			<div class="controls">
-				<form:input path="tip" htmlEscape="false" class="input-xlarge "/>
+				
+				<form:textarea path="tip" htmlEscape="false" rows="4" maxlength="2000" class="input-xxlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">状态,默认为0,当状态为1的时候读取关闭提示：</label>
-			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="11" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">remarks：</label>
 			<div class="controls">

@@ -25,6 +25,9 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>模块：</label>
+				<form:input path="module" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
 			<li><label>标题：</label>
 				<form:input path="title" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
@@ -36,9 +39,12 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>模块</th>
 				<th>标题</th>
-				<th>更新时间</th>
-				<th>remarks</th>
+				<th>学期</th>
+				<th>时间范围</th>
+				<th>是否关闭</th>
+				<th>备注</th>
 				<shiro:hasPermission name="sys:sysConfig:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -46,10 +52,19 @@
 		<c:forEach items="${page.list}" var="sysConfig">
 			<tr>
 				<td><a href="${ctx}/sys/sysConfig/form?id=${sysConfig.id}">
-					${sysConfig.title}
+					${sysConfig.module}
 				</a></td>
 				<td>
-					<fmt:formatDate value="${sysConfig.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					${sysConfig.title}
+				</td>
+				<td>
+					${sysConfig.termYear}
+				</td>
+				<td>
+					<fmt:formatDate value="${sysConfig.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>-<fmt:formatDate value="${sysConfig.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+				</td>
+				<td>
+					${fns:getDictLabel(sysConfig.status,'yes_no','')}
 				</td>
 				<td>
 					${sysConfig.remarks}

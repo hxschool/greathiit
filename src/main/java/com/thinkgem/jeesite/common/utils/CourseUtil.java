@@ -78,6 +78,14 @@ public class CourseUtil {
 	
 	public static Map<String,String> GetTimeCol(String $time_add){
 	    Map<String,String> $time = new HashMap<String,String>();
+	    
+	    if(!StringUtils.isEmpty($time_add)) {
+			if($time_add.length()==14) {
+				String s = $time_add.substring(0,4).concat("-").concat($time_add.substring(0,4).concat("-")).concat("0");
+				$time_add = s.concat($time_add.substring(4));
+			}
+		}
+	    
 	    $time.put("start", $time_add.substring(0, 4));
 	    $time.put("end", $time_add.substring(5, 9));
 	    $time.put("term", $time_add.substring(10, 12));
@@ -128,6 +136,7 @@ public class CourseUtil {
 		String str = format.format(date);
 		System.out.println(str);
 		String timeAdd = "2018-2019-01015010327";
+		System.out.println("20182014130725".length());
 		System.out.println(getCompleteTimeAdd(timeAdd));
 	}
 	

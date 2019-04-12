@@ -143,10 +143,16 @@ div.center {
 														<th>操作过程</th>
 														<th>操作IP</th>
 														<th>选课时间</th>
-														<th class="center" width="40px;">详情</th>
+														<th class="text-center" width="80px;">详情</th>
 													</tr>
 												</thead>
 												<tbody>
+												<c:if test="${page.list== null || fn:length(page.list) == 0}">
+												<tr>
+															<td colspan="6" class="text-center text-danger">暂无数据</td>
+															</tr>
+												</c:if>
+												
 													<c:forEach items="${page.list}" var="userOperationLog" varStatus="status">
 														<tr >
 															<td>${status.index+1}</td>

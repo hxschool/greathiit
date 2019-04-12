@@ -248,7 +248,7 @@
 						</div>
 					</div>
 					<div class="div-btn">
-						<input type="button" class="btn" id="adminCourseAddOk" value="快捷添加">
+						<input type="button" class="btn" id="adminCourseAddOk" value="保存">
 						<input type="submit" class="btn" value="添加">
 					</div>
 				</form>

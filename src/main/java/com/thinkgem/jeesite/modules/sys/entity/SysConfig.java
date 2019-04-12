@@ -113,4 +113,15 @@ public class SysConfig extends DataEntity<SysConfig> {
 		this.status = status;
 	}
 	
+	public String getBegin() {
+		return termYear.substring(0,4);
+	}
+	
+	public String getEnd() {
+		return termYear.substring(5,9);
+	}
+	
+	public String getTerm() {
+		return termYear.substring(10,12);
+	}
 }

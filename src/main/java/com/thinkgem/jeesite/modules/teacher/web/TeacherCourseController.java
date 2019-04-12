@@ -21,18 +21,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
-import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
-import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherCourseService;
 
@@ -47,7 +48,7 @@ public class TeacherCourseController extends BaseController {
 	@Autowired
 	private CourseService courseService;
 	@Autowired
-	private CourseYearTermService courseYearTermService;
+	private SysConfigService sysConfigService;
 	@Autowired
 	private CourseScheduleService courseScheduleService;
 	@Autowired
@@ -66,8 +67,8 @@ public class TeacherCourseController extends BaseController {
 
 		List<Course> courses = courseService.findList(course);
 		
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String termYear = courseYearTerm.getYearTerm();
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		String termYear = sysConfig.getTermYear();
 		if(!StringUtils.isEmpty(studentCourse.getTermYear())) {
 			termYear = studentCourse.getTermYear();
 		}

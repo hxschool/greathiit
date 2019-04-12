@@ -47,7 +47,7 @@ import com.thinkgem.jeesite.modules.sys.service.SystemService;
  * @version 2013-5-29
  */
 @Controller
-@RequestMapping(value = "${frontPath}/2018")
+@RequestMapping(value = "${frontPath}/{year}")
 public class FrontZhaoShengController extends BaseController{
 	
 	@Autowired

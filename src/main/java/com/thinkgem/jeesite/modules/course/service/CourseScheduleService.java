@@ -9,16 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
-import com.thinkgem.jeesite.modules.course.dao.CourseYearTermDao;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
-import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.school.dao.SchoolRootDao;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 
 /**
  * 计划教室Service
@@ -31,9 +33,9 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	@Autowired
 	private CourseScheduleDao courseScheduleDao;
 	@Autowired
-	private CourseYearTermDao courseYearTermDao;
-	@Autowired
 	private SchoolRootDao schoolRootDao;
+	@Autowired
+	private SysConfigService sysConfigService;
 	
 	public List<CourseScheduleExt> findCoursesByParam(CourseScheduleExt courseScheduleExt){
 		return courseScheduleDao.findCoursesByParam(courseScheduleExt.getList(), courseScheduleExt.getCourseClass(), courseScheduleExt.getTeacherNumber());
@@ -78,9 +80,12 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 
 	@Transactional(readOnly = false)
 	@Async
-	public void executeAsyncJsonAvailability() {
-		CourseYearTerm courseYearTerm = courseYearTermDao.systemConfig();
-
+	public void executeAsyncJsonAvailability(SysConfig sysConfig) {
+		
+		String termYear = sysConfig.getTermYear();
+		if(StringUtils.isEmpty(termYear)) {
+			termYear = sysConfigService.getModule(Global.SYSCONFIG_COURSE).getTermYear();
+		}
 		List<SchoolRoot> schoolRoots = schoolRootDao.findByParentId("0");
 		for (SchoolRoot schoolRoot : schoolRoots) {
 			List<SchoolRoot> roots = schoolRootDao.findByParentId(schoolRoot.getId());
@@ -92,7 +97,7 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 						for (int $k = 1; $k <= 7; $k++) {
 							CourseSchedule courseSchedule = new CourseSchedule();
 							String rootNumber = root.getValue();
-							String $id = courseYearTerm.getYearTerm().concat(schoolNumber).concat(rootNumber);
+							String $id = termYear.concat(schoolNumber).concat(rootNumber);
 							String timeAdd = "";
 
 							if ($i <= 9)

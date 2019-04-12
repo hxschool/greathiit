@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -46,7 +47,6 @@ import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
-import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseCompositionRulesService;
 import com.thinkgem.jeesite.modules.course.service.CourseMaterialService;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
@@ -54,12 +54,13 @@ import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
-import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.course.web.param.Lesson;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
@@ -77,7 +78,7 @@ public class CourseExportController extends BaseController {
 	@Autowired
 	private CourseService courseService;
 	@Autowired
-	private CourseYearTermService courseYearTermService;
+	private SysConfigService sysConfigService;
 	@Autowired
 	private CourseScheduleService courseScheduleService;
 	@Autowired
@@ -133,10 +134,9 @@ public class CourseExportController extends BaseController {
 	 */
 	@RequestMapping(value = "allCourse")
 	public void allCourse(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException,InvalidFormatException {
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm = courseYearTerm.getYearTerm();
-		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
-		String $file_name = $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		String yearTerm = sysConfig.getTermYear();
+		String $file_name = sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第" + sysConfig.getTerm() + "学期课程表.xls";
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
@@ -210,11 +210,9 @@ public class CourseExportController extends BaseController {
 			pw.flush();
 			pw.close();
 		}
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm = courseYearTerm.getYearTerm();
-		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
-
-		String $file_name = teacher.getName() + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		String yearTerm = sysConfig.getTermYear();
+		String $file_name = sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第" + sysConfig.getTerm() + "学期课程表.xls";
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
@@ -230,7 +228,7 @@ public class CourseExportController extends BaseController {
 		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
 		sheet.addMergedRegion(cra);  
 		
-		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		addCell(row, 2,sysConfig.getBegin() + "-" + sysConfig.getEnd()  + "年度第"+  sysConfig.getTerm() + "学期", 2);
 		
 		Row row1 = sheet.createRow(1);
 		addCell(row1, 0,"时间", 2);
@@ -314,11 +312,9 @@ public class CourseExportController extends BaseController {
 			pw.close();
 			return;
 		}
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm = courseYearTerm.getYearTerm();
-		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
 
-		String $file_name = student.getName() + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		String $file_name = sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第" + sysConfig.getTerm() + "学期课程表.xls";
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
@@ -345,7 +341,7 @@ public class CourseExportController extends BaseController {
 		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
 		sheet.addMergedRegion(cra);  
 		
-		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		addCell(row, 2,sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第"+ sysConfig.getTerm() + "学期", 2);
 		
 		Row row1 = sheet.createRow(1);
 		addCell(row1, 0,"时间", 2);
@@ -427,13 +423,12 @@ public class CourseExportController extends BaseController {
 		
 		SchoolRoot schoolRoot = schoolRootService.get(id);
 		
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm = courseYearTerm.getYearTerm();
-		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
 
 		String exportName = schoolRoot.getLabel();
 		
-		String $file_name = exportName + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		String yearTerm = sysConfig.getTermYear();
+		String $file_name = sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第" + sysConfig.getTerm() + "学期课程表.xls";
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
@@ -452,7 +447,7 @@ public class CourseExportController extends BaseController {
 		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
 		sheet.addMergedRegion(cra);  
 		
-		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		addCell(row, 2,sysConfig.getBegin() + "-" + sysConfig.getEnd()  + "年度第"+  sysConfig.getTerm()  + "学期", 2);
 		
 		Row row1 = sheet.createRow(1);
 		addCell(row1, 0,"时间", 2);
@@ -523,13 +518,12 @@ public class CourseExportController extends BaseController {
 	@RequestMapping(value = "allRoot")
 	public void allRoot( HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm = courseYearTerm.getYearTerm();
-		String[] $date = {yearTerm.substring(0, 4),yearTerm.substring(4)};
-
+	
 		String exportName = "全部教室";
 		
-		String $file_name = exportName + "-" + $date[0] + "年度第" + $date[1] + "学期课程表.xls";
+		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		String yearTerm = sysConfig.getTermYear();
+		String $file_name = sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第" + sysConfig.getTerm() + "学期课程表.xls";
 		response.setContentType("application/octet-stream;charset=utf-8"); 
 		response.setHeader("Content-Disposition","attachment;filename=" + new String($file_name.getBytes(),"iso-8859-1")); 
 		OutputStream os = response.getOutputStream();
@@ -547,7 +541,7 @@ public class CourseExportController extends BaseController {
 		CellRangeAddress cra = new CellRangeAddress(0, 0, 2, 4);
 		sheet.addMergedRegion(cra);  
 		
-		addCell(row, 2,$date[0] + "年度第"+  $date[1] + "学期", 2);
+		addCell(row, 2,sysConfig.getBegin() + "-" + sysConfig.getEnd() + "年度第"+  sysConfig.getTerm() + "学期", 2);
 		
 		Row row1 = sheet.createRow(1);
 		addCell(row1, 0,"时间", 2);

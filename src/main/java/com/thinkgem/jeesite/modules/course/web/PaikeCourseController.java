@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.RegexUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
@@ -34,10 +35,8 @@ import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
-import com.thinkgem.jeesite.modules.course.entity.CourseYearTerm;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
-import com.thinkgem.jeesite.modules.course.service.CourseYearTermService;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
@@ -45,6 +44,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -64,8 +64,7 @@ import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
 public class PaikeCourseController extends BaseController {
 	@Autowired
 	private CourseCalendarService courseCalendarService;
-	@Autowired
-	private CourseYearTermService courseYearTermService;
+
 	@Autowired
 	private CourseScheduleService courseScheduleService;
 	@Autowired
@@ -82,17 +81,13 @@ public class PaikeCourseController extends BaseController {
 	private DictService dictService;
 	@Autowired
 	private SchoolRootService schoolRootService;
-
-	
+	@Autowired
+	private SysConfigService sysConfigService;
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm="2018-2019-02";
-		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
-			yearTerm = courseYearTerm.getYearTerm();
-		}
 		
+		String yearTerm = sysConfigService.getModule(Global.SYSCONFIG_COURSE).getTermYear();
 		model.addAttribute("yearTerm",yearTerm);
 		model.addAttribute("courseCalendar", courseCalendarService.systemConfig());
 		return "modules/paike/LockCourse";
@@ -141,11 +136,8 @@ public class PaikeCourseController extends BaseController {
 	 */
 	@RequestMapping(value = "addCourse")
 	public String addCourse(CourseCalendar courseCalendar, Model model) {
-		CourseYearTerm courseYearTerm = courseYearTermService.systemConfig();
-		String yearTerm="2018-2019-01";
-		if(!org.springframework.util.StringUtils.isEmpty(courseYearTerm)) {
-			yearTerm = courseYearTerm.getYearTerm();
-		}
+		
+		String yearTerm= sysConfigService.getModule(Global.SYSCONFIG_COURSE).getTermYear();
 		
 		model.addAttribute("yearTerm",yearTerm);
 		model.addAttribute("courseCalendar", courseCalendarService.systemConfig());

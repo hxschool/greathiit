@@ -323,14 +323,27 @@ public class XuankeController extends BaseController {
 	
 	
 	@RequestMapping("kebiao")
-	public String kebiao(@RequestParam(value="list",required=false) List<String> list,@RequestParam(value="courseClass",required=false) String courseClass,@RequestParam(value="teacherNumber",required=false) String teacherNumber, HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
-		
+	public String kebiao(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
-		courseScheduleExt.setList(list);
-		courseScheduleExt.setCourseClass(courseClass);
-		courseScheduleExt.setTeacherNumber(teacherNumber);
+		User user = UserUtils.getUser();
+		if (!StringUtils.isEmpty(user)) {
+			if( !user.isAdmin()) {
+				Course course = new Course();
+				course.setCursYearTerm(sysConfig.getTermYear());
+				SelectCourse selectCourse = new SelectCourse();
+				selectCourse.setCourse(course);
+				selectCourse.setStudent(user);
+				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+				List<String> list = new ArrayList<String>();
+				for(SelectCourse sc : selectCourses) {
+					list.add(sc.getCourse().getId());
+				}
+				courseScheduleExt.setList(list);
+			}
+			
+		}
 		courseScheduleExt.setTermYear(sysConfig.getTermYear());
 		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.findCoursesByParam(courseScheduleExt);
 		model.addAttribute("courseScheduleExts", courseScheduleExts);

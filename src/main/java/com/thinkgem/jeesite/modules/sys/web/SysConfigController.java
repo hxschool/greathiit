@@ -17,8 +17,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 
@@ -33,7 +34,8 @@ public class SysConfigController extends BaseController {
 
 	@Autowired
 	private SysConfigService sysConfigService;
-	
+	@Autowired
+	private CourseScheduleService courseScheduleService;
 	@ModelAttribute
 	public SysConfig get(@RequestParam(required=false) String id) {
 		SysConfig entity = null;
@@ -80,4 +82,18 @@ public class SysConfigController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/?repage";
 	}
 
+	@RequiresPermissions("sys:sysConfig:edit")
+	@RequestMapping(value = "schedule")
+	public String schedule(SysConfig sysConfig,Model model) {
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		model.addAttribute("config", config);
+		return "modules/sys/sysConfigSchedule";
+	}
+	@RequiresPermissions("sys:sysConfig:edit")
+	@RequestMapping(value = "batch")
+	public String batch(SysConfig sysConfig, RedirectAttributes redirectAttributes) {
+		courseScheduleService.executeAsyncJsonAvailability(sysConfig);
+		addMessage(redirectAttributes, "操作成功");
+		return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/schedule?repage";
+	}
 }

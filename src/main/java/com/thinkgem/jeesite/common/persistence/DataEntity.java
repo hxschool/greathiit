@@ -11,6 +11,7 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.thinkgem.jeesite.common.utils.IdGen;
+import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
@@ -46,7 +47,9 @@ public abstract class DataEntity<T> extends BaseEntity<T> {
 	public void preInsert(){
 		// 不限制ID为UUID，调用setIsNewRecord()使用自定义ID
 		if (!this.isNewRecord){
-			setId(IdGen.uuid());
+			SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
+			//setId(IdGen.uuid());
+			setId(String.valueOf(snowflakeIdWorker.nextId()));
 		}
 		User user = UserUtils.getUser();
 		if (StringUtils.isNotBlank(user.getId())){

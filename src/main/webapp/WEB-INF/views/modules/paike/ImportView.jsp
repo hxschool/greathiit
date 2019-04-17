@@ -7,7 +7,7 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#btnExport").click(function() {
-				top.$.jBox.confirm("确认要导出用户数据吗？", "系统提示", function(v, h, f) {
+				top.$.jBox.confirm("确认要导出课程数据吗？", "系统提示", function(v, h, f) {
 					if (v == "ok") {
 						$("#searchForm").attr("action", "${ctx}/course/paike/export");
 						$("#searchForm").submit();
@@ -42,10 +42,6 @@
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
 			<br />
-	
-			
-			<input type="radio" name="currTerm" value="1" checked="checked"> 第一学期
-			<input type="radio" name="currTerm" value="2"> 第二学期
 			
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />

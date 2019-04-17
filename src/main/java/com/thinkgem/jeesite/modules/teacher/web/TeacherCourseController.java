@@ -10,6 +10,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,8 +24,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.FileUtils;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
@@ -113,8 +117,28 @@ public class TeacherCourseController extends BaseController {
 		String folder=System.getProperty("java.io.tmpdir");
 		File file = new File(folder,multipartFile.getOriginalFilename()); 
 		FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);  
-       
-		String str = studentCourseService.upload(file);
+		ImportExcel ei = new ImportExcel(file, 1, 0);
+		Row courseRow = ei.getRow(1);
+		Cell courseIdCell = courseRow.getCell(5);   
+		String courseId = courseIdCell.getStringCellValue();
+		Course course = courseService.get(courseId);
+		if(org.springframework.util.StringUtils.isEmpty(course)) {
+			throw new GITException("40000404","上传成绩文件异常,缺少课程编号");
+		}
+		Course entity = new Course();
+		entity.setTeacher(UserUtils.getTeacher());
+		List<Course> courses = courseService.findList(entity);
+		List<String> csList = new ArrayList<String>();
+		for(Course cs : courses) {
+			csList.add(cs.getId());
+		}
+		if(!csList.contains(courseId)) {
+			throw new GITException("40000404","上传成绩不是当前任课教师课程,请检查上传文件内容");
+		}
+		ei = new ImportExcel(file, 2, 0);
+		List<StudentCourse> list = ei.getDataList(StudentCourse.class);
+		String str = studentCourseService.importStudentCourse(course,list);
+
 		addMessage(redirectAttributes, str);
 		return "redirect:" + adminPath + "/teacher/course/Teacher_Management_4_excute?repage";
 	}

@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.student.web;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,11 +26,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.FileUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -53,7 +55,6 @@ public class StudentCourseController extends BaseController {
 	private StudentCourseService studentCourseService;
 	@Autowired
 	private CourseService courseService;
-
 	@ModelAttribute
 	public StudentCourse get(@RequestParam(required=false) String id) {
 		StudentCourse entity = null;
@@ -147,9 +148,33 @@ public class StudentCourseController extends BaseController {
 		
 		String folder=System.getProperty("java.io.tmpdir");
 		File file = new File(folder,multipartFile.getOriginalFilename()); 
-		FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);  
-		String str = studentCourseService.upload(file);
-		addMessage(redirectAttributes, str);
+		
+		ImportExcel ei;
+		try {
+			ei = new ImportExcel(file, 1, 0);
+			Row courseRow = ei.getRow(1);
+			Cell courseIdCell = courseRow.getCell(5);   
+			String courseId = courseIdCell.getStringCellValue();
+			Course course = courseService.get(courseId);
+			if(org.springframework.util.StringUtils.isEmpty(course)) {
+				throw new GITException("40000404","上传成绩文件异常,缺少课程编号");
+			}
+			Course entity = new Course();
+			entity.setTeacher(UserUtils.getTeacher());
+			List<Course> courses = courseService.findList(entity);
+			List<String> csList = new ArrayList<String>();
+			for(Course cs : courses) {
+				csList.add(cs.getId());
+			}
+			if(!csList.contains(courseId)) {
+				throw new GITException("40000404","上传成绩不是当前任课教师课程,请检查上传文件内容");
+			}
+			ei = new ImportExcel(file, 2, 0);
+			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
+			studentCourseService.importStudentCourse(course,list);
+		}catch (Exception e) {
+			
+		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
 	
@@ -165,10 +190,16 @@ public class StudentCourseController extends BaseController {
     		Row row = exportExcel.addRow();
     		Cell cell = row.createCell(0);
     		cell.setCellValue("学期");
-    		Cell clazzCell = row.createCell(2);
-    		clazzCell.setCellValue("课程");
-
     		
+    		Cell clazzCell = row.createCell(2);
+    		clazzCell.setCellValue("课程名称");
+    		
+    		Cell courseIdLabelCell = row.createCell(4);
+    		courseIdLabelCell.setCellValue("课程编码");
+    		
+    		
+    		Cell teacherLabelCell = row.createCell(6);
+    		teacherLabelCell.setCellValue("任课教师");
     		exportExcel.setHeader(headerList);
     		
     		exportExcel.setDataList(list).write(response, fileName).dispose();

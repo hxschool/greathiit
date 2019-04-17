@@ -107,7 +107,7 @@
 				</td>
 				<td>
 		
-					${fns:getDictLabel(course.cursType, 'course_curs_property', '')}
+					${fns:getDictLabel(course.cursType, 'course_property', '')}
 				</td>
 
 				<td>

@@ -24,6 +24,15 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>课程名称：</label>
+			 <form:input path="cursName"
+					htmlEscape="false" maxlength="50" class="input-medium" /></li>
+
+
+			<li><label>任课教师：</label> <form:input path="teacher.tchrName"
+					htmlEscape="false" maxlength="50" class="input-medium" /></li>
+			<li class="clearfix"></li>
+		
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -34,6 +43,7 @@
 			<tr>
 				<th>课程编号</th>
 				<th>课程名称</th>
+				<th>任课教师</th>
 				<th>开设学期</th>
 				<th>学时</th>
 				<th>学分</th>
@@ -55,6 +65,9 @@
 				<td>
 					${course.cursName}
 				</td>
+				<td>
+					${course.teacher.tchrName}
+				</td>
 		
 			<td>
 					${course.cursYearTerm}
@@ -68,7 +81,7 @@
 				
 				<td>
 					
-					${fns:getDictLabel(course.cursProperty, 'course_curs_property', '暂无信息')}
+					${fns:getDictLabel(course.cursProperty, 'course_property', '暂无信息')}
 				</td>
 
 				<td>
@@ -83,8 +96,10 @@
 					${fns:abbr(course.remarks,10)}
 				</td>
 				<td>
+				
 					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
     				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}" style="width:68px;">查看(${fnc:countStudents(course.id)})</a>
+    				<a  class="btn btn-primary" href="${ctx}/course/course/teacherCourseModify?cursId=${course.id}" >修改</a>
     				<a  class="btn btn-success" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
 				</td>
 			</tr>

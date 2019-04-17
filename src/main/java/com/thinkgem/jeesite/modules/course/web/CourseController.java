@@ -112,6 +112,8 @@ public class CourseController extends BaseController {
 		if (!beanValidator(model, course)){
 			return form(course, model);
 		}
+		course.setCursEduNum(course.getCursNum());
+		course.setTeacher(UserUtils.getTeacher());
 		courseService.save(course);
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
@@ -649,10 +651,23 @@ public class CourseController extends BaseController {
     		cell.setCellValue("学期");
     		Cell xueqiCell = row.createCell(1);
     		xueqiCell.setCellValue(course.getCursYearTerm());
+    		
     		Cell clazzCell = row.createCell(2);
-    		clazzCell.setCellValue("课程");
+    		clazzCell.setCellValue("课程名称");
     		Cell courseCell = row.createCell(3);
-    		courseCell.setCellValue(course.getId());
+    		courseCell.setCellValue(course.getCursName());
+    		
+    		Cell courseIdLabelCell = row.createCell(4);
+    		courseIdLabelCell.setCellValue("课程编码");
+    		Cell courseIdValueCell = row.createCell(5);
+    		courseIdValueCell.setCellValue(course.getId());
+    		
+    		
+    		Cell teacherLabelCell = row.createCell(6);
+    		teacherLabelCell.setCellValue("任课教师");
+    		Cell teacherValueCell = row.createCell(7);
+    		teacherValueCell.setCellValue(course.getTeacher().getTchrName());
+    		
     		exportExcel.setHeader(headerList);
     		
     		exportExcel.setDataList(list).write(response, fileName).dispose();

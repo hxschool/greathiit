@@ -540,6 +540,7 @@ public class PaikeCourseController extends BaseController {
 		}
 		return "modules/paike/ImportView";
 	}
+	
 	@RequestMapping(value = "viewSelect")
 	public String viewSelect() {
 		return "modules/paike/ImportSelectView";

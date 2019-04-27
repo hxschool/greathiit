@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -57,6 +58,9 @@ public class ScoreController {
 			return "modules/chengji/login";
 		}
 		User user = systemService.getCasByLoginName(idcard);
+		if(StringUtils.isEmpty(user)) {
+			throw new RuntimeException("用户信息不合法,请输入正确的身份证号和姓名");
+		}
 		String studentNumber = user.getNo();
 		String userinfo = request.getSession().getServletContext().getRealPath("userinfo");
 		File file = new File(userinfo,studentNumber);

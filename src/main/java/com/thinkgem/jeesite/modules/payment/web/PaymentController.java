@@ -28,26 +28,33 @@ import com.thinkgem.jeesite.common.utils.JedisUtils;
 import com.thinkgem.jeesite.common.utils.QRCodeKit;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.modules.pay.GlobalConstants;
+import com.thinkgem.jeesite.modules.payment.entity.SysPayment;
+import com.thinkgem.jeesite.modules.payment.entity.SysPaymentType;
 import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
+import com.thinkgem.jeesite.modules.payment.service.SysPaymentService;
+import com.thinkgem.jeesite.modules.payment.service.SysPaymentTypeService;
 import com.thinkgem.jeesite.modules.payment.service.order.OrderService;
 import com.thinkgem.jeesite.modules.payment.service.trade.TraderecordService;
-import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-
+/**
+ * 缴费平台
+ * @author Administrator
+ *
+ */
 @Controller
 @RequestMapping(value = "${adminPath}/payment")
 public class PaymentController {
 	@Autowired
 	private SystemService systemService;
 	@Autowired
-	private DictService dictService;
-	
-	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private SysPaymentTypeService sysPaymentTypeService;
+	@Autowired
+	private SysPaymentService sysPaymentService;
 	
 	@Value("${payment.qrcode.url}")
 	private String qrCodeUrl;
@@ -55,39 +62,39 @@ public class PaymentController {
 	@RequestMapping(value = {"index", ""})
 	public String index( HttpServletRequest request, HttpServletResponse response, Model model) {
 		List<PaymentEntity> list = new ArrayList<PaymentEntity>();
-
-		Dict dict = new Dict();
-		dict.setType("payment_type");
-		List<Dict> dicts = dictService.findList(dict);
-		
 		User user = UserUtils.getUser();
+		SysPaymentType sysPaymentType = sysPaymentTypeService.getCode("default");
+		if(!StringUtils.isEmpty(user.getNo())) {
+			String code = StudentUtil.getCircles(user.getNo());
+			SysPaymentType paymentType = sysPaymentTypeService.getCode(code);
+			if(!StringUtils.isEmpty(paymentType)) {
+				sysPaymentType = paymentType;
+			}
+		}
+		SysPayment queryEntity = new SysPayment();
+		queryEntity.setSysPaymentType(sysPaymentType);
+		List<SysPayment> sysPayments = sysPaymentService.findList(queryEntity);
+
 		
 		if(StringUtils.isEmpty(user.getPayStatus())) {
 			user.setPayStatus(TraderecordService.PAYMENT_TRADE_RECORD_STATUS_FEE);
 			systemService.saveUser(user);
 		}
 		
-		for(Dict d:dicts) {
+		for(SysPayment payment:sysPayments) {
 			PaymentEntity paymentEntity = new PaymentEntity();
-			paymentEntity.setId(d.getId());
-			paymentEntity.setTitle(d.getLabel());
-			paymentEntity.setAmount(d.getValue());
-			paymentEntity.setRemarks(d.getRemarks());
-			if(!StringUtils.isEmpty(d.getRemarks())&&d.getRemarks().equals("default")) {
-				list.add(paymentEntity);
-			}else if (!StringUtils.isEmpty(user.getNo())) {
-				String year = StudentUtil.getCircles(user.getNo());
-				if(year.equals(d.getRemarks())) {
-					list.add(paymentEntity);
-				}
-			}
+			paymentEntity.setId(payment.getId());
+			paymentEntity.setTitle(payment.getTitle());
+			paymentEntity.setAmount(payment.getAmount());
+			paymentEntity.setRemarks(payment.getDescription());
+			list.add(paymentEntity);
 		}
 		
 		Order order = new Order();
 		order.setStatus(GlobalConstants.TRADESTATUS_SUC);
 		order.setUser(user);
 		List<Order> orders = orderService.findList(order);
-		//移除已缴费内容
+
 		for(Order o:orders) {
 			for(Iterator<PaymentEntity> it = list.iterator();it.hasNext();){
 				if(it.next().getId().equals(o.getPayId())) {
@@ -103,9 +110,7 @@ public class PaymentController {
 	@RequestMapping("pay.html")
 	public String pay(String[] ids, HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		User user = UserUtils.getUser();
-		Dict dict = new Dict();
-		dict.setType("payment_type");
-		List<Dict> dicts = dictService.findList(dict);
+
 		List<String> idsList = Arrays.asList(ids);
 
 		List<Order> orders = new ArrayList<Order>();
@@ -115,26 +120,38 @@ public class PaymentController {
 		
 		String outTradeno = "T".concat(systemService.getSequence("serialNo14"));
 		
-		for(Dict d:dicts) {
-			if(idsList.contains(d.getId())) {
+		SysPaymentType sysPaymentType = sysPaymentTypeService.getCode("default");
+		if(!StringUtils.isEmpty(user.getNo())) {
+			String code = StudentUtil.getCircles(user.getNo());
+			SysPaymentType paymentType = sysPaymentTypeService.getCode(code);
+			if(!StringUtils.isEmpty(paymentType)) {
+				sysPaymentType = paymentType;
+			}
+		}
+		SysPayment queryEntity = new SysPayment();
+		queryEntity.setSysPaymentType(sysPaymentType);
+		List<SysPayment> sysPayments = sysPaymentService.findList(queryEntity);
+		
+		for(SysPayment payment : sysPayments) {
+			if(idsList.contains(payment.getId())) {
 				
-				String payRemark = d.getDescription();
+				String payRemark = payment.getDescription();
 				stringBuilder.append(payRemark);
 				stringBuilder.append("|");
 				Order order = new Order();
 				String orderId = "O".concat(systemService.getSequence("serialNo14"));
 				order.setId(orderId);
-				order.setPayId(d.getId());
-				order.setPayTitle(d.getLabel());
+				order.setPayId(payment.getId());
+				order.setPayTitle(payment.getTitle());
 				order.setPayRemark(payRemark);
-				order.setPayAmount(d.getValue());
+				order.setPayAmount(payment.getAmount());
 				order.setPayTime(new Date());
 				order.setStatus(GlobalConstants.TRADESTATUS_PAY);
 				order.setUser(user);
 				orders.add(order);
-				sb.append(d.getLabel());
+				sb.append(payment.getDescription());
 				sb.append(",");
-				BigDecimal paymentAmount=new BigDecimal(d.getValue());
+				BigDecimal paymentAmount=new BigDecimal(payment.getAmount());
 				amount = amount.add(paymentAmount);
 			}
 		}

@@ -246,6 +246,7 @@
 
 					<th>明细</th>
 					<th style="width: 80px">金额</th>
+					<th >描述</th>
 				</tr>
 			</thead>
 			<c:forEach items="${list}" var="paymentEntity" varStatus="i">
@@ -255,19 +256,20 @@
 						id="T${paymentEntity.id}" value="${paymentEntity.amount}"></td>
 					<td>${paymentEntity.title}</td>
 					<td>${paymentEntity.amount}</td>
+					<td>${paymentEntity.remarks}</td>
 				</tr>
 			</c:forEach>
 
 			<tr>
 
-				<td colspan="2">需要支付总金额</td>
+				<td colspan="3">需要支付总金额</td>
 
 				<td id="allAmount">0</td>
 			</tr>
 			
 			<tr>
 
-				<td colspan="3">
+				<td colspan="4">
 				 <a id="inputSubmit" class="button button-block button-rounded button-caution button-large">确认支付</a>
 				</td>
 			</tr>

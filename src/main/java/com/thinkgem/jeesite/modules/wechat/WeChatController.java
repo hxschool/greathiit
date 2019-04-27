@@ -52,7 +52,7 @@ public class WeChatController extends BaseController {
    		   WeixinUser  weixinUser = weixinUserService.get(openid);
    		   if(!StringUtils.isEmpty(weixinUser)) {
    			   String userno = weixinUser.getUserNo();
-   			   return "redirect:http://wangwei.com:8080/cas/login?action=auto&user="+userno+"&pwd="+pwd+"&service="+service;
+   			   return "redirect:http://login.greathiit.com/cas/login?action=auto&user="+userno+"&pwd="+pwd+"&service="+service;
    		   }
    		  
    		   session.setAttribute("service", service);
@@ -75,7 +75,7 @@ public class WeChatController extends BaseController {
 				weixinUser.setUserNo(userno);
 				weixinUserService.save(weixinUser);
 			}
-			return "redirect:http://wangwei.com:8080/cas/login?action=auto&user="+username+"&pwd="+password+"&service="+service;
+			return "redirect:http://login.greathiit.com/cas/login?action=auto&user="+username+"&pwd="+password+"&service="+service;
 		}
 		
 		return "modules/wechat/error";

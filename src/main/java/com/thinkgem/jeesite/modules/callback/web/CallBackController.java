@@ -17,7 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.thinkgem.jeesite.modules.pay.enums.PayType;
 import com.thinkgem.jeesite.modules.pay.strategy.StrategyContext;
 import com.thinkgem.jeesite.wxpay.sdk.WXPayUtil;
-
+/**
+ * 支付回调通知,支持支付宝和微信
+ * @author Administrator
+ *
+ */
 @Controller
 @RequestMapping(value = "callback")
 public class CallBackController {

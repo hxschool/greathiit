@@ -222,7 +222,7 @@ public class StudentController extends BaseController {
 	public String Student_Class_Schedule_Card(Student student, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		User user = UserUtils.getUser();
 		if(org.springframework.util.StringUtils.isEmpty(user.getClazz())) {
-			throw new Exception("当前学生未初始化班级信息,请设置班级信息");
+			throw new RuntimeException("当前学生未初始化班级信息,请设置班级信息");
 		}
 		String week = DateUtils.getWeek();
 		int weekOfDate = DateUtils.getWeekOfDate();

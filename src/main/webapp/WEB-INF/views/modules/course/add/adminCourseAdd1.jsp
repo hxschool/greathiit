@@ -153,7 +153,7 @@
 								<select name="cursProperty" style="width:200px;">
 									<option value="" label=""/>
 									
-									<c:forEach items="${fns:getDictList('course_curs_property')}" var="dict">
+									<c:forEach items="${fns:getDictList('course_property')}" var="dict">
 										<option value="${dict.value}">${dict.label}</option>
 									</c:forEach>
 								</select>

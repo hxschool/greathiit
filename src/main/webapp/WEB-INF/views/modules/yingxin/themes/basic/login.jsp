@@ -27,7 +27,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								
-								<form action="http://wangwei.com:8080/login?service=http://lab.wangwei.com:8080/a" name="form1" method="post" id="loginForm" onsubmit="return loginValidate();"   class="form-horizontal">
+								<form action="http://login.greathiit.com/login?service=http://www.greathiit.com/a" name="form1" method="post" id="loginForm" onsubmit="return loginValidate();"   class="form-horizontal">
 									<fieldset>
 										<div id="legend" class="">
 											<legend class="">
@@ -118,7 +118,7 @@
 
 	<script>
 	    $('#submit_login').click(function(){
-			var xhr = $.getJSON("http://wangwei.com:8080/login?action=getlt&service=http://lab.wangwei.com:8080/a&callback=?",    
+			var xhr = $.getJSON("http://login.greathiit.com/login?action=getlt&service=http://www.greathiit.com/a&callback=?",    
                     function(response) {
                         $("#execution").val(response.execution);
                         $('#loginForm').submit();

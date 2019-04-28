@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2018-2025 <a href="http://www.greathiit.com">哈尔滨信息工程学院</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.out.jcd.entity;
+package com.thinkgem.jeesite.modules.out.score.entity;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.util.StringUtils;
@@ -14,7 +14,7 @@ import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
  * @author 赵俊飞
  * @version 2017-12-09
  */
-public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
+public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<RsScoreBill>{
 	
 	private static final long serialVersionUID = 1L;
 	private String ksh;		// 考生号
@@ -35,13 +35,13 @@ public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 	private String status;		// 意向专业6
 	private String zytj;		// 是否服从专业调剂
 	
-	private String yearTerm;
+	private String termYear;
 	
-	public RsJcd() {
+	public RsScoreBill() {
 		super();
 	}
 
-	public RsJcd(String id){
+	public RsScoreBill(String id){
 		super(id);
 	}
 
@@ -214,7 +214,7 @@ public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 	
 	
 	@Override  
-	public int compareTo(RsJcd o) {
+	public int compareTo(RsScoreBill o) {
 		if(StringUtils.isEmpty(this.cj)) {
 			this.cj = "0";
 		}
@@ -231,13 +231,14 @@ public class RsJcd extends DataEntity<RsJcd> implements Comparable<RsJcd>{
 		}
 	}
 
-	public String getYearTerm() {
-		return yearTerm;
+	public String getTermYear() {
+		return termYear;
 	}
 
-	public void setYearTerm(String yearTerm) {
-		this.yearTerm = yearTerm;
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
 	}
-	
+
+
 	
 }

@@ -39,11 +39,8 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " />
-				
-				
-				
 				 <a
-				href="${ctx}/recruit/student/recruitStudent/template">下载模板</a>
+				href="${ctx}/recruit/student/recruitStudent/import/template">下载模板</a>
 		</form>
 	</div>
 	<form:form id="searchForm" modelAttribute="rsStudentEms" action="${ctx}/out/ems/rsStudentEms/" method="post" class="breadcrumb form-search">

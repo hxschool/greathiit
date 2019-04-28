@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2018-2025 <a href="http://www.greathiit.com">哈尔滨信息工程学院</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.out.jcd.service;
+package com.thinkgem.jeesite.modules.out.score.service;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.out.jcd.dao.RsJcdDao;
-import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
+import com.thinkgem.jeesite.modules.out.score.dao.RsScoreBillDao;
+import com.thinkgem.jeesite.modules.out.score.entity.RsScoreBill;
 
 /**
  * 考试成绩单Service
@@ -21,32 +21,32 @@ import com.thinkgem.jeesite.modules.out.jcd.entity.RsJcd;
  */
 @Service
 @Transactional(readOnly = true)
-public class RsJcdService extends CrudService<RsJcdDao, RsJcd> {
+public class RsScoreBillService extends CrudService<RsScoreBillDao, RsScoreBill> {
 	@Autowired
-	private RsJcdDao rsJcdDao;
-	public RsJcd getByKsh(String ksh) {
-		return rsJcdDao.getByKsh(ksh);
+	private RsScoreBillDao rsScoreBillDao;
+	public RsScoreBill getByKsh(String ksh) {
+		return rsScoreBillDao.getByKsh(ksh);
 	}
 	
-	public RsJcd get(String id) {
+	public RsScoreBill get(String id) {
 		return super.get(id);
 	}
 	
-	public List<RsJcd> findList(RsJcd rsJcd) {
+	public List<RsScoreBill> findList(RsScoreBill rsJcd) {
 		return super.findList(rsJcd);
 	}
 	
-	public Page<RsJcd> findPage(Page<RsJcd> page, RsJcd rsJcd) {
+	public Page<RsScoreBill> findPage(Page<RsScoreBill> page, RsScoreBill rsJcd) {
 		return super.findPage(page, rsJcd);
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(RsJcd rsJcd) {
+	public void save(RsScoreBill rsJcd) {
 		super.save(rsJcd);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(RsJcd rsJcd) {
+	public void delete(RsScoreBill rsJcd) {
 		super.delete(rsJcd);
 	}
 	

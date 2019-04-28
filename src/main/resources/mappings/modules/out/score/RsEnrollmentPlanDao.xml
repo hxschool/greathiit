@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsMajorSetupDao">
+<mapper namespace="com.thinkgem.jeesite.modules.out.score.dao.RsEnrollmentPlanDao">
     
-	<sql id="rsMajorSetupColumns">
+	<sql id="RsEnrollmentPlanColumns">
 		a.id AS "id",
+		a.term_year as "termYear",
 		a.major_id AS "majorId",
 		a.major_name AS "majorName",
 		a.major_count AS "majorCount",
@@ -17,40 +18,40 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="rsMajorSetupJoins">
+	<sql id="RsEnrollmentPlanJoins">
 	</sql>
     
-	<select id="get" resultType="RsMajorSetup">
+	<select id="get" resultType="RsEnrollmentPlan">
 		SELECT 
-			<include refid="rsMajorSetupColumns"/>
-		FROM rs_major_setup a
-		<include refid="rsMajorSetupJoins"/>
+			<include refid="RsEnrollmentPlanColumns"/>
+		FROM rs_enrollment_plan a
+		<include refid="RsEnrollmentPlanJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="getMajorId" resultType="RsMajorSetup">
+	<select id="getMajorId" resultType="RsEnrollmentPlan">
 		SELECT 
-			<include refid="rsMajorSetupColumns"/>
-		FROM rs_major_setup a
-		<include refid="rsMajorSetupJoins"/>
+			<include refid="RsEnrollmentPlanColumns"/>
+		FROM rs_enrollment_plan a
+		<include refid="RsEnrollmentPlanJoins"/>
 		WHERE a.major_id = #{majorId}
 	</select>
 	
-	<select id="getRsMajorSetupByMajorName" resultType="RsMajorSetup">
+	<select id="getRsEnrollmentPlanByMajorName" resultType="RsEnrollmentPlan">
 		SELECT 
-			<include refid="rsMajorSetupColumns"/>
-		FROM rs_major_setup a
-		<include refid="rsMajorSetupJoins"/>
+			<include refid="RsEnrollmentPlanColumns"/>
+		FROM rs_enrollment_plan a
+		<include refid="RsEnrollmentPlanJoins"/>
 		WHERE a.major_name = #{majorName}
 	</select>
 	
 
 	
-	<select id="findList" resultType="RsMajorSetup">
+	<select id="findList" resultType="RsEnrollmentPlan">
 		SELECT 
-			<include refid="rsMajorSetupColumns"/>
-		FROM rs_major_setup a
-		<include refid="rsMajorSetupJoins"/>
+			<include refid="RsEnrollmentPlanColumns"/>
+		FROM rs_enrollment_plan a
+		<include refid="RsEnrollmentPlanJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="majorId != null and majorId != ''">
@@ -76,11 +77,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="RsMajorSetup">
+	<select id="findAllList" resultType="RsEnrollmentPlan">
 		SELECT 
-			<include refid="rsMajorSetupColumns"/>
-		FROM rs_major_setup a
-		<include refid="rsMajorSetupJoins"/>
+			<include refid="RsEnrollmentPlanColumns"/>
+		FROM rs_enrollment_plan a
+		<include refid="RsEnrollmentPlanJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 		</where>		
@@ -95,7 +96,8 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO rs_major_setup(
+		INSERT INTO rs_enrollment_plan(
+			term_year,
 			major_id,
 			major_name,
 			major_count,
@@ -108,6 +110,7 @@
 			remarks,
 			del_flag
 		) VALUES (
+			#{termYear},
 			#{majorId},
 			#{majorName},
 			#{majorCount},
@@ -123,7 +126,8 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE rs_major_setup SET 	
+		UPDATE rs_enrollment_plan SET 	
+			term_year = #{termYear},
 			major_id = #{majorId},
 			major_name = #{majorName},
 			major_count = #{majorCount},
@@ -136,7 +140,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE rs_major_setup SET 
+		UPDATE rs_enrollment_plan SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>

@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2018-2025 <a href="http://www.greathiit.com">哈尔滨信息工程学院</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.out.jcd.web;
+package com.thinkgem.jeesite.modules.out.score.web;
 
 
 import java.util.List;
@@ -28,8 +28,8 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
-import com.thinkgem.jeesite.modules.out.jcd.entity.RsMajorSetup;
-import com.thinkgem.jeesite.modules.out.jcd.service.RsMajorSetupService;
+import com.thinkgem.jeesite.modules.out.score.entity.RsEnrollmentPlan;
+import com.thinkgem.jeesite.modules.out.score.service.RsEnrollmentPlanService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -39,45 +39,45 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/out/jcd/rsMajorSetup")
-public class RsMajorSetupController extends BaseController {
+public class RsEnrollmentPlanController extends BaseController {
 
 	@Autowired
-	private RsMajorSetupService rsMajorSetupService;
+	private RsEnrollmentPlanService rsEnrollmentPlanService;
 	
 	@ModelAttribute
-	public RsMajorSetup get(@RequestParam(required=false) String id) {
-		RsMajorSetup entity = null;
+	public RsEnrollmentPlan get(@RequestParam(required=false) String id) {
+		RsEnrollmentPlan entity = null;
 		if (StringUtils.isNotBlank(id)){
-			entity = rsMajorSetupService.get(id);
+			entity = rsEnrollmentPlanService.get(id);
 		}
 		if (entity == null){
-			entity = new RsMajorSetup();
+			entity = new RsEnrollmentPlan();
 		}
 		return entity;
 	}
 	
 	//@RequiresPermissions("out:jcd:rsMajorSetup:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(RsMajorSetup rsMajorSetup, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsMajorSetup> page = rsMajorSetupService.findPage(new Page<RsMajorSetup>(request, response), rsMajorSetup); 
+	public String list(RsEnrollmentPlan rsMajorSetup, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsEnrollmentPlan> page = rsEnrollmentPlanService.findPage(new Page<RsEnrollmentPlan>(request, response), rsMajorSetup); 
 		model.addAttribute("page", page);
 		return "modules/out/jcd/rsMajorSetupList";
 	}
 
 	@RequiresPermissions("out:jcd:rsMajorSetup:view")
 	@RequestMapping(value = "form")
-	public String form(RsMajorSetup rsMajorSetup, Model model) {
+	public String form(RsEnrollmentPlan rsMajorSetup, Model model) {
 		model.addAttribute("rsMajorSetup", rsMajorSetup);
 		return "modules/out/jcd/rsMajorSetupForm";
 	}
 
 	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
 	@RequestMapping(value = "save")
-	public String save(RsMajorSetup rsMajorSetup, Model model, RedirectAttributes redirectAttributes) {
+	public String save(RsEnrollmentPlan rsMajorSetup, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, rsMajorSetup)){
 			return form(rsMajorSetup, model);
 		}
-		rsMajorSetupService.save(rsMajorSetup);
+		rsEnrollmentPlanService.save(rsMajorSetup);
 		addMessage(redirectAttributes, "保存招生计划成功");
 		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsMajorSetup/?repage";
 	}
@@ -91,12 +91,12 @@ public class RsMajorSetupController extends BaseController {
 			int failureNum = 0;
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
-			List<RsMajorSetup> list = ei.getDataList(RsMajorSetup.class);
-			for (RsMajorSetup jcd : list){
+			List<RsEnrollmentPlan> list = ei.getDataList(RsEnrollmentPlan.class);
+			for (RsEnrollmentPlan jcd : list){
 				try {
-					RsMajorSetup entity = rsMajorSetupService.getMajorId(jcd);
+					RsEnrollmentPlan entity = rsEnrollmentPlanService.getMajorId(jcd);
 					if (org.springframework.util.StringUtils.isEmpty(entity)) {
-						entity = new RsMajorSetup();
+						entity = new RsEnrollmentPlan();
 						entity.setMajorId(jcd.getMajorId());
 						entity.setMajorName(jcd.getMajorName());
 						entity.setCreateBy(UserUtils.getUser());
@@ -107,7 +107,7 @@ public class RsMajorSetupController extends BaseController {
 						BeanUtils.copyProperties(jcd, entity);
 						entity.setId(id);
 					}
-					rsMajorSetupService.save(entity);
+					rsEnrollmentPlanService.save(entity);
 					successNum++;
 				} catch (ConstraintViolationException ex) {
 
@@ -132,8 +132,8 @@ public class RsMajorSetupController extends BaseController {
 	
 	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
 	@RequestMapping(value = "delete")
-	public String delete(RsMajorSetup rsMajorSetup, RedirectAttributes redirectAttributes) {
-		rsMajorSetupService.delete(rsMajorSetup);
+	public String delete(RsEnrollmentPlan rsMajorSetup, RedirectAttributes redirectAttributes) {
+		rsEnrollmentPlanService.delete(rsMajorSetup);
 		addMessage(redirectAttributes, "删除招生计划成功");
 		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsMajorSetup/?repage";
 	}

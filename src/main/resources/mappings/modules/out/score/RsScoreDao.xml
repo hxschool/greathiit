@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.out.jcd.dao.RsJcdDao">
+<mapper namespace="com.thinkgem.jeesite.modules.out.score.dao.RsScoreBillDao">
     
-	<sql id="rsJcdColumns">
+	<sql id="rsScoreBillColumns">
 		a.id AS "id",
-		a.year_term as "yearTerm",
+		a.term_year as "termYear",
 		a.ksh AS "ksh",
 		a.xm AS "xm",
 		a.sfzh AS "sfzh",
@@ -30,34 +30,34 @@
 		a.del_flag AS "delFlag"
 	</sql>
 	
-	<sql id="rsJcdJoins">
+	<sql id="RsScoreBillJoins">
 	</sql>
     
-	<select id="get" resultType="RsJcd">
+	<select id="get" resultType="RsScoreBill">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsScoreBillColumns"/>
+		FROM rs_score_bill a
+		<include refid="RsScoreBillJoins"/>
 		WHERE a.id = #{id}
 	</select>
 	
-	<select id="getByKsh" resultType="RsJcd">
+	<select id="getByKsh" resultType="RsScoreBill">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsScoreBillColumns"/>
+		FROM rs_score_bill a
+		<include refid="RsScoreBillJoins"/>
 		WHERE a.ksh = #{ksh}
 	</select>
 	
-	<select id="findList" resultType="RsJcd">
+	<select id="findList" resultType="RsScoreBill">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsScoreBillColumns"/>
+		FROM rs_score_bill a
+		<include refid="RsScoreBillJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="yearTerm != null and yearTerm != '' ">
-				AND a.year_term = #{yearTerm}
+			<if test="termYear != null and termYear != '' ">
+				AND a.term_year = #{termYear}
 			</if>
 			<if test="ksh != null and ksh != '' ">
 				AND a.ksh = #{ksh}
@@ -92,11 +92,11 @@
 		</choose>
 	</select>
 	
-	<select id="findAllList" resultType="RsJcd">
+	<select id="findAllList" resultType="RsScoreBill">
 		SELECT 
-			<include refid="rsJcdColumns"/>
-		FROM rs_jcd a
-		<include refid="rsJcdJoins"/>
+			<include refid="rsScoreBillColumns"/>
+		FROM rs_score_bill a
+		<include refid="RsScoreBillJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="status != null and status != '' and status=='all'">
@@ -119,9 +119,9 @@
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO rs_jcd(
+		INSERT INTO rs_score_bill(
 			id,
-			year_term,
+			term_year,
 			ksh,
 			xm,
 			sfzh,
@@ -147,7 +147,7 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{yearTerm},
+			#{termYear},
 			#{ksh},
 			#{xm},
 			#{sfzh},
@@ -175,8 +175,8 @@
 	</insert>
 	
 	<update id="update">
-		UPDATE rs_jcd SET 	
-		    year_term = #{yearTerm},
+		UPDATE rs_score_bill SET 	
+		    term_year = #{termYear},
 			ksh = #{ksh},
 			xm = #{xm},
 			sfzh = #{sfzh},
@@ -201,7 +201,7 @@
 	</update>
 	
 	<update id="delete">
-		UPDATE rs_jcd SET 
+		UPDATE rs_score_bill SET 
 			del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>

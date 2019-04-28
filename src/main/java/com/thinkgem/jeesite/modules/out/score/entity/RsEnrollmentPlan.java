@@ -1,7 +1,7 @@
 /**
  * Copyright &copy; 2018-2025 <a href="http://www.greathiit.com">哈尔滨信息工程学院</a> All rights reserved.
  */
-package com.thinkgem.jeesite.modules.out.jcd.entity;
+package com.thinkgem.jeesite.modules.out.score.entity;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -13,20 +13,29 @@ import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
  * @author 赵俊飞
  * @version 2018-01-09
  */
-public class RsMajorSetup extends DataEntity<RsMajorSetup> {
+public class RsEnrollmentPlan extends DataEntity<RsEnrollmentPlan> {
 	
 	private static final long serialVersionUID = 1L;
+	private String termYear;
 	private String majorId;		// 专业编码
 	private String majorName;		// 专业名称
 	private String majorCount;		// 已招人数
 	private String majorTotal;		// 计划人数
 	private String status;		// 状态
 	
-	public RsMajorSetup() {
+	public String getTermYear() {
+		return termYear;
+	}
+
+	public void setTermYear(String termYear) {
+		this.termYear = termYear;
+	}
+
+	public RsEnrollmentPlan() {
 		super();
 	}
 
-	public RsMajorSetup(String id){
+	public RsEnrollmentPlan(String id){
 		super(id);
 	}
 

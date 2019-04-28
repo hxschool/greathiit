@@ -25,11 +25,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.out.score.entity.RsEnrollmentPlan;
 import com.thinkgem.jeesite.modules.out.score.service.RsEnrollmentPlanService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -43,9 +45,11 @@ public class RsEnrollmentPlanController extends BaseController {
 
 	@Autowired
 	private RsEnrollmentPlanService rsEnrollmentPlanService;
-	
+	@Autowired
+	private SysConfigService sysConfigService;
+	private SysConfig config;
 	@ModelAttribute
-	public RsEnrollmentPlan get(@RequestParam(required=false) String id) {
+	public RsEnrollmentPlan get(@RequestParam(required=false) String id,Model model) {
 		RsEnrollmentPlan entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = rsEnrollmentPlanService.get(id);
@@ -53,11 +57,15 @@ public class RsEnrollmentPlanController extends BaseController {
 		if (entity == null){
 			entity = new RsEnrollmentPlan();
 		}
+		config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
+		model.addAttribute("config", config);
 		return entity;
 	}
 	
 	@RequestMapping(value = {"list", ""})
 	public String list(RsEnrollmentPlan rsEnrollmentPlan, HttpServletRequest request, HttpServletResponse response, Model model) {
+
+		rsEnrollmentPlan.setTermYear(config.getTermYear());
 		Page<RsEnrollmentPlan> page = rsEnrollmentPlanService.findPage(new Page<RsEnrollmentPlan>(request, response), rsEnrollmentPlan); 
 		model.addAttribute("page", page);
 		return "modules/out/score/rsEnrollmentPlanList";
@@ -96,6 +104,7 @@ public class RsEnrollmentPlanController extends BaseController {
 					RsEnrollmentPlan entity = rsEnrollmentPlanService.getMajorId(enrollmentPlan);
 					if (org.springframework.util.StringUtils.isEmpty(entity)) {
 						entity = new RsEnrollmentPlan();
+						entity.setTermYear(enrollmentPlan.getTermYear());
 						entity.setMajorId(enrollmentPlan.getMajorId());
 						entity.setMajorName(enrollmentPlan.getMajorName());
 						entity.setCreateBy(UserUtils.getUser());

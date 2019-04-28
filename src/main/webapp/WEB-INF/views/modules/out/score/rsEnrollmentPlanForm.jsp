@@ -36,6 +36,21 @@
 		<div class="control-group">
 			<label class="control-label">专业编码：</label>
 			<div class="controls">
+				<select name="termYear" style="width: 200px;">
+
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+				</select>
+				 默认学期设置:${config.termYear}
+			</div>
+		</div>
+		
+		
+		<div class="control-group">
+			<label class="control-label">专业编码：</label>
+			<div class="controls">
 				<form:input path="majorId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
 			</div>
 		</div>

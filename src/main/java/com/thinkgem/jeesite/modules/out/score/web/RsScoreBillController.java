@@ -37,6 +37,8 @@ import com.thinkgem.jeesite.modules.out.score.entity.RsScoreBill;
 import com.thinkgem.jeesite.modules.out.score.service.RsScoreBillService;
 import com.thinkgem.jeesite.modules.out.score.service.RsEnrollmentPlanService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
@@ -52,9 +54,11 @@ public class RsScoreBillController extends BaseController {
 	private RsScoreBillService rsScoreBillService;
 	@Autowired
 	private RsEnrollmentPlanService rsEnrollmentPlanService;
-	
+	@Autowired
+	private SysConfigService sysConfigService;
+	private SysConfig config;
 	@ModelAttribute
-	public RsScoreBill get(@RequestParam(required=false) String id) {
+	public RsScoreBill get(@RequestParam(required=false) String id,Model model) {
 		RsScoreBill entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = rsScoreBillService.get(id);
@@ -62,6 +66,7 @@ public class RsScoreBillController extends BaseController {
 		if (entity == null){
 			entity = new RsScoreBill();
 		}
+		model.addAttribute("config", config);
 		return entity;
 	}
 	

@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/">招生计划列表</a></li>
-		<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><li><a href="${ctx}/out/score/rsEnrollmentPlan/form">招生计划添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><li><a href="${ctx}/out/score/rsEnrollmentPlan/form">招生计划添加</a></li></shiro:hasPermission>
 	</ul>
 	
 		<div id="importBox" class="hide">
@@ -44,7 +44,7 @@
 		</form>
 	</div>
 	
-	<form:form id="searchForm" modelAttribute="rsMajorSetup" action="${ctx}/out/score/rsEnrollmentPlan/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsEnrollmentPlan" action="${ctx}/out/score/rsEnrollmentPlan/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -78,36 +78,36 @@
 				<th>状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
-				<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="rsMajorSetup">
+		<c:forEach items="${page.list}" var="rsEnrollmentPlan">
 			<tr>
-				<td><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsMajorSetup.id}">
-					${rsMajorSetup.majorId}
+				<td><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">
+					${rsEnrollmentPlan.majorId}
 				</a></td>
 				<td>
-					${rsMajorSetup.majorName}
+					${rsEnrollmentPlan.majorName}
 				</td>
 				<td>
-					${rsMajorSetup.majorCount}
+					${rsEnrollmentPlan.majorCount}
 				</td>
 				<td>
-					${rsMajorSetup.majorTotal}
+					${rsEnrollmentPlan.majorTotal}
 				</td>
 				<td>
-					${rsMajorSetup.status}
+					${rsEnrollmentPlan.status}
 				</td>
 				<td>
-					<fmt:formatDate value="${rsMajorSetup.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${rsEnrollmentPlan.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td>
-					${rsMajorSetup.remarks}
+					${rsEnrollmentPlan.remarks}
 				</td>
-				<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><td>
-    				<a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsMajorSetup.id}">修改</a>
-					<a href="${ctx}/out/score/rsEnrollmentPlan/delete?id=${rsMajorSetup.id}" onclick="return confirmx('确认要删除该招生计划吗？', this.href)">删除</a>
+				<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><td>
+    				<a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">修改</a>
+					<a href="${ctx}/out/score/rsEnrollmentPlan/delete?id=${rsEnrollmentPlan.id}" onclick="return confirmx('确认要删除该招生计划吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

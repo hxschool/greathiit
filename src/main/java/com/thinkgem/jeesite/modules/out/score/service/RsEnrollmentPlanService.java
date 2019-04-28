@@ -37,22 +37,22 @@ public class RsEnrollmentPlanService extends CrudService<RsEnrollmentPlanDao, Rs
 		return super.get(id);
 	}
 	
-	public List<RsEnrollmentPlan> findList(RsEnrollmentPlan rsMajorSetup) {
-		return super.findList(rsMajorSetup);
+	public List<RsEnrollmentPlan> findList(RsEnrollmentPlan rsEnrollmentPlan) {
+		return super.findList(rsEnrollmentPlan);
 	}
 	
-	public Page<RsEnrollmentPlan> findPage(Page<RsEnrollmentPlan> page, RsEnrollmentPlan rsMajorSetup) {
-		return super.findPage(page, rsMajorSetup);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(RsEnrollmentPlan rsMajorSetup) {
-		super.save(rsMajorSetup);
+	public Page<RsEnrollmentPlan> findPage(Page<RsEnrollmentPlan> page, RsEnrollmentPlan rsEnrollmentPlan) {
+		return super.findPage(page, rsEnrollmentPlan);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(RsEnrollmentPlan rsMajorSetup) {
-		super.delete(rsMajorSetup);
+	public void save(RsEnrollmentPlan rsEnrollmentPlan) {
+		super.save(rsEnrollmentPlan);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(RsEnrollmentPlan rsEnrollmentPlan) {
+		super.delete(rsEnrollmentPlan);
 	}
 	
 }

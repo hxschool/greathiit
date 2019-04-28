@@ -41,7 +41,7 @@
 		</form>
 	</div>
 	
-	<form:form id="searchForm" modelAttribute="rsJcd" action="${ctx}/out/score/rsScoreBill/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -96,84 +96,84 @@
 				<th>意向专业5</th>
 				<th>是否服从专业调剂</th>
 				<th>录入状态</th>
-				<shiro:hasPermission name="out:jcd:rsJcd:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="out:jcd:rsScoreBill:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="rsJcd">
+		<c:forEach items="${page.list}" var="rsScoreBill">
 			<tr >
-				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsJcd.id}">
-					${rsJcd.ksh}
+				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">
+					${rsScoreBill.ksh}
 				</a></td>
 				<td>
-					${rsJcd.xm}
+					${rsScoreBill.xm}
 				</td>
 				<td>
-					${rsJcd.sfzh}
+					${rsScoreBill.sfzh}
 				</td>
 				<td>
-					${rsJcd.zf}
+					${rsScoreBill.zf}
 				</td>
 				<td>
-					${rsJcd.cj}
+					${rsScoreBill.cj}
 				</td>
 				<td>
-					${rsJcd.km1}
+					${rsScoreBill.km1}
 				</td>
 				<td>
-					${rsJcd.km2}
+					${rsScoreBill.km2}
 				</td>
 				<td>
-					${rsJcd.km3}
+					${rsScoreBill.km3}
 				</td>
 				<td>
-					${rsJcd.zy1}
+					${rsScoreBill.zy1}
 				</td>
 				<td>
-					${rsJcd.zy2}
+					${rsScoreBill.zy2}
 				</td>
 				<td>
-					${rsJcd.zy3}
+					${rsScoreBill.zy3}
 				</td>
 				<td>
-					${rsJcd.zy4}
+					${rsScoreBill.zy4}
 				</td>
 				<td>
-					${rsJcd.zy5}
+					${rsScoreBill.zy5}
 				</td>
 				
 				<td>
-					${rsJcd.zytj}
+					${rsScoreBill.zytj}
 				</td>
 				<td>
 				
 				<c:choose>
-				<c:when test="${rsJcd.status ==1}">
+				<c:when test="${rsScoreBill.status ==1}">
 				已录取
 				
 				</c:when>
-				<c:when test="${rsJcd.status ==2}">
+				<c:when test="${rsScoreBill.status ==2}">
 				名额已满
 				</c:when>
 				
-				<c:when test="${rsJcd.status ==3}">
+				<c:when test="${rsScoreBill.status ==3}">
 				专业异常
 				
 				</c:when>
 				
-				<c:when test="${rsJcd.status ==4}">
+				<c:when test="${rsScoreBill.status ==4}">
 				分数过低
 				</c:when>
 				
-				<c:when test="${rsJcd.status ==5}">
+				<c:when test="${rsScoreBill.status ==5}">
 				未参加考试
 				</c:when>
 				</c:choose>
 				</td>
 				
-				<shiro:hasPermission name="out:jcd:rsJcd:edit"><td>
-    				<a href="${ctx}/out/score/rsScoreBill/form?id=${rsJcd.id}">查看</a>
-					<!-- <a href="${ctx}/out/score/rsScoreBill/delete?id=${rsJcd.id}" onclick="return confirmx('确认要删除该考试成绩单吗？', this.href)">删除</a> -->
+				<shiro:hasPermission name="out:jcd:rsScoreBill:edit"><td>
+    				<a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">查看</a>
+					<!-- <a href="${ctx}/out/score/rsScoreBill/delete?id=${rsScoreBill.id}" onclick="return confirmx('确认要删除该考试成绩单吗？', this.href)">删除</a> -->
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

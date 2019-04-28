@@ -43,7 +43,7 @@
 		</form>
 	</div>
 	
-	<form:form id="searchForm" modelAttribute="rsJcd" action="${ctx}/out/score/rsScoreBill/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

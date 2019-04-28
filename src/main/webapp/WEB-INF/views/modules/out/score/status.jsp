@@ -27,7 +27,7 @@
 </head>
 <body>
 	
-	<form:form id="searchForm" modelAttribute="rsJcd" action="${ctx}/out/score/rsScoreBill/status/${status}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/status/${status}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -74,49 +74,49 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${page.list}" var="rsJcd">
+		<c:forEach items="${page.list}" var="rsScoreBill">
 			<tr>
-				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsJcd.id}">
-					${rsJcd.ksh}
+				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">
+					${rsScoreBill.ksh}
 				</a></td>
 				<td>
-					${rsJcd.xm}
+					${rsScoreBill.xm}
 				</td>
 				<td>
-					${rsJcd.sfzh}
+					${rsScoreBill.sfzh}
 				</td>
 				<td>
-					${rsJcd.zf}
+					${rsScoreBill.zf}
 				</td>
 				<td>
-					${rsJcd.cj}
+					${rsScoreBill.cj}
 				</td>
 				<td>
-					${rsJcd.km1}
+					${rsScoreBill.km1}
 				</td>
 				<td>
-					${rsJcd.km2}
+					${rsScoreBill.km2}
 				</td>
 				<td>
-					${rsJcd.km3}
+					${rsScoreBill.km3}
 				</td>
 				<td>
-					${rsJcd.zy1}
+					${rsScoreBill.zy1}
 				</td>
 				<td>
-					${rsJcd.zy2}
+					${rsScoreBill.zy2}
 				</td>
 				<td>
-					${rsJcd.zy3}
+					${rsScoreBill.zy3}
 				</td>
 				<td>
-					${rsJcd.zy4}
+					${rsScoreBill.zy4}
 				</td>
 				<td>
-					${rsJcd.zy5}
+					${rsScoreBill.zy5}
 				</td>
 				<td>
-					${rsJcd.zytj}
+					${rsScoreBill.zytj}
 				</td>
 				
 			</tr>

@@ -32,22 +32,22 @@ public class RsScoreBillService extends CrudService<RsScoreBillDao, RsScoreBill>
 		return super.get(id);
 	}
 	
-	public List<RsScoreBill> findList(RsScoreBill rsJcd) {
-		return super.findList(rsJcd);
+	public List<RsScoreBill> findList(RsScoreBill rsScoreBill) {
+		return super.findList(rsScoreBill);
 	}
 	
-	public Page<RsScoreBill> findPage(Page<RsScoreBill> page, RsScoreBill rsJcd) {
-		return super.findPage(page, rsJcd);
-	}
-	
-	@Transactional(readOnly = false)
-	public void save(RsScoreBill rsJcd) {
-		super.save(rsJcd);
+	public Page<RsScoreBill> findPage(Page<RsScoreBill> page, RsScoreBill rsScoreBill) {
+		return super.findPage(page, rsScoreBill);
 	}
 	
 	@Transactional(readOnly = false)
-	public void delete(RsScoreBill rsJcd) {
-		super.delete(rsJcd);
+	public void save(RsScoreBill rsScoreBill) {
+		super.save(rsScoreBill);
+	}
+	
+	@Transactional(readOnly = false)
+	public void delete(RsScoreBill rsScoreBill) {
+		super.delete(rsScoreBill);
 	}
 	
 }

@@ -303,75 +303,75 @@ public class RsScoreBillController extends BaseController {
 		return true;
 	}
 	
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(RsScoreBill rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
+	public String list(RsScoreBill rsScoreBill, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
-		model.addAttribute("status", rsJcd.getStatus());
-		model.addAttribute("zytj", rsJcd.getZytj());
+		model.addAttribute("status", rsScoreBill.getStatus());
+		model.addAttribute("zytj", rsScoreBill.getZytj());
 		return "modules/out/score/rsScoreBillList";
 	}
 	
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping("im")
-	public String im(RsScoreBill rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
+	public String im(RsScoreBill rsScoreBill, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
 		return "modules/out/jcd/im";
 	}
 	
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping(value="/status/{stauts}")
-	public String status(RsScoreBill rsJcd,@PathVariable("stauts") String stauts, HttpServletRequest request, HttpServletResponse response, Model model) {
-		rsJcd.setStatus(stauts);
-		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
+	public String status(RsScoreBill rsScoreBill,@PathVariable("stauts") String stauts, HttpServletRequest request, HttpServletResponse response, Model model) {
+		rsScoreBill.setStatus(stauts);
+		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
 		model.addAttribute("status", stauts);
 		return "modules/out/jcd/status";
 	}
 	
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping("in")
-	public String in(RsScoreBill rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
+	public String in(RsScoreBill rsScoreBill, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		
 		model.addAttribute("page", page);
 		return "modules/out/score/rsScoreBillList";
 	}
 	
 
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping("out")
-	public String out(RsScoreBill rsJcd, HttpServletRequest request, HttpServletResponse response, Model model) {
-		rsJcd.setStatus("all");
-		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
+	public String out(RsScoreBill rsScoreBill, HttpServletRequest request, HttpServletResponse response, Model model) {
+		rsScoreBill.setStatus("all");
+		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
 		return "modules/out/jcd/out";
 	}
 
-	@RequiresPermissions("out:jcd:rsJcd:view")
+	@RequiresPermissions("out:jcd:rsScoreBill:view")
 	@RequestMapping(value = "form")
-	public String form(RsScoreBill rsJcd, Model model) {
-		model.addAttribute("rsJcd", rsJcd);
+	public String form(RsScoreBill rsScoreBill, Model model) {
+		model.addAttribute("rsScoreBill", rsScoreBill);
 		return "modules/out/score/rsScoreBillForm";
 	}
 
-	@RequiresPermissions("out:jcd:rsJcd:edit")
+	@RequiresPermissions("out:jcd:rsScoreBill:edit")
 	@RequestMapping(value = "save")
-	public String save(RsScoreBill rsJcd, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, rsJcd)){
-			return form(rsJcd, model);
+	public String save(RsScoreBill rsScoreBill, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, rsScoreBill)){
+			return form(rsScoreBill, model);
 		}
-		rsScoreBillService.save(rsJcd);
+		rsScoreBillService.save(rsScoreBill);
 		addMessage(redirectAttributes, "保存考试成绩单成功");
 		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
 	}
 	
-	@RequiresPermissions("out:jcd:rsJcd:edit")
+	@RequiresPermissions("out:jcd:rsScoreBill:edit")
 	@RequestMapping(value = "delete")
-	public String delete(RsScoreBill rsJcd, RedirectAttributes redirectAttributes) {
-		rsScoreBillService.delete(rsJcd);
+	public String delete(RsScoreBill rsScoreBill, RedirectAttributes redirectAttributes) {
+		rsScoreBillService.delete(rsScoreBill);
 		addMessage(redirectAttributes, "删除考试成绩单成功");
 		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
 	}

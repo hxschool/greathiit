@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/out/score/rsScoreBill/">考试成绩单列表</a></li>
-		<li class="active"><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">考试成绩单<shiro:hasPermission name="out:jcd:rsScoreBill:edit">${not empty rsScoreBill.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsScoreBill:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">考试成绩单<shiro:hasPermission name="out:score:rsScoreBill:edit">${not empty rsScoreBill.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:score:rsScoreBill:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<!-- <shiro:hasPermission name="out:jcd:rsScoreBill:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission> -->
+			<!-- <shiro:hasPermission name="out:score:rsScoreBill:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission> -->
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

@@ -96,7 +96,7 @@
 				<th>意向专业5</th>
 				<th>是否服从专业调剂</th>
 				<th>录入状态</th>
-				<shiro:hasPermission name="out:jcd:rsScoreBill:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="out:score:rsScoreBill:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -171,7 +171,7 @@
 				</c:choose>
 				</td>
 				
-				<shiro:hasPermission name="out:jcd:rsScoreBill:edit"><td>
+				<shiro:hasPermission name="out:score:rsScoreBill:edit"><td>
     				<a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">查看</a>
 					<!-- <a href="${ctx}/out/score/rsScoreBill/delete?id=${rsScoreBill.id}" onclick="return confirmx('确认要删除该考试成绩单吗？', this.href)">删除</a> -->
 				</td></shiro:hasPermission>

@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/">招生计划列表</a></li>
-		<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><li><a href="${ctx}/out/score/rsEnrollmentPlan/form">招生计划添加</a></li></shiro:hasPermission>
+		<li><a href="${ctx}/out/score/rsEnrollmentPlan/form">招生计划添加</a></li><shiro:hasPermission name="out:score:rsEnrollmentPlan:edit"></shiro:hasPermission>
 	</ul>
 	
 		<div id="importBox" class="hide">
@@ -78,7 +78,7 @@
 				<th>状态</th>
 				<th>更新时间</th>
 				<th>备注信息</th>
-				<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="out:score:rsEnrollmentPlan:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
@@ -105,7 +105,7 @@
 				<td>
 					${rsEnrollmentPlan.remarks}
 				</td>
-				<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><td>
+				<shiro:hasPermission name="out:score:rsEnrollmentPlan:edit"><td>
     				<a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">修改</a>
 					<a href="${ctx}/out/score/rsEnrollmentPlan/delete?id=${rsEnrollmentPlan.id}" onclick="return confirmx('确认要删除该招生计划吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>

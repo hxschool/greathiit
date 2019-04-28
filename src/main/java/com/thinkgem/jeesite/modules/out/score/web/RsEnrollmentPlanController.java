@@ -56,28 +56,27 @@ public class RsEnrollmentPlanController extends BaseController {
 		return entity;
 	}
 	
-	//@RequiresPermissions("out:jcd:rsMajorSetup:view")
 	@RequestMapping(value = {"list", ""})
-	public String list(RsEnrollmentPlan rsMajorSetup, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<RsEnrollmentPlan> page = rsEnrollmentPlanService.findPage(new Page<RsEnrollmentPlan>(request, response), rsMajorSetup); 
+	public String list(RsEnrollmentPlan rsEnrollmentPlan, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<RsEnrollmentPlan> page = rsEnrollmentPlanService.findPage(new Page<RsEnrollmentPlan>(request, response), rsEnrollmentPlan); 
 		model.addAttribute("page", page);
 		return "modules/out/score/rsEnrollmentPlanList";
 	}
 
-	@RequiresPermissions("out:jcd:rsMajorSetup:view")
+	@RequiresPermissions("out:score:rsEnrollmentPlan:view")
 	@RequestMapping(value = "form")
-	public String form(RsEnrollmentPlan rsMajorSetup, Model model) {
-		model.addAttribute("rsMajorSetup", rsMajorSetup);
+	public String form(RsEnrollmentPlan rsEnrollmentPlan, Model model) {
+		model.addAttribute("rsEnrollmentPlan", rsEnrollmentPlan);
 		return "modules/out/score/rsEnrollmentPlanForm";
 	}
 
-	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
+	@RequiresPermissions("out:score:rsEnrollmentPlan:edit")
 	@RequestMapping(value = "save")
-	public String save(RsEnrollmentPlan rsMajorSetup, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, rsMajorSetup)){
-			return form(rsMajorSetup, model);
+	public String save(RsEnrollmentPlan rsEnrollmentPlan, Model model, RedirectAttributes redirectAttributes) {
+		if (!beanValidator(model, rsEnrollmentPlan)){
+			return form(rsEnrollmentPlan, model);
 		}
-		rsEnrollmentPlanService.save(rsMajorSetup);
+		rsEnrollmentPlanService.save(rsEnrollmentPlan);
 		addMessage(redirectAttributes, "保存招生计划成功");
 		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}
@@ -92,19 +91,19 @@ public class RsEnrollmentPlanController extends BaseController {
 			StringBuilder failureMsg = new StringBuilder();
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<RsEnrollmentPlan> list = ei.getDataList(RsEnrollmentPlan.class);
-			for (RsEnrollmentPlan jcd : list){
+			for (RsEnrollmentPlan enrollmentPlan : list){
 				try {
-					RsEnrollmentPlan entity = rsEnrollmentPlanService.getMajorId(jcd);
+					RsEnrollmentPlan entity = rsEnrollmentPlanService.getMajorId(enrollmentPlan);
 					if (org.springframework.util.StringUtils.isEmpty(entity)) {
 						entity = new RsEnrollmentPlan();
-						entity.setMajorId(jcd.getMajorId());
-						entity.setMajorName(jcd.getMajorName());
+						entity.setMajorId(enrollmentPlan.getMajorId());
+						entity.setMajorName(enrollmentPlan.getMajorName());
 						entity.setCreateBy(UserUtils.getUser());
 						entity.setMajorCount("0");
-						entity.setMajorTotal(jcd.getMajorTotal());
+						entity.setMajorTotal(enrollmentPlan.getMajorTotal());
 					} else {
 						String id = entity.getId();
-						BeanUtils.copyProperties(jcd, entity);
+						BeanUtils.copyProperties(enrollmentPlan, entity);
 						entity.setId(id);
 					}
 					rsEnrollmentPlanService.save(entity);
@@ -117,7 +116,7 @@ public class RsEnrollmentPlanController extends BaseController {
 						failureNum++;
 					}
 				} catch (Exception ex) {
-					failureMsg.append("<br/>专业编码: " + jcd.getMajorId() + " 导入失败：" + ex.getMessage());
+					failureMsg.append("<br/>专业编码: " + enrollmentPlan.getMajorId() + " 导入失败：" + ex.getMessage());
 				}
 			}
 			if (failureNum>0){
@@ -130,10 +129,10 @@ public class RsEnrollmentPlanController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}
 	
-	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
+	@RequiresPermissions("out:score:rsEnrollmentPlan:edit")
 	@RequestMapping(value = "delete")
-	public String delete(RsEnrollmentPlan rsMajorSetup, RedirectAttributes redirectAttributes) {
-		rsEnrollmentPlanService.delete(rsMajorSetup);
+	public String delete(RsEnrollmentPlan rsEnrollmentPlan, RedirectAttributes redirectAttributes) {
+		rsEnrollmentPlanService.delete(rsEnrollmentPlan);
 		addMessage(redirectAttributes, "删除招生计划成功");
 		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}

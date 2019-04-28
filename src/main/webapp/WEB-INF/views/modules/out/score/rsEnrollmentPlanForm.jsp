@@ -28,7 +28,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a href="${ctx}/out/score/rsEnrollmentPlan/">招生计划列表</a></li>
-		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">招生计划<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit">${not empty rsEnrollmentPlan.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsEnrollmentPlan:edit">查看</shiro:lacksPermission></a></li>
+		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">招生计划<shiro:hasPermission name="out:score:rsEnrollmentPlan:edit">${not empty rsEnrollmentPlan.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:score:rsEnrollmentPlan:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="rsEnrollmentPlan" action="${ctx}/out/score/rsEnrollmentPlan/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<div class="form-actions">
-			<shiro:hasPermission name="out:jcd:rsEnrollmentPlan:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
+			<shiro:hasPermission name="out:score:rsEnrollmentPlan:edit"><input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>&nbsp;</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>

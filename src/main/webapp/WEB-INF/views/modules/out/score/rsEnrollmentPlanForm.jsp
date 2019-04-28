@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/out/jcd/rsMajorSetup/">招生计划列表</a></li>
-		<li class="active"><a href="${ctx}/out/jcd/rsMajorSetup/form?id=${rsMajorSetup.id}">招生计划<shiro:hasPermission name="out:jcd:rsMajorSetup:edit">${not empty rsMajorSetup.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsMajorSetup:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/out/score/rsEnrollmentPlan/">招生计划列表</a></li>
+		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsMajorSetup.id}">招生计划<shiro:hasPermission name="out:jcd:rsMajorSetup:edit">${not empty rsMajorSetup.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsMajorSetup:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="rsMajorSetup" action="${ctx}/out/jcd/rsMajorSetup/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="rsMajorSetup" action="${ctx}/out/score/rsEnrollmentPlan/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">

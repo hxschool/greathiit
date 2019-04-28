@@ -27,7 +27,7 @@
 </head>
 <body>
 	
-	<form:form id="searchForm" modelAttribute="rsJcd" action="${ctx}/out/jcd/rsJcd/status/${status}" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsJcd" action="${ctx}/out/score/rsScoreBill/status/${status}" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -76,7 +76,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="rsJcd">
 			<tr>
-				<td><a href="${ctx}/out/jcd/rsJcd/form?id=${rsJcd.id}">
+				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsJcd.id}">
 					${rsJcd.ksh}
 				</a></td>
 				<td>

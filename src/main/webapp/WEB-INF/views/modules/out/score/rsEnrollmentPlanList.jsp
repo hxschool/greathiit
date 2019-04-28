@@ -27,12 +27,12 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/out/jcd/rsMajorSetup/">招生计划列表</a></li>
-		<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><li><a href="${ctx}/out/jcd/rsMajorSetup/form">招生计划添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/out/score/rsEnrollmentPlan/">招生计划列表</a></li>
+		<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><li><a href="${ctx}/out/score/rsEnrollmentPlan/form">招生计划添加</a></li></shiro:hasPermission>
 	</ul>
 	
 		<div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/out/jcd/rsMajorSetup/import" method="post"
+		<form id="importForm" action="${ctx}/out/score/rsEnrollmentPlan/import" method="post"
 			enctype="multipart/form-data" class="form-search"
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
@@ -40,11 +40,11 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="${ctx}/out/jcd/rsMajorSetup/template">下载模板</a>
+				href="${ctx}/out/score/rsEnrollmentPlan/template">下载模板</a>
 		</form>
 	</div>
 	
-	<form:form id="searchForm" modelAttribute="rsMajorSetup" action="${ctx}/out/jcd/rsMajorSetup/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsMajorSetup" action="${ctx}/out/score/rsEnrollmentPlan/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -84,7 +84,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="rsMajorSetup">
 			<tr>
-				<td><a href="${ctx}/out/jcd/rsMajorSetup/form?id=${rsMajorSetup.id}">
+				<td><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsMajorSetup.id}">
 					${rsMajorSetup.majorId}
 				</a></td>
 				<td>
@@ -106,8 +106,8 @@
 					${rsMajorSetup.remarks}
 				</td>
 				<shiro:hasPermission name="out:jcd:rsMajorSetup:edit"><td>
-    				<a href="${ctx}/out/jcd/rsMajorSetup/form?id=${rsMajorSetup.id}">修改</a>
-					<a href="${ctx}/out/jcd/rsMajorSetup/delete?id=${rsMajorSetup.id}" onclick="return confirmx('确认要删除该招生计划吗？', this.href)">删除</a>
+    				<a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsMajorSetup.id}">修改</a>
+					<a href="${ctx}/out/score/rsEnrollmentPlan/delete?id=${rsMajorSetup.id}" onclick="return confirmx('确认要删除该招生计划吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

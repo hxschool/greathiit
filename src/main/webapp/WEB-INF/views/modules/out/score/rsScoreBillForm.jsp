@@ -27,10 +27,10 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/out/jcd/rsJcd/">考试成绩单列表</a></li>
-		<li class="active"><a href="${ctx}/out/jcd/rsJcd/form?id=${rsJcd.id}">考试成绩单<shiro:hasPermission name="out:jcd:rsJcd:edit">${not empty rsJcd.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsJcd:edit">查看</shiro:lacksPermission></a></li>
+		<li><a href="${ctx}/out/score/rsScoreBill/">考试成绩单列表</a></li>
+		<li class="active"><a href="${ctx}/out/score/rsScoreBill/form?id=${rsJcd.id}">考试成绩单<shiro:hasPermission name="out:jcd:rsJcd:edit">${not empty rsJcd.id?'修改':'添加'}</shiro:hasPermission><shiro:lacksPermission name="out:jcd:rsJcd:edit">查看</shiro:lacksPermission></a></li>
 	</ul><br/>
-	<form:form id="inputForm" modelAttribute="rsJcd" action="${ctx}/out/jcd/rsJcd/save" method="post" class="form-horizontal">
+	<form:form id="inputForm" modelAttribute="rsJcd" action="${ctx}/out/score/rsScoreBill/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">

@@ -38,7 +38,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  * @version 2018-01-09
  */
 @Controller
-@RequestMapping(value = "${adminPath}/out/jcd/rsMajorSetup")
+@RequestMapping(value = "${adminPath}/out/score/rsEnrollmentPlan")
 public class RsEnrollmentPlanController extends BaseController {
 
 	@Autowired
@@ -61,14 +61,14 @@ public class RsEnrollmentPlanController extends BaseController {
 	public String list(RsEnrollmentPlan rsMajorSetup, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsEnrollmentPlan> page = rsEnrollmentPlanService.findPage(new Page<RsEnrollmentPlan>(request, response), rsMajorSetup); 
 		model.addAttribute("page", page);
-		return "modules/out/jcd/rsMajorSetupList";
+		return "modules/out/score/rsEnrollmentPlanList";
 	}
 
 	@RequiresPermissions("out:jcd:rsMajorSetup:view")
 	@RequestMapping(value = "form")
 	public String form(RsEnrollmentPlan rsMajorSetup, Model model) {
 		model.addAttribute("rsMajorSetup", rsMajorSetup);
-		return "modules/out/jcd/rsMajorSetupForm";
+		return "modules/out/score/rsEnrollmentPlanForm";
 	}
 
 	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
@@ -79,7 +79,7 @@ public class RsEnrollmentPlanController extends BaseController {
 		}
 		rsEnrollmentPlanService.save(rsMajorSetup);
 		addMessage(redirectAttributes, "保存招生计划成功");
-		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsMajorSetup/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}
 	
 	
@@ -127,7 +127,7 @@ public class RsEnrollmentPlanController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
-		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsMajorSetup/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}
 	
 	@RequiresPermissions("out:jcd:rsMajorSetup:edit")
@@ -135,7 +135,7 @@ public class RsEnrollmentPlanController extends BaseController {
 	public String delete(RsEnrollmentPlan rsMajorSetup, RedirectAttributes redirectAttributes) {
 		rsEnrollmentPlanService.delete(rsMajorSetup);
 		addMessage(redirectAttributes, "删除招生计划成功");
-		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsMajorSetup/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/rsEnrollmentPlan/?repage";
 	}
 
 }

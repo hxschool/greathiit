@@ -247,7 +247,7 @@ public class RsScoreBillController extends BaseController {
 			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/out/jcd/rsJcd/list?repage";
+		return "redirect:" + adminPath + "/out/score/rsScoreBill/list?repage";
 	}
 	
 	private boolean handMajorSetup(RsScoreBill jcd,int index) {
@@ -292,7 +292,7 @@ public class RsScoreBillController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/out/jcd/rsJcd/list?repage";
+		return "redirect:" + adminPath + "/out/score/rsScoreBill/list?repage";
     }
 	
 	public boolean checkKsh(String ksh) {
@@ -310,7 +310,7 @@ public class RsScoreBillController extends BaseController {
 		model.addAttribute("page", page);
 		model.addAttribute("status", rsJcd.getStatus());
 		model.addAttribute("zytj", rsJcd.getZytj());
-		return "modules/out/jcd/rsJcdList";
+		return "modules/out/score/rsScoreBillList";
 	}
 	
 	@RequiresPermissions("out:jcd:rsJcd:view")
@@ -337,7 +337,7 @@ public class RsScoreBillController extends BaseController {
 		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsJcd); 
 		
 		model.addAttribute("page", page);
-		return "modules/out/jcd/rsJcdList";
+		return "modules/out/score/rsScoreBillList";
 	}
 	
 
@@ -354,7 +354,7 @@ public class RsScoreBillController extends BaseController {
 	@RequestMapping(value = "form")
 	public String form(RsScoreBill rsJcd, Model model) {
 		model.addAttribute("rsJcd", rsJcd);
-		return "modules/out/jcd/rsJcdForm";
+		return "modules/out/score/rsScoreBillForm";
 	}
 
 	@RequiresPermissions("out:jcd:rsJcd:edit")
@@ -365,7 +365,7 @@ public class RsScoreBillController extends BaseController {
 		}
 		rsScoreBillService.save(rsJcd);
 		addMessage(redirectAttributes, "保存考试成绩单成功");
-		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsJcd/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
 	}
 	
 	@RequiresPermissions("out:jcd:rsJcd:edit")
@@ -373,7 +373,7 @@ public class RsScoreBillController extends BaseController {
 	public String delete(RsScoreBill rsJcd, RedirectAttributes redirectAttributes) {
 		rsScoreBillService.delete(rsJcd);
 		addMessage(redirectAttributes, "删除考试成绩单成功");
-		return "redirect:"+Global.getAdminPath()+"/out/jcd/rsJcd/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
 	}
 
 }

@@ -45,7 +45,7 @@ else {
 			<a href="javascript:" onclick="$('.errorMessage').toggle();" class="btn">查看详细信息</a>
 		</div>
 		<div class="errorMessage hide">
-			<!-- <%=StringUtils.toHtml(sb.toString())%> <br/> -->
+			<%=StringUtils.toHtml(sb.toString())%>
 			<a href="javascript:" onclick="history.go(-1);" class="btn">返回上一页</a> &nbsp;
 			<a href="javascript:" onclick="$('.errorMessage').toggle();" class="btn">隐藏详细信息</a>
 			<br/> <br/>

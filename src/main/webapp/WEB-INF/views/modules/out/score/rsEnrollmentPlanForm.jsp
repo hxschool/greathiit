@@ -34,7 +34,7 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}"/>		
 		<div class="control-group">
-			<label class="control-label">专业编码：</label>
+			<label class="control-label">学期设置：</label>
 			<div class="controls">
 				<select name="termYear" style="width: 200px;">
 
@@ -47,17 +47,26 @@
 			</div>
 		</div>
 		
+		<div id="element_id">
+						<div class="control-group control-group-left">
+							<label class="control-label">所属学院：</label>
+							<div class="controls">
+								<select class="province input-medium"><option>请选择</option></select>
+							</div>
+						</div>
+						<div class="control-group control-group-left">
+							<label class="control-label">专业名称：</label>
+							<div class="controls">
+								<select id="city" name="majorId" class="city input-medium"><option>请选择</option></select>
+							</div>
+						</div>
+						</div>
 		
+
 		<div class="control-group">
-			<label class="control-label">专业编码：</label>
+			<label class="control-label">所选专业：</label>
 			<div class="controls">
-				<form:input path="majorId" htmlEscape="false" maxlength="64" class="input-xlarge "/>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">专业名称：</label>
-			<div class="controls">
-				<form:input path="majorName" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				<form:input path="majorName" id="majorName" htmlEscape="false" maxlength="64" class="input-xlarge " readonly="true"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -73,9 +82,15 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">状态：</label>
+			<label class="control-label">是否启用：</label>
 			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="4" class="input-xlarge "/>
+				
+				<form:select path="status"
+					class="input-medium">
+					<form:option value="" label="请选择" />
+					<form:options items="${fns:getDictList('yes_no')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -89,5 +104,20 @@
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 		</div>
 	</form:form>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#element_id').cxSelect({ 
+				  url: '${ctx}/sys/office/treeLink',
+				  selects: ['province', 'city'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
+			$('#city').change(function(){  
+			　　　　　   $("#majorName").val($(this).children('option:selected').text());
+			　　　　})  
+		});
+		</script>
 </body>
 </html>

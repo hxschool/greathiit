@@ -29,7 +29,7 @@
 	
 	
 	
-	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/out" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/bill/out" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<input id="status" name="status" type="hidden" value="all"/>
@@ -79,7 +79,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="rsScoreBill">
 			<tr>
-				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">
+				<td><a href="${ctx}/out/score/bill/form?id=${rsScoreBill.id}">
 					${rsScoreBill.ksh}
 				</a></td>
 				<td>

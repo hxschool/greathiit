@@ -40,7 +40,7 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="${ctx}/out/score/rsEnrollmentPlan/template">下载模板</a>
+				href="${ctx}/out/score/rsEnrollmentPlan/import/template">下载模板</a>
 		</form>
 	</div>
 	
@@ -48,8 +48,16 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>专业编码：</label>
-				<form:input path="majorId" htmlEscape="false" maxlength="64" class="input-medium"/>
+		
+			
+			<li><label>学期：</label>
+				<select name="termYear" style="width: 200px;">
+
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+				</select>
 			</li>
 			<li><label>专业名称：</label>
 				<form:input path="majorName" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -71,7 +79,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>专业编码</th>
+				<th>年份</th>
 				<th>专业名称</th>
 				<th>已招人数</th>
 				<th>计划人数</th>
@@ -85,8 +93,9 @@
 		<c:forEach items="${page.list}" var="rsEnrollmentPlan">
 			<tr>
 				<td><a href="${ctx}/out/score/rsEnrollmentPlan/form?id=${rsEnrollmentPlan.id}">
-					${rsEnrollmentPlan.majorId}
+					${rsEnrollmentPlan.termYear}
 				</a></td>
+				
 				<td>
 					${rsEnrollmentPlan.majorName}
 				</td>
@@ -97,7 +106,7 @@
 					${rsEnrollmentPlan.majorTotal}
 				</td>
 				<td>
-					${rsEnrollmentPlan.status}
+					${fns:getDictLabel(user.userType,'yes_no','')}
 				</td>
 				<td>
 					<fmt:formatDate value="${rsEnrollmentPlan.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

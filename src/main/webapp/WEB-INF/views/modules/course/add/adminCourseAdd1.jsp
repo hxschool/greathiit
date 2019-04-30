@@ -263,7 +263,7 @@
 			});
 			$('#element_id').cxSelect({ 
 			  url: '${ctx}/sys/office/treeLink',
-			  selects: ['province', 'city', 'area'], 
+			  selects: ['province', 'city'], 
 			  jsonName: 'name',
 			  jsonValue: 'value',
 			  jsonSub: 'sub'

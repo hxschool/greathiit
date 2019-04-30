@@ -42,6 +42,7 @@
 				<th>模块</th>
 				<th>标题</th>
 				<th>学期</th>
+				<th>值(录取成绩其它类型值)</th>
 				<th>时间范围</th>
 				<th>是否关闭</th>
 				<th>备注</th>
@@ -59,6 +60,9 @@
 				</td>
 				<td>
 					${sysConfig.termYear}
+				</td>
+				<td>
+					${sysConfig.value}
 				</td>
 				<td>
 					<fmt:formatDate value="${sysConfig.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/>-<fmt:formatDate value="${sysConfig.endDate}" pattern="yyyy-MM-dd HH:mm:ss"/>

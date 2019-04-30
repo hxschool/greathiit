@@ -25,6 +25,7 @@ public class SysConfig extends DataEntity<SysConfig> {
 	private String message;		// 提示信息
 	private String description;		// 特别提示
 	private String tip;		// 关闭提示
+	private String value;		// 设置分数,值类型相关
 	private String status;		// 状态,默认为0,当状态为1的时候读取关闭提示
 	
 	public SysConfig() {
@@ -124,4 +125,14 @@ public class SysConfig extends DataEntity<SysConfig> {
 	public String getTerm() {
 		return termYear.substring(10,12);
 	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+	
+	
 }

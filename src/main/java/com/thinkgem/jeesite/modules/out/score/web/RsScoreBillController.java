@@ -34,12 +34,10 @@ import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.out.score.entity.RsEnrollmentPlan;
 import com.thinkgem.jeesite.modules.out.score.entity.RsScoreBill;
-import com.thinkgem.jeesite.modules.out.score.service.RsScoreBillService;
 import com.thinkgem.jeesite.modules.out.score.service.RsEnrollmentPlanService;
-import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.out.score.service.RsScoreBillService;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 考试成绩单Controller
@@ -66,16 +64,9 @@ public class RsScoreBillController extends BaseController {
 		if (entity == null){
 			entity = new RsScoreBill();
 		}
+		config = sysConfigService.getModule(Global.SYSCONFIG_WELCOME);
 		model.addAttribute("config", config);
 		return entity;
-	}
-	
-	
-	public String val(String value) {
-		if(org.springframework.util.StringUtils.isEmpty(value)) {
-			value = "0";
-		}
-		return String.format("%03d" ,Integer.parseInt(value));
 	}
 	
 	@RequestMapping(value = "import", method = RequestMethod.POST)
@@ -92,33 +83,22 @@ public class RsScoreBillController extends BaseController {
 			
 			for (RsScoreBill scoreBill : list){
 				try{
-					RsScoreBill entity = rsScoreBillService.getByKsh(scoreBill.getKsh());
-					if(org.springframework.util.StringUtils.isEmpty(entity)) {
-						entity = new RsScoreBill();
+					if(org.springframework.util.StringUtils.isEmpty(scoreBill.getXm())||org.springframework.util.StringUtils.isEmpty(scoreBill.getSfzh())) {
+						continue;
 					}
-					entity.setKsh(scoreBill.getKsh());
-					entity.setXm(scoreBill.getXm());
-					entity.setSfzh(scoreBill.getSfzh());
-					entity.setZf(scoreBill.getZf());
-					entity.setKm1(scoreBill.getKm1());
-					entity.setKm2(scoreBill.getKm2());
-					entity.setKm3(scoreBill.getKm3());
-					entity.setKm4(scoreBill.getKm4());
-					entity.setZy1(scoreBill.getZy1());
-					entity.setZy2(scoreBill.getZy2());
-					entity.setZy3(scoreBill.getZy3());
-					entity.setZy4(scoreBill.getZy4());
-					entity.setZy5(scoreBill.getZy5());
-					entity.setZy6(scoreBill.getZy6());
-					entity.setZytj(scoreBill.getZytj());
-					String cj = scoreBill.getZf().concat(".").concat(val(scoreBill.getKm3())).concat(val(scoreBill.getKm1())).concat(val(scoreBill.getKm2()));
-					entity.setCj(cj);
-					entity.setStatus("0");
-					rsScoreBillService.save(entity);
-					sortList.add(entity);
+					RsScoreBill entity = rsScoreBillService.getByKsh(scoreBill.getKsh());
+					if(!org.springframework.util.StringUtils.isEmpty(entity)) {
+						failureMsg.append("<br/>考试号: "+scoreBill.getKsh()+" 姓名:" + scoreBill.getXm() + "已存在.");
+						continue;
+					}
+					scoreBill.setTermYear(config.getTermYear());
+					scoreBill.setStatus("0");
+					rsScoreBillService.save(scoreBill);
+					sortList.add(scoreBill);
 					successNum++;
 				}catch(ConstraintViolationException ex){
-					failureMsg.append("<br/>考试号: "+scoreBill.getKsh()+" 导入失败：");
+					
+
 					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
 					for (String message : messageList){
 						failureMsg.append(message+"; ");
@@ -129,9 +109,8 @@ public class RsScoreBillController extends BaseController {
 				}
 			}
 			
-			Collections.sort(sortList);  
-			List<Dict> dicts = DictUtils.getDictList("greathiit_zhaosheng_grade");
-			Double grade = Double.valueOf(dicts.get(0).getValue());
+			Collections.sort(sortList);
+			Double grade = Double.valueOf(config.getValue());
 			for(RsScoreBill scoreBill:sortList) {
 				if(org.springframework.util.StringUtils.isEmpty(scoreBill.getZf())) {
 					//未参加考试
@@ -146,96 +125,8 @@ public class RsScoreBillController extends BaseController {
 				}
 				Double cj = Double.valueOf(scoreBill.getCj());
 				if(cj>=grade) {
-					/**
-					 * boolean ret = false;
-					RsMajorSetup rsMajorSetup = new RsMajorSetup();
-					rsMajorSetup.setMajorName(jcd.getZy1());
-					RsMajorSetup rsMajorSetup1 = rsEnrollmentPlanService.getRsMajorSetupByMajorName(rsMajorSetup);
-						if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup1)) {
-							jcd.setStatus("3");
-							rsScoreBillService.save(jcd);
-							continue;
-						}
-						if (Integer.valueOf(rsMajorSetup1.getMajorTotal()) - Integer.valueOf(rsMajorSetup1.getMajorCount()) > 0) {
-							ret = true;
-							int majorCount = Integer.valueOf(rsMajorSetup1.getMajorCount()) + 1;
-							rsMajorSetup1.setMajorCount(String.valueOf(majorCount));
-							rsEnrollmentPlanService.save(rsMajorSetup1);
-						}else if(jcd.getZytj().equals("是")) {
-							
-							RsMajorSetup newMajorSetup2 = new RsMajorSetup();
-							newMajorSetup2.setMajorName(jcd.getZy2());
-							RsMajorSetup rsMajorSetup2 = rsEnrollmentPlanService.getRsMajorSetupByMajorName(newMajorSetup2);
-							if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup2)) {
-								jcd.setStatus("3");
-								rsScoreBillService.save(jcd);
-								continue;
-							}
-							if (Integer.valueOf(rsMajorSetup2.getMajorTotal())
-									- Integer.valueOf(rsMajorSetup2.getMajorCount()) > 0) {
-								ret = true;
-								int majorCount = Integer.valueOf(rsMajorSetup2.getMajorCount()) + 1;
-								rsMajorSetup2.setMajorCount(String.valueOf(majorCount));
-								rsEnrollmentPlanService.save(rsMajorSetup2);
-							} else if (jcd.getZytj().equals("是")) {
-
-								RsMajorSetup newMajorSetup3 = new RsMajorSetup();
-								newMajorSetup3.setMajorName(jcd.getZy3());
-								RsMajorSetup rsMajorSetup3 = rsEnrollmentPlanService.getRsMajorSetupByMajorName(newMajorSetup3);
-								if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup3)) {
-									jcd.setStatus("3");
-									rsScoreBillService.save(jcd);
-									continue;
-								}
-								if (Integer.valueOf(rsMajorSetup3.getMajorTotal())- Integer.valueOf(rsMajorSetup3.getMajorCount()) > 0) {
-									ret = true;
-									int majorCount = Integer.valueOf(rsMajorSetup3.getMajorCount()) + 1;
-									rsMajorSetup3.setMajorCount(String.valueOf(majorCount));
-									rsEnrollmentPlanService.save(rsMajorSetup3);
-								} else if (jcd.getZytj().equals("是")) {
-									RsMajorSetup newMajorSetup4 = new RsMajorSetup();
-									newMajorSetup4.setMajorName(jcd.getZy4());
-									RsMajorSetup rsMajorSetup4 = rsEnrollmentPlanService
-											.getRsMajorSetupByMajorName(newMajorSetup4);
-									if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup4)) {
-										jcd.setStatus("3");
-										rsScoreBillService.save(jcd);
-										continue;
-									}
-									if (Integer.valueOf(rsMajorSetup4.getMajorTotal()) - Integer.valueOf(rsMajorSetup4.getMajorCount()) > 0) {
-										ret = true;
-										int majorCount = Integer.valueOf(rsMajorSetup4.getMajorCount()) + 1;
-										rsMajorSetup4.setMajorCount(String.valueOf(majorCount));
-										rsEnrollmentPlanService.save(rsMajorSetup4);
-									} else if (jcd.getZytj().equals("是")) {
-										RsMajorSetup newMajorSetup5 = new RsMajorSetup();
-										newMajorSetup5.setMajorName(jcd.getZy5());
-										RsMajorSetup rsMajorSetup5 = rsEnrollmentPlanService.getRsMajorSetupByMajorName(newMajorSetup5);
-										if(org.springframework.util.StringUtils.isEmpty(rsMajorSetup5)) {
-											jcd.setStatus("3");
-											rsScoreBillService.save(jcd);
-											continue;
-										}
-										if (Integer.valueOf(rsMajorSetup5.getMajorTotal()) - Integer.valueOf(rsMajorSetup5.getMajorCount()) > 0) {
-											ret = true;
-											int majorCount = Integer.valueOf(rsMajorSetup5.getMajorCount()) + 1;
-											rsMajorSetup5.setMajorCount(String.valueOf(majorCount));
-											rsEnrollmentPlanService.save(rsMajorSetup5);
-										}
-									}
-								}
-							}
-						}
-						if(ret) {
-							//已录取
-							jcd.setStatus("1");
-						}else {
-							//名额已满
-							jcd.setStatus("2");
-						}
 					
-					 */
-					if(handMajorSetup(scoreBill,1)) {
+					if(scoreBillHandler(scoreBill,1)) {
 						continue;
 					}
 				}else {
@@ -252,24 +143,24 @@ public class RsScoreBillController extends BaseController {
 			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/out/score/rsScoreBill/list?repage";
+		return "redirect:" + adminPath + "/out/score/bill/list?repage";
 	}
 	
-	private boolean handMajorSetup(RsScoreBill scoreBill,int index) {
+	private boolean scoreBillHandler(RsScoreBill scoreBill,int index) {
 		String zy = (String) Reflections.getFieldValue(scoreBill, "zy".concat(String.valueOf(index)));
-		RsEnrollmentPlan setup = new RsEnrollmentPlan();
-		setup.setMajorName(zy);
-		RsEnrollmentPlan majorSetup = rsEnrollmentPlanService.getRsEnrollmentPlanByMajorName(setup);
-		if(org.springframework.util.StringUtils.isEmpty(majorSetup)) {
+		RsEnrollmentPlan rsp = new RsEnrollmentPlan();
+		rsp.setMajorName(zy);
+		RsEnrollmentPlan ep = rsEnrollmentPlanService.getRsEnrollmentPlanByMajorName(rsp);
+		if(org.springframework.util.StringUtils.isEmpty(ep)) {
 			scoreBill.setStatus("3");
 			rsScoreBillService.save(scoreBill);
 			return true;
 		}
-		if (Integer.valueOf(majorSetup.getMajorTotal())- Integer.valueOf(majorSetup.getMajorCount()) > 0) {
+		if (Integer.valueOf(ep.getMajorTotal()) - Integer.valueOf(ep.getMajorCount()) > 0) {
 			scoreBill.setStatus("1");
-			int majorCount = Integer.valueOf(majorSetup.getMajorCount()) + 1;
-			majorSetup.setMajorCount(String.valueOf(majorCount));
-			rsEnrollmentPlanService.save(majorSetup);
+			int majorCount = Integer.valueOf(ep.getMajorCount()) + 1;
+			ep.setMajorCount(String.valueOf(majorCount));
+			rsEnrollmentPlanService.save(ep);
 		} else {
 			index++;
 			if(index==6) {
@@ -277,7 +168,7 @@ public class RsScoreBillController extends BaseController {
 				return false;
 			}
 			if(scoreBill.getZytj().equals("是")) {
-				return handMajorSetup(scoreBill,index++);
+				return scoreBillHandler(scoreBill,index++);
 			}else {
 				scoreBill.setStatus("5");
 			}
@@ -297,7 +188,7 @@ public class RsScoreBillController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/out/score/rsScoreBill/list?repage";
+		return "redirect:" + adminPath + "/out/score/bill/list?repage";
     }
 	
 	public boolean checkKsh(String ksh) {
@@ -323,7 +214,7 @@ public class RsScoreBillController extends BaseController {
 	public String im(RsScoreBill rsScoreBill, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
-		return "modules/out/jcd/im";
+		return "modules/out/score/im";
 	}
 	
 	@RequiresPermissions("out:score:rsScoreBill:view")
@@ -333,7 +224,7 @@ public class RsScoreBillController extends BaseController {
 		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
 		model.addAttribute("status", stauts);
-		return "modules/out/jcd/status";
+		return "modules/out/score/status";
 	}
 	
 	@RequiresPermissions("out:score:rsScoreBill:view")
@@ -352,7 +243,7 @@ public class RsScoreBillController extends BaseController {
 		rsScoreBill.setStatus("all");
 		Page<RsScoreBill> page = rsScoreBillService.findPage(new Page<RsScoreBill>(request, response), rsScoreBill); 
 		model.addAttribute("page", page);
-		return "modules/out/jcd/out";
+		return "modules/out/score/out";
 	}
 
 	@RequiresPermissions("out:score:rsScoreBill:view")
@@ -370,7 +261,7 @@ public class RsScoreBillController extends BaseController {
 		}
 		rsScoreBillService.save(rsScoreBill);
 		addMessage(redirectAttributes, "保存考试成绩单成功");
-		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/bill/?repage";
 	}
 	
 	@RequiresPermissions("out:score:rsScoreBill:edit")
@@ -378,7 +269,7 @@ public class RsScoreBillController extends BaseController {
 	public String delete(RsScoreBill rsScoreBill, RedirectAttributes redirectAttributes) {
 		rsScoreBillService.delete(rsScoreBill);
 		addMessage(redirectAttributes, "删除考试成绩单成功");
-		return "redirect:"+Global.getAdminPath()+"/out/score/rsScoreBill/?repage";
+		return "redirect:"+Global.getAdminPath()+"/out/score/bill/?repage";
 	}
 
 }

@@ -29,7 +29,7 @@
 	
 	
 	<div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/out/score/rsScoreBill/import" method="post"
+		<form id="importForm" action="${ctx}/out/score/bill/import" method="post"
 			enctype="multipart/form-data" class="form-search"
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
@@ -37,11 +37,11 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="${ctx}/out/score/rsScoreBill/template">下载模板</a>
+				href="${ctx}/out/score/bill/template">下载模板</a>
 		</form>
 	</div>
 	
-	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/rsScoreBill/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="rsScoreBill" action="${ctx}/out/score/bill/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -102,7 +102,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="rsScoreBill">
 			<tr >
-				<td><a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">
+				<td><a href="${ctx}/out/score/bill/form?id=${rsScoreBill.id}">
 					${rsScoreBill.ksh}
 				</a></td>
 				<td>
@@ -172,8 +172,8 @@
 				</td>
 				
 				<shiro:hasPermission name="out:score:rsScoreBill:edit"><td>
-    				<a href="${ctx}/out/score/rsScoreBill/form?id=${rsScoreBill.id}">查看</a>
-					<!-- <a href="${ctx}/out/score/rsScoreBill/delete?id=${rsScoreBill.id}" onclick="return confirmx('确认要删除该考试成绩单吗？', this.href)">删除</a> -->
+    				<a href="${ctx}/out/score/bill/form?id=${rsScoreBill.id}">查看</a>
+					<!-- <a href="${ctx}/out/score/bill/delete?id=${rsScoreBill.id}" onclick="return confirmx('确认要删除该考试成绩单吗？', this.href)">删除</a> -->
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

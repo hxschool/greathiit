@@ -73,6 +73,14 @@
 		</div>
 		
 		<div class="control-group">
+			<label class="control-label">值相关(录取成绩)：</label>
+			<div class="controls">
+				<form:input path="value" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
+		
+		<div class="control-group">
 			<label class="control-label">是否关闭：</label>
 			<div class="controls">
 				<form:select path="status">

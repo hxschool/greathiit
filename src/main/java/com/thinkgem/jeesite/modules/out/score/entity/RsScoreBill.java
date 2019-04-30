@@ -66,7 +66,7 @@ public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<R
 	}
 	
 	@Length(min=0, max=64, message="身份证号长度必须介于 0 和 64 之间")
-	@ExcelField(title="身份证号", align=2, sort=7)
+	@ExcelField(title="身份证号", align=2, sort=3)
 	public String getSfzh() {
 		return sfzh;
 	}
@@ -75,8 +75,8 @@ public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<R
 		this.sfzh = sfzh;
 	}
 	
-	@Length(min=0, max=64, message="总分长度必须介于 0 和 64 之间")
-	@ExcelField(title="总分", align=2, sort=6)
+	@Length(min=0, max=64, message="总分成绩长度必须介于 0 和 64 之间")
+	@ExcelField(title="总分", align=2, sort=7)
 	public String getZf() {
 		return zf;
 	}
@@ -94,8 +94,8 @@ public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<R
 		this.cj = cj;
 	}
 	
-	@Length(min=0, max=64, message="科目1长度必须介于 0 和 64 之间")
-	@ExcelField(title="语文", align=2, sort=3)
+	@Length(min=0, max=64, message="语文成绩长度必须介于 0 和 64 之间")
+	@ExcelField(title="语文", align=2, sort=4)
 	public String getKm1() {
 		return km1;
 	}
@@ -104,8 +104,8 @@ public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<R
 		this.km1 = km1;
 	}
 	
-	@Length(min=0, max=64, message="科目2长度必须介于 0 和 64 之间")
-	@ExcelField(title="数学", align=2, sort=4)
+	@Length(min=0, max=64, message="数学成绩长度必须介于 0 和 64 之间")
+	@ExcelField(title="数学", align=2, sort=5)
 	public String getKm2() {
 		return km2;
 	}
@@ -114,8 +114,8 @@ public class RsScoreBill extends DataEntity<RsScoreBill> implements Comparable<R
 		this.km2 = km2;
 	}
 	
-	@Length(min=0, max=64, message="科目3长度必须介于 0 和 64 之间")
-	@ExcelField(title="职业技能", align=2, sort=5)
+	@Length(min=0, max=64, message="职业技能成绩长度必须介于 0 和 64 之间")
+	@ExcelField(title="职业技能", align=2, sort=6)
 	public String getKm3() {
 		return km3;
 	}

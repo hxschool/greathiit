@@ -399,7 +399,6 @@ public class ImportExcel {
 							valType = ((Method)os[1]).getParameterTypes()[0];
 						}
 					}
-					//log.debug("Import value type: ["+i+","+column+"] " + valType);
 					try {
 						if (valType == String.class){
 							String s = String.valueOf(val.toString());

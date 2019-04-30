@@ -15,6 +15,6 @@ import com.thinkgem.jeesite.modules.out.score.entity.RsEnrollmentPlan;
 @MyBatisDao
 public interface RsEnrollmentPlanDao extends CrudDao<RsEnrollmentPlan> {
 	public RsEnrollmentPlan getMajorId(RsEnrollmentPlan entity);
-	public RsEnrollmentPlan getRsRsEnrollmentPlanByMajorName(RsEnrollmentPlan entity);
+	public RsEnrollmentPlan getRsEnrollmentPlanByMajorName(RsEnrollmentPlan entity);
 	
 }

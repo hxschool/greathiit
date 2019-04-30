@@ -30,7 +30,7 @@ public class RsEnrollmentPlanService extends CrudService<RsEnrollmentPlanDao, Rs
 	}
 	
 	public RsEnrollmentPlan getRsEnrollmentPlanByMajorName(RsEnrollmentPlan entity) {
-		return rsEnrollmentPlanDao.getRsRsEnrollmentPlanByMajorName(entity);
+		return rsEnrollmentPlanDao.getRsEnrollmentPlanByMajorName(entity);
 	}
 	
 	public RsEnrollmentPlan get(String id) {

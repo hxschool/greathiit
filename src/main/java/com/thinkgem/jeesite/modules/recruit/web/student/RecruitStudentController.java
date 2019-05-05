@@ -80,7 +80,7 @@ public class RecruitStudentController extends BaseController {
 		}
 		return entity;
 	}
-	//@RequiresPermissions("recruit:student:recruitStudent:view")
+	@RequiresPermissions("recruit:student:recruitStudent:view")
 	@RequestMapping
 	public String router(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
@@ -102,7 +102,7 @@ public class RecruitStudentController extends BaseController {
 		return "modules/recruit/student/recruitStudentBaodao";
 	}
 	
-	//@RequiresPermissions("recruit:student:recruitStudent:view")
+	@RequiresPermissions("recruit:student:recruitStudent:view")
 	@RequestMapping(value = {"list"})
 	public String list(RecruitStudent recruitStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
@@ -141,7 +141,7 @@ public class RecruitStudentController extends BaseController {
 		return "modules/recruit/student/recruitStudentList";
 	}
 
-	//@RequiresPermissions("recruit:student:recruitStudent:view")
+	@RequiresPermissions("recruit:student:recruitStudent:view")
 	@RequestMapping(value = "form")
 	public String form(RecruitStudent recruitStudent, Model model) {
 		model.addAttribute("recruitStudent", recruitStudent);
@@ -157,7 +157,7 @@ public class RecruitStudentController extends BaseController {
 		return null;
 	}
 
-	//@RequiresPermissions("recruit:student:recruitStudent:edit")
+	@RequiresPermissions("recruit:student:recruitStudent:edit")
 	@RequestMapping(value = "save")
 	public String save(RecruitStudent recruitStudent, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, recruitStudent)){
@@ -168,7 +168,7 @@ public class RecruitStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
 	}
 	
-	//@RequiresPermissions("recruit:student:recruitStudent:edit")
+	@RequiresPermissions("recruit:student:recruitStudent:edit")
 	@RequestMapping(value = "baodao")
 	public String baodao(Model model, RedirectAttributes redirectAttributes) {
 		User user = UserUtils.getUser();
@@ -273,7 +273,7 @@ public class RecruitStudentController extends BaseController {
 	}
 	
 	
-	//@RequiresPermissions("recruit:student:recruitStudent:edit")
+	@RequiresPermissions("recruit:student:recruitStudent:edit")
 	@RequestMapping(value = "assign")
 	public String assign(String majorId,String classname,String id_card_str, RedirectAttributes redirectAttributes) {
 		String[] id_cards = id_card_str.split(",");
@@ -500,7 +500,7 @@ public class RecruitStudentController extends BaseController {
 	 * @param redirectAttributes
 	 * @return
 	 */
-	//@RequiresPermissions("recruit:student:recruitStudent:edit")
+	@RequiresPermissions("recruit:student:recruitStudent:edit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
 		
@@ -589,7 +589,6 @@ public class RecruitStudentController extends BaseController {
 	public String exportView(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
 
 		return "modules/recruit/student/exportView";
-
 	}
 	
 	@RequestMapping(value = "ajaxReport")
@@ -633,9 +632,15 @@ public class RecruitStudentController extends BaseController {
     public String exportFile(String classno, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
 			StringBuffer sb = new StringBuffer();
-			
-            if(!StringUtils.isAllLowerCase(classno)) {
+			if(org.springframework.util.StringUtils.isEmpty(classno)) {
+        		throw new IllegalArgumentException("数据异常,[classno]不允许为空");
+        	}
+            if(!org.springframework.util.StringUtils.isEmpty(classno)) {
+            	
             	Office entity = officeService.get(classno);
+            	if(org.springframework.util.StringUtils.isEmpty(entity)) {
+            		throw new RuntimeException("数据异常,根据班号:"+classno + "未查找到对应的班级信息");
+            	}
             	String majorName = entity.getParent().getName();
             	Office major = officeService.getOfficeByName(majorName);
             	String departmentName = major.getParent().getName();

@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>用户管理</title>
+<title>导出数据</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -71,7 +71,10 @@
 </script>
 </head>
 <body>
-
+<ul class="nav nav-tabs">
+		<li class="active"><a href="#">数据统计</a></li>
+		
+	</ul>
 	<form id="searchForm"
 		method="post" class="breadcrumb form-search ">
 		

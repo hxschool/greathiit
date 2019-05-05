@@ -97,8 +97,6 @@ public class RsScoreBillController extends BaseController {
 					sortList.add(scoreBill);
 					successNum++;
 				}catch(ConstraintViolationException ex){
-					
-
 					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
 					for (String message : messageList){
 						failureMsg.append(message+"; ");
@@ -113,24 +111,21 @@ public class RsScoreBillController extends BaseController {
 			Double grade = Double.valueOf(config.getValue());
 			for(RsScoreBill scoreBill:sortList) {
 				if(org.springframework.util.StringUtils.isEmpty(scoreBill.getZf())) {
-					//未参加考试
 					scoreBill.setStatus("5");
 					rsScoreBillService.save(scoreBill);
 					continue;
 				}
-				if(Double.valueOf(scoreBill.getZf())==0||Double.valueOf(scoreBill.getZf())<grade) {
+				if (Double.valueOf(scoreBill.getZf()) == 0 || Double.valueOf(scoreBill.getZf()) < grade) {
 					scoreBill.setStatus("4");
 					rsScoreBillService.save(scoreBill);
 					continue;
 				}
-				Double cj = Double.valueOf(scoreBill.getCj());
+				Double cj = Double.valueOf(scoreBill.getZf());
 				if(cj>=grade) {
-					
 					if(scoreBillHandler(scoreBill,1)) {
 						continue;
 					}
 				}else {
-					//分数过低
 					scoreBill.setStatus("4");
 				}
 				rsScoreBillService.save(scoreBill);
@@ -143,7 +138,7 @@ public class RsScoreBillController extends BaseController {
 			e.printStackTrace();
 			addMessage(redirectAttributes, "导入用户失败！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/out/score/bill/list?repage";
+		return "redirect:" + adminPath + "/out/score/bill/im?repage";
 	}
 	
 	private boolean scoreBillHandler(RsScoreBill scoreBill,int index) {

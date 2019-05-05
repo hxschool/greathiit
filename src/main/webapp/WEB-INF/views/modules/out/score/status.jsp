@@ -32,6 +32,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			
+			
 			<li><label>考试号：</label>
 				<form:input path="ksh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
@@ -41,9 +42,20 @@
 			<li><label>身份证号码：</label>
 				<form:input path="sfzh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>专业调剂：</label>
-				<select name="zytj"  class="input-medium" ><option value="">请选择</option><option value="是">是</option><option value="否">否</option></select>
+			<li class="clearfix"></li>
+			<li><label>学期：</label>
+				<select name="termYear" class="input-medium" style="width:175px">
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+				</select>
 			</li>
+			<li><label>专业调剂：</label>
+				<select name="zytj" class="input-medium" style="width: 175px"><option
+						value="">请选择</option>
+					<option value="是">是</option>
+					<option value="否">否</option></select></li>
 			
 			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>

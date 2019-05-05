@@ -45,7 +45,14 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			
+			<li><label>学期：</label>
+				<select name="termYear" style="width: 200px;">
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+				</select>
+			</li>
 			<li><label>考试号：</label>
 				<form:input path="ksh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>

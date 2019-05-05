@@ -28,6 +28,7 @@ public class Global {
 	public final static String SYSCONFIG_EXAM= "exam";//单考单招
 	public final static String SYSCONFIG_SELECT= "select";//选课
 	public final static String SYSCONFIG_WELCOME= "welcome";//选课
+	public final static String SYSCONFIG_EXPORT= "export";//选课
 
 	public static List<String> weeks = new ArrayList();
 	static {

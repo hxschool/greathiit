@@ -51,7 +51,7 @@
 		
 			
 			<li><label>学期：</label>
-				<select name="termYear" style="width: 200px;">
+				<select name="termYear" style="width: 175px;">
 
 					<c:forEach items="${fns:termYear()}" var="termYear">
 						<option value="${termYear.key}"

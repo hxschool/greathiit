@@ -584,10 +584,9 @@ public class RecruitStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/recruit/student/recruitStudent/list?repage";
     }
-
+	//数据统计-导出报表
 	@RequestMapping(value = "exportView")
 	public String exportView(User user, HttpServletRequest request, HttpServletResponse response, Model model) {
-
 		return "modules/recruit/student/exportView";
 	}
 	
@@ -627,7 +626,7 @@ public class RecruitStudentController extends BaseController {
 		return map;
 
 	}
-	
+	//导出学生数据明细~点名册
     @RequestMapping(value = "export")
     public String exportFile(String classno, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {

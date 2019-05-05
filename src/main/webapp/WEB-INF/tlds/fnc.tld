@@ -65,8 +65,7 @@
 		<description>获得栏目列表</description>
 		<name>getCategoryListByIds</name>
 		<function-class>com.thinkgem.jeesite.modules.cms.utils.CmsUtils</function-class>
-		<function-signature>java.util.List
-			getCategoryListByIds(java.lang.String)</function-signature>
+		<function-signature>java.util.List getCategoryListByIds(java.lang.String)</function-signature>
 		<example>${fnc:getCategoryListByIds(categoryIds)}</example>
 	</function>
 

@@ -89,26 +89,27 @@ public class StudentController extends BaseController {
 	public String Student_Information_Detail(HttpServletRequest request, HttpServletResponse response, Model model) throws ParseException {
 		User user = UserUtils.getUser();
 		Student student = studentService.getStudentByStudentNumber(user.getNo());
-		if(org.springframework.util.StringUtils.isEmpty(student)&&user.getUserType().equals("6")) {
-			String idCard = user.getLoginName();
-			student = new Student();
-			student.setName(user.getName());
-			student.setStudent(user);
-			student.setPhone(user.getPhone());
-			student.setMail(user.getEmail());
-			if(IdcardUtils.validateIdCard18(idCard)) {
-				student.setIdCard(idCard);
-				student.setGender(IdcardUtils.getGenderByIdCard(idCard));
-				String birthday = IdcardUtils.getBirthByIdCard(idCard);
-				if(!org.springframework.util.StringUtils.isEmpty(birthday)) {
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
-					formatter.setLenient(false);
-					Date newDate = formatter.parse(birthday);
-					formatter = new SimpleDateFormat("yyyy-MM-dd");
-					student.setBirthday(DateUtils.parseDate(formatter.format(newDate)));
+		//初始化学生信息
+		if(org.springframework.util.StringUtils.isEmpty(student)) {
+				String idCard = user.getLoginName();
+				student = new Student();
+				student.setName(user.getName());
+				student.setStudent(user);
+				student.setPhone(user.getPhone());
+				student.setMail(user.getEmail());
+				if(IdcardUtils.validateIdCard18(idCard)) {
+					student.setIdCard(idCard);
+					student.setGender(IdcardUtils.getGenderByIdCard(idCard));
+					String birthday = IdcardUtils.getBirthByIdCard(idCard);
+					if(!org.springframework.util.StringUtils.isEmpty(birthday)) {
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+						formatter.setLenient(false);
+						Date newDate = formatter.parse(birthday);
+						formatter = new SimpleDateFormat("yyyy-MM-dd");
+						student.setBirthday(DateUtils.parseDate(formatter.format(newDate)));
+					}
 				}
-			}
-			studentService.save(student);
+				studentService.save(student);
 		}
 		model.addAttribute("student",student);		
 		return "modules/student/StudentInformationDetail";

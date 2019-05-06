@@ -91,7 +91,7 @@ public class TeacherClassController extends BaseController {
 		return list;
 	}
 	
-	//@RequiresPermissions("teacher:teacherClass:view")
+	@RequiresPermissions("teacher:teacherClass:view")
 	@RequestMapping("student")
 	public String student(Student student,  HttpServletRequest request, HttpServletResponse response, Model model) {
 		

@@ -83,8 +83,8 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>班级编号：</label>
-				<form:input path="clazz.id" htmlEscape="false" maxlength="255" class="input-medium"/>
+			<li><label>学生姓名：</label>
+				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>

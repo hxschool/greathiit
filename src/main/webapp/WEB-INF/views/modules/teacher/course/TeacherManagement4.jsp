@@ -89,7 +89,7 @@
 
 								<div class="div-inf-tbl">
 									<div class="div-result-import">
-										<form action="Teacher_Management_2_selectStuPer" method="post">
+										<form action="" method="post">
 											<h5>
 												${yearTerm}
 											</h5>

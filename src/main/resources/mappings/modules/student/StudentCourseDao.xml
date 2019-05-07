@@ -164,6 +164,10 @@
 				AND a.teacher_name = #{course.teacher.tchrName}
 			</if>
 			
+			<if test="course!=null and course!='' and course.teacher != null and course.teacher.teacherNumber!=null and course.teacher.teacherNumber != ''">
+				AND a.teacher_number = #{course.teacher.teacherNumber}
+			</if>
+			
 		 	<if test="clazzId != null and clazzId != ''">
  				and 
 			 case length(a.student_number) 

@@ -32,7 +32,27 @@
 	</ul><br/>
 	<form:form id="inputForm" modelAttribute="studentCourse" action="${ctx}/student/studentCourse/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
-		<sys:message content="${message}"/>		
+		<sys:message content="${message}"/>	
+	
+		
+		<div class="control-group">
+			<label class="control-label">课程编号：</label>
+			<div class="controls">
+				<p class="text-left" style="padding-top:3px;">${studentCourse.course.id}</p>
+			</div>
+		</div>	
+		<div class="control-group">
+			<label class="control-label">学号：</label>
+			<div class="controls">
+				<p class="text-left" style="padding-top:3px;">${studentCourse.student.studentNumber}</p>
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label">姓名：</label>
+			<div class="controls">
+				<p class="text-left" style="padding-top:3px;">${studentCourse.student.name}</p>
+			</div>
+		</div>
 		<div class="control-group">
 			<label class="control-label">课堂表现成绩：</label>
 			<div class="controls">
@@ -64,9 +84,9 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">school_year：</label>
+			<label class="control-label">学期：</label>
 			<div class="controls">
-				<form:input path="schoolYear" htmlEscape="false" maxlength="255" class="input-xlarge "/>
+				<form:input path="termYear" htmlEscape="false" maxlength="255" class="input-xlarge " readonly="readonly"/>
 			</div>
 		</div>
 		<div class="control-group">
@@ -75,20 +95,8 @@
 				<form:input path="workEvaValue" htmlEscape="false" class="input-xlarge "/>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">课程号：</label>
-			<div class="controls">
-				<form:input path="courseId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">学号：</label>
-			<div class="controls">
-				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
-			</div>
-		</div>
+		
+		
 		<div class="control-group">
 			<label class="control-label">状态标记：</label>
 			<div class="controls">

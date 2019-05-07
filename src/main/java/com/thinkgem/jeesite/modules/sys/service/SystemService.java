@@ -681,7 +681,7 @@ public class SystemService extends BaseService implements InitializingBean {
 	public String getRsStudentId(){
 		return systemDao.getRsStudentId();
 	}
-	
+	@Transactional(readOnly = false)
 	public String getSequence(String serialNo){
 		return systemDao.getSequence(serialNo);
 	}

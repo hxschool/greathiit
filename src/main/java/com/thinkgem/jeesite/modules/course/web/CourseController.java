@@ -41,14 +41,22 @@ import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
+import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
+import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
 
 /**
  * 课程基本信息Controller
@@ -75,6 +83,8 @@ public class CourseController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private SysConfigService sysConfigService;
+
+	private SysConfig config;
 	@Autowired
 	private DictService dictService;
 	@ModelAttribute
@@ -86,13 +96,18 @@ public class CourseController extends BaseController {
 		if (entity == null){
 			entity = new Course();
 		}
+		config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		model.addAttribute("config", config);
 		return entity;
 	}
 	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			course.setTeacher(UserUtils.getTeacher());
+		}
 		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
@@ -636,47 +651,6 @@ public class CourseController extends BaseController {
 	public String selectNoteByCursId(Course course, RedirectAttributes redirectAttributes) {
 		return "modules/course/detail/courseDetail8";
 	}
-	
-	@RequiresPermissions("student:studentCourse:edit")
-    @RequestMapping(value = "import/studentCourse")
-    public String importFileTemplate(Course course,HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		try {
-            String fileName = "成绩数据导入模板.xlsx";
-    		List<StudentCourse> list = Lists.newArrayList(); list.add(new StudentCourse());
-    		ExportExcel exportExcel = new ExportExcel();
-    		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
-    		exportExcel.init("成绩数据",headerList);
-    		Row row = exportExcel.addRow();
-    		Cell cell = row.createCell(0);
-    		cell.setCellValue("学期");
-    		Cell xueqiCell = row.createCell(1);
-    		xueqiCell.setCellValue(course.getCursYearTerm());
-    		
-    		Cell clazzCell = row.createCell(2);
-    		clazzCell.setCellValue("课程名称");
-    		Cell courseCell = row.createCell(3);
-    		courseCell.setCellValue(course.getCursName());
-    		
-    		Cell courseIdLabelCell = row.createCell(4);
-    		courseIdLabelCell.setCellValue("课程编码");
-    		Cell courseIdValueCell = row.createCell(5);
-    		courseIdValueCell.setCellValue(course.getId());
-    		
-    		
-    		Cell teacherLabelCell = row.createCell(6);
-    		teacherLabelCell.setCellValue("任课教师");
-    		Cell teacherValueCell = row.createCell(7);
-    		teacherValueCell.setCellValue(course.getTeacher().getTchrName());
-    		
-    		exportExcel.setHeader(headerList);
-    		
-    		exportExcel.setDataList(list).write(response, fileName).dispose();
-    		
-		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
-		}
-		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
-    }
 	
 	@RequestMapping(value = "ajaxCourse")
 	@ResponseBody

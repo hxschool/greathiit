@@ -35,12 +35,18 @@ import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
+import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
 
 /**
  * 学生成绩Controller
@@ -50,13 +56,22 @@ import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 @Controller
 @RequestMapping(value = "${adminPath}/student/studentCourse")
 public class StudentCourseController extends BaseController {
-
+	
+	@Autowired
+	private TeacherClassService teacherClassService;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private SelectCourseService selectCourseService;
 	@Autowired
 	private StudentCourseService studentCourseService;
 	@Autowired
 	private CourseService courseService;
+	@Autowired
+	private SysConfigService sysConfigService;
+	private SysConfig config;
 	@ModelAttribute
-	public StudentCourse get(@RequestParam(required=false) String id) {
+	public StudentCourse get(@RequestParam(required=false) String id,Model model) {
 		StudentCourse entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = studentCourseService.get(id);
@@ -64,6 +79,8 @@ public class StudentCourseController extends BaseController {
 		if (entity == null){
 			entity = new StudentCourse();
 		}
+		config = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		model.addAttribute("config",config);
 		return entity;
 	}
 	
@@ -89,13 +106,15 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
+		
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {
 			Course course = new Course();
-			Teacher teacher = new Teacher();
-			teacher.setTeacherNumber(user.getNo());
-			course.setTeacher(teacher);
+			course.setTeacher(UserUtils.getTeacher());
 			studentCourse.setCourse(course);
+		}
+		if(org.springframework.util.StringUtils.isEmpty(studentCourse.getTermYear())) {
+			studentCourse.setTermYear(config.getTermYear());
 		}
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		model.addAttribute("page", page);
@@ -128,7 +147,7 @@ public class StudentCourseController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
 	}
 
-	@RequiresPermissions("student:studentCourse:edit")
+	@RequiresPermissions("student:studentCourse:export")
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
@@ -137,12 +156,12 @@ public class StudentCourseController extends BaseController {
     		new ExportExcel("成绩数据", StudentCourse.class).setDataList(page.getList()).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "成绩数据！失败信息："+e.getMessage());
 		}
-		return "redirect:" + adminPath + "/sys/user/list?repage";
+		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
 	
-	@RequiresPermissions("student:studentCourse:edit")
+	@RequiresPermissions("student:studentCourse:import")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
 		
@@ -178,7 +197,6 @@ public class StudentCourseController extends BaseController {
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
 	
-	@RequiresPermissions("student:studentCourse:edit")
     @RequestMapping(value = "import/template")
     public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
@@ -209,4 +227,82 @@ public class StudentCourseController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
+	
+	
+	@RequiresPermissions("student:studentCourse:export")
+    @RequestMapping(value = "export/student")
+    public String importFileTemplate(Course course,HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		
+		try {
+			User user = UserUtils.getUser();
+            String fileName = "成绩数据导入模板.xlsx";
+    		List<StudentCourse> list = Lists.newArrayList(); 
+    		
+    		if(user.isAdmin()) {
+    			list.add(new StudentCourse());
+    		}else {
+    			TeacherClass teacherClass = new TeacherClass();
+    			teacherClass.setTeacherNumber(user.getNo());
+    			List<TeacherClass> teacherList = teacherClassService.findList(teacherClass);
+    			List<String> clazzNumbers = Lists.newArrayList(); 
+    			logger.info("导入班级学生信息");
+    			for(TeacherClass tc:teacherList) {
+    				clazzNumbers.add(tc.getClazz().getId());
+    			}
+    			Student student = new Student();
+				student.setClazzNumbers(clazzNumbers);
+				List<Student> students = studentService.findList(student);
+				
+				for(Student st : students) {
+					StudentCourse sc = new StudentCourse();
+					sc.setStudentNumber(st.getStudentNumber());
+					sc.setStudentName(st.getName());
+					list.add(sc);
+				}
+				logger.info("导入选课学生信息");
+				SelectCourse selectCourse = new SelectCourse();
+				selectCourse.setCourse(course);;
+				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+				for(SelectCourse scc:selectCourses) {
+					StudentCourse sc = new StudentCourse();
+					sc.setStudentNumber(scc.getStudent().getNo());
+					sc.setStudentName(scc.getStudent().getName());
+					list.add(sc);
+				}
+    		}
+    		ExportExcel exportExcel = new ExportExcel();
+    		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
+    		exportExcel.init("成绩数据",headerList);
+    		Row row = exportExcel.addRow();
+    		Cell cell = row.createCell(0);
+    		cell.setCellValue("学期");
+    		Cell xueqiCell = row.createCell(1);
+    		xueqiCell.setCellValue(course.getCursYearTerm());
+    		
+    		Cell clazzCell = row.createCell(2);
+    		clazzCell.setCellValue("课程名称");
+    		Cell courseCell = row.createCell(3);
+    		courseCell.setCellValue(course.getCursName());
+    		
+    		Cell courseIdLabelCell = row.createCell(4);
+    		courseIdLabelCell.setCellValue("课程编码");
+    		Cell courseIdValueCell = row.createCell(5);
+    		courseIdValueCell.setCellValue(course.getId());
+    		
+    		
+    		Cell teacherLabelCell = row.createCell(6);
+    		teacherLabelCell.setCellValue("任课教师");
+    		Cell teacherValueCell = row.createCell(7);
+    		teacherValueCell.setCellValue(course.getTeacher().getTchrName());
+    		
+    		exportExcel.setHeader(headerList);
+    		
+    		exportExcel.setDataList(list).write(response, fileName).dispose();
+    		
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
+    }
+	
 }

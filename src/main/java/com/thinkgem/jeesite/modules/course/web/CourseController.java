@@ -105,7 +105,7 @@ public class CourseController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
-		if(!user.isAdmin()) {
+		if(!user.isAdmin()&& !org.springframework.util.StringUtils.isEmpty(user.getUserType())&&!user.getUserType().equals("1")) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 		course.setCursYearTerm(config.getTermYear());

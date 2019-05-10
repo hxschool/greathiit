@@ -134,7 +134,7 @@ public class XuankeController extends BaseController {
 	public String index(Course course, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		boolean isIndex = true;
 		if(StringUtils.isEmpty(course.getCursProperty())) {
-			course.setCursProperty("20");
+			course.setCursProperty("50");
 		}
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(sysConfig.getTermYear());

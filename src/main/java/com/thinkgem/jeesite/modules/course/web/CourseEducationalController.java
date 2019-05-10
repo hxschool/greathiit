@@ -130,6 +130,7 @@ public class CourseEducationalController extends BaseController {
 						courseEducational.setIsNewRecord(true);
 						courseEducational.setId(courseEducational.getCursNum());
 						courseEducationalService.save(courseEducational);
+						successNum++;
 					}else{
 						failureMsg.append("<br/>课程编码 "+ce.getCursNum()+" 已存在; ");
 						failureNum++;

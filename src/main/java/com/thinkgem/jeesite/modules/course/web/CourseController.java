@@ -83,7 +83,6 @@ public class CourseController extends BaseController {
 	private SystemService systemService;
 	@Autowired
 	private SysConfigService sysConfigService;
-
 	private SysConfig config;
 	@Autowired
 	private DictService dictService;
@@ -92,6 +91,8 @@ public class CourseController extends BaseController {
 		Course entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = courseService.get(id);
+			CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(id);
+			entity.setCourseTeachingMode(courseTeachingMode);
 		}
 		if (entity == null){
 			entity = new Course();

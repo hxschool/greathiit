@@ -43,9 +43,15 @@
 		<div class="control-group"  id="element_course_educational">
 			<label class="control-label">课程名称：</label>
 			<div class="controls">
+
 				<select id="cursNum" name="cursNum" class="cursNum input-medium"
-					style="width: 200px;"><option>请选择</option></select> <input
-					type="hidden" id="cursName" name="cursName" readonly="readonly">
+					style="width: 200px;">
+					<option>请选择</option>
+					<c:if test="${course.id!=null and course.id!=''}" >
+					<option value="${course.cursNum}" selected>${course.cursName}</option>
+					</c:if>
+					</select> <input
+					type="hidden" id="cursName" name="cursName" value="${course.cursName}" readonly="readonly">
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
@@ -110,7 +116,7 @@
 		<div class="control-group">
 			<label class="control-label">任课教师：</label>
 			<div class="controls">
-				${fns:getUser().name} 
+				${course.teacher.tchrName }
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

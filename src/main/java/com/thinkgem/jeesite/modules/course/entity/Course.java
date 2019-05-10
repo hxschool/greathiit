@@ -45,6 +45,7 @@ public class Course extends DataEntity<Course> {
 	private int upperLimit;//班额上限
 	private int lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
+	private CourseTeachingMode courseTeachingMode;//教学模式
 
 	private List<String> item;
 	
@@ -260,6 +261,14 @@ public class Course extends DataEntity<Course> {
 
 	public void setLowerLimit(int lowerLimit) {
 		this.lowerLimit = lowerLimit;
+	}
+
+	public CourseTeachingMode getCourseTeachingMode() {
+		return courseTeachingMode;
+	}
+
+	public void setCourseTeachingMode(CourseTeachingMode courseTeachingMode) {
+		this.courseTeachingMode = courseTeachingMode;
 	}
 	
 }

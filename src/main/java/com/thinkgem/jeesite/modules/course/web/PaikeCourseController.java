@@ -573,7 +573,7 @@ public class PaikeCourseController extends BaseController {
 					String tchr_title = selectCourse[8];// 职称
 					String curs_credit = selectCourse[9];// 学分
 					String curs_class_hour = selectCourse[10];// 学时
-					String course_learning_model = selectCourse[11];// 授课类型
+					String teac_method = selectCourse[11];// 授课类型
 					String remark = selectCourse[14];// 备注
 					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);
 					if(StringUtils.isEmpty(curs_num)||curs_num.equals("——")) {

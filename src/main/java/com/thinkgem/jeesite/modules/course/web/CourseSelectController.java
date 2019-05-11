@@ -31,7 +31,9 @@ import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
 import com.thinkgem.jeesite.modules.course.web.param.SelectCourseOfficeExt;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
@@ -40,7 +42,6 @@ import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
@@ -69,6 +70,8 @@ public class CourseSelectController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private SysConfigService sysConfigService;
+	@Autowired
+	private CourseTeachingModeService courseTeachingModeService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -180,6 +183,10 @@ public class CourseSelectController extends BaseController {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 		courses = courseService.findList(course);
+		for(Course c:courses) {
+			c.setCourseTeachingMode(courseTeachingModeService.getCourseTeachingModeByCourse(c.getId()));
+		}
+		
 		selectCourse.setCourses(courses);
 		
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);

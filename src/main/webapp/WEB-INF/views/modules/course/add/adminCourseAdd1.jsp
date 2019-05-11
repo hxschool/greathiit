@@ -234,7 +234,7 @@
 							<div class="controls">
 								<select name="teacMethod" style="width:200px;">
 									<option value="" label=""/>
-									<c:forEach items="${fns:getDictList('course_learning_model')}" var="dict">
+									<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
 										<option value="${dict.value}">${dict.label}</option>
 									</c:forEach>
 								</select>

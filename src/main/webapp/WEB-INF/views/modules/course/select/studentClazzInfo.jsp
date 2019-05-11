@@ -51,7 +51,7 @@
 				</td>
 				<td>
 				
-				${fns:getDictLabel(selectCourse.course.cursLearningModel, "course_learning_model", "未知")}
+				${fns:getDictLabel(selectCourse.course.courseTeachingMode.teacMethod, "teac_method", "未知")}
 				</td>
 				<td>
 					${clazz.parent }

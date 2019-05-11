@@ -37,10 +37,13 @@ public class SysConfigController extends BaseController {
 	@Autowired
 	private CourseScheduleService courseScheduleService;
 	@ModelAttribute
-	public SysConfig get(@RequestParam(required=false) String id) {
+	public SysConfig get(@RequestParam(required=false) String id,@RequestParam(required=false) String module) {
 		SysConfig entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = sysConfigService.get(id);
+		}
+		if (StringUtils.isNotBlank(module)){
+			entity = sysConfigService.getModule(module);
 		}
 		if (entity == null){
 			entity = new SysConfig();
@@ -62,15 +65,26 @@ public class SysConfigController extends BaseController {
 		model.addAttribute("sysConfig", sysConfig);
 		return "modules/sys/sysConfigForm";
 	}
+	
+	@RequiresPermissions("sys:sysConfig:view")
+	@RequestMapping(value = "config")
+	public String config(SysConfig sysConfig, Model model) {
+		model.addAttribute("sysConfig", sysConfig);
+		return "modules/sys/sysConfigConfig";
+	}
 
 	@RequiresPermissions("sys:sysConfig:edit")
 	@RequestMapping(value = "save")
-	public String save(SysConfig sysConfig, Model model, RedirectAttributes redirectAttributes) {
+	public String save(SysConfig sysConfig,String cfg, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, sysConfig)){
 			return form(sysConfig, model);
 		}
 		sysConfigService.save(sysConfig);
+		
 		addMessage(redirectAttributes, "保存全局系统配置成功");
+		if(!org.springframework.util.StringUtils.isEmpty(cfg)) {
+			return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/config?id="+sysConfig;
+		}
 		return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/?repage";
 	}
 	
@@ -85,7 +99,7 @@ public class SysConfigController extends BaseController {
 	@RequiresPermissions("sys:sysConfig:edit")
 	@RequestMapping(value = "schedule")
 	public String schedule(SysConfig sysConfig,Model model) {
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		model.addAttribute("config", config);
 		return "modules/sys/sysConfigSchedule";
 	}

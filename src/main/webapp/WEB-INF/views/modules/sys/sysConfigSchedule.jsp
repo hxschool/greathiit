@@ -55,7 +55,7 @@
 							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
 					</c:forEach>
 				</select>
-				 默认学期设置:${config.termYear}
+				 默认学期设置:${sysConfig.termYear}
 			</div>
 
 		</div>

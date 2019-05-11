@@ -352,6 +352,11 @@ public class User extends DataEntity<User> {
 	}
 	
 	public boolean isAdmin(){
+		for(Role role:getRoleList()) {
+			if(role.getDataScope().equals("1")||role.getDataScope().equals("2")||role.getRoleType().equals("security-role")) {
+				return true;
+			}
+		}
 		return isAdmin(this.id);
 	}
 	

@@ -50,8 +50,14 @@
 		<div class="control-group">
 			<label class="control-label">学期：</label>
 			<div class="controls">
-				<form:input path="termYear" htmlEscape="false" maxlength="12" class="input-xlarge required"/>
-				yyyy-yyyy-01
+				<select name="termYear" style="width: 200px;">
+
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+				</select>
+				 默认学期设置:${sysConfig.termYear}
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

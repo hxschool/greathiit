@@ -167,7 +167,7 @@
 												<td>${course.cursCredit}</td>
 												<td>
 												<!-- <c:if test="${course.cursLearningModel=='03'}">
-												${fns:getDictLabel(course.cursLearningModel, "course_learning_model", "未知")}
+												${fns:getDictLabel(course.cursLearningModel, "teac_method", "未知")}
 												</c:if> <c:if test="${course.cursLearningModel!='03'}">
 														<c:if test="${!empty courseScheduleMap[course.id]}">
 															<c:set var="timeAdd"

@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.common.utils.excel.fieldtype.TeacherType;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
@@ -47,7 +48,7 @@ public class Course extends DataEntity<Course> {
 	private Integer lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
 	private CourseTeachingMode courseTeachingMode;//教学模式
-
+	private String teachingMode;
 	private List<String> item;
 	
 	public List<String> getItem() {
@@ -199,7 +200,7 @@ public class Course extends DataEntity<Course> {
 	public void setCursForm(String cursForm) {
 		this.cursForm = cursForm;
 	}
-	@ExcelField(title="教师姓名", align=2, sort=9)
+	@ExcelField(title="教师姓名", align=2, sort=9,fieldType=TeacherType.class)
 	public Teacher getTeacher() {
 		return teacher;
 	}
@@ -271,7 +272,18 @@ public class Course extends DataEntity<Course> {
 	public void setLowerLimit(Integer lowerLimit) {
 		this.lowerLimit = lowerLimit;
 	}
-	@ExcelField(title="教学模式",  align=2, sort=10)
+	
+	
+	@ExcelField(title="教学模式",  align=2, sort=10,dictType="teac_method")
+	public String getTeachingMode() {
+		return teachingMode;
+	}
+
+	public void setTeachingMode(String teachingMode) {
+		this.teachingMode = teachingMode;
+	}
+
+
 	public CourseTeachingMode getCourseTeachingMode() {
 		return courseTeachingMode;
 	}

@@ -698,12 +698,13 @@ public class CourseController extends BaseController {
 					
 					String courseId = String.valueOf(snowflakeIdWorker.nextId());
 					course.setIsNewRecord(true);
+					course.setId(courseId);
+					course.setCursEduNum(course.getCursNum());
 					courseService.save(course);
 					
-					CourseTeachingMode courseTeachingMode = course.getCourseTeachingMode();
-					if(!org.springframework.util.StringUtils.isEmpty(courseTeachingMode)&&!org.springframework.util.StringUtils.isEmpty(courseTeachingMode.getTeacMethod())) {
-						String teachingMode = DictUtils.getDictValue(courseTeachingMode.getTeacMethod(),"", "在线模式");
-						courseTeachingMode.setTeacMethod(teachingMode);
+					if(!org.springframework.util.StringUtils.isEmpty(course.getTeachingMode())) {
+						CourseTeachingMode courseTeachingMode = new CourseTeachingMode();
+						courseTeachingMode.setTeacMethod(course.getTeachingMode());
 						courseTeachingMode.setCourseId(courseId);
 						courseTeachingModeService.save(courseTeachingMode);
 					}

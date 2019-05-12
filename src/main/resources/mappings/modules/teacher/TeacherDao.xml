@@ -78,6 +78,10 @@ from teacher a left join sys_user b on a.teacher_number = b.no where 1=1
 <if test="teacherNumber!=null and teacherNumber!=''">  
 and a.teacher_number=#{teacherNumber}
 </if>
+
+<if test="tchrName!=null and tchrName!=''">  
+and a.tchr_name=#{tchrName}
+</if>
     </select>
     
 	<select id="get" resultType="Teacher">

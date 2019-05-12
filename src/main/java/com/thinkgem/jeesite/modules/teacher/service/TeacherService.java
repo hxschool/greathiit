@@ -36,6 +36,11 @@ public class TeacherService extends CrudService<TeacherDao, Teacher> {
 		return teacherDao.getTeacherByTeacherNumber(teacherNumber);
 	}
 	
+	public Teacher getTeacherInfo(Teacher teacher) {
+		return teacherDao.getTeacherInfo(teacher);
+	}
+
+	
 	public Teacher get(Teacher teacher) {
 		return super.get(teacher);
 	}

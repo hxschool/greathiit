@@ -63,5 +63,10 @@ public class CourseTeachingMode extends DataEntity<CourseTeachingMode> {
 	public void setCourseId(String courseId) {
 		this.courseId = courseId;
 	}
+
+	@Override
+	public String toString() {
+		return teacMethod;
+	}
 	
 }

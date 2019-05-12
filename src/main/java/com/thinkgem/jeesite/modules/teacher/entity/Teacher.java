@@ -233,5 +233,10 @@ public class Teacher extends DataEntity<Teacher> {
 		this.teacherNumber = teacherNumber;
 	}
 
+	@Override
+	public String toString() {
+		return tchrName;
+	}
+
 	
 }

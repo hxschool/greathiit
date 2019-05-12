@@ -8,6 +8,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
@@ -42,8 +43,8 @@ public class Course extends DataEntity<Course> {
 	private String cursTotal;
 	private String cursForm;
 	private String cursStatus;
-	private int upperLimit;//班额上限
-	private int lowerLimit;//班额下限
+	private Integer upperLimit;//班额上限
+	private Integer lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
 	private CourseTeachingMode courseTeachingMode;//教学模式
 
@@ -66,6 +67,7 @@ public class Course extends DataEntity<Course> {
 	}
 
 	@Length(min=1, max=255, message="课程编号长度必须介于 1 和 255 之间")
+	@ExcelField(title="课程编码",  align=2, sort=3)
 	public String getCursNum() {
 		return cursNum;
 	}
@@ -75,6 +77,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=1, max=255, message="课程名称长度必须介于 1 和 255 之间")
+	@ExcelField(title="课程名称",  align=2, sort=4)
 	public String getCursName() {
 		return cursName;
 	}
@@ -102,6 +105,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="学时长度必须介于 0 和 255 之间")
+	@ExcelField(title="学时",  align=2, sort=6)
 	public String getCursClassHour() {
 		return cursClassHour;
 	}
@@ -109,7 +113,7 @@ public class Course extends DataEntity<Course> {
 	public void setCursClassHour(String cursClassHour) {
 		this.cursClassHour = cursClassHour;
 	}
-	
+	@ExcelField(title="学分",  align=2, sort=5)
 	public String getCursCredit() {
 		return cursCredit;
 	}
@@ -118,7 +122,8 @@ public class Course extends DataEntity<Course> {
 		this.cursCredit = cursCredit;
 	}
 	
-	@Length(min=0, max=255, message="curs_year_term长度必须介于 0 和 255 之间")
+	@Length(min=0, max=255, message="学期长度必须介于 0 和 255 之间")
+	@ExcelField(title="学期",  align=2, sort=1)
 	public String getCursYearTerm() {
 		return cursYearTerm;
 	}
@@ -164,6 +169,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="课程性质长度必须介于 0 和 255 之间")
+	@ExcelField(title="课程性质",  align=2, sort=2,dictType="course_property")
 	public String getCursProperty() {
 		return cursProperty;
 	}
@@ -174,6 +180,7 @@ public class Course extends DataEntity<Course> {
 	
 
 	@Length(min=0, max=255, message="课程类型长度必须介于 0 和 255 之间")
+	@ExcelField(title="课程类型",  align=2, sort=7,dictType="course_curs_type")
 	public String getCursType() {
 		return cursType;
 	}
@@ -182,15 +189,17 @@ public class Course extends DataEntity<Course> {
 		this.cursType = cursType;
 	}
 	
-	
+	@ExcelField(title="考核形式",  align=2, sort=8,dictType="course_curs_form")
 	public String getCursForm() {
 		return cursForm;
 	}
+	
+
 
 	public void setCursForm(String cursForm) {
 		this.cursForm = cursForm;
 	}
-
+	@ExcelField(title="教师姓名", align=2, sort=9)
 	public Teacher getTeacher() {
 		return teacher;
 	}
@@ -246,23 +255,23 @@ public class Course extends DataEntity<Course> {
 	public void setCursEduNum(String cursEduNum) {
 		this.cursEduNum = cursEduNum;
 	}
-
-	public int getUpperLimit() {
+	@ExcelField(title="班额上限",  align=2, sort=11)
+	public Integer getUpperLimit() {
 		return upperLimit;
 	}
 
-	public void setUpperLimit(int upperLimit) {
+	public void setUpperLimit(Integer upperLimit) {
 		this.upperLimit = upperLimit;
 	}
-
-	public int getLowerLimit() {
+	@ExcelField(title="班额下限",  align=2, sort=12)
+	public Integer getLowerLimit() {
 		return lowerLimit;
 	}
 
-	public void setLowerLimit(int lowerLimit) {
+	public void setLowerLimit(Integer lowerLimit) {
 		this.lowerLimit = lowerLimit;
 	}
-
+	@ExcelField(title="教学模式",  align=2, sort=10)
 	public CourseTeachingMode getCourseTeachingMode() {
 		return courseTeachingMode;
 	}
@@ -270,5 +279,8 @@ public class Course extends DataEntity<Course> {
 	public void setCourseTeachingMode(CourseTeachingMode courseTeachingMode) {
 		this.courseTeachingMode = courseTeachingMode;
 	}
-	
+	@Override
+	public String toString() {
+		return cursName;
+	}
 }

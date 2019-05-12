@@ -9,24 +9,29 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolationException;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
@@ -41,11 +46,6 @@ import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
-import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
-import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
-import com.thinkgem.jeesite.modules.student.entity.Student;
-import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
-import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -55,8 +55,7 @@ import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
-import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
-import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
+import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
 
 /**
  * 课程基本信息Controller
@@ -86,6 +85,8 @@ public class CourseController extends BaseController {
 	private SysConfig config;
 	@Autowired
 	private DictService dictService;
+	@Autowired
+	private TeacherService teacherService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -659,6 +660,95 @@ public class CourseController extends BaseController {
 		return courseService.get(course);
 	}
 	
+	@RequiresPermissions("course:course:view")
+    @RequestMapping(value = "export", method=RequestMethod.POST)
+    public String exportFile(Course course, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "课程数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            Page<Course> page = courseService.findPage(new Page<Course>(request, response, -1), course);
+    		new ExportExcel("课程数据", Course.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出用户失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/course/course/list?repage";
+    }
+	
+	/**
+	 * 导入用户数据
+	 * @param file
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("course:course:view")
+    @RequestMapping(value = "import", method=RequestMethod.POST)
+    public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) {
+		
+		try {
+			SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel ei = new ImportExcel(file, 1, 0);
+			List<Course> list = ei.getDataList(Course.class);
+			for (Course course : list){
+				try{
+					Teacher teacher = teacherService.getTeacherInfo(course.getTeacher());
+					course.setTeacher(teacher);
+					
+					String courseId = String.valueOf(snowflakeIdWorker.nextId());
+					course.setIsNewRecord(true);
+					courseService.save(course);
+					
+					CourseTeachingMode courseTeachingMode = course.getCourseTeachingMode();
+					if(!org.springframework.util.StringUtils.isEmpty(courseTeachingMode)&&!org.springframework.util.StringUtils.isEmpty(courseTeachingMode.getTeacMethod())) {
+						String teachingMode = DictUtils.getDictValue(courseTeachingMode.getTeacMethod(),"", "在线模式");
+						courseTeachingMode.setTeacMethod(teachingMode);
+						courseTeachingMode.setCourseId(courseId);
+						courseTeachingModeService.save(courseTeachingMode);
+					}
+					
+					successNum++;
+				}catch(ConstraintViolationException ex){
+					failureMsg.append("<br/>课程名 "+course.getCursName()+" 导入失败：");
+					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
+					for (String message : messageList){
+						failureMsg.append(message+"; ");
+						failureNum++;
+					}
+				}catch (Exception ex) {
+					failureMsg.append("<br/>课程名 "+course.getCursName()+" 导入失败："+ex.getMessage());
+				}
+			}
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条课程，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条课程"+failureMsg);
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入课程失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/course/course/list?repage";
+    }
+	
+	/**
+	 * 下载导入用户数据模板
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 */
+	@RequiresPermissions("course:course:view")
+    @RequestMapping(value = "import/template")
+    public String importFileTemplate(HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+            String fileName = "课程数据导入模板.xlsx";
+    		List<Course> list = Lists.newArrayList(); list.add(new Course());
+    		new ExportExcel("课程数据", Course.class, 2).setDataList(list).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/course/course/list?repage";
+    }
 	
 
 }

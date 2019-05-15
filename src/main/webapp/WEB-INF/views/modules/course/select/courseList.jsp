@@ -31,7 +31,7 @@
 
 			<li><label>任课教师：</label> <form:input path="teacher.tchrName"
 					htmlEscape="false" maxlength="50" class="input-medium" /></li>
-			<li class="clearfix"></li>
+			
 		
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>

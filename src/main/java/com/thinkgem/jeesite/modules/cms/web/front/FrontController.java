@@ -513,8 +513,8 @@ public class FrontController extends BaseController{
 	/**
 	 * 显示内容
 	 */
-	@RequestMapping(value = "view-{categoryId}-{contentId}${urlSuffix}")
-	public String view(@PathVariable String categoryId, @PathVariable String contentId, Model model) {
+	@RequestMapping(value = {"view-{categoryId}-{contentId}${urlSuffix}","cms-{categoryId}-{contentId}${urlSuffix}"})
+	public String view(@PathVariable String categoryId, @PathVariable String contentId,HttpServletRequest request, Model model) {
 		Category category = categoryService.get(categoryId);
 		if (category==null){
 			Site site = CmsUtils.getSite(Site.defaultSiteId());

@@ -48,7 +48,7 @@
 			<label class="control-label">归属栏目:</label>
 			<div class="controls">
                 <sys:treeselect id="category" name="category.id" value="${article.category.id}" labelName="category.name" labelValue="${article.category.name}"
-					title="栏目" url="/cms/category/treeData" module="article" selectScopeModule="true" notAllowSelectRoot="false" notAllowSelectParent="true" cssClass="required"/>&nbsp;
+					title="栏目" url="/cms/category/treeData" module="article" selectScopeModule="true" notAllowSelectRoot="false" notAllowSelectParent="true" cssClass="required" />&nbsp;
                 <span>
                     <input id="url" type="checkbox" onclick="if(this.checked){$('#linkBody').show()}else{$('#linkBody').hide()}$('#link').val()"><label for="url">外部链接</label>
                 </span>
@@ -68,7 +68,7 @@
         <div id="linkBody" class="control-group" style="display:none">
             <label class="control-label">外部链接:</label>
             <div class="controls">
-                <form:input path="link" htmlEscape="false" maxlength="200" class="input-xlarge"/>
+                <form:input path="link" htmlEscape="false" maxlength="200" class="input-xlarge" readonly="true"/>
                 <span class="help-inline">绝对或相对地址。</span>
             </div>
         </div>

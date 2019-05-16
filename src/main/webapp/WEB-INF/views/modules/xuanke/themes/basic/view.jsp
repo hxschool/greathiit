@@ -38,7 +38,7 @@
 								<div class="col-md-6">
 									<ol class="breadcrumb">
 										<li><a href="${articleLink }">${article.articleData.copyfrom }</a></li>
-										<li class="active">文章详情</li>
+										
 									</ol>
 									<h1 class="h3 title" id="articleTitle">
 										<a href="${articleLink }"> ${article.title }</a>

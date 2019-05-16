@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.common.service;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.Reflections;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * Service基类
@@ -50,9 +55,30 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @return
 	 */
 	public List<T> findList(T entity) {
+		isAdmin(entity);
 		return dao.findList(entity);
 	}
 	
+	private void isAdmin(T entity) {
+
+		User user = UserUtils.getUser();
+		if(!user.isAdmin()) {
+			boolean isAll = false;
+			for (Role r : user.getRoleList()){
+				if (Role.DATA_SCOPE_ALL.equals(r.getDataScope())){
+					isAll = true;
+					break;
+				}
+			}
+			if(!isAll) {
+				Field field = Reflections.getAccessibleField(entity, "teacher");
+				if(field!=null) {
+					Reflections.invokeSetter(entity, "teacher", UserUtils.getTeacher());
+				}
+			}
+		}
+		
+	}
 	/**
 	 * 查询分页数据
 	 * @param page 分页对象
@@ -60,6 +86,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @return
 	 */
 	public Page<T> findPage(Page<T> page, T entity) {
+		isAdmin(entity);
 		entity.setPage(page);
 		page.setList(dao.findList(entity));
 		return page;

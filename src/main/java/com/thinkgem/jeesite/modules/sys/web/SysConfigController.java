@@ -81,9 +81,9 @@ public class SysConfigController extends BaseController {
 		}
 		sysConfigService.save(sysConfig);
 		
-		addMessage(redirectAttributes, "保存全局系统配置成功");
+		addMessage(redirectAttributes, "系统配置成功");
 		if(!org.springframework.util.StringUtils.isEmpty(cfg)) {
-			return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/config?id="+sysConfig;
+			return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/config?id="+sysConfig.getId();
 		}
 		return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/?repage";
 	}

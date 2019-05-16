@@ -17,6 +17,7 @@
 	</script>
 </head>
 <body>
+
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/course/select/">信息列表</a></li>
 	</ul>
@@ -33,7 +34,11 @@
 					htmlEscape="false" maxlength="50" class="input-medium" /></li>
 			
 		
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			
+			<a class="btn btn-primary"
+				href="${ctx}/course/course/import/template">下载模板</a>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

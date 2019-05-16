@@ -102,28 +102,14 @@ public class CourseSelectController extends BaseController {
 
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		isAdmin(course);
+		
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/select/courseList";
 	}
-	private void isAdmin(Course course) {
-		User user = UserUtils.getUser();
-		if(!user.isAdmin()) {
-			boolean isAll = false;
-			for (Role r : user.getRoleList()){
-				if (Role.DATA_SCOPE_ALL.equals(r.getDataScope())){
-					isAll = true;
-					break;
-				}
-			}
-			if(!isAll) {
-				course.setTeacher(UserUtils.getTeacher());
-			}
-		}
-	}
+
 	@RequestMapping(value = "student")
 	public String student(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
@@ -141,7 +127,6 @@ public class CourseSelectController extends BaseController {
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
-		isAdmin(course);
 		courses = courseService.findList(course);
 		selectCourse.setCourses(courses);
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
@@ -189,7 +174,6 @@ public class CourseSelectController extends BaseController {
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
-		isAdmin(course);
 		courses = courseService.findList(course);
 		for(Course c:courses) {
 			c.setCourseTeachingMode(courseTeachingModeService.getCourseTeachingModeByCourse(c.getId()));

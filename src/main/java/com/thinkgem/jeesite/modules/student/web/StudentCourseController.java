@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +41,7 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
@@ -148,7 +149,7 @@ public class StudentCourseController extends BaseController {
 	}
 
 	@RequiresPermissions("student:studentCourse:export")
-    @RequestMapping(value = "export", method=RequestMethod.POST)
+    @RequestMapping(value = "export")
     public String exportFile(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
             String fileName = "成绩数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
@@ -163,10 +164,7 @@ public class StudentCourseController extends BaseController {
 	
 	@RequiresPermissions("student:studentCourse:import")
     @RequestMapping(value = "import", method=RequestMethod.POST)
-    public String importFile(MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
-		
-		String folder=System.getProperty("java.io.tmpdir");
-		File file = new File(folder,multipartFile.getOriginalFilename()); 
+    public String importFile(MultipartFile file, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
 		
 		ImportExcel ei;
 		try {
@@ -182,17 +180,20 @@ public class StudentCourseController extends BaseController {
 			entity.setTeacher(UserUtils.getTeacher());
 			List<Course> courses = courseService.findList(entity);
 			List<String> csList = new ArrayList<String>();
-			for(Course cs : courses) {
-				csList.add(cs.getId());
+			if(!isAdmin()) {
+				for(Course cs : courses) {
+					csList.add(cs.getId());
+				}
 			}
-			if(!csList.contains(courseId)) {
+			if(!CollectionUtils.isEmpty(csList) && !csList.contains(courseId)) {
 				throw new GITException("40000404","上传成绩不是当前任课教师课程,请检查上传文件内容");
 			}
 			ei = new ImportExcel(file, 2, 0);
 			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
-			studentCourseService.importStudentCourse(course,list);
-		}catch (Exception e) {
 			
+			addMessage(redirectAttributes, studentCourseService.importStudentCourse(course,list));
+		}catch (Exception e) {
+			addMessage(redirectAttributes, "成绩数据！失败信息："+e.getMessage());
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
@@ -234,73 +235,78 @@ public class StudentCourseController extends BaseController {
     public String importFileTemplate(Course course,HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		
 		try {
+			course = courseService.get(course.getId());
+			if (org.springframework.util.StringUtils.isEmpty(course)) {
+				addMessage(redirectAttributes, "课程信息异常,非法参数");
+			}
 			User user = UserUtils.getUser();
-            String fileName = "成绩数据导入模板.xlsx";
-    		List<StudentCourse> list = Lists.newArrayList(); 
-    		
-    		if(user.isAdmin()) {
-    			list.add(new StudentCourse());
-    		}else {
-    			TeacherClass teacherClass = new TeacherClass();
-    			teacherClass.setTeacherNumber(user.getNo());
-    			List<TeacherClass> teacherList = teacherClassService.findList(teacherClass);
-    			List<String> clazzNumbers = Lists.newArrayList(); 
-    			logger.info("导入班级学生信息");
-    			for(TeacherClass tc:teacherList) {
-    				clazzNumbers.add(tc.getClazz().getId());
-    			}
-    			Student student = new Student();
+			String fileName = "成绩数据导入模板.xlsx";
+			List<StudentCourse> list = Lists.newArrayList();
+
+			if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+				logger.info("普通课模式");
+				TeacherClass teacherClass = new TeacherClass();
+				teacherClass.setTeacherNumber(user.getNo());
+				List<TeacherClass> teacherList = teacherClassService.findList(teacherClass);
+				List<String> clazzNumbers = Lists.newArrayList();
+				logger.info("导入班级学生信息");
+				for (TeacherClass tc : teacherList) {
+					clazzNumbers.add(tc.getClazz().getId());
+				}
+				Student student = new Student();
 				student.setClazzNumbers(clazzNumbers);
 				List<Student> students = studentService.findList(student);
-				
-				for(Student st : students) {
+
+				for (Student st : students) {
 					StudentCourse sc = new StudentCourse();
 					sc.setStudentNumber(st.getStudentNumber());
 					sc.setStudentName(st.getName());
 					list.add(sc);
 				}
+			} else {
+				logger.info("选课模式");
 				logger.info("导入选课学生信息");
 				SelectCourse selectCourse = new SelectCourse();
-				selectCourse.setCourse(course);;
+				selectCourse.setCourse(course);
 				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
-				for(SelectCourse scc:selectCourses) {
+				for (SelectCourse scc : selectCourses) {
 					StudentCourse sc = new StudentCourse();
 					sc.setStudentNumber(scc.getStudent().getNo());
 					sc.setStudentName(scc.getStudent().getName());
 					list.add(sc);
 				}
-    		}
-    		ExportExcel exportExcel = new ExportExcel();
-    		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
-    		exportExcel.init("成绩数据",headerList);
-    		Row row = exportExcel.addRow();
-    		Cell cell = row.createCell(0);
-    		cell.setCellValue("学期");
-    		Cell xueqiCell = row.createCell(1);
-    		xueqiCell.setCellValue(course.getCursYearTerm());
-    		
-    		Cell clazzCell = row.createCell(2);
-    		clazzCell.setCellValue("课程名称");
-    		Cell courseCell = row.createCell(3);
-    		courseCell.setCellValue(course.getCursName());
-    		
-    		Cell courseIdLabelCell = row.createCell(4);
-    		courseIdLabelCell.setCellValue("课程编码");
-    		Cell courseIdValueCell = row.createCell(5);
-    		courseIdValueCell.setCellValue(course.getId());
-    		
-    		
-    		Cell teacherLabelCell = row.createCell(6);
-    		teacherLabelCell.setCellValue("任课教师");
-    		Cell teacherValueCell = row.createCell(7);
-    		teacherValueCell.setCellValue(course.getTeacher().getTchrName());
-    		
-    		exportExcel.setHeader(headerList);
-    		
-    		exportExcel.setDataList(list).write(response, fileName).dispose();
-    		
+
+			}
+			ExportExcel exportExcel = new ExportExcel();
+			List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
+			exportExcel.init("成绩数据", headerList);
+			Row row = exportExcel.addRow();
+			Cell cell = row.createCell(0);
+			cell.setCellValue("学期");
+			Cell xueqiCell = row.createCell(1);
+			xueqiCell.setCellValue(course.getCursYearTerm());
+
+			Cell clazzCell = row.createCell(2);
+			clazzCell.setCellValue("课程名称");
+			Cell courseCell = row.createCell(3);
+			courseCell.setCellValue(course.getCursName());
+
+			Cell courseIdLabelCell = row.createCell(4);
+			courseIdLabelCell.setCellValue("课程编码");
+			Cell courseIdValueCell = row.createCell(5);
+			courseIdValueCell.setCellValue(course.getId());
+
+			Cell teacherLabelCell = row.createCell(6);
+			teacherLabelCell.setCellValue("任课教师");
+			Cell teacherValueCell = row.createCell(7);
+			teacherValueCell.setCellValue(course.getTeacher().getTchrName());
+
+			exportExcel.setHeader(headerList);
+
+			exportExcel.setDataList(list).write(response, fileName).dispose();
+
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "导入模板下载失败！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }

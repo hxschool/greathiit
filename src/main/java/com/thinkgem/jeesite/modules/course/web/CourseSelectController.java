@@ -31,7 +31,6 @@ import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
-import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
@@ -42,7 +41,6 @@ import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
@@ -122,7 +120,7 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "clazz")
 	public String clazz(SelectCourse selectCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		
 		Course course = new Course();
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
@@ -167,7 +165,7 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "info")
 	public String info(CourseSelectExcel courseSelectExcel, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
+		
 		String clsId = courseSelectExcel.getCla().getId();
 		SelectCourse selectCourse = new SelectCourse();
 		Course course = new Course();
@@ -184,21 +182,22 @@ public class CourseSelectController extends BaseController {
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		for(SelectCourse sc:list) {
-			String studentNumber = sc.getStudent().getNo();
-			String clazzId = StudentUtil.getClassId(studentNumber);
-			
-			if(clsId.equals("99999999")) {
-				Office office = officeService.get(clazzId);
-				if(org.springframework.util.StringUtils.isEmpty(office)) {
+			User student = sc.getStudent();
+			if(!org.springframework.util.StringUtils.isEmpty(student)) {
+				String studentNumber = sc.getStudent().getNo();
+				String clazzId = StudentUtil.getClassId(studentNumber);
+				if(clsId.equals("99999999")) {
+					Office office = officeService.get(clazzId);
+					if(org.springframework.util.StringUtils.isEmpty(office)) {
+						selectCourses.add(sc);
+					}
+					continue;
+				}
+				
+				if(clazzId.equals(clsId)) {
 					selectCourses.add(sc);
 				}
-				continue;
 			}
-			
-			if(clazzId.equals(clsId)) {
-				selectCourses.add(sc);
-			}
-			
 		}
 		model.addAttribute("list", selectCourses);
 		return "modules/course/select/studentClazzInfo";
@@ -284,8 +283,6 @@ public class CourseSelectController extends BaseController {
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(entity);
 		List<SelectCourse>  ll = selectCourseService.findList(selectCourse);
-		
-		
 		String filename = "成绩单.xls";
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		
@@ -306,6 +303,14 @@ public class CourseSelectController extends BaseController {
 		dateMap.put("{startYear}", "");
 		dateMap.put("{endYear}", "");
 		dateMap.put("{n}", "");
+		if(!org.springframework.util.StringUtils.isEmpty(entity.getCursYearTerm())) {
+			String[] ss = entity.getCursYearTerm().split("-");
+			dateMap.put("{startYear}",ss[0]);
+			dateMap.put("{endYear}", ss[1]);
+			dateMap.put("{n}", ss[2]);
+		}
+		
+	
 		response.setHeader("content-disposition", "attachment;filename="  
                 + URLEncoder.encode(filename, "UTF-8"));
 		

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
@@ -202,6 +203,12 @@ public class TeacherController extends BaseController {
 		teacherExperimentService.delete(teacherExperiment);
 		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/teacher/teacher/teacherInfo?repage";
+	}
+	
+	@RequestMapping(value = "ajaxTeacher")
+	@ResponseBody
+	public List<Teacher> ajaxTeacher(Teacher teacher, RedirectAttributes redirectAttributes) {
+		return teacherService.findList(teacher);
 	}
 	
 

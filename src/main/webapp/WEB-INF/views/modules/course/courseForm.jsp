@@ -6,7 +6,17 @@
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 		$(document).ready(function() {
-			//$("#name").focus();
+			
+			$.ajax({
+				url : '${ctx}/teacher/teacher/ajaxTeacher',
+				async : false,
+				success : function(data) {
+					$.each(data, function(index, item) {
+						$("#teacherNumber").append( "<option value="+item.teacherNumber+">" + item.tchrName+ "</option>"); 
+					});		
+				}
+			});
+			
 			$("#inputForm").validate({
 				submitHandler: function(form){
 					loading('正在提交，请稍等...');
@@ -34,11 +44,12 @@
 				<shiro:lacksPermission name="course:course:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
 	<br />
+	<sys:message content="${message}" />
 	<form:form id="inputForm" modelAttribute="course"
 		action="${ctx}/course/course/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
-		<sys:message content="${message}" />
+		
 		
 		<div class="control-group">
 			<label class="control-label">开设学期：</label>
@@ -57,10 +68,12 @@
 			<label class="control-label">课程性质：</label>
 			<div class="controls">
 
-				<form:select path="cursProperty" id="cursProperty" style="width: 200px;">
-					<form:options items="${fns:getDictList('course_property')}"
+				<form:select path="cursProperty" id="cursProperty" style="width: 200px;" >
+					<form:options items="${fns:getDictList('course_property')}" 
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
+				 <span
+					class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font> </span>
 			</div>
 		</div>
 		<div class="control-group" id="element_course_educational">
@@ -68,7 +81,7 @@
 			<div class="controls">
 
 				<select id="eduCourseNum" name="eduCourseNum" class="cursNum input-medium"
-					style="width: 200px;">
+					style="width: 200px;" >
 					<option>请选择</option>
 					<c:if test="${course.id!=null and course.id!=''}">
 						<option value="${course.cursNum}" selected>${course.cursName}</option>
@@ -134,18 +147,25 @@
 				</form:select>
 			</div>
 		</div>
+		
+
+		
+		<shiro:hasPermission name="course:course:edit">
 		<div class="control-group">
 			<label class="control-label">任课教师：</label>
 			<div class="controls">
-				${course.teacher.tchrName } <span class="help-inline"><font
-					color="red">*</font> </span>
+
+				<select name="teacher.teacherNumber" id="teacherNumber" style="width: 200px;">
+					
+				</select>
 			</div>
 		</div>
-
+		</shiro:hasPermission>
+		
 		<div class="control-group">
 			<label class="control-label">教学模式：</label>
 			<div class="controls">
-				<select name="teacMethod" style="width: 200px;">
+				<select name="courseTeachingMode.teacMethod" style="width: 200px;">
 					<option value="" label="" />
 					<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
 						<option value="${dict.value}">${dict.label}</option>

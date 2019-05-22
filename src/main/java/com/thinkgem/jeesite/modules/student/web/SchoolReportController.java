@@ -69,11 +69,8 @@ public class SchoolReportController extends BaseController {
 	}
 	@RequiresPermissions("student:studentCourse:edit")
     @RequestMapping(value = "import", method=RequestMethod.POST)
-    public String importFile(MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
+    public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
 		
-		String folder=System.getProperty("java.io.tmpdir");
-		File file = new File(folder,multipartFile.getOriginalFilename()); 
-		FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), file);  
 		
 		ImportExcel ei;
 		try {

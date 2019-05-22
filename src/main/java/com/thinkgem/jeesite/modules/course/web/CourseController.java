@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +29,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
@@ -47,6 +49,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
@@ -106,8 +109,8 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		User user = UserUtils.getUser();
-		if(!user.isAdmin()&& !org.springframework.util.StringUtils.isEmpty(user.getUserType())&&!user.getUserType().equals("1")) {
+		
+		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 		course.setCursYearTerm(config.getTermYear());
@@ -130,7 +133,10 @@ public class CourseController extends BaseController {
 			return form(course, model);
 		}
 		course.setCursEduNum(course.getCursNum());
-		course.setTeacher(UserUtils.getTeacher());
+		
+		if(!isAdmin()) {
+			course.setTeacher(UserUtils.getTeacher());
+		}
 		courseService.save(course);
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";

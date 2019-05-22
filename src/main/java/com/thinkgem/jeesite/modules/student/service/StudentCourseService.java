@@ -3,13 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.student.service;
 
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseGpaDao;
@@ -29,6 +26,7 @@ import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
 import com.thinkgem.jeesite.modules.course.entity.CourseGpa;
 import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
 import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 
 /**
@@ -112,7 +110,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			}
 			
 			for (StudentCourse studentCourse : list) {
-				if(!StringUtils.isEmpty(studentCourse.getStudentNumber())) {
+				Student student = studentCourse.getStudent();
+				if(!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {
 					studentCourse.setTermYear(course.getCursYearTerm());
 					studentCourse.setCourse(course);
 					studentCourse.setStatus("0");

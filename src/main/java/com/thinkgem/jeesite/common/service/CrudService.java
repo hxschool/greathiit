@@ -59,7 +59,7 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 		return dao.findList(entity);
 	}
 	
-	private void isAdmin(T entity) {
+	public void isAdmin(T entity) {
 
 		User user = UserUtils.getUser();
 		if(!user.isAdmin()) {

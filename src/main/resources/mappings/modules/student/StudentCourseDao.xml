@@ -85,7 +85,7 @@
 		
 		
 		<where>
-			a.del_flag = 1
+			a.del_flag = 0
 			<if test="termYear != null and termYear != ''">
 			AND a.term_year = #{termYear}
 			</if>
@@ -117,7 +117,7 @@
 		FROM student_course a
 		<include refid="studentCourseJoins"/>
 		<where>
-			a.del_flag = 1
+			a.del_flag = 0
 			<if test="classEvaValue != null and classEvaValue != ''">
 				AND a.class_eva_value = #{classEvaValue}
 			</if>

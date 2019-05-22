@@ -29,6 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.mapper.JsonMapper;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
  * 控制器支持类
@@ -67,6 +70,20 @@ public abstract class BaseController {
 	protected Validator validator;
 
 	
+	protected boolean isAdmin() {
+		User user = UserUtils.getUser();
+		boolean isAll = true;
+		if(!user.isAdmin()) {
+			isAll = false;
+			for (Role r : user.getRoleList()){
+				if (Role.DATA_SCOPE_ALL.equals(r.getDataScope())){
+					isAll = true;
+					break;
+				}
+			}
+		}
+		return isAll;
+	}
 	
 	/**
 	 * 服务端参数有效性验证

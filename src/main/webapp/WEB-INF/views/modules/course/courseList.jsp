@@ -129,7 +129,7 @@
 					${course.cursCredit}
 				</td>
 				<td>
-					${fns:getDictLabel(course.cursType, 'course_curs_curr_term', '')}
+					${course.cursYearTerm}
 				</td>
 				
 				<!-- <td>
@@ -162,7 +162,9 @@
 				<shiro:hasPermission name="course:course:edit"><td>
     				<a href="${ctx}/course/course/form?id=${course.id}">修改</a>
 					<a href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
-					<a href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a>
+					<a class="btn btn-success"  href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a>
+					<a class="btn btn-success"  href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
+					
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

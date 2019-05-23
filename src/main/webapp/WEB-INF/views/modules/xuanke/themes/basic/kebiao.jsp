@@ -25,32 +25,7 @@
 						<div class="panel-body">
 							
 							<div style="min-height: 300px;">
-								<form action="/index.php?m=&c=index&a=course" method="post"
-									id="formsearch">
-									<div class="example-code">
-										<div class="form-label float-left">
-											<label>课程名称：</label>
-										</div>
-										<div class="form-input col-md-2">
-											<input type="text" value="" name="name" size="10" />
-										</div>
-
-										<button type="submit" class="btn medium bg-blue">
-											<span class="button-content"> <i
-												class="glyph-icon icon-search"></i>查询
-											</span>
-										</button>
-
-										<a class="btn medium bg-orange"
-											href="javascript:clearQuery(this)"> <span
-											class="button-content"><i class="glyph-icon icon-undo"></i>
-												清空查询</span>
-										</a>
-
-									</div>
-									<!-- example-code -->
-									<div class="divider"></div>
-								</form>
+								
 								<br>
 
 

@@ -108,8 +108,7 @@ public class StudentCourseController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
-		User user = UserUtils.getUser();
-		if(!user.isAdmin()) {
+		if(!isAdmin()) {
 			Course course = new Course();
 			course.setTeacher(UserUtils.getTeacher());
 			studentCourse.setCourse(course);

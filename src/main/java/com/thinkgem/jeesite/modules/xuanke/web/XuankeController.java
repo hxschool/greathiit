@@ -322,9 +322,12 @@ public class XuankeController extends BaseController {
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		
 		CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
+		String cursName = request.getParameter("cursName");
+		//是否需要增加搜索功能
+		
 		User user = UserUtils.getUser();
 		if (!StringUtils.isEmpty(user)) {
-			if( !user.isAdmin()) {
+			if (!user.isAdmin()) {
 				Course course = new Course();
 				course.setCursYearTerm(sysConfig.getTermYear());
 				SelectCourse selectCourse = new SelectCourse();
@@ -332,20 +335,20 @@ public class XuankeController extends BaseController {
 				selectCourse.setStudent(user);
 				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
 				List<String> list = new ArrayList<String>();
-				for(SelectCourse sc : selectCourses) {
+				for (SelectCourse sc : selectCourses) {
 					list.add(sc.getCourse().getId());
 				}
 				courseScheduleExt.setList(list);
 			}
-			
+
 		}
+	
 		courseScheduleExt.setTermYear(sysConfig.getTermYear());
 		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.findCoursesByParam(courseScheduleExt);
 		model.addAttribute("courseScheduleExts", courseScheduleExts);
 
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("site", site);
-		model.addAttribute("isIndex", true);
 		return "modules/xuanke/themes/"+site.getTheme()+"/kebiao";
 	}
 	

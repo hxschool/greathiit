@@ -78,8 +78,8 @@
 		
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			<input
-				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
-				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+				id="btnExport" class="btn btn-primary" type="button" value="课程导出" /> <input
+				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -161,11 +161,9 @@
 				</td>
 				<shiro:hasPermission name="course:course:edit"><td>
     				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
-					<a class="btn btn-primary"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
-					<!-- <a class="btn btn-success"  href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a> -->
-					<shiro:hasPermission name="student:studentCourse:export">
-					<a class="btn btn-success"  href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
-					</shiro:hasPermission>
+    				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?cursId=${course.id}" >教学大纲</a>
+					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
+					
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

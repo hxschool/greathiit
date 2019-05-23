@@ -89,7 +89,7 @@ public class CourseSelectController extends BaseController {
 	@RequestMapping(value = "selectCourseLog")
 	public String selectCourseLog(UserOperationLog userOperationLog, HttpServletRequest request, HttpServletResponse response, Model model) {
 		userOperationLog.setModule("course");
-		if(!UserUtils.getUser().isAdmin()) {
+		if(!isAdmin()) {
 			userOperationLog.setUserNumber(UserUtils.getUser().getNo());
 		}
 		Page<UserOperationLog> page = userOperationLogService.findPage(new Page<UserOperationLog>(request, response), userOperationLog); 
@@ -211,12 +211,11 @@ public class CourseSelectController extends BaseController {
 	
 	@RequestMapping(value = "exportView")
 	public String exportView(CourseSelectExcel courseSelectExcel, Model model) {
-		User user = UserUtils.getUser();
 		Course course = new Course();
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
-		if(!user.isAdmin()) {
+		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 		courses = courseService.findList(course);

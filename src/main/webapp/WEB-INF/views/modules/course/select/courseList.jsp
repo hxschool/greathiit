@@ -57,7 +57,7 @@
 			
 			<a class="btn btn-primary"
 				href="${ctx}/course/course/import/template">下载模板</a> <input
-				id="btnImport" class="btn btn-primary" type="button" value="成绩导入" />
+				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -125,7 +125,7 @@
 					
     				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}" style="width:68px;">查看(${fnc:countStudents(course.id)})</a>
 					<a class="btn btn-primary" href="${ctx}/course/course/form?id=${course.id}">修改</a>
-    				<a  class="btn btn-primary" href="${ctx}/course/course/teacherCourseModify?cursId=${course.id}" >教学大纲</a>
+
     				<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
     				<shiro:hasPermission name="student:studentCourse:export">
     					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>

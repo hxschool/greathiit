@@ -132,7 +132,7 @@ public class XuankeController extends BaseController {
 	 */
 	@RequestMapping(value = {"index", ""})
 	public String index(Course course, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
-		boolean isIndex = true;
+		boolean isSelected = false;
 		if(StringUtils.isEmpty(course.getCursProperty())) {
 			course.setCursProperty("50");
 		}
@@ -151,7 +151,7 @@ public class XuankeController extends BaseController {
 		}
 		User user = UserUtils.getUser();
 		if(!StringUtils.isEmpty(user)&&!StringUtils.isEmpty(user.getNo())) {
-			isIndex = false;
+			
 			SelectCourse selectCourse = new SelectCourse();
 			selectCourse.setStudent(user);
 			selectCourse.setCourse(course);
@@ -161,13 +161,8 @@ public class XuankeController extends BaseController {
 				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
 			}
 			
-			for(Role r:user.getRoleList()) {
-				if(org.apache.commons.lang3.StringUtils.isNumeric(r.getId())) {
-					int id = Integer.valueOf(r.getId());
-					if (id >= 90) {
-						isIndex = true;
-					}
-				}
+			if(user.getRoleIdList().contains("99")) {
+				isSelected = true;
 			}
 		}
 
@@ -214,9 +209,9 @@ public class XuankeController extends BaseController {
 		}
 		
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		model.addAttribute("isSelected", isSelected);
 		model.addAttribute("courseScheduleMap", courseScheduleMap);
 		model.addAttribute("site", site);
-		model.addAttribute("isIndex", isIndex);
 		model.addAttribute("courses", courses);
 		model.addAttribute("selectedCourseMap", selectedCourseMap);
 		

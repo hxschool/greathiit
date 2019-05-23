@@ -143,6 +143,7 @@
 																		scope="application"></c:set>
 																	<c:set var="bgIcon" value="icon-plus-sign"
 																		scope="application"></c:set>
+																		<c:if test="${isSelected}">
 																	<c:set var="label" value="选课" scope="application"></c:set>
 																	
 																		<c:if test="${selectedCourseMap[course.id]!=null and selectedCourseMap[course.id]!=''}">
@@ -153,7 +154,7 @@
 																				scope="application"></c:set>
 																		</c:if>
 
-																	
+																		</c:if>
 
 
 																	<c:if test="${ret}">

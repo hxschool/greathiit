@@ -160,11 +160,12 @@
 					<a href ="javascript:return false;" onclick="return false;" style="cursor: default;" title="${course.cursIntro}">${fns:abbr(course.cursIntro,10)}</a>
 				</td>
 				<shiro:hasPermission name="course:course:edit"><td>
-    				<a href="${ctx}/course/course/form?id=${course.id}">修改</a>
-					<a href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
-					<a class="btn btn-success"  href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a>
+    				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
+					<a class="btn btn-primary"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
+					<!-- <a class="btn btn-success"  href="${ctx}/course/course/import/studentCourse?id=${course.id}">导出成绩模板</a> -->
+					<shiro:hasPermission name="student:studentCourse:export">
 					<a class="btn btn-success"  href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
-					
+					</shiro:hasPermission>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

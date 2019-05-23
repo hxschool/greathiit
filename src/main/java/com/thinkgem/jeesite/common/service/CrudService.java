@@ -55,30 +55,10 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @return
 	 */
 	public List<T> findList(T entity) {
-		isAdmin(entity);
 		return dao.findList(entity);
 	}
 	
-	public void isAdmin(T entity) {
-
-		User user = UserUtils.getUser();
-		if(!user.isAdmin()) {
-			boolean isAll = false;
-			for (Role r : user.getRoleList()){
-				if (Role.DATA_SCOPE_ALL.equals(r.getDataScope())){
-					isAll = true;
-					break;
-				}
-			}
-			if(!isAll) {
-				Field field = Reflections.getAccessibleField(entity, "teacher");
-				if(field!=null) {
-					Reflections.invokeSetter(entity, "teacher", UserUtils.getTeacher());
-				}
-			}
-		}
-		
-	}
+	
 	/**
 	 * 查询分页数据
 	 * @param page 分页对象
@@ -86,7 +66,6 @@ public abstract class CrudService<D extends CrudDao<T>, T extends DataEntity<T>>
 	 * @return
 	 */
 	public Page<T> findPage(Page<T> page, T entity) {
-		isAdmin(entity);
 		entity.setPage(page);
 		page.setList(dao.findList(entity));
 		return page;

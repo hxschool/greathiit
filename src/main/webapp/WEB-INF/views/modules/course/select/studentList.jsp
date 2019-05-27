@@ -18,7 +18,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li ><a href="${ctx}/course/select/?cursProperty=50">课程信息</a></li>
+		<li ><a href="${ctx}/course/select/?cursProperty=50">课程管理</a></li>
 		<li class="active"><a href="${ctx}/course/select/">报考信息</a></li>
 	</ul>
 	

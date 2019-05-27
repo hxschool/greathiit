@@ -328,8 +328,7 @@ public class CourseController extends BaseController {
 	
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "teacherCourseModify")
-	public String teacherCourse_Modify_1_selectByCursId(String cursId, Model model) {
-		Course course = courseService.get(cursId);
+	public String teacherCourse_Modify_1_selectByCursId(Course course, Model model) {
 		model.addAttribute("course",course);
 		return "modules/course/modify/teacherCourseModify";
 	}

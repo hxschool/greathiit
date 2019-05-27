@@ -50,8 +50,8 @@
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/course/course/">课程基本信息列表</a></li>
-		<shiro:hasPermission name="course:course:edit"><li><a href="${ctx}/course/course/form">课程基本信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/course/course/">课程维护</a></li>
+		<shiro:hasPermission name="course:course:edit"><li><a href="${ctx}/course/course/form">课程添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="course" action="${ctx}/course/course/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -161,7 +161,7 @@
 				</td>
 				<shiro:hasPermission name="course:course:edit"><td>
     				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
-    				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?cursId=${course.id}" >教学大纲</a>
+    				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a>
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
 					
 				</td></shiro:hasPermission>

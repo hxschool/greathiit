@@ -37,7 +37,9 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/course/course/">课程基本信息列表</a></li>
+		<c:if test="${param.cursProperty!=null }"><li ><a href="${ctx}/course/select/?cursProperty=50">课程管理</a></li></c:if>
+		
+		<li><a href="${ctx}/course/course/">课程维护</a></li>
 		<li class="active"><a
 			href="${ctx}/course/course/form?id=${course.id}">课程基本信息<shiro:hasPermission
 					name="course:course:edit">${not empty course.id?'修改':'添加'}</shiro:hasPermission>

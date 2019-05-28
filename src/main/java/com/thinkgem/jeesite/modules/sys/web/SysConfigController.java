@@ -37,7 +37,7 @@ public class SysConfigController extends BaseController {
 	@Autowired
 	private CourseScheduleService courseScheduleService;
 	@ModelAttribute
-	public SysConfig get(@RequestParam(required=false) String id,@RequestParam(required=false) String module) {
+	public SysConfig get(@RequestParam(required=false) String id,@RequestParam(required=false) String module,Model model) {
 		SysConfig entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = sysConfigService.get(id);
@@ -48,6 +48,7 @@ public class SysConfigController extends BaseController {
 		if (entity == null){
 			entity = new SysConfig();
 		}
+		model.addAttribute("config", entity);
 		return entity;
 	}
 	

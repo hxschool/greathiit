@@ -51,7 +51,7 @@
 			<label class="control-label">学期：</label>
 			<div class="controls">
 				<select name="termYear" style="width: 200px;">
-
+					
 					<c:forEach items="${fns:termYear()}" var="termYear">
 						<option value="${termYear.key}"
 							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
@@ -77,7 +77,7 @@
 					onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
 			</div>
 		</div>
-		
+		<shiro:hasPermission name="sys:sysConfig:score">
 		<div class="control-group">
 			<label class="control-label">值相关(录取成绩)：</label>
 			<div class="controls">
@@ -85,7 +85,7 @@
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
-		
+		</shiro:hasPermission>
 		<div class="control-group">
 			<label class="control-label">是否关闭：</label>
 			<div class="controls">

@@ -166,7 +166,7 @@ public class XuankeController extends BaseController {
 			}
 		}
 
-		List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
+		//List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
 		if(!StringUtils.isEmpty(user)) {
 			String studentNumber = user.getNo();
 			if(!StringUtils.isEmpty(studentNumber)) {
@@ -177,7 +177,8 @@ public class XuankeController extends BaseController {
 					String courseId = c.getId();
 					CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(courseId);
 					if(!StringUtils.isEmpty(courseTeachingMode)) {
-						courseTeachingModes.add(courseTeachingMode);
+						//courseTeachingModes.add(courseTeachingMode);
+						c.setCourseTeachingMode(courseTeachingMode);
 					}
 					
 					if(studentNumber.length()==10||studentNumber.length()==12) {//本科
@@ -192,6 +193,7 @@ public class XuankeController extends BaseController {
 				}
 			}
 		}
+		/*
 		if(!CollectionUtils.isEmpty(courseTeachingModes)) {
 			Collections.sort(courseTeachingModes, new Comparator<CourseTeachingMode>(){
 				 public int compare(CourseTeachingMode p1, CourseTeachingMode p2) {
@@ -207,6 +209,7 @@ public class XuankeController extends BaseController {
 				 }
 			});
 		}
+		*/
 		
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		model.addAttribute("isSelected", isSelected);

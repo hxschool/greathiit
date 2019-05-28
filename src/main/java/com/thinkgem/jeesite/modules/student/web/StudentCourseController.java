@@ -41,7 +41,6 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
@@ -113,6 +112,7 @@ public class StudentCourseController extends BaseController {
 			course.setTeacher(UserUtils.getTeacher());
 			studentCourse.setCourse(course);
 		}
+		
 		if(org.springframework.util.StringUtils.isEmpty(studentCourse.getTermYear())) {
 			studentCourse.setTermYear(config.getTermYear());
 		}

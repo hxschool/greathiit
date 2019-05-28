@@ -130,7 +130,27 @@
 															<td>${course.cursClassHour }</td>
 
 															<td>${course.cursCredit}</td>
-															<td></td>
+															<td>
+																<c:if test="${course.courseTeachingMode!=null}">
+																	<c:choose>
+																		<c:when
+																			test="${course.courseTeachingMode.teacMethod=='01'}">
+																			<c:if test="${!empty courseScheduleMap[course.id]}">
+																				<c:set var="timeAdd"
+																					value="${courseScheduleMap[course.id].timeAdd}"
+																					scope="request" />
+																					${fnc:jiaoxuelou(fnc:GetTimeCol(timeAdd).school)} ${fnc:jiaoshi(fnc:GetTimeCol(timeAdd).school)} ${fnc:zhou(fnc:GetTimeCol(timeAdd).zhou)} ${fnc:jie(fnc:GetTimeCol(timeAdd).jie)} 
+																			</c:if>
+																		</c:when>
+																		<c:otherwise>
+																			${fns:getDictLabel(course.courseTeachingMode.teacMethod, "teac_method", "未知")}
+																		</c:otherwise>
+																	</c:choose>
+																</c:if>
+
+
+
+															</td>
 															<td>
 															<a href="javascript:void(0)"
 																onclick="showRemark('${course.cursName }',' ${fn:replace(course.cursIntro,vEnter,'')}');"
@@ -175,7 +195,39 @@
 
 															</td>
 														</tr>
+<tr>
+													<td colspan="8"
+														style="border-top: 0px; border-bottom: 0px;"><c:set
+															var="upperLimit" value="${course.upperLimit }"
+															scope="request" /> <c:set var="count"
+															value="${fnc:countStudents(course.id) }" scope="request" />
+														<c:if test="${count>=upperLimit }">
 
+														</c:if> <c:choose>
+															<c:when test="${count>=upperLimit }">
+																<div class="progress progress-striped active"
+																	style="padding: 0px; margin: 0px; height: 2px;">
+																	<div class="progress-bar progress-bar-danger"
+																		role="progressbar" aria-valuenow="60"
+																		aria-valuemin="0" aria-valuemax="100"
+																		style="width: 100%;">
+																		<span class="sr-only">100% 完成</span>
+																	</div>
+																</div>
+															</c:when>
+															<c:otherwise>
+																<div class="progress progress-striped active"
+																	style="padding: 0px; margin: 0px; height: 2px;">
+																	<div class="progress-bar progress-bar-success"
+																		role="progressbar" aria-valuenow="60"
+																		aria-valuemin="0" aria-valuemax="100"
+																		style="width: ${(count/upperLimit)*100}%;">
+																		<span class="sr-only">100% 完成</span>
+																	</div>
+																</div>
+															</c:otherwise>
+														</c:choose></td>
+												</tr>
 
 
 													</c:forEach>

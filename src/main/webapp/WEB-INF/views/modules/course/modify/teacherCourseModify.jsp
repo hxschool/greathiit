@@ -14,7 +14,7 @@
 <ul class="nav nav-tabs">
 		<li ><a href="${ctx}/course/course">课程维护</a></li>
 		<li class="active"><a
-			href="${ctx}/course/course/form?id=${course.id}">教学大刚</a></li>
+			href="${ctx}/course/course/form?id=${course.id}">教学大纲</a></li>
 	</ul>
 	<div id="content" class="row-fluid">
 		<div id="left" class="accordion-group">

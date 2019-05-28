@@ -354,7 +354,16 @@ public class XuankeController extends BaseController {
 	
 	@RequestMapping("history")
 	public String history(HttpServletRequest request, HttpServletResponse response, Model model,RedirectAttributes redirectAttributes) {
-		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		String termYear = request.getParameter("termYear");
+		SysConfig sysConfig = null;
+		if(!StringUtils.isEmpty(termYear)) {
+			SysConfig config = new SysConfig();
+			config.setTermYear(termYear);
+			sysConfig = sysConfigService.getModule(config);
+		}
+		if(StringUtils.isEmpty(sysConfig)) {
+			sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		}
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		UserOperationLog operationLog = new UserOperationLog();
 		operationLog.setModule("course");
@@ -372,6 +381,7 @@ public class XuankeController extends BaseController {
 		Page<UserOperationLog> page = userOperationLogService.findPage(new Page<UserOperationLog>(request, response), operationLog);
         model.addAttribute("page", page);
         model.addAttribute("site", site);
+        model.addAttribute("config", sysConfig);
 		model.addAttribute("isIndex", true);
         return "modules/xuanke/themes/"+site.getTheme()+"/history";
 	}

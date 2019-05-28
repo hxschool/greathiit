@@ -43,6 +43,9 @@
 			<if test="module != null and module != ''">
 				AND module=#{module}
 			</if>
+			<if test="termYear != null and termYear != ''">
+				AND term_year=#{termYear}
+			</if>
 			<if test="status != null and status != ''">
 				AND status=#{status}
 			</if>

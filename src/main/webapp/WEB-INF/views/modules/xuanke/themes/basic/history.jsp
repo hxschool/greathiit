@@ -97,20 +97,29 @@ div.center {
 									<div class="col-md-8 col-xs-12">
 										<div class="form-group">
 
-											<div class="col-md-4 col-xs-12">
+											<div class="col-md-3 col-xs-12">
 												<input type="text" value="${param.cursName}"
 													placeholder="请输入课程名称..." name="cursName" size="10"
 													class="form-control" />
 													
 											</div>
-											<div class="col-md-4 col-xs-12">
+											<div class="col-md-3 col-xs-12">
 												<select name="status" class="form-control">
 													<option>请选择操作类型</option>
 													<option value="20">选课</option>
 													<option value="30">退课</option>
 												</select>
 											</div>
-											<div class="col-md-4 col-xs-12">
+												<div class="col-md-3 col-xs-12">
+													<select name="termYear" class="form-control">
+															<option>请选择学期</option>
+															<c:forEach items="${fns:termYear()}" var="termYear">
+																<option value="${termYear.key}"
+																	<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+															</c:forEach>
+														</select>
+											</div>
+											<div class="col-md-3 col-xs-12">
 												<button type="submit" class="btn btn-info">
 													<i class="glyph-icon icon-search"></i> 查询
 												</button>

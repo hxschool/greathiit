@@ -36,9 +36,11 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${list}" var="selectCourse">
-			<c:set var="clazz" value="${fns:getOffice(fn:substring(selectCourse.student.no, 0, 8))}"/>
+					<c:set var="clazz" value="${fns:getOffice(selectCourse.student.no)}"/>
+					
 			<tr>
 				<td>
+				
 					${clazz.parent }
 				</td>
 				<td>

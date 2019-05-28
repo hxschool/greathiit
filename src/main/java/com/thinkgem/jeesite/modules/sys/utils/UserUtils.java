@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
 import com.thinkgem.jeesite.common.utils.SpringContextHolder;
+import com.thinkgem.jeesite.common.utils.StudentUtil;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.dao.AreaDao;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
@@ -275,8 +277,7 @@ public class UserUtils {
 	}
 	
 	public static Office getOffice(String id){
-		
-		return officeDao.get(id);
+		return officeDao.get(StudentUtil.getClassId(id));
 	}
 	
 	/**

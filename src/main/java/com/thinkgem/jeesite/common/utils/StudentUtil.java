@@ -87,7 +87,7 @@ public class StudentUtil {
 		}
 		
 		if(studentNumber.length()==8) {
-			return "20" + studentNumber.substring(0, 4) + studentNumber.substring(4, 6);
+			return "20" + studentNumber.substring(0, 6) ;
 		}
 		
 		if(studentNumber.length()==10) {
@@ -100,6 +100,7 @@ public class StudentUtil {
 		
 		return "";
 	}
+
 	
 	public static String getClassName(String classno) {
 		Office entity = officeService.get(classno);

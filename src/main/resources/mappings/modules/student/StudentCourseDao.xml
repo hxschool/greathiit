@@ -152,7 +152,7 @@
 			</if>
 			
 			<if test="course!=null and course.cursName != null and course.cursName != ''">
-				AND c.course_name = #{course.cursName}
+				AND c.curs_name = #{course.cursName}
 			</if>
 			<if test="student!=null and student.studentNumber != null and student.studentNumber != ''">
 				AND a.student_number = #{student.studentNumber}

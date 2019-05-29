@@ -552,7 +552,8 @@ public class CourseExportController extends BaseController {
 		int $i=2;
 		
 		List<Lesson> lessons = new ArrayList<Lesson>();
-		for(CourseScheduleExt courseSchedule:courseSchedules) {
+		for(int i=0;i<courseSchedules.size();i++) {
+			CourseScheduleExt courseSchedule = courseSchedules.get(i);
 			Row r = sheet.createRow($i);
 			Map<String,String> $col_a = CourseUtil.GetTimeCol(courseSchedule.getTimeAdd());
 			int date = (Integer.valueOf($col_a.get("week")) - 1) * 7 + Integer.valueOf($col_a.get("zhou"));
@@ -599,9 +600,11 @@ public class CourseExportController extends BaseController {
 		}
 		
 		for(Lesson lesson :lessons ) {
-			int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
-			Row r = sheet.getRow(rownum);
-			addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+			if(!org.springframework.util.StringUtils.isEmpty(lesson)) {
+				int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
+				Row r = sheet.getRow(rownum);
+				addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+			}
 		}
 		wb.write(os);
 		os.flush();

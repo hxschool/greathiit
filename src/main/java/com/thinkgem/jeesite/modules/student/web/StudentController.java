@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,7 +46,9 @@ import com.thinkgem.jeesite.modules.student.service.StudentActivityService;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentItemService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -56,7 +59,8 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @Controller
 @RequestMapping(value = "${adminPath}/student/student")
 public class StudentController extends BaseController {
-
+	@Autowired
+	private SysConfigService sysConfigService;
 	@Autowired
 	private StudentService studentService;
 	@Autowired
@@ -72,7 +76,7 @@ public class StudentController extends BaseController {
 	@Autowired
 	private StudentCourseService studentCourseService;
 	@ModelAttribute
-	public Student get(@RequestParam(required=false) String id) {
+	public Student get(@RequestParam(required=false) String id,Model model) {
 		Student entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = studentService.get(id);
@@ -80,6 +84,7 @@ public class StudentController extends BaseController {
 		if (entity == null){
 			entity = new Student();
 		}
+		model.addAttribute("config", sysConfigService.getModule(Global.SYSCONFIG_RESULT));
 		return entity;
 	}
 
@@ -266,9 +271,18 @@ public class StudentController extends BaseController {
 	}
 	
 	//学生课程等级	10	/student/student/Student_Course_Grade
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Course_Grade")
 	public String Student_Course_Grade(Student student,String termYear, HttpServletRequest request, HttpServletResponse response, Model model) {
+		SysConfig sysConfig = null;
+		if(!org.springframework.util.StringUtils.isEmpty(termYear)) {
+			sysConfig = new SysConfig();
+			sysConfig.setTermYear(termYear);
+			
+		}
+		if(org.springframework.util.StringUtils.isEmpty(sysConfig)) {
+			sysConfig = sysConfigService.getModule(Global.SYSCONFIG_RESULT);
+		}
 		String studentNumber = student.getStudentNumber();
 		if(org.springframework.util.StringUtils.isEmpty(studentNumber)) {
 			User user = UserUtils.getUser();
@@ -276,7 +290,8 @@ public class StudentController extends BaseController {
 		}
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudentNumber(studentNumber);
-		studentCourse.setTermYear(termYear);
+		studentCourse.setTermYear(sysConfig.getTermYear());
+		model.addAttribute("config", sysConfig);
 		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
 		return "modules/student/studentcourse/StudentCourseGrade";
 	}

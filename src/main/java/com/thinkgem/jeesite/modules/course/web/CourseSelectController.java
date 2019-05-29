@@ -103,6 +103,9 @@ public class CourseSelectController extends BaseController {
 		
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
+		if(!isAdmin()) {
+			course.setTeacher(UserUtils.getTeacher());
+		}
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
 		return "modules/course/select/courseList";

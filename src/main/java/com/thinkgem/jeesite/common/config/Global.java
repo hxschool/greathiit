@@ -25,9 +25,10 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 public class Global {
 	public final static String SYSCONFIG_DEFAULT= "default";//默认
 	public final static String SYSCONFIG_COURSE= "course";//课程
+	public final static String SYSCONFIG_RESULT= "result";//成绩
 	public final static String SYSCONFIG_EXAM= "exam";//单考单招
 	public final static String SYSCONFIG_SELECT= "select";//选课
-	public final static String SYSCONFIG_WELCOME= "welcome";//选课
+	public final static String SYSCONFIG_WELCOME= "welcome";//迎新
 	public final static String SYSCONFIG_EXPORT= "export";//选课
 
 	public static List<String> weeks = new ArrayList();

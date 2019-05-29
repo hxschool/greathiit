@@ -360,9 +360,9 @@ public class XuankeController extends BaseController {
 		String termYear = request.getParameter("termYear");
 		SysConfig sysConfig = null;
 		if(!StringUtils.isEmpty(termYear)) {
-			SysConfig config = new SysConfig();
-			config.setTermYear(termYear);
-			sysConfig = sysConfigService.getModule(config);
+			sysConfig = new SysConfig();
+			sysConfig.setTermYear(termYear);
+			
 		}
 		if(StringUtils.isEmpty(sysConfig)) {
 			sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);

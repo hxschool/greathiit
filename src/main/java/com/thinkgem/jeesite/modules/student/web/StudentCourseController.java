@@ -106,9 +106,11 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
-		
+		Course course = studentCourse.getCourse();
 		if(!isAdmin()) {
-			Course course = new Course();
+			if(org.springframework.util.StringUtils.isEmpty(course)) {
+				 course = new Course();
+			}
 			course.setTeacher(UserUtils.getTeacher());
 			studentCourse.setCourse(course);
 		}

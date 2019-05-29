@@ -125,7 +125,7 @@
 				</div>
 
 				<div class="col-md-4 col-sm-4 col-xs-12">
-				<form role="form" action="${pageContext.request.contextPath}/chengji/login" method="post">
+				<form role="form" action="${pageContext.request.contextPath}/chengji/view" method="post">
 					<div class="panel panel-primary ">
 						<div class="panel-heading">成绩查询</div>
 						<div class="panel-body chat-widget-main">

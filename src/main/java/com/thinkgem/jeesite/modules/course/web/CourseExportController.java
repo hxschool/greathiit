@@ -603,7 +603,9 @@ public class CourseExportController extends BaseController {
 			if(!org.springframework.util.StringUtils.isEmpty(lesson)) {
 				int rownum = Integer.valueOf(lesson.getJie()) + $lesson_sheet_base_row - 1;
 				Row r = sheet.getRow(rownum);
-				addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+				if(!org.springframework.util.StringUtils.isEmpty(r)) {
+					addCell(r, Integer.valueOf(lesson.getZhou()),lesson.getCourse() , 2);
+				}
 			}
 		}
 		wb.write(os);

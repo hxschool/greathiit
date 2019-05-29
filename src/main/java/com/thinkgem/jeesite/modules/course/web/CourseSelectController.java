@@ -71,6 +71,7 @@ public class CourseSelectController extends BaseController {
 	private SysConfigService sysConfigService;
 	@Autowired
 	private CourseTeachingModeService courseTeachingModeService;
+	private SysConfig config;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -80,7 +81,7 @@ public class CourseSelectController extends BaseController {
 		if (entity == null){
 			entity = new Course();
 		}
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		model.addAttribute("config", config);
 		return entity;
 	}
@@ -101,8 +102,11 @@ public class CourseSelectController extends BaseController {
 	@RequestMapping(value = {"list", ""})
 	public String list(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
-		course.setCursYearTerm(config.getTermYear());
+		if(!StringUtils.isEmpty(course.getCursYearTerm())) {
+			config = new SysConfig();
+			config.setTermYear(course.getCursYearTerm());
+		}
+			course.setCursYearTerm(config.getTermYear());
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}

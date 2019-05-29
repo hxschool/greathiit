@@ -113,9 +113,15 @@ public class CourseController extends BaseController {
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
+		
+		if(!StringUtils.isEmpty(course.getCursYearTerm())) {
+			config = new SysConfig();
+			config.setTermYear(course.getCursYearTerm());
+		}
 		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
+		model.addAttribute("config", config);
 		return "modules/course/courseList";
 	}
 

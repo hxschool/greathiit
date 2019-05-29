@@ -70,8 +70,9 @@
 					<li><label>学期：</label>
 					<select name="cursYearTerm" class="input-medium">
 						<option value="">请选择</option>
-						<c:forEach items="${fns:termYear()}" var="term">
-							<option value="${term.key}">${term.value}</option>
+						<c:forEach items="${fns:termYear()}" var="termYear">
+							<option value="${termYear.key}"
+																	<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
 						</c:forEach>
 					</select>
 			</li>

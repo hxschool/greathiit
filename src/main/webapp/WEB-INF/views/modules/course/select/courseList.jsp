@@ -52,7 +52,15 @@
 			<li><label>任课教师：</label> <form:input path="teacher.tchrName"
 					htmlEscape="false" maxlength="50" class="input-medium" /></li>
 			
-		
+			<li><label>学期：</label>
+					<select name="cursYearTerm" class="input-medium">
+						<option value="">请选择</option>
+						<c:forEach items="${fns:termYear()}" var="termYear">
+							<option value="${termYear.key}"
+																	<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+						</c:forEach>
+					</select>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			
 			<a class="btn btn-primary"

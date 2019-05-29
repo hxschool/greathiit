@@ -8,17 +8,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.management.RuntimeErrorException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +42,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 @Controller
 @RequestMapping(value = { "score", "chengji" })
 public class ScoreController {
+	private static Logger logger = LoggerFactory.getLogger(ScoreController.class);
 	@Autowired
 	private StudentCourseService studentCourseService;
 	@Autowired
@@ -58,7 +59,7 @@ public class ScoreController {
 	public String login(String username, String idcard, HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes, Model model) {
 		User user = UserUtils.getUser();
-		if (StringUtils.isEmpty(user)) {
+		if (StringUtils.isEmpty(user)||StringUtils.isEmpty(user.getNo())) {
 			if (org.springframework.util.StringUtils.isEmpty(username)
 					|| org.springframework.util.StringUtils.isEmpty(idcard)) {
 				model.addAttribute("message", "姓名或者身份证号为空");
@@ -69,6 +70,7 @@ public class ScoreController {
 				throw new RuntimeException("用户信息不合法,请输入正确的身份证号和姓名");
 			}
 		}
+		logger.info("获取登录用户信息:{}",user);
 		String studentNumber = user.getNo();
 		String userinfo = request.getSession().getServletContext().getRealPath("userinfo");
 		File file = new File(userinfo, studentNumber);

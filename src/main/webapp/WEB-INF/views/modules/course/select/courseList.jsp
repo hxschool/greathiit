@@ -42,6 +42,7 @@
 	</ul>
 	<form:form id="searchForm" modelAttribute="course" action="${ctx}/course/select/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input name="course.cursProperty" type="hidden" value="${param.course.cursProperty}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li><label>课程名称：</label>
@@ -54,13 +55,12 @@
 			
 			<li><label>学期：</label>
 					<select name="cursYearTerm" class="input-medium">
-						<option value="">请选择</option>
-						<c:forEach items="${fns:termYear()}" var="termYear">
-							<option value="${termYear.key}"
-																	<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
-						</c:forEach>
-					</select>
-			</li>
+					<option value="">请选择</option>
+					<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
+					</c:forEach>
+			</select></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			
 			<a class="btn btn-primary"

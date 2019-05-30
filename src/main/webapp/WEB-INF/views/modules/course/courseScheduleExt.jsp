@@ -92,8 +92,8 @@
 				</td>
 				<td>
 				<%
-				String k = timeAdd.substring(5,7);
-				String c = timeAdd.substring(7,10);
+				String k = $col_a.get("buildRoom");
+				String c = $col_a.get("room");
 				out.print( " " +com.thinkgem.jeesite.common.utils.CourseUtil.schoolRootMap.get(k));
 				com.thinkgem.jeesite.modules.school.service.SchoolRootService schoolRootService = com.thinkgem.jeesite.common.utils.SpringContextHolder.getBean("schoolRootService");
 				com.thinkgem.jeesite.modules.school.entity.SchoolRoot schoolRoot = schoolRootService.get(k.concat(c));

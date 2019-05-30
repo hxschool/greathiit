@@ -90,6 +90,11 @@ public class CourseUtil {
 	    $time.put("end", $time_add.substring(5, 9));
 	    $time.put("term", $time_add.substring(10, 12));
 	    $time.put("school", $time_add.substring(12,17));
+	    
+	    $time.put("buildRoom", $time_add.substring(12,14));
+	    $time.put("room", $time_add.substring(14,17));
+	    
+	    
 	    $time.put("week", $time_add.substring(17, 19));
 	    $time.put("jie", $time_add.substring(19, 20));
 	    $time.put("zhou", $time_add.substring(20, 21));

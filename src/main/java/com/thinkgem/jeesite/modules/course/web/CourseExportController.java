@@ -182,9 +182,10 @@ public class CourseExportController extends BaseController {
 				rRow.setHeight((short) 900);
 				sheet.setColumnWidth((short) cIndex, (short) (6000));
 				
-				String root = courseSchedule.getTimeAdd().substring(7, 10);
-				String buildRootKey = courseSchedule.getTimeAdd().substring(5, 7);
-				addCell(rRow, cIndex, course.getCursName() + "(" +course.getCursClassHour()+ " 学时) \r\n" + CourseUtil.schoolRootMap.get(buildRootKey) + " " + root  + "\r\n" +  courseSchedule.getCourseClass(), 4);
+				String buildRoom = $col_a.get("buildRoom");
+				String room = $col_a.get("room");
+				
+				addCell(rRow, cIndex, course.getCursName() + "(" +course.getCursClassHour()+ " 学时) \r\n" + CourseUtil.schoolRootMap.get(buildRoom) + " " + room  + "\r\n" +  courseSchedule.getCourseClass(), 4);
 			}	
 		}
 		

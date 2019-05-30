@@ -112,6 +112,7 @@ public class CourseSelectController extends BaseController {
 		}
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
 		model.addAttribute("page", page);
+		model.addAttribute("config", config);
 		return "modules/course/select/courseList";
 	}
 

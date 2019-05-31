@@ -18,7 +18,7 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/sys/sysConfig/">全局系统配置列表</a></li>
+		<shiro:hasPermission name="sys:sysConfig:manager"><li class="active"><a href="${ctx}/sys/sysConfig/">全局系统配置列表</a></li></shiro:hasPermission>
 		<shiro:hasPermission name="sys:sysConfig:edit"><li><a href="${ctx}/sys/sysConfig/form">全局系统配置添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="sysConfig" action="${ctx}/sys/sysConfig/" method="post" class="breadcrumb form-search">

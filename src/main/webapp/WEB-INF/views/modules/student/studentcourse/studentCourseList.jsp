@@ -69,6 +69,13 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
+			<% 
+			String cursProperty = request.getParameter("course.cursProperty");
+			if(cursProperty!=null && !cursProperty.equals("")){
+			%>
+			<input name="course.cursProperty" type="hidden"
+			value="<%=cursProperty %>" />
+			<%}%>
 		<ul class="ul-form" id="element_id">
 
 		

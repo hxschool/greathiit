@@ -256,7 +256,7 @@ public class XuankeController extends BaseController {
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
-				if (!StringUtils.isEmpty(courseTeachingMode) &&  !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
 					courseService.save(entity);
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");

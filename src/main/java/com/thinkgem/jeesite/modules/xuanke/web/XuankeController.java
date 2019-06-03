@@ -248,7 +248,7 @@ public class XuankeController extends BaseController {
 			
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
 				
-				if (!StringUtils.isEmpty(courseTeachingMode) && !courseTeachingMode.getPeriod().equals("0") &&  cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") &&  cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 					courseService.save(entity);
 				}

@@ -218,7 +218,7 @@ public class ScoreController {
 					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
 					image = draw(image, color, font, 88, y1, courseName);
 					image = draw(image, color, font, 252, y1, isc.getEvaValue());
-					image = draw(image, color, font, 292, y1, isc.getPoint());
+					image = draw(image, color, font, 292, y1, isc.getCredit());
 					y1 = y1 + 18;
 				}
 			} else {
@@ -233,7 +233,7 @@ public class ScoreController {
 					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
 					image = draw(image, color, font, 335, y1, courseName);
 					image = draw(image, color, font, 498, y1, isc.getEvaValue());
-					image = draw(image, color, font, 548, y1, isc.getPoint());
+					image = draw(image, color, font, 548, y1, isc.getCredit());
 					y1 = y1 + 18;
 				}
 			}
@@ -268,7 +268,7 @@ public class ScoreController {
 						String courseName = ellipsis(isc.getCourse().getCursName(), 10);
 						img = draw(img, color, font, 88, y1, courseName);
 						img = draw(img, color, font, 252, y1, isc.getEvaValue());
-						img = draw(img, color, font, 292, y1, isc.getPoint());
+						img = draw(img, color, font, 292, y1, isc.getCredit());
 						y1 = y1 + 18;
 					}
 					y1 = y1 + 18;
@@ -285,7 +285,7 @@ public class ScoreController {
 						String courseName = ellipsis(isc.getCourse().getCursName(), 10);
 						img = draw(img, color, font, 335, y2, courseName);
 						img = draw(img, color, font, 498, y2, isc.getEvaValue());
-						img = draw(img, color, font, 548, y2, isc.getPoint());
+						img = draw(img, color, font, 548, y2, isc.getCredit());
 						y2 = y2 + 18;
 					}
 					y2 = y2 + 18;

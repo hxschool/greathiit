@@ -546,4 +546,11 @@
 		WHERE id = #{id}
 	</update>
 	
+	
+	
+	
+	<select id="getCurrentTeacherNumber"  resultType="Integer"> 
+		select max(no) from sys_user where length(no)=4 and no!='9999'
+	</select>
+
 </mapper>

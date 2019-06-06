@@ -6,6 +6,13 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$("#teacher_number_button").bind("click",function(){
+				 	var data=$.ajax({url:"${ctx}/sys/user/getNextTeacherNumber",async:false});
+				 	if(data!=null){
+				 		 $("#no").val(data.responseText);
+				 	}
+				 
+			});
 			$("#no").focus();
 			$("#inputForm").validate({
 				rules: {
@@ -83,10 +90,10 @@
 		
 		
 		<div class="control-group">
-			<label class="control-label">学号:</label>
+			<label class="control-label">学号/教师号:</label>
 			<div class="controls">
-				<form:input path="no" htmlEscape="false" maxlength="50" class="required"/>
-				<span class="help-inline"><font color="red">*</font> </span>
+				<form:input path="no" htmlEscape="false" maxlength="50" class="required" id="no"/>
+				<span class="help-inline"><font color="red">*</font>  <button class="btn btn-primary btn-xs" id="teacher_number_button">点击获取教师号</button></span>
 			</div>
 		</div>
 		<div class="control-group">

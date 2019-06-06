@@ -33,8 +33,6 @@ import com.thinkgem.jeesite.modules.answering.admin.service.AsAnsweringService;
 import com.thinkgem.jeesite.modules.answering.admin.service.AsAnsweringStudentService;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
 
 /**
  * 答辩抽签Controller
@@ -91,6 +89,7 @@ public class AsAnsweringController extends BaseController {
 		CourseSchedule courseSchedule = courseScheduleService.getByAddTime(timeAdd);
 		courseSchedule.setTips("答辩占用");
 		courseScheduleService.save(courseSchedule);
+		
 		asAnsweringService.save(asAnswering);
 		
 		asAnsweringStudentService.batchInsert(asAnswering);

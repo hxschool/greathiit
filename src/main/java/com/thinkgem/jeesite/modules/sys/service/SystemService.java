@@ -689,7 +689,9 @@ public class SystemService extends BaseService implements InitializingBean {
 	public void insertSequence(String serialType,String serialNo,int length){
 		 systemDao.insertSequence(serialType, serialNo, length);
 	}
-	
+	public Integer getCurrentTeacherNumber() {
+		return userDao.getCurrentTeacherNumber();
+	}
 	///////////////// Synchronized to the Activiti end //////////////////
 	
 }

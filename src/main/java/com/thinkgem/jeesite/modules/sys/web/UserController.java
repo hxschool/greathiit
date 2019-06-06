@@ -424,6 +424,13 @@ public class UserController extends BaseController {
 		return mapList;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "getNextTeacherNumber")
+	public Integer getNextTeacherNumber() {
+		Integer ret = systemService.getCurrentTeacherNumber();
+		return (ret + 1);
+	}
+	
     
 //	@InitBinder
 //	public void initBinder(WebDataBinder b) {

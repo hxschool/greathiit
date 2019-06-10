@@ -7,7 +7,7 @@
 		a.tchr_position AS "tchrPosition",
 		a.tchr_school AS "tchrSchool",
 		a.tchr_time AS "tchrTime",
-		a.teacher_number AS "teacher.no",
+		a.teacher_number AS "user.no",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -33,7 +33,7 @@
 		FROM teacher_experiment a
 		<include refid="teacherExperimentJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL} and a.teacher_number=#{teacher.no}
+			a.del_flag = #{DEL_FLAG_NORMAL} and a.teacher_number=#{user.no}
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -81,7 +81,7 @@
 			#{tchrPosition},
 			#{tchrSchool},
 			#{tchrTime},
-			#{teacher.no},
+			#{user.no},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -96,7 +96,7 @@
 			tchr_position = #{tchrPosition},
 			tchr_school = #{tchrSchool},
 			tchr_time = #{tchrTime},
-			teacher_number = #{teacher.no},
+			teacher_number = #{user.no},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

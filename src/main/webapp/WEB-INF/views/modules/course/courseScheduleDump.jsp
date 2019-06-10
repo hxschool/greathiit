@@ -61,7 +61,7 @@
 			<li>
 				教师：&nbsp;&nbsp;<select name="teacherNumber" style="width: 200px;">
 				<c:forEach items="${teachers}" var="item">
-					<option value="${item.teacher.no }">${item.tchrName }</option>
+					<option value="${item.user.no }">${item.tchrName }</option>
 				 </c:forEach>
 				</select>
 			</li>

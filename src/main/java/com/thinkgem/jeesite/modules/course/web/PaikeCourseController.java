@@ -478,7 +478,7 @@ public class PaikeCourseController extends BaseController {
 						}
 					}
 					Teacher tt = new Teacher();
-					tt.setTeacher(user);
+					tt.setUser(user);
 					Course course = new Course();
 					course.setTeacher(tt);
 					course.setCursNum(curs_num);
@@ -580,7 +580,7 @@ public class PaikeCourseController extends BaseController {
 						curs_num = curs_edu_num;
 					}
 					Teacher tt = new Teacher();
-					tt.setTeacher(user);
+					tt.setUser(user);
 					Course course = new Course();
 					course.setTeacher(tt);
 					course.setCursNum(curs_num);

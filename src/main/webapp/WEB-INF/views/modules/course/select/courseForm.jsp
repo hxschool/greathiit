@@ -124,7 +124,7 @@
 		<div class="control-group">
 			<label class="control-label">教师号：</label>
 			<div class="controls">
-				<form:input path="teacher.no" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="user.no" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

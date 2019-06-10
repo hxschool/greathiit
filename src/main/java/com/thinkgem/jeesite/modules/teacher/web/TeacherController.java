@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.teacher.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,9 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.utils.IdcardUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.entity.TeacherExperiment;
@@ -42,38 +47,17 @@ public class TeacherController extends BaseController {
 	private TeacherService teacherService;
 	@Autowired
 	private TeacherExperimentService teacherExperimentService;
-	
-	/*@ModelAttribute
+	@Autowired
+	private SystemService systemService;
+	@ModelAttribute
 	public Teacher get(@RequestParam(required=false) String id) {
-		Teacher entity = null;
 		if (StringUtils.isNotBlank(id)){
-			entity = teacherService.get(id);
+			return teacherService.get(id);
+		}else {
+			return new Teacher();
 		}
-		if(entity == null) {
-			User user = UserUtils.getUser();
-			if(user.getUserType().equals("6")) {
-				return entity;
-			}
-			Teacher teacher = new Teacher();
-			teacher.setTeacher(user);
-			entity = teacherService.get(teacher);
-			if(entity==null) {
-				entity = new Teacher();
-				String idCard = user.getLoginName();
-				if(IdcardUtils.validateCard(idCard)) {
-					entity.setTchrIdcard(idCard);
-					entity.setTchrGender(IdcardUtils.getGenderByIdCard(idCard));
-				}
-				entity.setTchrEmail(user.getEmail());
-				entity.setTchrPhone(user.getPhone());
-				
-				entity.setTchrName(user.getName());
-				entity.setTeacher(user);
-				teacherService.save(entity);
-			}
-		}
-		return entity;
-	}*/
+		
+	}
 	
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = {"list", ""})
@@ -89,12 +73,37 @@ public class TeacherController extends BaseController {
 		model.addAttribute("teacher", teacher);
 		return "modules/teacher/teacherForm";
 	}
-
+	public static void main(String[] args) {
+		String no = "201906101159";
+		System.out.println(no.substring(no.length()-4));
+	}
 	@RequiresPermissions("teacher:teacher:edit")
 	@RequestMapping(value = "save")
 	public String save(Teacher teacher, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, teacher)){
 			return form(teacher, model);
+		}
+		User user = teacher.getUser();
+		if(org.springframework.util.StringUtils.isEmpty(user.getNo())) {
+			String seq = systemService.getSequence("serialNo4");
+			String no = seq.substring(seq.length() - 4);
+			teacher.setTeacherNumber(no);
+			
+			String idcard = teacher.getTchrIdcard()==null||teacher.getTchrIdcard().equals("")?no:teacher.getTchrIdcard();
+			user = new User();
+			Office office = new Office();
+			office.setId("1");
+			user.setCompany(office);
+			user.setName(teacher.getTchrName());
+			user.setLoginName(idcard);
+			user.setNo(no);
+			Role role = systemService.getRoleByEnname("teacher");
+			user.setRole(role);
+			List<Role> roleList = new ArrayList<Role>();
+			roleList.add(role);
+			user.setRoleList(roleList);
+			user.setPassword(SystemService.entryptPassword("888888"));
+			systemService.saveUser(user);
 		}
 		teacherService.save(teacher);
 		addMessage(redirectAttributes, "保存教师信息成功");
@@ -113,27 +122,10 @@ public class TeacherController extends BaseController {
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = "teacherInfo")
 	public String info(Model model) {
-		User teacher = UserUtils.getUser();
-		Teacher t = new Teacher();
-		t.setTeacher(teacher);
-		Teacher entity = teacherService.get(t);
-		if(org.springframework.util.StringUtils.isEmpty(entity)) {
-			entity = new Teacher();
-			String idCard = teacher.getLoginName();
-			if(IdcardUtils.validateCard(idCard)) {
-				entity.setTchrIdcard(idCard);
-				entity.setTchrGender(IdcardUtils.getGenderByIdCard(idCard));
-			}
-			entity.setTchrEmail(teacher.getEmail());
-			entity.setTchrPhone(teacher.getPhone());
-			
-			entity.setTchrName(teacher.getName());
-			entity.setTeacher(teacher);
-			teacherService.save(entity);
-		}
-		model.addAttribute("teacher", entity);
+		Teacher teacher = teacherService.getTeacherInfo(UserUtils.getTeacher());
+		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
-		teacherExperiment.setTeacher(UserUtils.getUser());
+		teacherExperiment.setUser(UserUtils.getUser());
 		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findList(teacherExperiment);
 		model.addAttribute("teacherExperiments", teacherExperiments);
 		return "modules/teacher/teacherInfo";
@@ -142,28 +134,11 @@ public class TeacherController extends BaseController {
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = "teacherEdit")
 	public String teacherEdit(Model model) {
-		User teacher = UserUtils.getUser();
-		Teacher t = new Teacher();
-		t.setTeacher(teacher);
-		Teacher entity = teacherService.get(t);
-		if(org.springframework.util.StringUtils.isEmpty(entity)) {
-			entity = new Teacher();
-			String idCard = teacher.getLoginName();
-			if(IdcardUtils.validateCard(idCard)) {
-				entity.setTchrIdcard(idCard);
-				entity.setTchrGender(IdcardUtils.getGenderByIdCard(idCard));
-			}
-			entity.setTchrEmail(teacher.getEmail());
-			entity.setTchrPhone(teacher.getPhone());
-			
-			entity.setTchrName(teacher.getName());
-			entity.setTeacher(teacher);
-			teacherService.save(entity);
-		}
-		
-		model.addAttribute("teacher", entity);
+
+		Teacher teacher = teacherService.getTeacherInfo(UserUtils.getTeacher());
+		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
-		teacherExperiment.setTeacher(UserUtils.getUser());
+		teacherExperiment.setUser(UserUtils.getUser());
 		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findList(teacherExperiment);
 		model.addAttribute("teacherExperiments", teacherExperiments);
 		return "modules/teacher/teacherEdit";
@@ -172,9 +147,7 @@ public class TeacherController extends BaseController {
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = "teacherEditSave")
 	public String teacherEditSave(Teacher teacher,RedirectAttributes redirectAttributes) {
-		User user = UserUtils.getUser();
-		teacher.setTeacher(user);
-		Teacher entity = teacherService.get(teacher);
+		Teacher entity = UserUtils.getTeacher();
 		BeanUtils.copyProperties(teacher, entity);
 		teacherService.save(entity);
 		addMessage(redirectAttributes, "操作成功");
@@ -184,8 +157,8 @@ public class TeacherController extends BaseController {
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = "Teacher_Information_Modify_addExpByTchrNum")
 	public String Teacher_Information_Modify_addExpByTchrNum(TeacherExperiment teacherExperiment, RedirectAttributes redirectAttributes,Model model) {
-		User teacher = UserUtils.getUser();
-		teacherExperiment.setTeacher(teacher);
+		User user = UserUtils.getUser();
+		teacherExperiment.setUser(user);
 		teacherExperimentService.save(teacherExperiment);
 		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/teacher/teacher/teacherInfo?repage";
@@ -196,10 +169,10 @@ public class TeacherController extends BaseController {
 	@RequiresPermissions("teacher:teacher:view")
 	@RequestMapping(value = "Teacher_Information_Modify_deleteExpById")
 	public String Teacher_Information_Modify_deleteExpById(@RequestParam(value="expId",required=false)String expId,RedirectAttributes redirectAttributes, Model model) {
-		User teacher = UserUtils.getUser();
+		User user = UserUtils.getUser();
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
 		teacherExperiment.setId(expId);
-		teacherExperiment.setTeacher(teacher);
+		teacherExperiment.setUser(user);
 		teacherExperimentService.delete(teacherExperiment);
 		addMessage(redirectAttributes, "操作成功");
 		return "redirect:"+Global.getAdminPath()+"/teacher/teacher/teacherInfo?repage";

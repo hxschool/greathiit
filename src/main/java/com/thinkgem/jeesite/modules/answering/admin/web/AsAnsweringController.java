@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
@@ -33,6 +35,7 @@ import com.thinkgem.jeesite.modules.answering.admin.service.AsAnsweringService;
 import com.thinkgem.jeesite.modules.answering.admin.service.AsAnsweringStudentService;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 答辩抽签Controller
@@ -60,6 +63,13 @@ public class AsAnsweringController extends BaseController {
 			entity = new AsAnswering();
 		}
 		return entity;
+	}
+	
+	@RequestMapping(value ="search")
+	public String search(AsAnswering asAnswering, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<AsAnswering> page = asAnsweringService.findPage(new Page<AsAnswering>(request, response), asAnswering); 
+		model.addAttribute("page", page);
+		return "modules/answering/admin/asAnsweringSearch";
 	}
 	
 	@RequestMapping(value = {"list", ""})
@@ -103,6 +113,13 @@ public class AsAnsweringController extends BaseController {
 		addMessage(redirectAttributes, "删除答辩抽签成功");
 		return "redirect:"+Global.getAdminPath()+"/answering/admin/asAnswering/?repage";
 	}
+	
+	
+    @RequestMapping(value = "export", method=RequestMethod.POST)
+    public String exportFile(User user, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		//zhaojunfei
+		return "redirect:" + adminPath + "/answering/admin/asAnswering/search?repage";
+    }
 	
 	/**
 	 * 导入用户数据

@@ -20,7 +20,7 @@ public class TeacherExperiment extends DataEntity<TeacherExperiment> {
 	private String tchrPosition;		// 学位/职称
 	private String tchrSchool;		// 学校/单位
 	private String tchrTime;		// 时间
-	private User teacher;		// 教师号
+	private User user;		// 教师号
 	
 	public TeacherExperiment() {
 		super();
@@ -58,12 +58,12 @@ public class TeacherExperiment extends DataEntity<TeacherExperiment> {
 	}
 	
 	@NotNull(message="教师号不能为空")
-	public User getTeacher() {
-		return teacher;
+	public User getUser() {
+		return user;
 	}
 
-	public void setTeacher(User teacher) {
-		this.teacher = teacher;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 }

@@ -37,7 +37,7 @@ public class Teacher extends DataEntity<Teacher> {
 	private String tchrSelfIntroduce;		// 自我介绍
 	private String tchrEngSelfIntroduce;		// 英文自我介绍
 	private String tchrTitle;		// 职称
-	private User teacher;		// 教师号
+	private User user;		// 教师号
 	private String teacherNumber;//教师号
 	private String info;
 	
@@ -217,12 +217,12 @@ public class Teacher extends DataEntity<Teacher> {
 		this.tchrTitle = tchrTitle;
 	}
 	@NotNull(message="教师号不能为空")
-	public User getTeacher() {
-		return teacher;
+	public User getUser() {
+		return user;
 	}
 
-	public void setTeacher(User teacher) {
-		this.teacher = teacher;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public String getTeacherNumber() {

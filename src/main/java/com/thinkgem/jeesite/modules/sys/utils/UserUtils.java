@@ -169,7 +169,7 @@ public class UserUtils {
 			User user = get(principal.getId());
 			Teacher teacher = new Teacher();
 			teacher.setTeacherNumber(user.getNo());
-			teacher.setTeacher(user);
+			teacher.setUser(user);
 			return teacher;
 		}
 		// 如果没有登录，则返回实例化空的User对象。

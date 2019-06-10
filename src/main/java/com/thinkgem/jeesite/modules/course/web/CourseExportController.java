@@ -155,7 +155,7 @@ public class CourseExportController extends BaseController {
 			Teacher teacher  = teachers.get(i);
 			int celIndex = 3+i;
 			addCell(row, celIndex, teacher.getTchrName(), 3);
-			indexMap.put(teacher.getTeacher().getNo(),celIndex);
+			indexMap.put(teacher.getTeacherNumber(),celIndex);
 		}
 		
 		for(int i=2;i<37;i++) {
@@ -734,7 +734,7 @@ public class CourseExportController extends BaseController {
 			List<Teacher> teachers = teacherService.findList(teacher);
 			StringBuffer sb = new StringBuffer();
 			for(Teacher t:teachers) {
-			      sb.append(t.getTeacher().getNo());
+			      sb.append(t.getTeacherNumber());
 		          sb.append(",");
 			}
 			teacherNumber = sb.substring(0, sb.length() - ",".length());

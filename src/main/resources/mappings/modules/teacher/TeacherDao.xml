@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.thinkgem.jeesite.modules.teacher.dao.TeacherDao">
-    
+<mapper
+	namespace="com.thinkgem.jeesite.modules.teacher.dao.TeacherDao">
+
 	<sql id="teacherColumns">
 		a.id AS "id",
 		a.tchr_attend_date AS "tchrAttendDate",
@@ -9,133 +10,159 @@
 		a.tchr_degree AS "tchrDegree",
 		a.tchr_email AS "tchrEmail",
 		a.tchr_fax AS "tchrFax",
-		a.tchr_name AS "tchrName",
+		a.tchr_name AS
+		"tchrName",
 		a.tchr_idcard AS "tchrIdcard",
-		a.tchr_gender AS "tchrGender",
+		a.tchr_gender AS
+		"tchrGender",
 		a.tchr_nation AS "tchrNation",
-		a.tchr_political AS "tchrPolitical",
+		a.tchr_political AS
+		"tchrPolitical",
 		a.tchr_major AS "tchrMajor",
-		a.tchr_graduate_school AS "tchrGraduateSchool",
+		a.tchr_graduate_school AS
+		"tchrGraduateSchool",
 		a.tchr_office_addr AS "tchrOfficeAddr",
 		a.tchr_phone AS "tchrPhone",
 		a.tchr_school AS "tchrSchool",
 		a.tchr_self_introduce AS "tchrSelfIntroduce",
 		a.tchr_eng_self_introduce AS "tchrEngSelfIntroduce",
-		a.tchr_title AS "tchrTitle",
-		a.teacher_number AS "teacher.no",
-		a.teacher_number AS "teacherNumber",
+		a.tchr_title AS
+		"tchrTitle",
+		a.teacher_number AS "user.no",
+		a.teacher_number AS
+		"teacherNumber",
 		a.create_by AS "createBy.id",
-		a.create_date AS "createDate",
+		a.create_date AS
+		"createDate",
 		a.update_by AS "updateBy.id",
-		a.update_date AS "updateDate",
+		a.update_date AS
+		"updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag"
 	</sql>
-	
+
 	<sql id="teacherJoins">
 	</sql>
-    <select id="getTeacherInfos" resultType="Teacher">
-    	select <include refid="teacherColumns"/>,
-concat(
-(case   when b.company_id = ''  then '0'
-                      when b.company_id is NULL then '0' 
-                    
-                             else b.company_id end  ) 
-,
-(case  when b.office_id = ''  then '00'
-                      when b.office_id is NULL then '00'
-                     
-                             else b.office_id end  ) 
-,
-(case when  b.user_type  = ''  then '00'
-                      when b.user_type is NULL then '00' 
-                     
-                             else b.user_type end  ) 
-) as info
-from teacher a left join sys_user b on a.teacher_number = b.no where length(b.no)=4 and b.no!='9999'
+	<select id="getTeacherInfos" resultType="Teacher">
+		select
+		<include refid="teacherColumns" />
+		,
+		concat(
+		(case when b.company_id = '' then '0'
+		when b.company_id is NULL then '0'
 
-    </select>
-    
-        <select id="getTeacherInfo" resultType="Teacher">
-    	select <include refid="teacherColumns"/>,
-concat(
-(case   when b.company_id = ''  then '0'
-                      when b.company_id is NULL then '0' 
-                    
-                             else b.company_id end  ) 
-,
-(case  when b.office_id = ''  then '00'
-                      when b.office_id is NULL then '00'
-                     
-                             else b.office_id end  ) 
-,
-(case when  b.user_type  = ''  then '00'
-                      when b.user_type is NULL then '00' 
-                     
-                             else b.user_type end  ) 
-) as info
-from teacher a left join sys_user b on a.teacher_number = b.no where 1=1
-<if test="teacherNumber!=null and teacherNumber!=''">  
-and a.teacher_number=#{teacherNumber}
-</if>
+		else b.company_id end )
+		,
+		(case when b.office_id = '' then '00'
+		when b.office_id is NULL then '00'
 
-<if test="tchrName!=null and tchrName!=''">  
-and a.tchr_name=#{tchrName}
-</if>
-    </select>
-    
+		else b.office_id end )
+		,
+		(case when b.user_type = '' then '00'
+		when b.user_type is NULL then '00'
+
+		else b.user_type end )
+		) as info
+		from teacher a left join sys_user b on a.teacher_number = b.no where
+		length(b.no)=4 and b.no!='9999'
+
+	</select>
+
+	<select id="getTeacherInfo" resultType="Teacher">
+		select
+		<include refid="teacherColumns" />
+		,
+		concat(
+		(case when b.company_id = '' then '0'
+		when b.company_id is NULL then '0'
+
+		else b.company_id end )
+		,
+		(case when b.office_id = '' then '00'
+		when b.office_id is NULL then '00'
+
+		else b.office_id end )
+		,
+		(case when b.user_type = '' then '00'
+		when b.user_type is NULL then '00'
+
+		else b.user_type end )
+		) as info
+		from teacher a left join sys_user b on a.teacher_number = b.no where 1=1
+
+		<if test="user!=null and user.no!=null and user.no!=''">
+			and a.teacher_number=#{user.no}
+		</if>
+
+		<if test="teacherNumber!=null and teacherNumber!=''">
+			and a.teacher_number=#{teacherNumber}
+		</if>
+
+		<if test="tchrName!=null and tchrName!=''">
+			and a.tchr_name=#{tchrName}
+		</if>
+	</select>
+
 	<select id="get" resultType="Teacher">
-		SELECT 
-			<include refid="teacherColumns"/>
+		SELECT
+		<include refid="teacherColumns" />
 		FROM teacher a
-		<include refid="teacherJoins"/>
-		WHERE 1=1
-		<if test="teacher.no!=null and teacher.no!=''">  
-	        AND a.teacher_number = #{teacher.no}
-	    </if>  
-		<if test="id!=null and id!=''">  
-	        AND a.id = #{id}
-	    </if>  
-		 
+		<include refid="teacherJoins" />
+		WHERE a.id = #{id}
+
+
 	</select>
-	
+
 	<select id="getAllCourseTeacher" resultType="Teacher">
-		select <include refid="teacherColumns"/> from teacher a where a.teacher_number in (select distinct teacher_number from course)
+		select
+		<include refid="teacherColumns" />
+		from teacher a where a.teacher_number in (select distinct
+		teacher_number from course)
 	</select>
-	
-	
-	
+
+
+
 	<select id="getTeacherByTeacherNumber" resultType="Teacher">
-		SELECT 
-			<include refid="teacherColumns"/>
+		SELECT
+		<include refid="teacherColumns" />
 		FROM teacher a
-		<include refid="teacherJoins"/>
+		<include refid="teacherJoins" />
 		WHERE a.teacher_number = #{teacherNumber}
-		 
+
 	</select>
-	
-	
+
+
 	<select id="findListByYearTerm" resultType="Teacher">
-		SELECT 
-			<include refid="teacherColumns"/>
-		from teacher a where a.teacher_number in (select teacher_number   from course where id in (select course_id from course_schedule where sc_lock=2 and  course_class!='' AND course_id !='00000000' and time_add like CONCAT(#{yearTerm},'%'))) 
+		SELECT
+		<include refid="teacherColumns" />
+		from teacher a where a.teacher_number in (select teacher_number from
+		course where id in (select course_id from course_schedule where
+		sc_lock=2 and course_class!='' AND course_id !='00000000' and time_add
+		like CONCAT(#{yearTerm},'%')))
 	</select>
-	
-	
-	
+
+
+
 	<select id="findList" resultType="Teacher">
-		SELECT 
-			<include refid="teacherColumns"/>
+		SELECT
+		<include refid="teacherColumns" />
 		FROM teacher a
-		<include refid="teacherJoins"/>
+		<include refid="teacherJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="tchrName!=null and tchrName!=''">  
-			and a.tchr_name = #{tchrName}
+			<if test="tchrName!=null and tchrName!=''">
+				and a.tchr_name = #{tchrName}
+			</if>
+			<if test="tchrGender!=null and tchrGender!=''">
+				and a.tchr_gender = #{tchrGender}
+			</if>
+			<if test="tchrTitle!=null and tchrTitle!=''">
+				and a.tchr_title = #{tchrTitle}
 			</if>
 		</where>
 		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+			<when
+				test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
@@ -143,17 +170,18 @@ and a.tchr_name=#{tchrName}
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<select id="findAllList" resultType="Teacher">
-		SELECT 
-			<include refid="teacherColumns"/>
+		SELECT
+		<include refid="teacherColumns" />
 		FROM teacher a
-		<include refid="teacherJoins"/>
+		<include refid="teacherJoins" />
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-		</where>		
+		</where>
 		<choose>
-			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+			<when
+				test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
 			</when>
 			<otherwise>
@@ -161,95 +189,95 @@ and a.tchr_name=#{tchrName}
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<insert id="insert">
 		INSERT INTO teacher(
-			id,
-			tchr_attend_date,
-			tchr_birthday,
-			tchr_degree,
-			tchr_email,
-			tchr_fax,
-			tchr_name,
-			tchr_idcard,
-			tchr_gender,
-			tchr_nation,
-			tchr_political,
-			tchr_major,
-			tchr_graduate_school,
-			tchr_office_addr,
-			tchr_phone,
-			tchr_school,
-			tchr_self_introduce,
-			tchr_eng_self_introduce,
-			tchr_title,
-			teacher_number,
-			create_by,
-			create_date,
-			update_by,
-			update_date,
-			remarks,
-			del_flag
+		id,
+		tchr_attend_date,
+		tchr_birthday,
+		tchr_degree,
+		tchr_email,
+		tchr_fax,
+		tchr_name,
+		tchr_idcard,
+		tchr_gender,
+		tchr_nation,
+		tchr_political,
+		tchr_major,
+		tchr_graduate_school,
+		tchr_office_addr,
+		tchr_phone,
+		tchr_school,
+		tchr_self_introduce,
+		tchr_eng_self_introduce,
+		tchr_title,
+		teacher_number,
+		create_by,
+		create_date,
+		update_by,
+		update_date,
+		remarks,
+		del_flag
 		) VALUES (
-			#{id},
-			#{tchrAttendDate},
-			#{tchrBirthday},
-			#{tchrDegree},
-			#{tchrEmail},
-			#{tchrFax},
-			#{tchrName},
-			#{tchrIdcard},
-			#{tchrGender},
-			#{tchrNation},
-			#{tchrPolitical},
-			#{tchrMajor},
-			#{tchrGraduateSchool},
-			#{tchrOfficeAddr},
-			#{tchrPhone},
-			#{tchrSchool},
-			#{tchrSelfIntroduce},
-			#{tchrEngSelfIntroduce},
-			#{tchrTitle},
-			#{teacher.no},
-			#{createBy.id},
-			#{createDate},
-			#{updateBy.id},
-			#{updateDate},
-			#{remarks},
-			#{delFlag}
+		#{id},
+		#{tchrAttendDate},
+		#{tchrBirthday},
+		#{tchrDegree},
+		#{tchrEmail},
+		#{tchrFax},
+		#{tchrName},
+		#{tchrIdcard},
+		#{tchrGender},
+		#{tchrNation},
+		#{tchrPolitical},
+		#{tchrMajor},
+		#{tchrGraduateSchool},
+		#{tchrOfficeAddr},
+		#{tchrPhone},
+		#{tchrSchool},
+		#{tchrSelfIntroduce},
+		#{tchrEngSelfIntroduce},
+		#{tchrTitle},
+		#{teacherNumber},
+		#{createBy.id},
+		#{createDate},
+		#{updateBy.id},
+		#{updateDate},
+		#{remarks},
+		#{delFlag}
 		)
 	</insert>
-	
+
 	<update id="update">
-		UPDATE teacher SET 	
-			tchr_attend_date = #{tchrAttendDate},
-			tchr_birthday = #{tchrBirthday},
-			tchr_degree = #{tchrDegree},
-			tchr_email = #{tchrEmail},
-			tchr_fax = #{tchrFax},
-			tchr_name = #{tchrName},
-			tchr_idcard = #{tchrIdcard},
-			tchr_gender = #{tchrGender},
-			tchr_nation = #{tchrNation},
-			tchr_political = #{tchrPolitical},
-			tchr_major = #{tchrMajor},
-			tchr_graduate_school = #{tchrGraduateSchool},
-			tchr_office_addr = #{tchrOfficeAddr},
-			tchr_phone = #{tchrPhone},
-			tchr_school = #{tchrSchool},
-			tchr_self_introduce = #{tchrSelfIntroduce},
-			tchr_eng_self_introduce = #{tchrEngSelfIntroduce},
-			tchr_title = #{tchrTitle},
-			update_by = #{updateBy.id},
-			update_date = #{updateDate},
-			remarks = #{remarks}
+		UPDATE teacher SET
+		tchr_attend_date = #{tchrAttendDate},
+		tchr_birthday = #{tchrBirthday},
+		tchr_degree = #{tchrDegree},
+		tchr_email = #{tchrEmail},
+		tchr_fax = #{tchrFax},
+		tchr_name = #{tchrName},
+		tchr_idcard = #{tchrIdcard},
+		tchr_gender = #{tchrGender},
+		tchr_nation = #{tchrNation},
+		tchr_political = #{tchrPolitical},
+		tchr_major = #{tchrMajor},
+		tchr_graduate_school = #{tchrGraduateSchool},
+		tchr_office_addr = #{tchrOfficeAddr},
+		tchr_phone = #{tchrPhone},
+		tchr_school = #{tchrSchool},
+		tchr_self_introduce = #{tchrSelfIntroduce},
+		tchr_eng_self_introduce = #{tchrEngSelfIntroduce},
+		tchr_title = #{tchrTitle},
+		update_by = #{updateBy.id},
+		update_date = #{updateDate},
+		remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
-	
+
 	<update id="delete">
-		UPDATE teacher SET 
-			del_flag = #{DEL_FLAG_DELETE}
+		UPDATE teacher SET
+		del_flag = #{DEL_FLAG_DELETE}
 		WHERE id = #{id}
 	</update>
-	
+
 </mapper>

@@ -138,7 +138,7 @@ public class SystemService extends BaseService implements InitializingBean {
 		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
 			teacher = new Teacher();
 			teacher.setTchrName(tchr_name);
-			teacher.setTeacher(user);
+			teacher.setUser(user);
 			teacher.setDelFlag("0");
 			teacher.setTchrTitle(tchr_title);
 			teacherService.save(teacher);

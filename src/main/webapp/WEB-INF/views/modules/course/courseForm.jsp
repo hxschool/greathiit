@@ -109,7 +109,23 @@
 					class="input-xlarge " />
 			</div>
 		</div>
-		
+		<div class="control-group">
+							<label class="control-label">分类：</label>
+							<div class="controls">
+
+								<select name="cursSelectCourseType" style="width: 200px;">
+									<option value="">请选择</option>
+									<c:forEach items="${groupSelect}" var="groupSelect">
+										<optgroup label="${groupSelect.key}">
+											<c:forEach items="${groupSelect.value}" var="entry">  
+											<option value="${entry.value}">${entry.label}</option>
+											</c:forEach>
+										</optgroup>
+									</c:forEach>
+								</select>
+
+							</div>
+						</div>
 		<div class="control-group">
 			<label class="control-label">学时：</label>
 			<div class="controls">

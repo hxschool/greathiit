@@ -102,6 +102,14 @@ public class CourseController extends BaseController {
 			entity = new Course();
 		}
 		config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		Map<Dict,List<Dict>> groupSelect = new HashMap<Dict,List<Dict>>();
+		List<Dict> dicts = DictUtils.getDictList("select_course_type");
+		for(Dict dict:dicts) {
+			Dict tmp = new Dict();
+			tmp.setParentId(dict.getId());
+			groupSelect.put(dict, dictService.findList(tmp));
+		}
+		model.addAttribute("groupSelect", groupSelect);
 		model.addAttribute("config", config);
 		return entity;
 	}
@@ -161,15 +169,7 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "adminCourseAdd1")
 	public String adminCourseAdd1(Course course,Model model, RedirectAttributes redirectAttributes) {
-		Map<Dict,List<Dict>> groupSelect = new HashMap<Dict,List<Dict>>();
 		
-		List<Dict> dicts = DictUtils.getDictList("select_course_type");
-		for(Dict dict:dicts) {
-			Dict tmp = new Dict();
-			tmp.setParentId(dict.getId());
-			groupSelect.put(dict, dictService.findList(tmp));
-		}
-		model.addAttribute("groupSelect", groupSelect);
 		return "modules/course/add/adminCourseAdd1";
 	}
 	

@@ -164,7 +164,11 @@
     				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
     				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a>
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
-					
+					<shiro:hasPermission name="student:studentCourse:export">
+					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
+    				<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
+    				<a  class="btn btn-success" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
+					</shiro:hasPermission>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

@@ -241,7 +241,7 @@ public class StudentCourseController extends BaseController {
 				addMessage(redirectAttributes, "课程信息异常,非法参数");
 			}
 			User user = UserUtils.getUser();
-			String fileName = "成绩数据导入模板.xlsx";
+			String fileName = course.getCursName().concat("成绩导入模板.xlsx");
 			List<StudentCourse> list = Lists.newArrayList();
 
 			if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
@@ -253,6 +253,9 @@ public class StudentCourseController extends BaseController {
 				logger.info("导入班级学生信息");
 				for (TeacherClass tc : teacherList) {
 					clazzNumbers.add(tc.getClazz().getId());
+				}
+				if(CollectionUtils.isEmpty(clazzNumbers)) {
+					throw new RuntimeException("当前教师未设置班级信息");
 				}
 				Student student = new Student();
 				student.setClazzNumbers(clazzNumbers);

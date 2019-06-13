@@ -505,7 +505,7 @@ public class ExportExcel {
 	public ExportExcel write(HttpServletResponse response, String fileName) throws IOException{
 		response.reset();
         response.setContentType("application/octet-stream; charset=utf-8");
-        response.setHeader("Content-Disposition", "attachment; filename="+Encodes.urlEncode(fileName));
+        response.setHeader("Content-Disposition", "attachment; filename="+new String(fileName.getBytes("gbk"),"ISO-8859-1"));
 		write(response.getOutputStream());
 		return this;
 	}

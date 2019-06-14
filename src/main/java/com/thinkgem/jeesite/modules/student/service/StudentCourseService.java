@@ -74,7 +74,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				clazzNumbers.add(tc.getClazz().getId());
 			}
 			if(CollectionUtils.isEmpty(clazzNumbers)) {
-				throw new RuntimeException("当前教师未设置班级信息");
+				throw new GITException("40400000","当前教师未设置班级信息");
 			}
 			Student student = new Student();
 			student.setClazzNumbers(clazzNumbers);

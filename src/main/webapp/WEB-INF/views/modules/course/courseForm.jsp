@@ -138,7 +138,7 @@
 			<label class="control-label">学分：</label>
 			<div class="controls">
 				<form:input path="cursCredit" htmlEscape="false" maxlength="255"
-					class="input-xlarge " />
+					class="input-xlarge required" />
 			</div>
 		</div>
 

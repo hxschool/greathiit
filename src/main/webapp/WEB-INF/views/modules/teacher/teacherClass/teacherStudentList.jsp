@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>教师班级信息表管理</title>
+	<title>我的学生信息</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -83,7 +83,10 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>学生姓名：</label>
+			<li><label>学号：</label>
+				<form:input path="studentNumber" htmlEscape="false" maxlength="255" class="input-medium"/>
+			</li>
+			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 
@@ -108,7 +111,7 @@
 		<c:forEach items="${page.list}" var="student">
 			<tr>
 				<td>
-				${student.student.no}
+				${student.studentNumber}
 				</td>
 				<td>
 				${student.name}

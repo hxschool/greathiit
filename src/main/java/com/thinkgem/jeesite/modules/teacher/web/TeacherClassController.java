@@ -13,6 +13,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -99,6 +100,10 @@ public class TeacherClassController extends BaseController {
 		TeacherClass teacherClass = new TeacherClass();
 		teacherClass.setTeacherNumber(user.getNo());
 		List<TeacherClass> teacherClazzs = teacherClassService.findList(teacherClass);
+		if(CollectionUtils.isEmpty(teacherClazzs)) {
+			model.addAttribute("message","当前教师未设置班级信息,所以查询不到学生信息");
+			return "modules/teacher/teacherClass/teacherStudentList";
+		}
 		List<String> clazzNumbers = new ArrayList<String>();
 		for(TeacherClass cla :teacherClazzs) {
 			Office clazz = cla.getClazz();

@@ -19,13 +19,17 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.exception.GITException;
-import com.thinkgem.jeesite.common.utils.FileUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
@@ -34,13 +38,13 @@ import com.thinkgem.jeesite.modules.course.service.CoursePointService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
-import com.thinkgem.jeesite.modules.student.adapter.StudentScoreCourse;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
 import com.thinkgem.jeesite.modules.student.adapter.score.CourseScore;
-import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
@@ -62,6 +66,22 @@ public class SchoolReportController extends BaseController {
 	private CourseCompositionRulesService courseCompositionRulesService;
 	@Autowired
 	private CoursePointService coursePointService;
+	@Autowired
+	private SysConfigService sysConfigService;
+	private SysConfig config;
+	@ModelAttribute
+	public StudentCourse get(@RequestParam(required=false) String id,Model model) {
+		StudentCourse entity = null;
+		if (StringUtils.isNotBlank(id)){
+			entity = studentCourseService.get(id);
+		}
+		if (entity == null){
+			entity = new StudentCourse();
+		}
+		config = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
+		model.addAttribute("config",config);
+		return entity;
+	}
 	
 	@RequestMapping(value = {"list", ""})
 	public String list(HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -106,24 +126,39 @@ public class SchoolReportController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
+	/**
+	 * 导出成绩单
+	 * @param termYear
+	 * @param department
+	 * @param specialty
+	 * @param clazz
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	@RequestMapping("export")
-	public String export(String startYear,String endYear,String n,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+	public String export(String termYear,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		
+		if(org.springframework.util.StringUtils.isEmpty(termYear)) {
+			throw new GITException("40400099","系统异常,未选择学期");
+		}
+		String[] ss = termYear.split("-");
+		String startYear = ss[0];
+		String endYear = ss[1];
+		String n = ss[2];
 		String filename = "成绩单.xls";
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
-		
 		File file = new File(modelPath);
-	
-		
 		Map<String,String> courseNameMap = new HashMap<String,String>();
 		courseNameMap.put("{course_name}", "");
-		
 		Map<String,String> courseIdMap = new HashMap<String,String>();
 		courseIdMap.put("{course_id}", "");
-		
 		Map<String,String> departmentMap = new HashMap<String,String>();
-		departmentMap.put("{department}", officeService.get(department).getName());
-		departmentMap.put("{specialty}",officeService.get(specialty).getName());
-		departmentMap.put("{clazz}", officeService.get(clazz).getName());
+		departmentMap.put("{department}", officeService.get(department)!=null?officeService.get(department).getName():"");
+		departmentMap.put("{specialty}",officeService.get(specialty)!=null?officeService.get(specialty).getName():"");
+		departmentMap.put("{clazz}", officeService.get(clazz)!=null?officeService.get(clazz).getName():"");
 		Map<String,String> dateMap = new HashMap<String,String>();
 		dateMap.put("{startYear}", startYear);
 		dateMap.put("{endYear}", endYear);
@@ -143,21 +178,79 @@ public class SchoolReportController extends BaseController {
 		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,response.getOutputStream(),classScore);
 		return "modules/school/schoolReport?repage";
 	}
-	
-	@RequestMapping("result")
-	public String result(String startYear,String endYear,String n,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
-		String filename = "成绩单.xls";
+	/**
+	 * 导出成绩单,以课程编码的形式导出成绩单
+	 * @param course
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	@RequestMapping("getCourse")
+	public String getCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		Course entity = courseService.get(course);
+		if(org.springframework.util.StringUtils.isEmpty(entity)) {
+			throw new GITException("40400000","课程信息异常");
+		}
+		String filename = entity.getCursName().concat("成绩单.xls");
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
-		
 		File file = new File(modelPath);
-		
-		
 		Map<String,String> courseNameMap = new HashMap<String,String>();
-		courseNameMap.put("{course_name}", "");
-		
+		courseNameMap.put("{course_name}",entity.getCursName());
 		Map<String,String> courseIdMap = new HashMap<String,String>();
 		courseIdMap.put("{course_id}", "");
+		Map<String,String> departmentMap = new HashMap<String,String>();
+		departmentMap.put("{department}","");
+		departmentMap.put("{specialty}","");
+		departmentMap.put("{clazz}", "");
+		Map<String,String> dateMap = new HashMap<String,String>();
+		dateMap.put("{startYear}", "");
+		dateMap.put("{endYear}", "");
+		dateMap.put("{n}", "");
+		if(!org.springframework.util.StringUtils.isEmpty(entity.getCursYearTerm())) {
+			String[] ss = entity.getCursYearTerm().split("-");
+			dateMap.put("{startYear}",ss[0]);
+			dateMap.put("{endYear}", ss[1]);
+			dateMap.put("{n}", ss[2]);
+		}
+
+		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
+		CourseScore courseScore = new CourseScore();
+		List<StudentCourse> studentScoreCourses = studentCourseService.getStudentCourses(entity);
+		List<StudentCourse> list = Lists.newArrayList();
+		for(StudentCourse studentCourse : studentScoreCourses) {
+			studentCourse.setCourse(entity);
+			StudentCourse sc = studentCourseService.getStudentCourseByStudentCourse(studentCourse);
+			if(!org.springframework.util.StringUtils.isEmpty(sc)) {
+				studentCourse = sc;
+			}
+			list.add(studentCourse);
+		}
 		
+		courseScore.setList(list);
+		StudentScoreBuilder excelUtil = new StudentScoreBuilder();
+		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,response.getOutputStream(),courseScore);
+		return "modules/school/schoolReport?repage";
+	}
+	/*
+	@RequestMapping("result")
+	public String result(String termYear,String department,String specialty,String clazz,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		
+		if(org.springframework.util.StringUtils.isEmpty(termYear)) {
+			throw new GITException("40400099","系统异常,未选择学期");
+		}
+		String[] ss = termYear.split("-");
+		String startYear = ss[0];
+		String endYear = ss[1];
+		String n = ss[2];
+		String filename = "成绩单.xls";
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
+		File file = new File(modelPath);
+		Map<String,String> courseNameMap = new HashMap<String,String>();
+		courseNameMap.put("{course_name}", "");
+		Map<String,String> courseIdMap = new HashMap<String,String>();
+		courseIdMap.put("{course_id}", "");
 		Map<String,String> departmentMap = new HashMap<String,String>();
 		departmentMap.put("{department}", officeService.get(department).getName());
 		departmentMap.put("{specialty}",officeService.get(specialty).getName());
@@ -192,4 +285,5 @@ public class SchoolReportController extends BaseController {
 		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,response.getOutputStream(),courseScore);
 		return "modules/school/schoolReport?repage";
 	}
+	*/
 }

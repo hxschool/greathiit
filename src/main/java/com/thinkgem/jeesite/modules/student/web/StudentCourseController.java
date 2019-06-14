@@ -240,47 +240,10 @@ public class StudentCourseController extends BaseController {
 			if (org.springframework.util.StringUtils.isEmpty(course)) {
 				addMessage(redirectAttributes, "课程信息异常,非法参数");
 			}
-			User user = UserUtils.getUser();
+			
 			String fileName = course.getCursName().concat("成绩导入模板.xlsx");
-			List<StudentCourse> list = Lists.newArrayList();
-
-			if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
-				logger.info("普通课模式");
-				TeacherClass teacherClass = new TeacherClass();
-				teacherClass.setTeacherNumber(user.getNo());
-				List<TeacherClass> teacherList = teacherClassService.findList(teacherClass);
-				List<String> clazzNumbers = Lists.newArrayList();
-				logger.info("导入班级学生信息");
-				for (TeacherClass tc : teacherList) {
-					clazzNumbers.add(tc.getClazz().getId());
-				}
-				if(CollectionUtils.isEmpty(clazzNumbers)) {
-					throw new RuntimeException("当前教师未设置班级信息");
-				}
-				Student student = new Student();
-				student.setClazzNumbers(clazzNumbers);
-				List<Student> students = studentService.findList(student);
-
-				for (Student st : students) {
-					StudentCourse sc = new StudentCourse();
-					sc.setStudentNumber(st.getStudentNumber());
-					sc.setStudentName(st.getName());
-					list.add(sc);
-				}
-			} else {
-				logger.info("选课模式");
-				logger.info("导入选课学生信息");
-				SelectCourse selectCourse = new SelectCourse();
-				selectCourse.setCourse(course);
-				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
-				for (SelectCourse scc : selectCourses) {
-					StudentCourse sc = new StudentCourse();
-					sc.setStudentNumber(scc.getStudent().getNo());
-					sc.setStudentName(scc.getStudent().getName());
-					list.add(sc);
-				}
-
-			}
+			List<StudentCourse> list =studentCourseService.getStudentCourses(course);
+			
 			ExportExcel exportExcel = new ExportExcel();
 			List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
 			exportExcel.init("成绩数据", headerList);

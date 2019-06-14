@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>宿舍管理管理</title>
+<title>成绩单管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 		$(document).ready(function() {
@@ -43,28 +43,15 @@
 		method="post" class="form-horizontal">
 
 		<sys:message content="${message}" />
-		<div class="control-group">
-			<label class="control-label">时间范围:</label>
-			<div class="controls">
-				<input id="startYear" name="startYear" type="text"
-					readonly="readonly" maxlength="20" class="input-medium Wdate"
-					onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"
-					onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'endYear\')}'},dateFmt:'yyyy')" />
-				- <input id="endYear" name="endYear" type="text" readonly="readonly"
-					maxlength="20" class="input-medium Wdate"
-					onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"
-					onFocus="WdatePicker({minDate:'#F{$dp.$D(\'startYear\')}'},dateFmt:'yyyy')" />
-
-			</div>
-		</div>
+		
 		<div class="control-group">
 			<label class="control-label">学期:</label>
 			<div class="controls">
-				<select name="n" class="input-medium">
-					<option value="1">1</option>
-					<option value="2">2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
+				<select name="termYear" class="input-medium">
+				<c:forEach items="${fns:termYear()}" var="termYear">
+						<option value="${termYear.key}"
+							<c:if test="${termYear.key==course.cursYearTerm}">selected</c:if>>${termYear.key}</option>
+					</c:forEach>
 				</select>
 			</div>
 		</div>

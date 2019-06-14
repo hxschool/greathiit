@@ -11,8 +11,10 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
@@ -25,9 +27,14 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
 import com.thinkgem.jeesite.modules.course.entity.CourseGpa;
 import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
+import com.thinkgem.jeesite.modules.select.dao.SelectCourseDao;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
+import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
+import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
+import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
 
 /**
  * 学生成绩Service
@@ -48,6 +55,54 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	@Autowired
 	private CourseGpaDao courseGpaDao;
 
+	@Autowired
+	private TeacherClassDao teacherClassDao;
+	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private SelectCourseDao selectCourseDao;
+	public List<StudentCourse> getStudentCourses(Course course) {
+		List<StudentCourse> list = Lists.newArrayList();
+		if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+			logger.info("普通课模式");
+			TeacherClass teacherClass = new TeacherClass();
+			teacherClass.setTeacherNumber(course.getTeacher().getTeacherNumber());
+			List<TeacherClass> teacherList = teacherClassDao.findList(teacherClass);
+			List<String> clazzNumbers = Lists.newArrayList();
+			logger.info("导入班级学生信息");
+			for (TeacherClass tc : teacherList) {
+				clazzNumbers.add(tc.getClazz().getId());
+			}
+			if(CollectionUtils.isEmpty(clazzNumbers)) {
+				throw new RuntimeException("当前教师未设置班级信息");
+			}
+			Student student = new Student();
+			student.setClazzNumbers(clazzNumbers);
+			List<Student> students = studentDao.findList(student);
+			for (Student st : students) {
+				StudentCourse sc = new StudentCourse();
+				sc.setStudentNumber(st.getStudentNumber());
+				sc.setStudentName(st.getName());
+				sc.setCourse(course);
+				list.add(sc);
+			}
+		} else {
+			logger.info("选课模式");
+			logger.info("导入选课学生信息");
+			SelectCourse selectCourse = new SelectCourse();
+			selectCourse.setCourse(course);
+			List<SelectCourse> selectCourses = selectCourseDao.findList(selectCourse);
+			for (SelectCourse scc : selectCourses) {
+				StudentCourse sc = new StudentCourse();
+				sc.setStudentNumber(scc.getStudent().getNo());
+				sc.setStudentName(scc.getStudent().getName());
+				sc.setCourse(course);
+				list.add(sc);
+			}
+		}
+		return list;
+	}
+	
 	
 	public void gpa(List<StudentCourse> studentCourses) {
 		List<CourseGpa> groupCourseGpas = courseGpaDao.groupList(new CourseGpa());

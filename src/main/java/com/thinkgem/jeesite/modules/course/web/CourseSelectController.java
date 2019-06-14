@@ -283,7 +283,17 @@ public class CourseSelectController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/course/select/?cursProperty=20&repage";
     }
-
+    /**
+     * 可以废弃的导出成绩单功能
+     * @param course
+     * @param request
+     * @param response
+     * @param redirectAttributes
+     * @param model
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     @RequestMapping(value = "studentCourse")
     public String studentCourse(Course course, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes ,Model model) throws FileNotFoundException, IOException {
     	Course entity = courseService.get(course);

@@ -173,7 +173,7 @@
     				<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="student:studentCourse:export">
-    				<a  class="btn btn-success" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
+    				<a  class="btn btn-success" href="${ctx}/school/schoolReport/getCourse?id=${course.id}">导出成绩单</a>
 					</shiro:hasPermission>
 				</td>
 			</tr>

@@ -187,6 +187,8 @@ public class SchoolReportController extends BaseController {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
+	
+	@RequiresPermissions("student:studentCourse:export")
 	@RequestMapping("getCourse")
 	public String getCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
 		Course entity = courseService.get(course);

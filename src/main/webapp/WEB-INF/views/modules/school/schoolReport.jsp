@@ -99,7 +99,11 @@
 		</div>
 	</form>
 
-
+<fieldset>
+			<legend>使用说明</legend>
+			${config.tip }
+		</fieldset>
+	<sys:message content="${message}" />
 
 </body>
 </html>

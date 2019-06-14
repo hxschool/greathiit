@@ -162,7 +162,19 @@ public class StudentCourseController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
-	
+	/**
+	 * 导入成绩
+	 * @param request
+	 * @param response
+	 * @param redirectAttributes
+	 * @return
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "importView")
+	public String importView(HttpServletRequest request, HttpServletResponse response,
+			RedirectAttributes redirectAttributes) throws IOException {
+		return "modules/student/studentcourse/importView";
+	}
 	@RequiresPermissions("student:studentCourse:import")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {

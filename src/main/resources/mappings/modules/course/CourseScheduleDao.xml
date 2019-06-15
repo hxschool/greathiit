@@ -126,7 +126,7 @@
 			<include refid="courseScheduleColumns"/>
 		FROM course_schedule a
 		<include refid="courseScheduleJoins"/>
-		WHERE substr(a.time_add,1,19) = #{timeAdd}
+		WHERE substr(a.time_add,1,19) = #{timeAdd} and a.del_flag = 0
 		order by a.time_add
 	</select>
 	

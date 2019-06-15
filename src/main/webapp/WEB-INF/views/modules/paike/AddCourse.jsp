@@ -117,19 +117,24 @@ td {
 					var="dd" />
 
 				<form name="form0">
-
-					<input type="hidden" name="url_time" value=""> <input
-						type="hidden" name="year" value="${yearTerm}" class="input_text" />
-					<input type="hidden" name="servers_time" value="${mm}@${dd}">
-
-
-					<input type="text" name="year_rili" id="year_rili"
+				<input type="text" name="year_rili" id="year_rili"
 						style="display: none;" value="${courseCalendar.calendarYear}" />
 					<input type="text" name="month_rili" id="month_rili"
 						style="display: none;" value="${courseCalendar.calendarMonth}" />
 					<input type="text" name="day_rili" id="day_rili"
 						style="display: none;" value="${courseCalendar.calendarDay}" />
-					<div id="top">
+					<div id="top"> 
+					<input type="hidden" name="url_time" value="">
+					<input type="hidden" name="servers_time" value="${mm}@${dd}">
+					学期:
+					<select name="year" style="width: 200px;">
+						<c:forEach items="${fns:termYear()}" var="termYear">
+							<option value="${termYear.key}"
+								<c:if test="${termYear.key==yearTerm}">selected</c:if>>${termYear.key}</option>
+						</c:forEach>
+					</select> 
+					
+					
 						第&nbsp;<select id="week_select" onchange="change_week()"
 							style="width: 100px;">
 							<option value="01" selected>1</option>
@@ -351,7 +356,6 @@ td {
 		}
 		//获取当前表单数据
 		function change() {
-
 			var year = document.form0.year.value;//获取年份
 
 			var h_school = $("#h_school").children('option:selected').val();
@@ -415,6 +419,7 @@ td {
 		}
 
 		function chuancan(selected) {
+			debugger;
 			rili_table();
 			$.ajax({
 						type : "POST",

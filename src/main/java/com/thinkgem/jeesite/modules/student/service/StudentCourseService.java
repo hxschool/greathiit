@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.student.service;
 
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
@@ -23,10 +24,12 @@ import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseGpaDao;
 import com.thinkgem.jeesite.modules.course.dao.CoursePointDao;
+import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
 import com.thinkgem.jeesite.modules.course.entity.CourseGpa;
 import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
+import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.select.dao.SelectCourseDao;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
@@ -54,7 +57,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private CoursePointDao coursePointDao; 
 	@Autowired
 	private CourseGpaDao courseGpaDao;
-
+	@Autowired
+	private CourseScheduleDao courseScheduleDao;
 	@Autowired
 	private TeacherClassDao teacherClassDao;
 	@Autowired
@@ -63,29 +67,57 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private SelectCourseDao selectCourseDao;
 	public List<StudentCourse> getStudentCourses(Course course) {
 		List<StudentCourse> list = Lists.newArrayList();
+		
 		if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
-			logger.info("普通课模式");
-			TeacherClass teacherClass = new TeacherClass();
-			teacherClass.setTeacherNumber(course.getTeacher().getTeacherNumber());
-			List<TeacherClass> teacherList = teacherClassDao.findList(teacherClass);
-			List<String> clazzNumbers = Lists.newArrayList();
-			logger.info("导入班级学生信息");
-			for (TeacherClass tc : teacherList) {
-				clazzNumbers.add(tc.getClazz().getId());
+			
+			//判断是否排课,如果排课再班级里面获取学生信息
+			CourseSchedule courseSchedule = new CourseSchedule(); 
+			courseSchedule.setCourseId(course.getId());
+			List<CourseSchedule> courseSchedules = courseScheduleDao.findList(courseSchedule);
+			if (!CollectionUtils.isEmpty(courseSchedules)) {
+				logger.info("已设置排课,优先排课模式");
+				for (CourseSchedule cs : courseSchedules) {
+					String courseClass = cs.getCourseClass();
+					if (!StringUtils.isEmpty(courseClass) && courseClass.equals("00000000")) {
+						String[] arrayIds = courseClass.split(",");
+						List<String> clazzIds = Arrays.asList(arrayIds);
+						Student student = new Student();
+						student.setClazzNumbers(clazzIds);
+						List<Student> students = studentDao.findList(student);
+						for (Student st : students) {
+							StudentCourse sc = new StudentCourse();
+							sc.setStudentNumber(st.getStudentNumber());
+							sc.setStudentName(st.getName());
+							sc.setCourse(course);
+							list.add(sc);
+						}
+					}
+				}
+			}else {
+				logger.info("普通课模式");
+				TeacherClass teacherClass = new TeacherClass();
+				teacherClass.setTeacherNumber(course.getTeacher().getTeacherNumber());
+				List<TeacherClass> teacherList = teacherClassDao.findList(teacherClass);
+				List<String> clazzIds = Lists.newArrayList();
+				logger.info("导入班级学生信息");
+				for (TeacherClass tc : teacherList) {
+					clazzIds.add(tc.getClazz().getId());
+				}
+				if(CollectionUtils.isEmpty(clazzIds)) {
+					throw new GITException("40400000","当前教师未设置班级信息");
+				}
+				Student student = new Student();
+				student.setClazzNumbers(clazzIds);
+				List<Student> students = studentDao.findList(student);
+				for (Student st : students) {
+					StudentCourse sc = new StudentCourse();
+					sc.setStudentNumber(st.getStudentNumber());
+					sc.setStudentName(st.getName());
+					sc.setCourse(course);
+					list.add(sc);
+				}
 			}
-			if(CollectionUtils.isEmpty(clazzNumbers)) {
-				throw new GITException("40400000","当前教师未设置班级信息");
-			}
-			Student student = new Student();
-			student.setClazzNumbers(clazzNumbers);
-			List<Student> students = studentDao.findList(student);
-			for (Student st : students) {
-				StudentCourse sc = new StudentCourse();
-				sc.setStudentNumber(st.getStudentNumber());
-				sc.setStudentName(st.getName());
-				sc.setCourse(course);
-				list.add(sc);
-			}
+			
 		} else {
 			logger.info("选课模式");
 			logger.info("导入选课学生信息");

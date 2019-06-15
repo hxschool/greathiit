@@ -371,19 +371,24 @@ public class PaikeCourseController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "ajaxAllCourse")
 	public List<TreeLink> ajaxAllCourse( HttpServletRequest request, HttpServletResponse response) {
+		List<Course> list1  = null;
+		if(isAdmin()) {
+			list1 = courseService.findCoursesByPaike(new Course());
+		}else {
+			Course course = new Course();
+			course.setTeacher(UserUtils.getTeacher());
+			list1 = courseService.findList(course);
+		}
 		
-		List<Course> list1 = courseService.findCoursesByPaike(new Course());
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
 		for(Course course:list1) {
 			TreeLink treeLink = new TreeLink();
 			treeLink.setValue(course.getId());
-			String teacherNumber = course.getTeacher().getTeacherNumber();
-			Teacher teacher = teacherService.getTeacherByTeacherNumber(teacherNumber);
+			Teacher teacher = course.getTeacher();
 			if(!StringUtils.isEmpty(teacher)) {
 				treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
 			}
 			treeLinks1.add(treeLink);
-			
 		}
 		return treeLinks1;
 	}

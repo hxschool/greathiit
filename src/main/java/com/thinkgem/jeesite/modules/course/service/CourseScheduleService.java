@@ -82,6 +82,7 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 	@Async
 	public void executeAsyncJsonAvailability(SysConfig sysConfig) {
 		
+		courseScheduleDao.history();
 		String termYear = sysConfig.getTermYear();
 		if(StringUtils.isEmpty(termYear)) {
 			termYear = sysConfigService.getModule(Global.SYSCONFIG_COURSE).getTermYear();
@@ -95,6 +96,7 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 				for (int $i = 1; $i <= 20; $i++) {
 					for (int $j = 1; $j <= 6; $j++) {
 						for (int $k = 1; $k <= 7; $k++) {
+							
 							CourseSchedule courseSchedule = new CourseSchedule();
 							String rootNumber = root.getValue();
 							String $id = termYear.concat(schoolNumber).concat(rootNumber);
@@ -104,13 +106,16 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 								timeAdd = $id + '0' + $i + $j + $k;
 							else
 								timeAdd = $id + $i + $j + $k;
-
+							courseSchedule.setIsNewRecord(true);
+							courseSchedule.setId(timeAdd);
 							courseSchedule.setTimeAdd(timeAdd);
 							courseSchedule.setCourseId("00000000");
 							courseSchedule.setScLock("1");
 							courseSchedule.setCourseClass("");
 							courseSchedule.setTips("");
-							super.save(courseSchedule);
+							if(super.get(timeAdd)==null) {
+								super.save(courseSchedule);
+							}
 						}
 					}
 				}

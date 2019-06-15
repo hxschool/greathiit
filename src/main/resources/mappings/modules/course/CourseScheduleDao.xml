@@ -241,6 +241,9 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
+	<update id="history">
+		UPDATE course_schedule SET 	del_flag=1 where del_flag=0
+	</update>
 	
 	<update id="delete">
 		UPDATE course_schedule SET 

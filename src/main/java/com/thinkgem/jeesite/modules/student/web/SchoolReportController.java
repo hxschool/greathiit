@@ -12,6 +12,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -223,11 +224,13 @@ public class SchoolReportController extends BaseController {
 		List<StudentCourse> list = Lists.newArrayList();
 		for(StudentCourse studentCourse : studentScoreCourses) {
 			studentCourse.setCourse(entity);
-			StudentCourse sc = studentCourseService.getStudentCourseByStudentCourse(studentCourse);
-			if(!org.springframework.util.StringUtils.isEmpty(sc)) {
-				studentCourse = sc;
+			List<StudentCourse> scs = studentCourseService.findList(studentCourse);
+			
+			if(!CollectionUtils.isEmpty(scs)) {
+				for(StudentCourse sc : scs) {
+					list.add(sc);
+				}
 			}
-			list.add(studentCourse);
 		}
 		
 		courseScore.setList(list);

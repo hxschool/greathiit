@@ -140,6 +140,11 @@
 			<if test="termYear != null and termYear != ''">
 				AND a.term_year = #{termYear}
 			</if>
+			
+			<if test="termYear != null and termYear != ''">
+				AND a.curs_year_term = #{termYear}
+			</if>
+			
 			<if test="workEvaValue != null and workEvaValue != ''">
 				AND a.work_eva_value = #{workEvaValue}
 			</if>

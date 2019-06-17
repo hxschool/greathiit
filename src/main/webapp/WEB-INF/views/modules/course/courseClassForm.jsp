@@ -36,14 +36,14 @@
 		<div class="control-group">
 			<label class="control-label">course_id：</label>
 			<div class="controls">
-				<form:input path="courseId" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
+				<form:input path="course.id" htmlEscape="false" maxlength="64" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">course_class：</label>
 			<div class="controls">
-				<form:input path="courseClass" htmlEscape="false" maxlength="20" class="input-xlarge required"/>
+				<form:input path="cls.id" htmlEscape="false" maxlength="20" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*</font> </span>
 			</div>
 		</div>

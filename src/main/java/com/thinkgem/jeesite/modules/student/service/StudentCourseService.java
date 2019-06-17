@@ -68,13 +68,13 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		List<StudentCourse> list = Lists.newArrayList();
 		
 		CourseClass entity = new CourseClass();
-		entity.setCourseId(course.getId());
+		entity.setCourse(course);
 		List<CourseClass> cls = courseClassDao.findAllList(entity);
 		if (!CollectionUtils.isEmpty(cls)) {
 			logger.info("已设置班级,根据课程对应班级进行相关操作");
 			List<String> clazzIds = Lists.newArrayList(); 
 			for(CourseClass cc:cls) {
-				clazzIds.add(cc.getCourseClass());
+				clazzIds.add(cc.getCls().getId());
 			}
 			Student student = new Student();
 			student.setClazzNumbers(clazzIds);

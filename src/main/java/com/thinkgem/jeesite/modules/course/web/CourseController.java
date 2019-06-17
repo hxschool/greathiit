@@ -162,8 +162,9 @@ public class CourseController extends BaseController {
 		for(String classId:classIds) {
 			if(!org.springframework.util.StringUtils.isEmpty(classId)) {
 				CourseClass courseClass = new CourseClass();
-				courseClass.setCourseId(courseId);
-				courseClass.setCourseClass(classId);
+				courseClass.setCourse(course);
+				Office cls = new Office();
+				courseClass.setCls(cls);
 				courseClassService.save(courseClass);
 			}
 		}

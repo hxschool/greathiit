@@ -4,8 +4,8 @@
     
 	<sql id="courseClassColumns">
 		a.id AS "id",
-		a.course_id AS "courseId",
-		a.course_class AS "courseClass",
+		a.course_id AS "course.id",
+		a.course_class AS "cls.id",
 		a.tips AS "tips",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
@@ -33,11 +33,11 @@
 		<include refid="courseClassJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
-			<if test="courseId != null and courseId != ''">
-				AND a.course_id = #{courseId}
+			<if test="course != null and course.id != null and course.id != ''">
+				AND a.course_id = #{course.id}
 			</if>
-			<if test="courseClass != null and courseClass != ''">
-				AND a.course_class = #{courseClass}
+			<if test="cls != null and cls.id != null and cls.id != ''">
+				AND a.course_class = #{cls.id}
 			</if>
 		</where>
 		<choose>
@@ -82,8 +82,8 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{courseId},
-			#{courseClass},
+			#{course.id},
+			#{cls.id},
 			#{tips},
 			#{createBy.id},
 			#{createDate},
@@ -96,8 +96,8 @@
 	
 	<update id="update">
 		UPDATE course_class SET 	
-			course_id = #{courseId},
-			course_class = #{courseClass},
+			course_id = #{course.id},
+			course_class = #{cls.id},
 			tips = #{tips},
 			remarks = #{remarks}
 		WHERE id = #{id}

@@ -3,7 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.course.entity;
 
-import org.hibernate.validator.constraints.Length;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.validation.constraints.NotNull;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 
@@ -15,8 +17,8 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class CourseClass extends DataEntity<CourseClass> {
 	
 	private static final long serialVersionUID = 1L;
-	private String courseId;		// course_id
-	private String courseClass;		// course_class
+	private Course course;		// course_id
+	private Office cls;		// course_class
 	private String tips;		// tips
 	
 	public CourseClass() {
@@ -27,22 +29,21 @@ public class CourseClass extends DataEntity<CourseClass> {
 		super(id);
 	}
 
-	@Length(min=1, max=64, message="course_id长度必须介于 1 和 64 之间")
-	public String getCourseId() {
-		return courseId;
+	@JsonBackReference
+	public Course getCourse() {
+		return course;
 	}
 
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 	
-	@Length(min=1, max=20, message="course_class长度必须介于 1 和 20 之间")
-	public String getCourseClass() {
-		return courseClass;
+	public Office getCls() {
+		return cls;
 	}
 
-	public void setCourseClass(String courseClass) {
-		this.courseClass = courseClass;
+	public void setCls(Office cls) {
+		this.cls = cls;
 	}
 	
 	public String getTips() {

@@ -10,8 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
+import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 
 /**
  * 课程班级Service
@@ -21,7 +21,6 @@ import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 @Service
 @Transactional(readOnly = true)
 public class CourseClassService extends CrudService<CourseClassDao, CourseClass> {
-
 	public CourseClass get(String id) {
 		return super.get(id);
 	}
@@ -33,6 +32,7 @@ public class CourseClassService extends CrudService<CourseClassDao, CourseClass>
 	public Page<CourseClass> findPage(Page<CourseClass> page, CourseClass courseClass) {
 		return super.findPage(page, courseClass);
 	}
+	
 	
 	@Transactional(readOnly = false)
 	public void save(CourseClass courseClass) {

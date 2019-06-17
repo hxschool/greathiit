@@ -33,6 +33,29 @@
 			$("#searchForm").submit();
         	return false;
         }
+		
+		function showClass(courseId,courseName){
+		
+			$.post("${ctx}/course/courseClass/showClass",{"course.id":courseId},function(result){
+				var ret = "";
+				if(result.length==0){
+					 ret = "该课程未设置任何班级信息,会导致导出成绩信息为空";
+				}
+			    for(var i=0;i<result.length;i++){
+			    	var contact = result[i];
+			    	ret = ret + '<div style="line-height:28px">'+contact.name+'</div>';
+			    }
+			    
+			    showDialogMessage(courseName,ret);
+			  });
+		}
+		function showDialogMessage(courseName,ret){
+			layer.open({
+				  title: courseName ,
+				  area: ['400px'],
+				  content: ret
+				});  
+		}
 	</script>
 </head>
 <body>
@@ -166,13 +189,16 @@
     				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a>
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
 					</shiro:hasPermission>
-					<shiro:hasPermission name="student:studentCourse:sign">
-					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出签到</a>
+					<shiro:hasPermission name="course:course:class">
+					<a href="javascript:void(0)" onclick="showClass('${course.id}','${course.cursName}')" class="btn btn-warning">查看班级</a>
 					</shiro:hasPermission>
-					<shiro:hasPermission name="student:studentCourse:score">
+					<shiro:hasPermission name="course:course:select">
+					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出选课</a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="course:course:studentCourse">
     				<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
     				</shiro:hasPermission>
-    				<shiro:hasPermission name="student:studentCourse:export">
+    				<shiro:hasPermission name="course:course:export">
     				<a  class="btn btn-success" href="${ctx}/school/schoolReport/getCourse?id=${course.id}">导出成绩单</a>
 					</shiro:hasPermission>
 				</td>

@@ -164,6 +164,7 @@ public class CourseController extends BaseController {
 				CourseClass courseClass = new CourseClass();
 				courseClass.setCourse(course);
 				Office cls = new Office();
+				cls.setId(classId);
 				courseClass.setCls(cls);
 				courseClassService.save(courseClass);
 			}

@@ -77,6 +77,7 @@
 			<div class="controls">
 
 				<form:select path="cursProperty" id="cursProperty" style="width: 200px;" >
+					<option value="">请选择</option>
 					<form:options items="${fns:getDictList('course_property')}" 
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
@@ -103,18 +104,13 @@
 			<label class="control-label">课程编号：</label>
 			<div class="controls">
 				<form:input path="cursNum" htmlEscape="false" maxlength="255"
+					class="input-xlarge " /><form:hidden path="cursName" htmlEscape="false"
 					class="input-xlarge " />
 					<span
 					class="help-inline"><font color="red">*B:本科课程,G:高职课程</font> </span>
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">课程名称：</label>
-			<div class="controls">
-				<form:input path="cursName" htmlEscape="false"
-					class="input-xlarge " />
-			</div>
-		</div>
+
 		<div class="control-group">
 							<label class="control-label">分类：</label>
 							<div class="controls">

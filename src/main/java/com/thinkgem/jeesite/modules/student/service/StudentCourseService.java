@@ -7,8 +7,6 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.validation.ConstraintViolationException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +14,17 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.google.common.collect.Lists;
-import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseGpaDao;
 import com.thinkgem.jeesite.modules.course.dao.CoursePointDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
 import com.thinkgem.jeesite.modules.course.entity.CourseGpa;
 import com.thinkgem.jeesite.modules.course.entity.CoursePoint;
@@ -64,12 +63,35 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	@Autowired
 	private StudentDao studentDao;
 	@Autowired
+	private CourseClassDao courseClassDao;
+	@Autowired
 	private SelectCourseDao selectCourseDao;
 	public List<StudentCourse> getStudentCourses(Course course) {
 		List<StudentCourse> list = Lists.newArrayList();
 		
+		CourseClass entity = new CourseClass();
+		entity.setCourseId(course.getId());
+		List<CourseClass> cls = courseClassDao.findAllList(entity);
+		if (!CollectionUtils.isEmpty(cls)) {
+			logger.info("已设置班级,根据课程对应班级进行相关操作");
+			List<String> clazzIds = Lists.newArrayList(); 
+			for(CourseClass cc:cls) {
+				clazzIds.add(cc.getCourseClass());
+			}
+			Student student = new Student();
+			student.setClazzNumbers(clazzIds);
+			List<Student> students = studentDao.findList(student);
+			for (Student st : students) {
+				StudentCourse sc = new StudentCourse();
+				sc.setStudentNumber(st.getStudentNumber());
+				sc.setStudentName(st.getName());
+				sc.setCourse(course);
+				list.add(sc);
+			}
+			return list;
+		}
+		
 		if (!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
-			
 			//判断是否排课,如果排课再班级里面获取学生信息
 			CourseSchedule courseSchedule = new CourseSchedule(); 
 			courseSchedule.setCourseId(course.getId());
@@ -203,7 +225,15 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 					studentCourse.setCourse(course);
 					studentCourse.setStatus("0");
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
-					
+					if(StringUtils.isEmpty(sc)) {
+						//判断课程类型
+						//zhaojunfei
+						String point = "";
+						studentCourse.setPoint(point);
+						this.save(studentCourse);
+						successNum++;
+					}
+					/*
 					if(!StringUtils.isEmpty(rules)) {
 						Double midEvaPer = Double.valueOf(rules.getMidTermPer()) / 100;// 期中成绩百分比
 						Double finEvaPer = Double.valueOf(rules.getFinalExamper()) / 100;// 期末成绩百分比
@@ -286,9 +316,11 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							failureMsg.append(message + "; ");
 							failureNum++;
 						}
+						
 					} catch (Exception ex) {
 						failureMsg.append("\r\n姓名 " + studentCourse.getStudentName() + " 导入失败：" + ex.getMessage());
 					}
+					*/
 				}
 			}
 			if (failureNum>0){

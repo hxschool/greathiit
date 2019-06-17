@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.course.dao.CourseClassDao">
+    
+	<sql id="courseClassColumns">
+		a.id AS "id",
+		a.course_id AS "courseId",
+		a.course_class AS "courseClass",
+		a.tips AS "tips",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="courseClassJoins">
+	</sql>
+    
+	<select id="get" resultType="CourseClass">
+		SELECT 
+			<include refid="courseClassColumns"/>
+		FROM course_class a
+		<include refid="courseClassJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="CourseClass">
+		SELECT 
+			<include refid="courseClassColumns"/>
+		FROM course_class a
+		<include refid="courseClassJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="courseId != null and courseId != ''">
+				AND a.course_id = #{courseId}
+			</if>
+			<if test="courseClass != null and courseClass != ''">
+				AND a.course_class = #{courseClass}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="CourseClass">
+		SELECT 
+			<include refid="courseClassColumns"/>
+		FROM course_class a
+		<include refid="courseClassJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO course_class(
+			id,
+			course_id,
+			course_class,
+			tips,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{id},
+			#{courseId},
+			#{courseClass},
+			#{tips},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE course_class SET 	
+			course_id = #{courseId},
+			course_class = #{courseClass},
+			tips = #{tips},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE course_class SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

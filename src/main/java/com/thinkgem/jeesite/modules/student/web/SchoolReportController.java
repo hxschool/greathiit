@@ -34,6 +34,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.service.CourseClassService;
 import com.thinkgem.jeesite.modules.course.service.CourseCompositionRulesService;
 import com.thinkgem.jeesite.modules.course.service.CoursePointService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -69,6 +70,8 @@ public class SchoolReportController extends BaseController {
 	private CoursePointService coursePointService;
 	@Autowired
 	private SysConfigService sysConfigService;
+	@Autowired
+	private CourseClassService courseClassService;
 	private SysConfig config;
 	@ModelAttribute
 	public StudentCourse get(@RequestParam(required=false) String id,Model model) {
@@ -178,6 +181,25 @@ public class SchoolReportController extends BaseController {
 		StudentScoreBuilder excelUtil = new StudentScoreBuilder();
 		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,response.getOutputStream(),classScore);
 		return "modules/school/schoolReport?repage";
+	}
+	@RequestMapping("importCourse")
+	public String importCourse(MultipartFile multipartFile,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		studentCourseService.importCourse(multipartFile);
+		return "modules/course/course?repage";
+	}
+	@RequestMapping("exportCourse")
+	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		
+		if(org.springframework.util.StringUtils.isEmpty(course)) {
+			throw new GITException("40400099","系统异常,未选择课程");
+		}
+		course = courseService.get(course);
+		String filename = course.getCursName().concat("成绩单.xls");
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
+		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
+		File file = new File(modelPath);
+		studentCourseService.exportCourse(file, course, response.getOutputStream());
+		return "modules/course/course?repage";
 	}
 	/**
 	 * 导出成绩单,以课程编码的形式导出成绩单

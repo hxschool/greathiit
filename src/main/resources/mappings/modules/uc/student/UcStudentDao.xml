@@ -80,9 +80,16 @@
 		<include refid="ucStudentJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+	
+			<if test="departmentId != null and departmentId != ''">
 			and a.department_id=#{departmentId}
+			</if>
+			<if test="majorId != null and majorId != ''">
 			and a.major_id=#{majorId}
+			</if>
+			<if test="classNumber != null and classNumber != ''">
 			and a.class_number=#{classNumber}
+			</if>
 		</where>
 	</select>
 	

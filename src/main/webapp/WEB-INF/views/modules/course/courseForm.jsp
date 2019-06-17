@@ -6,7 +6,13 @@
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 		$(document).ready(function() {
-			
+			$('#element_id').cxSelect({ 
+				  url: '${ctx}/sys/office/treeClassLink',
+				  selects: ['province', 'city','clazz', 'area'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
 			$.ajax({
 				url : '${ctx}/teacher/teacher/ajaxTeacher',
 				async : false,
@@ -192,6 +198,39 @@
 			</div>
 		</div>
 
+
+		<div id="element_id">
+
+			<div class="control-group">
+				<label class="control-label">所属学院:</label>
+				<div class="controls">
+
+					<select class="province input-medium" name="department"><option>请选择</option></select>
+
+				</div>
+
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">所属专业:</label>
+				<div class="controls">
+					<select id="city" class="city input-medium" name="specialty"><option>请选择</option></select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">年级:</label>
+				<div class="controls">
+					<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">选择班级:</label>
+				<div class="controls">
+					<select id="area" class="area input-medium" name="classIds" multiple="multiple"><option>请选择</option></select>
+				</div>
+			</div>
+		</div>
 
 		<div class="control-group">
 			<label class="control-label">课程简介：</label>

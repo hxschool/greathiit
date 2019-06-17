@@ -3,7 +3,6 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,18 +28,19 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.entity.CourseCompositionRules;
 import com.thinkgem.jeesite.modules.course.entity.CourseMaterial;
 import com.thinkgem.jeesite.modules.course.entity.CourseSpecificContent;
 import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.entity.CourseTeachingtarget;
+import com.thinkgem.jeesite.modules.course.service.CourseClassService;
 import com.thinkgem.jeesite.modules.course.service.CourseCompositionRulesService;
 import com.thinkgem.jeesite.modules.course.service.CourseMaterialService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -49,9 +49,8 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -90,6 +89,8 @@ public class CourseController extends BaseController {
 	private DictService dictService;
 	@Autowired
 	private TeacherService teacherService;
+	@Autowired
+	private CourseClassService courseClassService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -142,16 +143,31 @@ public class CourseController extends BaseController {
 
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "save")
-	public String save(Course course, Model model, RedirectAttributes redirectAttributes) {
+	public String save(Course course, Model model,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, course)){
 			return form(course, model);
 		}
+		SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
+		String courseId = String.valueOf(snowflakeIdWorker.nextId());
 		course.setCursEduNum(course.getCursNum());
-		
+		course.setIsNewRecord(true);
+		course.setId(courseId);
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
+		String[] classIds = request.getParameterValues("classIds");
+		
 		courseService.save(course);
+		
+		for(String classId:classIds) {
+			if(!org.springframework.util.StringUtils.isEmpty(classId)) {
+				CourseClass courseClass = new CourseClass();
+				courseClass.setCourseId(courseId);
+				courseClass.setCourseClass(classId);
+				courseClassService.save(courseClass);
+			}
+		}
+		
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}

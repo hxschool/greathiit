@@ -49,8 +49,6 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	@Autowired
 	private StudentCourseDao studentCourseDao;
 	@Autowired
-	private CourseDao courseDao;
-	@Autowired
 	private CourseCompositionRulesDao courseCompositionRulesDao;
 	@Autowired
 	private CoursePointDao coursePointDao; 

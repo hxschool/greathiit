@@ -19,7 +19,6 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseCompositionRulesDao;
-import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseGpaDao;
 import com.thinkgem.jeesite.modules.course.dao.CoursePointDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
@@ -35,6 +34,7 @@ import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
+import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
 import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
 
@@ -225,9 +225,35 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
 					if(StringUtils.isEmpty(sc)) {
 						//判断课程类型
+						String classEvaValue = studentCourse.getClassEvaValue();//课堂成绩
+						String finEvaValue = studentCourse.getFinEvaValue();//期末成绩
+						
+						if(!isNumeric(classEvaValue)) {
+							classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
+						}
+						if(!isNumeric(finEvaValue)) {
+							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
+						}
+						String evaValue = "";
 						//zhaojunfei
-						String point = "";
+						switch (course.getCursType()) {
+						case Course.COURSE_TYPE_EXA:
+							//考试课：平时成绩*30%+期末成绩*70%=综合成绩
+													
+							evaValue = String.valueOf(Double.valueOf((Double.parseDouble(classEvaValue)*Double.parseDouble("0.30")+Double.parseDouble(finEvaValue)*Double.parseDouble("0.70"))).intValue());
+							break;
+						case Course.COURSE_TYPE_TEST:
+							//考察课：平时成绩*40%+期末成绩*60%=综合成绩
+							evaValue = String.valueOf(Double.valueOf((Double.parseDouble(classEvaValue)*Double.parseDouble("0.40")+Double.parseDouble(finEvaValue)*Double.parseDouble("0.60"))).intValue());
+							break;
+						case Course.COURSE_TYPE_OTHER:
+							break;
+						default:
+							break;
+						}
+						String point = df.format((Double.valueOf(evaValue) - 60) * Double.valueOf("0.1"));
 						studentCourse.setPoint(point);
+						studentCourse.setEvaValue(evaValue);
 						this.save(studentCourse);
 						successNum++;
 					}

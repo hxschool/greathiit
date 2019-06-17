@@ -21,6 +21,10 @@ public class Course extends DataEntity<Course> {
 	
 	public static final String COURSE_PROPERTY_SELECT = "50";
 	
+	public static final String COURSE_TYPE_EXA="10";
+	public static final String COURSE_TYPE_TEST="20";
+	public static final String COURSE_TYPE_OTHER="99";
+	
 	public static final String PAIKE_STATUS_WEI_PAIKE="00";
 	public static final String PAIKE_STATUS_YI_PAIKE="10";
 	public static final String PAIKE_STATUS_OVER_PAIKE="90";

@@ -257,10 +257,10 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 						String classEvaValue = studentCourse.getClassEvaValue();//课堂成绩
 						String finEvaValue = studentCourse.getFinEvaValue();//期末成绩
 						
-						if(!isNumeric(classEvaValue)) {
+						if(!POIUtils.isNumeric(classEvaValue)) {
 							classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
 						}
-						if(!isNumeric(finEvaValue)) {
+						if(!POIUtils.isNumeric(finEvaValue)) {
 							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
 						}
 						String evaValue = "";
@@ -385,163 +385,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		}
 		
 	}
-	public void importCourse(MultipartFile multipartFile) {
-		logger.info("根据课程导入成绩");
-		try {
-			Workbook wb = null;
-			InputStream is = multipartFile.getInputStream();
-			String fileName = multipartFile.getOriginalFilename();
-			if (StringUtils.isEmpty(fileName)){
-				throw new RuntimeException("导入文档为空!");
-			}else if(fileName.toLowerCase().endsWith("xls")){    
-				wb = new HSSFWorkbook(is);    
-	        }else if(fileName.toLowerCase().endsWith("xlsx")){  
-	        	wb = new XSSFWorkbook(is);
-	        }else{  
-	        	throw new RuntimeException("文档格式不正确!");
-	        }  
-			Sheet clazzSheet = wb.getSheetAt(0);
-			Row courseIdRow = clazzSheet.getRow(1);
-			Cell courseIdCell = courseIdRow.getCell(0);
-			Course course = courseDao.get(courseIdCell.getStringCellValue());
 	
-			for(int i=0;i<wb.getNumberOfSheets();i++) {
-				Sheet sheet = wb.getSheetAt(i);
-				int rowNum = sheet.getLastRowNum();
-				for(int rowIndex=14;rowIndex<(rowNum-14);rowIndex++ ) {
-					Row row = sheet.getRow(rowIndex);
-					String studentNumber = row.getCell(0).getStringCellValue();
-					String name = row.getCell(1).getStringCellValue();
-					String classEvaValue = row.getCell(2).getStringCellValue();
-					String midEvaValue = row.getCell(3).getStringCellValue();
-					String finEvaValue = row.getCell(4).getStringCellValue();
-					StudentCourse studentCourse = new StudentCourse(); 
-					studentCourse.setStudentNumber(studentNumber);
-					studentCourse.setStudentName(name);
-					studentCourse.setCourse(course);
-					studentCourse.setTermYear(course.getCursYearTerm());
-					
-					studentCourse.setClassEvaValue(classEvaValue);
-					studentCourse.setFinEvaValue(finEvaValue);
-					if(!isNumeric(classEvaValue)) {
-						classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
-					}
-					if(!isNumeric(finEvaValue)) {
-						finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
-					}
-					String evaValue = "";
-					//zhaojunfei
-					switch (course.getCursType()) {
-					case Course.COURSE_TYPE_EXA:
-						//考试课：平时成绩*30%+期末成绩*70%=综合成绩
-												
-						evaValue = String.valueOf(Double.valueOf((Double.parseDouble(classEvaValue)*Double.parseDouble("0.30")+Double.parseDouble(finEvaValue)*Double.parseDouble("0.70"))).intValue());
-						break;
-					case Course.COURSE_TYPE_TEST:
-						//考察课：平时成绩*40%+期末成绩*60%=综合成绩
-						evaValue = String.valueOf(Double.valueOf((Double.parseDouble(classEvaValue)*Double.parseDouble("0.40")+Double.parseDouble(finEvaValue)*Double.parseDouble("0.60"))).intValue());
-						break;
-					case Course.COURSE_TYPE_OTHER:
-						break;
-					default:
-						break;
-					}
-					String point = df.format((Double.valueOf(evaValue) - 60) * Double.valueOf("0.1"));
-					studentCourse.setPoint(point);
-					studentCourse.setEvaValue(evaValue);
-					this.save(studentCourse);
-				}
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	public void exportCourse(File file,Course course,OutputStream os) {
-		logger.info("根据课程生成全部sheet班级信息");
-		try {
-			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
-			HSSFWorkbook wb = new HSSFWorkbook(fs);
-			HSSFSheet sheet = wb.getSheetAt(0);
-			CourseClass courseClass = new CourseClass();
-			courseClass.setCourse(course);
-			List<CourseClass> ccs = courseClassDao.findList(courseClass);
-			for(CourseClass cc:ccs) {
-				Office cls = cc.getCls();
-				Office clazz = officeDao.get(cls);
-				Office major = officeDao.get(clazz.getParent());
-				Office school = officeDao.get(major.getParent());
-				if(!StringUtils.isEmpty(clazz)) {
-					HSSFSheet clazzSheet = wb.createSheet(clazz.getName());
-					POIUtils.copySheet(wb, sheet , clazzSheet, true);
-					Row schoolreportRow = clazzSheet.getRow(0);
-					Cell courseNameCell = schoolreportRow.getCell(0);
-					courseNameCell.setCellValue(course.getCursName());
-					
-					Row courseIdRow = clazzSheet.getRow(1);
-					Cell courseIdCell = courseIdRow.getCell(0);
-					courseIdCell.setCellValue(course.getId());
-
-					Row departmentRow = clazzSheet.getRow(2);
-					Cell departmentCell = departmentRow.getCell(0);
-					
-					departmentCell.setCellValue("院系 ："+school.getName()+"         专业："+major.getName()+"       班级："+clazz.getName());
-					String[] ss = course.getCursYearTerm().split("-");
-					String startYear = ss[0];
-					String endYear = ss[1];
-					String n = ss[2];
-					Row yearTermRow = clazzSheet.getRow(3);
-					Cell yearTermCell = yearTermRow.getCell(0);
-					yearTermCell.setCellValue("    "+startYear+" —— "+endYear+" 学年度第"+n+"学期        ");
-					
-					UcStudent ucStudent = new UcStudent();
-					ucStudent.setClassNumber(clazz.getName());
-					List<UcStudent> list = ucStudentDao.exportList(ucStudent);
-					
-					int rowIndex = 14;
-					CellStyle style = POIUtils.formatCell(wb);
-					for (UcStudent student : list) {
-						Row studentRow = clazzSheet.createRow(rowIndex);
-						studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
-
-						Cell studentNumberCell = studentRow.createCell(0);
-						studentNumberCell.setCellValue(student.getStudentNumber());
-						studentNumberCell.setCellStyle(style);
-						Cell nameCell = studentRow.createCell(1);
-						nameCell.setCellValue(student.getUsername());
-						nameCell.setCellStyle(style);
-						for (int j = 2; j < 9; j++) {
-							Cell tempCell = studentRow.createCell(j);
-							tempCell.setCellStyle(style);
-						}
-						rowIndex++;
-					}
-					
-				}
-				
-			}
-			wb.removeSheetAt(0);
-			wb.write(os);
-			os.flush();
-			os.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	public static boolean isNumeric(String str) {
-		try {
-			Double.parseDouble(str);
-			return true;
-		} catch (NumberFormatException e) {
-			return false;
-		}
-	}
 	
 	public List<String> groupTermYear(StudentCourse studentCourse){
 		return studentCourseDao.groupTermYear(studentCourse);

@@ -3,6 +3,9 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
@@ -702,6 +706,26 @@ public class CourseController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/course/course/list?repage";
     }
+	
+	@RequestMapping("importStudentCourse")
+	public String importCourse(MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		courseService.importCourse(file);
+		return "modules/course/course?repage";
+	}
+	@RequestMapping("exportStudentCourse")
+	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+		
+		if(org.springframework.util.StringUtils.isEmpty(course)) {
+			throw new GITException("40400099","系统异常,未选择课程");
+		}
+		course = courseService.get(course);
+		String filename = course.getCursName().concat("成绩单.xls");
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
+		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
+		File file = new File(modelPath);
+		courseService.exportCourse(file, course, response.getOutputStream());
+		return "modules/course/course?repage";
+	}
 	
 	/**
 	 * 导入用户数据

@@ -65,13 +65,7 @@ public class SchoolReportController extends BaseController {
 	@Autowired
 	private CourseService courseService;
 	@Autowired
-	private CourseCompositionRulesService courseCompositionRulesService;
-	@Autowired
-	private CoursePointService coursePointService;
-	@Autowired
 	private SysConfigService sysConfigService;
-	@Autowired
-	private CourseClassService courseClassService;
 	private SysConfig config;
 	@ModelAttribute
 	public StudentCourse get(@RequestParam(required=false) String id,Model model) {
@@ -182,25 +176,22 @@ public class SchoolReportController extends BaseController {
 		excelUtil.oper(file, courseNameMap,courseIdMap,departmentMap, dateMap,response.getOutputStream(),classScore);
 		return "modules/school/schoolReport?repage";
 	}
-	@RequestMapping("importCourse")
-	public String importCourse(MultipartFile multipartFile,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
-		studentCourseService.importCourse(multipartFile);
-		return "modules/course/course?repage";
-	}
-	@RequestMapping("exportCourse")
-	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+	/**
+	 * 成绩单导入
+	 * @param multipartFile
+	 * @param request
+	 * @param response
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "importCourseView")
+	public String importFileTemplate( HttpServletRequest request,
+			HttpServletResponse response) throws FileNotFoundException, IOException {
 		
-		if(org.springframework.util.StringUtils.isEmpty(course)) {
-			throw new GITException("40400099","系统异常,未选择课程");
-		}
-		course = courseService.get(course);
-		String filename = course.getCursName().concat("成绩单.xls");
-		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
-		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
-		File file = new File(modelPath);
-		studentCourseService.exportCourse(file, course, response.getOutputStream());
-		return "modules/course/course?repage";
+		return "modules/course/importCourseView";
 	}
+
 	/**
 	 * 导出成绩单,以课程编码的形式导出成绩单
 	 * @param course

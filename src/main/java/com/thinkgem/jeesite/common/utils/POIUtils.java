@@ -9,6 +9,7 @@ import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.util.Region;
@@ -163,6 +164,39 @@ public class POIUtils {
 				distCell.setCellFormula(srcCell.getCellFormula());
 			} else { // nothing29
 			}
+		}
+	}
+	
+	public static String getCell(Cell cell) {
+		String value = "";
+		switch (cell.getCellType()) {
+			case Cell.CELL_TYPE_BLANK:
+				break;
+			case Cell.CELL_TYPE_NUMERIC:
+				value = String.valueOf(cell.getNumericCellValue());
+				break;
+			case Cell.CELL_TYPE_STRING:
+				value = cell.getStringCellValue();
+				break;
+			case Cell.CELL_TYPE_BOOLEAN:
+				break;
+			case Cell.CELL_TYPE_FORMULA:
+				break;
+			case Cell.CELL_TYPE_ERROR:
+				break;
+			default:
+				value = cell.getStringCellValue();
+				break;
+		}
+		return value;
+	}
+	
+	public static boolean isNumeric(String str) {
+		try {
+			Double.parseDouble(str);
+			return true;
+		} catch (NumberFormatException e) {
+			return false;
 		}
 	}
 }

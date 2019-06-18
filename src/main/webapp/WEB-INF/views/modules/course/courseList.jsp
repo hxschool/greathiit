@@ -17,9 +17,19 @@
 				});
 				top.$('.jbox-body .jbox-icon').css('top', '55px');
 			});
+			$("#btnImportStudentCourse").click(function() {
+				$.jBox($("#importStudentCourseBox").html(), {
+					title : "导入成绩数据",
+					buttons : {
+						"关闭" : true
+					},
+					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+				});
+			});
+			
 			$("#btnImport").click(function() {
 				$.jBox($("#importBox").html(), {
-					title : "导入数据",
+					title : "导入课程数据",
 					buttons : {
 						"关闭" : true
 					},
@@ -72,6 +82,19 @@
 				href="${ctx}/course/course/import/template">下载模板</a>
 		</form>
 	</div>
+	
+	<div id="importStudentCourseBox" class="hide">
+		<form id="importStudentCourseForm" action="${ctx}/course/course/importStudentCourse" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " /> 
+		</form>
+	</div>
+	
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/course/course/">课程维护</a></li>
 		<shiro:hasPermission name="course:course:edit"><li><a href="${ctx}/course/course/form">课程添加</a></li></shiro:hasPermission>
@@ -104,6 +127,9 @@
 			<input
 				id="btnExport" class="btn btn-primary" type="button" value="课程导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
+				
+				 <input
+				id="btnImportStudentCourse" class="btn btn-primary" type="button" value="成绩导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -184,9 +210,12 @@
 					<a href ="javascript:return false;" onclick="return false;" style="cursor: default;" title="${course.cursIntro}">${fns:abbr(course.cursIntro,10)}</a>
 				</td>
 				<td>
-					<shiro:hasPermission name="course:course:edit">
+					<shiro:hasPermission name="course:course:oper">
     				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
     				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a>
+					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
+					</shiro:hasPermission>
+					<shiro:hasPermission name="course:course:del">
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:class">
@@ -199,7 +228,7 @@
     				<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="course:course:export">
-    				<a  class="btn btn-success" href="${ctx}/school/schoolReport/exportCourse?id=${course.id}">导出成绩单</a>
+    				<a  class="btn btn-success" href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出成绩单</a>
 					</shiro:hasPermission>
 				</td>
 			</tr>

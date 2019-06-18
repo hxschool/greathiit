@@ -114,9 +114,15 @@
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
 
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
-				type="submit" value="查询" /> <input id="btnExport"
-				class="btn btn-primary" type="button" value="导出" /> <input
+				type="submit" value="查询" /> 
+				<shiro:hasPermission name="student:studentCourse:export">
+				<input id="btnExport"
+				class="btn btn-primary" type="button" value="导出" /> 
+				</shiro:hasPermission>
+				<shiro:hasPermission name="student:studentCourse:import">
+				<input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+				</shiro:hasPermission>
 			</li>
 
 

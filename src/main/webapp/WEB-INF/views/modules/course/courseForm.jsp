@@ -63,10 +63,8 @@
 <body>
 
 	<ul class="nav nav-tabs">
-		<c:if test="${param.cursProperty==50}">
-			<li><a href="${ctx}/course/select/?cursProperty=${param.cursProperty} ">课程管理</a></li>
-		</c:if>
-		<li><a href="${ctx}/course/course/">课程维护</a></li>
+		
+		<li><a href="${ctx}/course/course/?cursProperty=${param.cursProperty} ">课程维护</a></li>
 		<li class="active"><a
 			href="${ctx}/course/course/form?id=${course.id}">
 			<c:if test="${param.cursProperty==50}">

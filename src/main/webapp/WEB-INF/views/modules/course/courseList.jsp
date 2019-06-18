@@ -96,8 +96,8 @@
 	</div>
 	
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/course/course/">课程维护</a></li>
-		<shiro:hasPermission name="course:course:edit"><li><a href="${ctx}/course/course/form">课程添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/course/course/${ctx}/course/course/?cursProperty=${param.cursProperty} ">课程维护</a></li>
+		<shiro:hasPermission name="course:course:edit"><li><a href="${ctx}/course/course/form?cursProperty=${param.cursProperty}">课程添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="course" action="${ctx}/course/course/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

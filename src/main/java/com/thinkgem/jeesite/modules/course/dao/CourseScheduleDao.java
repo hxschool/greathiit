@@ -38,4 +38,6 @@ public interface CourseScheduleDao extends CrudDao<CourseSchedule> {
 	
 	
 	public List<CourseScheduleExt> findCoursesByParam(@Param("list") List<String> list,@Param("courseClass") String courseClass,@Param("teacherNumber") String teacherNumber);
+	
+	public void deleteByCourse(@Param("courseId")String courseId);
 }

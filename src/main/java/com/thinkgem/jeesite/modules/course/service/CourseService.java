@@ -12,7 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseClass;
+import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
+import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 
 /**
  * 课程基本信息Service
@@ -24,6 +27,10 @@ import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 public class CourseService extends CrudService<CourseDao, Course> {
 	@Autowired
 	private CourseDao courseDao;
+	@Autowired
+	private CourseClassDao courseClassDao;
+	@Autowired
+	private CourseScheduleDao courseScheduleDao;
 	public Course getCourseByCourseId(String courseId) {
 		Course course = new Course();
 		course.setId(courseId);
@@ -52,6 +59,10 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	
 	@Transactional(readOnly = false)
 	public void delete(Course course) {
+		CourseClass courseClass = new CourseClass();
+		courseClass.setCourse(course);;
+		courseClassDao.delete(courseClass);
+		courseScheduleDao.deleteByCourse(course.getId());
 		super.delete(course);
 	}
 	

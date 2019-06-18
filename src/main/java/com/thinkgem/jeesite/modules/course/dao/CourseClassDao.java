@@ -14,5 +14,5 @@ import com.thinkgem.jeesite.modules.course.entity.CourseClass;
  */
 @MyBatisDao
 public interface CourseClassDao extends CrudDao<CourseClass> {
-	
+	public void deleteByCourse(CourseClass courseClass);
 }

@@ -271,10 +271,8 @@
 		WHERE id = #{id}
 	</update>
 	
-	<update id="delete">
-		UPDATE course SET 
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
-	</update>
+	<delete id="delete">
+		DELETE FROM course id = #{id}
+	</delete>
 	
 </mapper>

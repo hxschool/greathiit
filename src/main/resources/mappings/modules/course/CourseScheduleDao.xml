@@ -251,4 +251,10 @@
 		WHERE id = #{id}
 	</update>
 	
+	<update id="deleteByCourseId">
+		UPDATE course_schedule SET 
+			course_id = '00000000',sc_lock=1
+			WHERE course_id = #{courseId}
+	</update>
+	
 </mapper>

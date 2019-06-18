@@ -42,12 +42,21 @@
 	</script>
 </head>
 <body>
+
 	<ul class="nav nav-tabs">
-		<c:if test="${param.cursProperty!=null }"><li ><a href="${ctx}/course/select/?cursProperty=50">课程管理</a></li></c:if>
-		
+		<c:if test="${param.cursProperty==50}">
+			<li><a href="${ctx}/course/select/?cursProperty=${param.cursProperty} ">课程管理</a></li>
+		</c:if>
 		<li><a href="${ctx}/course/course/">课程维护</a></li>
 		<li class="active"><a
-			href="${ctx}/course/course/form?id=${course.id}">课程基本信息<shiro:hasPermission
+			href="${ctx}/course/course/form?id=${course.id}">
+			<c:if test="${param.cursProperty==50}">
+			选课
+			</c:if>
+			<c:if test="${param.cursProperty!=50}">
+			基础课程
+			</c:if>
+			<shiro:hasPermission
 					name="course:course:edit">${not empty course.id?'修改':'添加'}</shiro:hasPermission>
 				<shiro:lacksPermission name="course:course:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
@@ -57,101 +66,139 @@
 		action="${ctx}/course/course/save" method="post"
 		class="form-horizontal">
 		<form:hidden path="id" />
-		
-		
+
+
 		<div class="control-group">
 			<label class="control-label">开设学期：</label>
 			<div class="controls">
-				<select name="cursYearTerm" style="width: 200px;">
+				<select name="cursYearTerm" class="input-medium required">
 					<c:forEach items="${fns:termYear()}" var="termYear">
 						<option value="${termYear.key}"
-							<c:if test="${termYear.key==course.cursYearTerm}">selected</c:if>>${termYear.key}</option>
+							<c:choose>
+							<c:when test="${course!=null&& course.cursYearTerm==termYear.key }">
+							selected
+							</c:when>
+							<c:otherwise>
+								<c:if test="${termYear.key==config.termYear}">selected</c:if>
+							</c:otherwise>
+							</c:choose>
+							
+							>${termYear.key}</option>
 					</c:forEach>
 				</select>
 
 			</div>
 		</div>
 
-		<div class="control-group">
-			<label class="control-label">课程性质：</label>
-			<div class="controls">
+		<c:choose>
+			<c:when test="${param.cursProperty==50}">
+				<div class="control-group">
+					<label class="control-label">课程性质：</label>
+					<div class="controls">
+						<form:select path="cursProperty" id="cursProperty"
+							class="input-medium required">
+							<option value="50">公共选课</option>
+						</form:select>
+						<span class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font>
+						</span>
+					</div>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="control-group">
+					<label class="control-label">课程性质：</label>
+					<div class="controls">
+						<form:select path="cursProperty" id="cursProperty"
+							class="input-medium required">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('course_property')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
+						<span class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font>
+						</span>
+					</div>
+				</div>
+			</c:otherwise>
 
-				<form:select path="cursProperty" id="cursProperty" style="width: 200px;" >
-					<option value="">请选择</option>
-					<form:options items="${fns:getDictList('course_property')}" 
-						itemLabel="label" itemValue="value" htmlEscape="false" />
-				</form:select>
-				 <span
-					class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font> </span>
-			</div>
-		</div>
-		<div class="control-group" id="element_course_educational">
+		</c:choose>
+							<div class="control-group" id="element_course_educational">
 			<label class="control-label">教务课程：</label>
 			<div class="controls">
 
-				<select id="eduCourseNum" name="eduCourseNum" class="cursNum input-medium"
-					style="width: 200px;" >
+				<select id="eduCourseNum" name="eduCourseNum"
+					class="cursNum input-medium required" >
 					<option>请选择</option>
 					<c:if test="${course.id!=null and course.id!=''}">
 						<option value="${course.cursNum}" selected>${course.cursName}</option>
 					</c:if>
-				</select> <span
-					class="help-inline"><font color="red">如果是教务处课程可以通过选择课程自动填写课程信息.如果是选课课程需要填写课程编号和课程名称</font> </span>
-			</div>
-		</div>
-		
+				</select> <span class="help-inline"><font color="red">如果是教务处课程可以通过选择课程自动填写课程信息.如果是选课课程需要填写课程编号和课程名称</font>
+				</span>
+			</div></div>
+
 		<div class="control-group">
 			<label class="control-label">课程编号：</label>
 			<div class="controls">
 				<form:input path="cursNum" htmlEscape="false" maxlength="255"
-					class="input-xlarge " /><form:hidden path="cursName" htmlEscape="false"
+					class="input-medium required " readonly="readonly"/>
+				<form:hidden path="cursName" htmlEscape="false"
 					class="input-xlarge " />
-					<span
-					class="help-inline"><font color="red">*B:本科课程,G:高职课程</font> </span>
+				<span class="help-inline"><font color="red">*B:本科课程,G:高职课程</font>
+				</span>
 			</div>
 		</div>
 
-		<div class="control-group">
-							<label class="control-label">分类：</label>
-							<div class="controls">
 
-								<select name="cursSelectCourseType" style="width: 200px;">
-									<option value="">请选择</option>
-									<c:forEach items="${groupSelect}" var="groupSelect">
-										<optgroup label="${groupSelect.key}">
-											<c:forEach items="${groupSelect.value}" var="entry">  
-											<option value="${entry.value}">${entry.label}</option>
-											</c:forEach>
-										</optgroup>
+		<c:choose>
+			<c:when test="${param.cursProperty==50 }">
+				<div class="control-group">
+					<label class="control-label">分类：</label>
+					<div class="controls">
+
+						<select name="cursSelectCourseType" class="input-medium required">
+							<option value="">请选择</option>
+							<c:forEach items="${groupSelect}" var="groupSelect">
+								<optgroup label="${groupSelect.key}">
+									<c:forEach items="${groupSelect.value}" var="entry">
+										<option value="${entry.value}">${entry.label}</option>
 									</c:forEach>
-								</select>
+								</optgroup>
+							</c:forEach>
+						</select>
 
-							</div>
-						</div>
+					</div>
+				</div>
+			</c:when>
+			<c:otherwise>
+
+			</c:otherwise>
+
+		</c:choose>
+
+
 		<div class="control-group">
 			<label class="control-label">学时：</label>
 			<div class="controls">
 				<form:input path="cursClassHour" htmlEscape="false" maxlength="255"
-					class="input-xlarge " />
+					class="input-medium required" />
 			</div>
 		</div>
-		
+
 		<div class="control-group">
 			<label class="control-label">学分：</label>
 			<div class="controls">
 				<form:input path="cursCredit" htmlEscape="false" maxlength="255"
-					class="input-xlarge required" />
+					class="input-medium required" />
 			</div>
 		</div>
 
-		
 
-		
+
+
 		<div class="control-group">
 			<label class="control-label">课程类型：</label>
 			<div class="controls">
 
-				<form:select path="cursType" style="width: 200px;">
+				<form:select path="cursType" class="input-medium required">
 					<form:options items="${fns:getDictList('course_curs_type')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
@@ -161,31 +208,32 @@
 			<label class="control-label">考核形式：</label>
 			<div class="controls">
 
-				<form:select path="cursForm" style="width: 200px;">
+				<form:select path="cursForm" class="input-medium required">
 					<form:options items="${fns:getDictList('course_curs_form')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
 			</div>
 		</div>
-		
 
-		
+
+
 		<shiro:hasPermission name="course:course:edit">
-		<div class="control-group">
-			<label class="control-label">任课教师：</label>
-			<div class="controls">
+			<div class="control-group">
+				<label class="control-label">任课教师：</label>
+				<div class="controls">
 
-				<select name="teacher.teacherNumber" id="teacherNumber" style="width: 200px;">
-					
-				</select>
+					<select name="teacher.teacherNumber" id="teacherNumber"
+						class="input-medium required">
+
+					</select>
+				</div>
 			</div>
-		</div>
 		</shiro:hasPermission>
-		
+
 		<div class="control-group">
 			<label class="control-label">教学模式：</label>
 			<div class="controls">
-				<select name="courseTeachingMode.teacMethod" style="width: 200px;">
+				<select name="courseTeachingMode.teacMethod" class="input-medium required">
 					<option value="" label="" />
 					<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
 						<option value="${dict.value}">${dict.label}</option>
@@ -194,40 +242,49 @@
 			</div>
 		</div>
 
+		<c:choose>
+			<c:when test="${param.cursProperty==50 }">
 
-		<div id="element_id">
+			</c:when>
+			<c:otherwise>
 
-			<div class="control-group">
-				<label class="control-label">所属学院:</label>
-				<div class="controls">
 
-					<select class="province input-medium" name="department"><option>请选择</option></select>
+				<div id="element_id">
 
+					<div class="control-group">
+						<label class="control-label">所属学院:</label>
+						<div class="controls">
+
+							<select class="province input-medium" name="department"><option>请选择</option></select>
+
+						</div>
+
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">所属专业:</label>
+						<div class="controls">
+							<select id="city" class="city input-medium" name="specialty"><option>请选择</option></select>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<label class="control-label">年级:</label>
+						<div class="controls">
+							<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">选择班级:</label>
+						<div class="controls">
+							<select id="area" class="area input-xxlarge" name="classIds"
+								multiple="multiple"><option>请选择</option></select>
+						</div>
+					</div>
 				</div>
+			</c:otherwise>
 
-			</div>
-
-			<div class="control-group">
-				<label class="control-label">所属专业:</label>
-				<div class="controls">
-					<select id="city" class="city input-medium" name="specialty"><option>请选择</option></select>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<label class="control-label">年级:</label>
-				<div class="controls">
-					<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label">选择班级:</label>
-				<div class="controls">
-					<select id="area" class="area input-medium" name="classIds" multiple="multiple"><option>请选择</option></select>
-				</div>
-			</div>
-		</div>
-
+		</c:choose>
 		<div class="control-group">
 			<label class="control-label">课程简介：</label>
 			<div class="controls">
@@ -258,23 +315,27 @@
 		    	$("#courseFrom").attr("action","adminCourseAdd2?op=ok");
 		    	$("#courseFrom").submit();
 			});
-			$('#element_id').cxSelect({ 
-			  url: '${ctx}/sys/office/treeLink',
-			  selects: ['province', 'city', 'area'], 
-			  jsonName: 'name',
-			  jsonValue: 'value',
-			  jsonSub: 'sub'
-			}); 
+		    <c:if test="${param.cursProperty!=50 }">
+				$('#element_id').cxSelect({ 
+				  url: '${ctx}/sys/office/treeLink',
+				  selects: ['province', 'city', 'area'], 
+				  jsonName: 'name',
+				  jsonValue: 'value',
+				  jsonSub: 'sub'
+				}); 
+			</c:if>
 			$('#element_course_educational').cxSelect({ 
 				  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
 				  selects: ['cursNum'], 
 				  jsonName: 'cursName',
 				  jsonValue: 'cursNum'
 			}); 
+			
 			$('#eduCourseNum').change(function(){  
 				$('#cursNum').val($(this).children('option:selected').val()); 
 			　	$('#cursName').val($(this).children('option:selected').text()); 
 			});
+			
 		});
 		</script>
 

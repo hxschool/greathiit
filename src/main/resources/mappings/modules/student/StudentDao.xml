@@ -70,8 +70,8 @@
 				AND a.student_number=#{studentNumber}
 			</if>
 			
-			<if test="clazzNumbers != null ">
-				and cl.id is not null 	
+			<if test="clazz != null and clazz.id!=null ">
+				and a.clazz_id = #{clazz.id}
 			</if>
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
 				

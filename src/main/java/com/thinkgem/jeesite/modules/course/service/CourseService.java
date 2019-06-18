@@ -35,13 +35,13 @@ import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseClass;
+import com.thinkgem.jeesite.modules.student.dao.StudentDao;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
-import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 课程基本信息Service
@@ -63,7 +63,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	@Autowired
 	private StudentCourseService studentCourseService;
 	@Autowired
-	private UcStudentDao ucStudentDao;
+	private StudentDao studentDao;
 	public Course getCourseByCourseId(String courseId) {
 		Course course = new Course();
 		course.setId(courseId);
@@ -210,15 +210,15 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					Row yearTermRow = clazzSheet.getRow(3);
 					Cell yearTermCell = yearTermRow.getCell(0);
 					yearTermCell.setCellValue("    "+startYear+" —— "+endYear+" 学年度第"+n+"学期        ");
-					
-					UcStudent ucStudent = new UcStudent();
-					ucStudent.setClassNumber(clazz.getName());
+					logger.info("根据班级查找相关学生信息");
 					//
-					List<UcStudent> list = ucStudentDao.exportList(ucStudent);
+					Student entity = new Student();
+					entity.setClazz(cls);
+					List<Student> list = studentDao.findList(entity);
 					
 					int rowIndex = 14;
 					CellStyle style = POIUtils.formatCell(wb);
-					for (UcStudent student : list) {
+					for (Student student : list) {
 						Row studentRow = clazzSheet.createRow(rowIndex);
 						studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
 
@@ -226,7 +226,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						studentNumberCell.setCellValue(student.getStudentNumber());
 						studentNumberCell.setCellStyle(style);
 						Cell nameCell = studentRow.createCell(1);
-						nameCell.setCellValue(student.getUsername());
+						nameCell.setCellValue(student.getName());
 						nameCell.setCellStyle(style);
 						for (int j = 2; j < 9; j++) {
 							Cell tempCell = studentRow.createCell(j);

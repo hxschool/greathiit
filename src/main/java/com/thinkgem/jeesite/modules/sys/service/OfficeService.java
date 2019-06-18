@@ -143,7 +143,7 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 					for(Office office4:list4) {
 						TreeLink treeLink4 = new TreeLink();
 						treeLink4.setValue(office4.getId());
-						treeLink4.setName(office4.getId());
+						treeLink4.setName(office4.getName());
 						treeLinks4.add(treeLink4);
 					}
 					treeLink3.setSub(treeLinks4);

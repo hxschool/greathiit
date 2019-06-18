@@ -35,12 +35,12 @@ import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseClass;
-import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
@@ -62,6 +62,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	private CourseScheduleDao courseScheduleDao;
 	@Autowired
 	private StudentCourseService studentCourseService;
+	@Autowired
+	private UcStudentDao ucStudentDao;
 	public Course getCourseByCourseId(String courseId) {
 		Course course = new Course();
 		course.setId(courseId);
@@ -187,7 +189,11 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					POIUtils.copySheet(wb, sheet , clazzSheet, true);
 					Row schoolreportRow = clazzSheet.getRow(0);
 					Cell courseNameCell = schoolreportRow.getCell(0);
-					courseNameCell.setCellValue(course.getCursName());
+				    CellStyle cellStyle = wb.createCellStyle();
+				    cellStyle.setFont(POIUtils.getFont(wb));
+				    cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+					courseNameCell.setCellValue("  "+course.getCursName()+"   （科）成绩单");
+					courseNameCell.setCellStyle(cellStyle);
 					
 					Row courseIdRow = clazzSheet.getRow(1);
 					Cell courseIdCell = courseIdRow.getCell(0);
@@ -208,11 +214,11 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					UcStudent ucStudent = new UcStudent();
 					ucStudent.setClassNumber(clazz.getName());
 					//
-					List<Student> list = null;//ucStudentDao.exportList(ucStudent);
+					List<UcStudent> list = ucStudentDao.exportList(ucStudent);
 					
 					int rowIndex = 14;
 					CellStyle style = POIUtils.formatCell(wb);
-					for (Student student : list) {
+					for (UcStudent student : list) {
 						Row studentRow = clazzSheet.createRow(rowIndex);
 						studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
 
@@ -220,7 +226,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						studentNumberCell.setCellValue(student.getStudentNumber());
 						studentNumberCell.setCellStyle(style);
 						Cell nameCell = studentRow.createCell(1);
-						nameCell.setCellValue(student.getName());
+						nameCell.setCellValue(student.getUsername());
 						nameCell.setCellStyle(style);
 						for (int j = 2; j < 9; j++) {
 							Cell tempCell = studentRow.createCell(j);

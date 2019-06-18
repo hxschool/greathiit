@@ -162,18 +162,18 @@ public class CourseController extends BaseController {
 		String[] classIds = request.getParameterValues("classIds");
 		
 		courseService.save(course);
-		
-		for(String classId:classIds) {
-			if(!org.springframework.util.StringUtils.isEmpty(classId)) {
-				CourseClass courseClass = new CourseClass();
-				courseClass.setCourse(course);
-				Office cls = new Office();
-				cls.setId(classId);
-				courseClass.setCls(cls);
-				courseClassService.save(courseClass);
+		if(!org.springframework.util.StringUtils.isEmpty(classIds)) {
+			for(String classId:classIds) {
+				if(!org.springframework.util.StringUtils.isEmpty(classId)) {
+					CourseClass courseClass = new CourseClass();
+					courseClass.setCourse(course);
+					Office cls = new Office();
+					cls.setId(classId);
+					courseClass.setCls(cls);
+					courseClassService.save(courseClass);
+				}
 			}
 		}
-		
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}

@@ -6,12 +6,15 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.Region;
 
 public class POIUtils {
@@ -199,4 +202,14 @@ public class POIUtils {
 			return false;
 		}
 	}
+
+	public static Font getFont(Workbook wb) {
+		Font font = wb.createFont();
+		font.setFontHeightInPoints((short) 16);
+		font.setFontName("黑体");
+		font.setUnderline(Font.U_SINGLE); // 下划线
+		return font;
+	}
+	
+	
 }

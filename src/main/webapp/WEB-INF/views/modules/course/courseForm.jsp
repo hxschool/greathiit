@@ -6,13 +6,32 @@
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 		$(document).ready(function() {
-			$('#element_id').cxSelect({ 
-				  url: '${ctx}/sys/office/treeClassLink',
-				  selects: ['province', 'city','clazz', 'area'], 
-				  jsonName: 'name',
-				  jsonValue: 'value',
-				  jsonSub: 'sub'
+			
+			 $('#adminCourseAddOk').click(function(){
+			    	$("#courseFrom").attr("action","adminCourseAdd2?op=ok");
+			    	$("#courseFrom").submit();
+				});
+			    <c:if test="${param.cursProperty!=50 }">
+			    $('#element_id').cxSelect({ 
+					  url: '${ctx}/sys/office/treeClassLink',
+					  selects: ['province', 'city','clazz', 'area'], 
+					  jsonName: 'name',
+					  jsonValue: 'value',
+					  jsonSub: 'sub'
+					}); 
+				</c:if>
+				$('#element_course_educational').cxSelect({ 
+					  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
+					  selects: ['cursNum'], 
+					  jsonName: 'cursName',
+					  jsonValue: 'cursNum'
 				}); 
+				
+				$('#eduCourseNum').change(function(){  
+					$('#cursNum').val($(this).children('option:selected').val()); 
+					$('#cursName').val($(this).children('option:selected').text()); 
+				});
+			
 			$.ajax({
 				url : '${ctx}/teacher/teacher/ajaxTeacher',
 				async : false,
@@ -71,7 +90,7 @@
 		<div class="control-group">
 			<label class="control-label">开设学期：</label>
 			<div class="controls">
-				<select name="cursYearTerm" class="input-medium required">
+				<select name="cursYearTerm" class="input-large required">
 					<c:forEach items="${fns:termYear()}" var="termYear">
 						<option value="${termYear.key}"
 							<c:choose>
@@ -96,7 +115,7 @@
 					<label class="control-label">课程性质：</label>
 					<div class="controls">
 						<form:select path="cursProperty" id="cursProperty"
-							class="input-medium required">
+							class="input-large required">
 							<option value="50">公共选课</option>
 						</form:select>
 						<span class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font>
@@ -109,7 +128,7 @@
 					<label class="control-label">课程性质：</label>
 					<div class="controls">
 						<form:select path="cursProperty" id="cursProperty"
-							class="input-medium required">
+							class="input-large required">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('course_property')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
@@ -126,7 +145,7 @@
 			<div class="controls">
 
 				<select id="eduCourseNum" name="eduCourseNum"
-					class="cursNum input-medium required" >
+					class="cursNum input-large required" >
 					<option>请选择</option>
 					<c:if test="${course.id!=null and course.id!=''}">
 						<option value="${course.cursNum}" selected>${course.cursName}</option>
@@ -139,9 +158,8 @@
 			<label class="control-label">课程编号：</label>
 			<div class="controls">
 				<form:input path="cursNum" htmlEscape="false" maxlength="255"
-					class="input-medium required " readonly="readonly"/>
-				<form:hidden path="cursName" htmlEscape="false"
-					class="input-xlarge " />
+					class="input-large required " readonly="readonly"/>
+					<form:hidden path="cursName" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
 				<span class="help-inline"><font color="red">*B:本科课程,G:高职课程</font>
 				</span>
 			</div>
@@ -154,7 +172,7 @@
 					<label class="control-label">分类：</label>
 					<div class="controls">
 
-						<select name="cursSelectCourseType" class="input-medium required">
+						<select name="cursSelectCourseType" class="input-large required">
 							<option value="">请选择</option>
 							<c:forEach items="${groupSelect}" var="groupSelect">
 								<optgroup label="${groupSelect.key}">
@@ -179,7 +197,7 @@
 			<label class="control-label">学时：</label>
 			<div class="controls">
 				<form:input path="cursClassHour" htmlEscape="false" maxlength="255"
-					class="input-medium required" />
+					class="input-large required" />
 			</div>
 		</div>
 
@@ -187,7 +205,7 @@
 			<label class="control-label">学分：</label>
 			<div class="controls">
 				<form:input path="cursCredit" htmlEscape="false" maxlength="255"
-					class="input-medium required" />
+					class="input-large required" />
 			</div>
 		</div>
 
@@ -198,7 +216,7 @@
 			<label class="control-label">课程类型：</label>
 			<div class="controls">
 
-				<form:select path="cursType" class="input-medium required">
+				<form:select path="cursType" class="input-large required">
 					<form:options items="${fns:getDictList('course_curs_type')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
@@ -208,7 +226,7 @@
 			<label class="control-label">考核形式：</label>
 			<div class="controls">
 
-				<form:select path="cursForm" class="input-medium required">
+				<form:select path="cursForm" class="input-large required">
 					<form:options items="${fns:getDictList('course_curs_form')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select>
@@ -223,7 +241,7 @@
 				<div class="controls">
 
 					<select name="teacher.teacherNumber" id="teacherNumber"
-						class="input-medium required">
+						class="input-large required">
 
 					</select>
 				</div>
@@ -233,7 +251,7 @@
 		<div class="control-group">
 			<label class="control-label">教学模式：</label>
 			<div class="controls">
-				<select name="courseTeachingMode.teacMethod" class="input-medium required">
+				<select name="courseTeachingMode.teacMethod" class="input-large required">
 					<option value="" label="" />
 					<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
 						<option value="${dict.value}">${dict.label}</option>
@@ -255,7 +273,7 @@
 						<label class="control-label">所属学院:</label>
 						<div class="controls">
 
-							<select class="province input-medium" name="department"><option>请选择</option></select>
+							<select class="province input-large" name="department"><option>请选择</option></select>
 
 						</div>
 
@@ -264,14 +282,14 @@
 					<div class="control-group">
 						<label class="control-label">所属专业:</label>
 						<div class="controls">
-							<select id="city" class="city input-medium" name="specialty"><option>请选择</option></select>
+							<select id="city" class="city input-large" name="specialty"><option>请选择</option></select>
 						</div>
 					</div>
 
 					<div class="control-group">
 						<label class="control-label">年级:</label>
 						<div class="controls">
-							<select id="clazz" class="clazz input-medium"><option>请选择</option></select>
+							<select id="clazz" class="clazz input-large"><option>请选择</option></select>
 						</div>
 					</div>
 					<div class="control-group">
@@ -309,35 +327,6 @@
 		</div>
 	</form:form>
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-		    $('#adminCourseAddOk').click(function(){
-		    	$("#courseFrom").attr("action","adminCourseAdd2?op=ok");
-		    	$("#courseFrom").submit();
-			});
-		    <c:if test="${param.cursProperty!=50 }">
-				$('#element_id').cxSelect({ 
-				  url: '${ctx}/sys/office/treeLink',
-				  selects: ['province', 'city', 'area'], 
-				  jsonName: 'name',
-				  jsonValue: 'value',
-				  jsonSub: 'sub'
-				}); 
-			</c:if>
-			$('#element_course_educational').cxSelect({ 
-				  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
-				  selects: ['cursNum'], 
-				  jsonName: 'cursName',
-				  jsonValue: 'cursNum'
-			}); 
-			
-			$('#eduCourseNum').change(function(){  
-				$('#cursNum').val($(this).children('option:selected').val()); 
-			　	$('#cursName').val($(this).children('option:selected').text()); 
-			});
-			
-		});
-		</script>
 
 </body>
 </html>

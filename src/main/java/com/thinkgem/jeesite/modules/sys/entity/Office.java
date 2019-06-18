@@ -12,9 +12,16 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.TreeEntity;
 
 /**
- * 机构Entity
- * @author ThinkGem
- * @version 2013-05-15
+ * 
+软件=201801
+计科=201802
+视觉=201805
+信息=201804
+环境=201803
+电商=201807
+自动化=201806
+ * @author Administrator
+ *
  */
 public class Office extends TreeEntity<Office> {
 

@@ -76,14 +76,16 @@ border: none;
 			<tbody>
 				<tr>
 					<td>课程</td>
-					<td>GPA</td>
-					<td>分数</td>
+					<td>综合成绩</td>
+					<td>学分</td>
+					<td>绩点</td>
 				</tr>
 				<c:forEach items="${studentCourses}" var="studentCourse">
 				<tr>
-					<td>${studentCourse.courseName }</td>
-					<td></td>
+					<td>${studentCourse.course.cursName }</td>
 					<td>${studentCourse.evaValue }</td>
+					<td>${studentCourse.credit }</td>
+					<td>${studentCourse.point }</td>
 				</tr>
 				</c:forEach>
 			</tbody>

@@ -204,7 +204,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			cellCourseIdStyle.setFont(courseIdFont);
 			cellCourseIdStyle.setAlignment(CellStyle.ALIGN_CENTER);
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
-				HSSFSheet clazzSheet = wb.createSheet(course.getCursName());
+				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 
 				Footer footer = clazzSheet.getFooter();
 				footer.setLeft(

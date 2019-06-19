@@ -235,6 +235,28 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					
 					int rowIndex = 14;
 					CellStyle style = POIUtils.formatCell(wb);
+					
+					int yk=list.size();//应考
+					int sk=0;//实考
+					//分数段
+					int p7d=0;
+					int p7e=0;
+					int p7f=0;
+					int p7g=0;
+					int p7h=0;
+					
+					int p9d=0;
+					int p9e=0;
+					int p9f=0;
+					int p9g=0;
+					int p9h=0;
+					
+					int p11d=0;
+					int p11e=0;
+					int p11f=0;
+					int p11g=0;
+					int p11h=0;
+					
 					for (Student student : list) {
 						Row studentRow = clazzSheet.createRow(rowIndex);
 						studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
@@ -245,12 +267,91 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Cell nameCell = studentRow.createCell(1);
 						nameCell.setCellValue(student.getName());
 						nameCell.setCellStyle(style);
-						for (int j = 2; j < 9; j++) {
-							Cell tempCell = studentRow.createCell(j);
-							tempCell.setCellStyle(style);
+						StudentCourse scEntity = new StudentCourse();
+						scEntity.setStudent(student);
+						scEntity.setCourse(course);
+						scEntity.setTermYear(course.getCursYearTerm());
+						StudentCourse studentCourse = studentCourseService.getStudentCourseByStudentCourse(scEntity);
+						//判断成绩是否为空,如果是空那么进行创建空行
+						if(StringUtils.isEmpty(studentCourse)) {
+							for (int j = 2; j < 9; j++) {
+								getCell(studentRow,style,j);
+							}
+						}else {
+							Cell classEvaValueCell = getCell(studentRow,style,2);
+							String classEvaValue = studentCourse.getClassEvaValue();
+							classEvaValueCell.setCellValue(classEvaValue);
+							Cell midEvaValueCell = getCell(studentRow,style,3);
+							String midEvaValue = studentCourse.getMidEvaValue();
+							midEvaValueCell.setCellValue(midEvaValue);
+							Cell finEvaValueCell = getCell(studentRow,style,4);
+							String finEvaValue = studentCourse.getFinEvaValue();
+							finEvaValueCell.setCellValue(finEvaValue);
+							Cell evaValueCell = getCell(studentRow,style,5);
+							String evaValue = studentCourse.getEvaValue();
+							evaValueCell.setCellValue(evaValue);
+							Integer eva = Integer.valueOf(evaValue);
+							
+							if (0 < eva && eva <= 9) {
+								p7d++;
+							} else if (10 < eva && eva <= 19) {
+								p7e++;
+							} else if (20 < eva && eva <= 29) {
+								p7f++;
+							} else if (30 < eva && eva <= 39) {
+								p7g++;
+							} else if (40 < eva && eva <= 49) {
+								p7h++;
+							} else if (50 < eva && eva <= 59) {
+								p9d++;
+							} else if (60 < eva && eva <= 69) {
+								p9e++;
+							} else if (70 < eva && eva <= 79) {
+								p9f++;
+							} else if (80 < eva && eva <= 89) {
+								p9g++;
+							} else if (90 < eva && eva <= 100) {
+								p9h++;
+							}
+							
+							
+							Cell creditCell = getCell(studentRow,style,6);
+							
+							String credit = studentCourse.getCredit();
+							creditCell.setCellValue(credit);
+							
+							Cell pointCell = getCell(studentRow,style,7);
+							String point = studentCourse.getPoint();
+							pointCell.setCellValue(point);
+							Cell remarkCell =getCell(studentRow,style,8);
+							String remark = studentCourse.getRemarks();
+							remarkCell.setCellValue(remark);
+							sk ++;
 						}
+						
 						rowIndex++;
 					}
+					//进行成绩段值的填充
+					
+					
+					setCell(clazzSheet,6,0,yk);
+					setCell(clazzSheet,8,0,sk);
+					setCell(clazzSheet,6,3,p7d);
+					setCell(clazzSheet,6,4,p7e);
+					setCell(clazzSheet,6,5,p7f);
+					setCell(clazzSheet,6,6,p7g);
+					setCell(clazzSheet,6,7,p7h);
+					setCell(clazzSheet,8,3,p9d);
+					setCell(clazzSheet,8,4,p9e);
+					setCell(clazzSheet,8,5,p9f);
+					setCell(clazzSheet,8,6,p9g);
+					setCell(clazzSheet,8,7,p9h);
+					setCell(clazzSheet,10,3,p11d);
+					setCell(clazzSheet,10,4,p11e);
+					setCell(clazzSheet,10,5,p11f);
+					setCell(clazzSheet,10,6,p11g);
+					setCell(clazzSheet,10,7,p11h);
+					
 					
 				}
 				
@@ -266,6 +367,17 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		}
 	}
 
+	public void setCell(Sheet sheet,int row ,int cell,int value) {
+		Row tmpRow = sheet.getRow(row);
+		Cell tempCell = tmpRow.getCell(cell);
+		tempCell.setCellValue(value);
+	}
+	
+	public Cell getCell(Row row,CellStyle style,int index) {
+		Cell tempCell = row.createCell(index);
+		tempCell.setCellStyle(style);
+		return tempCell;
+	}
 	
 
 	

@@ -150,28 +150,35 @@
 			</div>
 		</div>
 		</c:if>
-		<div class="control-group">
-			<label class="control-label">课程编号：</label>
-			<div class="controls">
-				<form:input path="cursNum" htmlEscape="false" maxlength="255"
-					class="input-large required " readonly="readonly" />
-
-				<span class="help-inline"><font color="red">*B:本科课程,G:高职课程</font>
-				</span>
+		<c:if test="${param.cursProperty!=50}">
+		<form:hidden path="cursNum" htmlEscape="false" maxlength="255"
+						class="input-large required " />
+		<form:hidden path="cursName" htmlEscape="false" maxlength="255"
+						class="input-xlarge required" />
+		</c:if>
+		<c:if test="${param.cursProperty==50}">
+			<div class="control-group">
+				<label class="control-label">课程编号：</label>
+				<div class="controls">
+					<form:input path="cursNum" htmlEscape="false" maxlength="255"
+						class="input-large required "  />
+	
+					<span class="help-inline"><font color="red">*B:本科课程,G:高职课程</font>
+					</span>
+				</div>
 			</div>
-		</div>
-
-
-		<div class="control-group">
-			<label class="control-label">课程名称：</label>
-			<div class="controls">
-
-				<form:input path="cursName" htmlEscape="false" maxlength="255"
-					class="input-xlarge required" />
-				<span class="help-inline"><font color="red">*</font> </span>
+	
+	
+			<div class="control-group">
+				<label class="control-label">课程名称：</label>
+				<div class="controls">
+	
+					<form:input path="cursName" htmlEscape="false" maxlength="255"
+						class="input-xlarge required" />
+					<span class="help-inline"><font color="red">*</font> </span>
+				</div>
 			</div>
-		</div>
-
+		</c:if>
 		<c:choose>
 			<c:when test="${param.cursProperty==50 }">
 				<div class="control-group">

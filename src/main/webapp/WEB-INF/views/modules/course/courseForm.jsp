@@ -19,7 +19,7 @@
 					  jsonValue: 'value',
 					  jsonSub: 'sub'
 					}); 
-				</c:if>
+				
 				$('#element_course_educational').cxSelect({ 
 					  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
 					  selects: ['cursNum'], 
@@ -31,7 +31,7 @@
 					$('#cursNum').val($(this).children('option:selected').val()); 
 					$('#cursName').val($(this).children('option:selected').text()); 
 				});
-			
+				</c:if>
 			$.ajax({
 				url : '${ctx}/teacher/teacher/ajaxTeacher',
 				async : false,
@@ -63,18 +63,16 @@
 <body>
 
 	<ul class="nav nav-tabs">
-		
-		<li><a href="${ctx}/course/course/?cursProperty=${param.cursProperty} ">课程维护</a></li>
+
+		<li><a
+			href="${ctx}/course/course/?cursProperty=${param.cursProperty} ">课程维护</a></li>
 		<li class="active"><a
-			href="${ctx}/course/course/form?id=${course.id}">
-			<c:if test="${param.cursProperty==50}">
+			href="${ctx}/course/course/form?id=${course.id}"> <c:if
+					test="${param.cursProperty==50}">
 			选课
-			</c:if>
-			<c:if test="${param.cursProperty!=50}">
+			</c:if> <c:if test="${param.cursProperty!=50}">
 			基础课程
-			</c:if>
-			<shiro:hasPermission
-					name="course:course:edit">${not empty course.id?'修改':'添加'}</shiro:hasPermission>
+			</c:if> <shiro:hasPermission name="course:course:edit">${not empty course.id?'修改':'添加'}</shiro:hasPermission>
 				<shiro:lacksPermission name="course:course:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
 	<br />
@@ -98,9 +96,7 @@
 							<c:otherwise>
 								<c:if test="${termYear.key==config.termYear}">selected</c:if>
 							</c:otherwise>
-							</c:choose>
-							
-							>${termYear.key}</option>
+							</c:choose>>${termYear.key}</option>
 					</c:forEach>
 				</select>
 
@@ -138,31 +134,43 @@
 			</c:otherwise>
 
 		</c:choose>
-							<div class="control-group" id="element_course_educational">
+		<c:if test="${param.cursProperty!=50}">
+		<div class="control-group" id="element_course_educational">
 			<label class="control-label">教务课程：</label>
 			<div class="controls">
 
 				<select id="eduCourseNum" name="eduCourseNum"
-					class="cursNum input-large required" >
+					class="cursNum input-large required">
 					<option>请选择</option>
 					<c:if test="${course.id!=null and course.id!=''}">
 						<option value="${course.cursNum}" selected>${course.cursName}</option>
 					</c:if>
 				</select> <span class="help-inline"><font color="red">如果是教务处课程可以通过选择课程自动填写课程信息.如果是选课课程需要填写课程编号和课程名称</font>
 				</span>
-			</div></div>
-
+			</div>
+		</div>
+		</c:if>
 		<div class="control-group">
 			<label class="control-label">课程编号：</label>
 			<div class="controls">
 				<form:input path="cursNum" htmlEscape="false" maxlength="255"
-					class="input-large required " readonly="readonly"/>
-					<form:hidden path="cursName" htmlEscape="false" maxlength="255" class="input-xlarge required"/>
+					class="input-large required " readonly="readonly" />
+
 				<span class="help-inline"><font color="red">*B:本科课程,G:高职课程</font>
 				</span>
 			</div>
 		</div>
 
+
+		<div class="control-group">
+			<label class="control-label">课程名称：</label>
+			<div class="controls">
+
+				<form:input path="cursName" htmlEscape="false" maxlength="255"
+					class="input-xlarge required" />
+				<span class="help-inline"><font color="red">*</font> </span>
+			</div>
+		</div>
 
 		<c:choose>
 			<c:when test="${param.cursProperty==50 }">
@@ -249,7 +257,8 @@
 		<div class="control-group">
 			<label class="control-label">教学模式：</label>
 			<div class="controls">
-				<select name="courseTeachingMode.teacMethod" class="input-large required">
+				<select name="courseTeachingMode.teacMethod"
+					class="input-large required">
 					<option value="" label="" />
 					<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
 						<option value="${dict.value}">${dict.label}</option>

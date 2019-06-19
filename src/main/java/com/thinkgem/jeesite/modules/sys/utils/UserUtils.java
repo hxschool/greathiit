@@ -163,6 +163,18 @@ public class UserUtils {
 		return teachers;
 	}
 	
+	public static Student getStudent(){
+		Principal principal = getPrincipal();
+		if (principal!=null){
+			User user = get(principal.getId());
+			Student student = new Student();
+			student.setStudentNumber(user.getNo());
+			return student;
+		}
+		// 如果没有登录，则返回实例化空的User对象。
+		return new Student();
+	}
+	
 	public static Teacher getTeacher(){
 		Principal principal = getPrincipal();
 		if (principal!=null){
@@ -172,7 +184,6 @@ public class UserUtils {
 			teacher.setUser(user);
 			return teacher;
 		}
-		// 如果没有登录，则返回实例化空的User对象。
 		return new Teacher();
 	}
 

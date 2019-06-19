@@ -40,6 +40,7 @@ import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.adapter.AbsStudentScoreAdapter;
 import com.thinkgem.jeesite.modules.student.adapter.StudentScoreBuilder;
 import com.thinkgem.jeesite.modules.student.adapter.score.ClassScore;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -140,9 +141,9 @@ public class CourseSelectController extends BaseController {
 		
 		for(SelectCourse sc:list) {
 			try {
-				User student = sc.getStudent();
+				Student student = sc.getStudent();
 				if(!org.springframework.util.StringUtils.isEmpty(student)) {
-					String studentNumber = student.getNo();
+					String studentNumber = student.getStudentNumber();
 					String clazzId = StudentUtil.getClassId(studentNumber);
 					Office entity = officeService.get(clazzId);
 					if (cls.containsKey(clazzId)) {
@@ -190,9 +191,9 @@ public class CourseSelectController extends BaseController {
 		List<SelectCourse> list = selectCourseService.findList(selectCourse);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		for(SelectCourse sc:list) {
-			User student = sc.getStudent();
+			Student student = sc.getStudent();
 			if(!org.springframework.util.StringUtils.isEmpty(student)) {
-				String studentNumber = sc.getStudent().getNo();
+				String studentNumber = student.getStudentNumber();
 				String clazzId = StudentUtil.getClassId(studentNumber);
 				if(clsId.equals("99999999")) {
 					Office office = officeService.get(clazzId);
@@ -241,7 +242,7 @@ public class CourseSelectController extends BaseController {
             List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
     		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 			for (SelectCourse sc : list) {
-				String studentNumber = sc.getStudent().getNo();
+				String studentNumber = sc.getStudent().getStudentNumber();
 				String clazzId = StudentUtil.getClassId(studentNumber);
 
 				Office office = officeService.get(clazzId);
@@ -258,7 +259,9 @@ public class CourseSelectController extends BaseController {
 				CourseSelectExcel cs = new CourseSelectExcel();
 				cs.setId(String.valueOf(i));
 				cs.setCourse(c);
-				cs.setUser(sc.getStudent());
+				User user = new User();
+				user.setNo(sc.getStudent().getStudentNumber());
+				cs.setUser(user);
 				courseSelectExcels.add(cs);
 				i++;
 			}
@@ -335,14 +338,14 @@ public class CourseSelectController extends BaseController {
 		int failureNum = 0;
 		StringBuilder failureMsg = new StringBuilder();
 		for (SelectCourse sc : ll) {
-			User user = sc.getStudent();
-			if (!org.springframework.util.StringUtils.isEmpty(user)
-					&& !org.springframework.util.StringUtils.isEmpty(user.getNo())) {
+			Student student = sc.getStudent();
+			if (!org.springframework.util.StringUtils.isEmpty(student)
+					&& !org.springframework.util.StringUtils.isEmpty(student.getStudentNumber())) {
 				UcStudent uc = new UcStudent();
-				uc.setUsername(user.getName());
-				uc.setStudentNumber(user.getNo());
+				uc.setUsername(student.getName());
+				uc.setStudentNumber(student.getStudentNumber());
 				if (org.springframework.util.StringUtils.isEmpty(uc)) {
-					failureMsg.append("<br/>学号 " + user.getNo() + " 教务处数据未查找到当前学号数据; ");
+					failureMsg.append("<br/>学号 " + student.getStudentNumber() + " 教务处数据未查找到当前学号数据; ");
 					failureNum++;
 
 				} else {

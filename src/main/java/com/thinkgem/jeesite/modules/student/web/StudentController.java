@@ -250,7 +250,7 @@ public class StudentController extends BaseController {
 		if(weekNumber.length()==1) {
 			weekNumber = "0"+weekNumber;
 		}
-		User student = UserUtils.getUser();
+		Student student = UserUtils.getStudent();
 		CourseScheduleExt cse = new CourseScheduleExt();
 		cse.setCourseClass(student.getClazz().getId());
 		cse.setTimeAdd("%"+weekNumber+"__");

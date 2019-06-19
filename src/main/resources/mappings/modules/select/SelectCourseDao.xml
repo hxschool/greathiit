@@ -14,14 +14,14 @@
 		c.id as "course.id",
 		c.curs_num as "course.cursNum",
 		c.curs_name as "course.cursName",
-		u.no as "student.no",
-		u.name as "student.name",
+		s.student_number as "student.studentNumber",
+		s.name as "student.name",
 		a.del_flag AS "delFlag"
 	</sql>
 	
 	<sql id="selectCourseJoins">
 		LEFT JOIN course c on a.course_id=c.id
-		LEFT JOIN sys_user u on a.student_number=u.no
+		LEFT JOIN student s on a.student_number=s.student_number
 	</sql>
     
 	<select id="get" resultType="SelectCourse">
@@ -38,8 +38,8 @@
         and a.course_id = #{course.id}
       	</if>
       	
-      	<if test="student != null and student.no!=null and student.no!=''" >
-        and u.no = #{student.no}
+      	<if test="student != null and student.studentNumber!=null and student.studentNumber!=''" >
+        and s.student_number = #{student.studentNumber}
       	</if>
 	</select>
 	
@@ -54,8 +54,8 @@
 		<if test="course != null and course.id!=null and course.id!=''" >
         and a.course_id = #{course.id}
       	</if>
-      	<if test="student != null and student.no!=null and student.no!=''" >
-       	and u.no = #{student.no}
+      	<if test="student != null and student.studentNumber!=null and student.studentNumber!=''" >
+       	and a.student_number = #{student.studentNumber}
       	</if>
 	</select>
 	
@@ -86,8 +86,8 @@
         	and c.teacher_number = #{course.teacher.teacherNumber}
       	</if>
       	
-      	<if test="student != null and student.no!=null and student.no!=''" >
-       	and u.no = #{student.no}
+      	<if test="student != null and student.studentNumber!=null and student.studentNumber!=''" >
+       	and s.student_number = #{student.studentNumber}
       	</if>
 		</where>
 		<choose>
@@ -199,7 +199,7 @@
 		) VALUES (
 			#{id},
 			#{course.id},
-			#{student.no},
+			#{student.studentNumber},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -212,7 +212,7 @@
 	<update id="update">
 		UPDATE select_course SET 	
 			course_id = #{course.id},
-			student_number = #{student.no},
+			student_number = #{student.studentNumber},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

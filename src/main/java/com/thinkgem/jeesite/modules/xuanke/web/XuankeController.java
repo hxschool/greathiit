@@ -1,8 +1,6 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -11,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,7 +43,7 @@ import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
-import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
@@ -149,11 +146,11 @@ public class XuankeController extends BaseController {
 		for(CourseScheduleExt courseScheduleExt:courseScheduleExts) {
 			courseScheduleMap.put(courseScheduleExt.getCourseId(), courseScheduleExt);
 		}
-		User user = UserUtils.getUser();
-		if(!StringUtils.isEmpty(user)&&!StringUtils.isEmpty(user.getNo())) {
+		Student student = UserUtils.getStudent();
+		if(!StringUtils.isEmpty(student)&&!StringUtils.isEmpty(student.getStudent())) {
 			
 			SelectCourse selectCourse = new SelectCourse();
-			selectCourse.setStudent(user);
+			selectCourse.setStudent(student);
 			selectCourse.setCourse(course);
 			selectCourses = selectCourseService.findList(selectCourse);
 			
@@ -161,14 +158,14 @@ public class XuankeController extends BaseController {
 				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
 			}
 			
-			if(user.getRoleIdList().contains("99")) {
+			if(UserUtils.getUser().getRoleIdList().contains("99")) {
 				isSelected = true;
 			}
 		}
 
 		//List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
-		if(!StringUtils.isEmpty(user)) {
-			String studentNumber = user.getNo();
+		if(!StringUtils.isEmpty(student)) {
+			String studentNumber = student.getStudentNumber();
 			if(!StringUtils.isEmpty(studentNumber)) {
 				Iterator<Course> it = courses.iterator();
 				String benke = "B".toUpperCase();
@@ -220,7 +217,7 @@ public class XuankeController extends BaseController {
 		
 		Map<String, Object> map= model.asMap();
 		if(!StringUtils.isEmpty(map.get("message"))) {
-			model.addAttribute("message", map.get("message") + "," + getMessage(user));
+			model.addAttribute("message", map.get("message") + "," + getMessage(student));
 		}else {
 			model.addAttribute("message", "");
 		}
@@ -234,13 +231,13 @@ public class XuankeController extends BaseController {
 			addMessage(redirectAttributes, "请求参数异常。请不要使用非法参数操作");
 		}
 		
-		User user = UserUtils.getUser();
-		if (!StringUtils.isEmpty(user) && !StringUtils.isEmpty(user.getNo())) {
+		Student student = UserUtils.getStudent();
+		if (!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {
 			SelectCourse countCourse = new SelectCourse();
 			countCourse.setCourse(course);
 			int cnt = selectCourseService.count(countCourse);
 			SelectCourse selectCourse = new SelectCourse();
-			selectCourse.setStudent(user);
+			selectCourse.setStudent(student);
 			selectCourse.setCourse(entity);
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			//教学模式
@@ -253,7 +250,7 @@ public class XuankeController extends BaseController {
 					courseService.save(entity);
 				}
 				selectCourseService.delete(selectCourseEntity);
-				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,user.getNo());
+				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,student.getStudentNumber());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
 				if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
@@ -263,7 +260,7 @@ public class XuankeController extends BaseController {
 					return "redirect:/xuanke/index?repage";
 				}
 				selectCourseService.save(selectCourse);
-				saveSelectCourseLog(request, entity,GlobalConstants.Global_SUC,user.getNo());
+				saveSelectCourseLog(request, entity,GlobalConstants.Global_SUC,student.getStudentNumber());
 				addMessage(redirectAttributes, "选课成功");
 			}
 			
@@ -273,16 +270,16 @@ public class XuankeController extends BaseController {
 		return "redirect:/xuanke/index?repage";
 	}
 	
-	public String getMessage(User user) {
-		if(StringUtils.isEmpty(user)) {
+	public String getMessage(Student student) {
+		if(StringUtils.isEmpty(student)) {
 			return "";
 		}
 		SelectCourse selectedCourse = new SelectCourse();
-		selectedCourse.setStudent(user);
+		selectedCourse.setStudent(student);
 		List<SelectCourse> selectedCourses = selectCourseService.findList(selectedCourse);
 		List<Course> courses = new ArrayList<Course>();
 		String benke = "B".toUpperCase();
-		if(user.getNo().length()==10) {
+		if(student.getStudentNumber().length()==10) {
 			for(SelectCourse sc:selectedCourses) {
 				Course c = courseService.get(sc.getCourse());
 				CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(c.getId());
@@ -335,7 +332,7 @@ public class XuankeController extends BaseController {
 				course.setCursYearTerm(sysConfig.getTermYear());
 				SelectCourse selectCourse = new SelectCourse();
 				selectCourse.setCourse(course);
-				selectCourse.setStudent(user);
+				selectCourse.setStudent(UserUtils.getStudent());
 				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
 				List<String> list = new ArrayList<String>();
 				for (SelectCourse sc : selectCourses) {

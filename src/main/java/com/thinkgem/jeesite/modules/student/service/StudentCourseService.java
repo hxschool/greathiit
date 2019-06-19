@@ -175,7 +175,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			List<SelectCourse> selectCourses = selectCourseDao.findList(selectCourse);
 			for (SelectCourse scc : selectCourses) {
 				StudentCourse sc = new StudentCourse();
-				sc.setStudentNumber(scc.getStudent().getNo());
+				sc.setStudentNumber(scc.getStudent().getStudentNumber());
 				sc.setStudentName(scc.getStudent().getName());
 				sc.setCourse(course);
 				list.add(sc);

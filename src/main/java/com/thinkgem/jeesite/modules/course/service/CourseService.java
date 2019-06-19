@@ -265,7 +265,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				int p11h = 0;
 
 				for (SelectCourse sc : list) {
-					String studentNumber = sc.getStudent().getNo();
+					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
 					Row studentRow = clazzSheet.createRow(rowIndex);
 					studentRow.setHeight((short) 370);// 目的是想把行高设置成25px

@@ -56,6 +56,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
@@ -95,12 +96,24 @@ public class CourseController extends BaseController {
 	private TeacherService teacherService;
 	@Autowired
 	private CourseClassService courseClassService;
+	@Autowired
+	private OfficeService officeService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
 		if (StringUtils.isNotBlank(id)){
 			entity = courseService.get(id);
 			CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(id);
+			if(!entity.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+				CourseClass courseClass = new CourseClass();
+				courseClass.setCourse(entity);
+				List<CourseClass> ccs = courseClassService.findList(courseClass);
+				for(CourseClass cs:ccs) {
+					Office cls = officeService.get(cs.getCls()); 
+					cs.setCls(cls);
+				}
+				model.addAttribute("ccs", ccs);
+			}
 			entity.setCourseTeachingMode(courseTeachingMode);
 		}
 		if (entity == null){
@@ -160,7 +173,13 @@ public class CourseController extends BaseController {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 		String[] classIds = request.getParameterValues("classIds");
-		
+		if(!org.springframework.util.StringUtils.isEmpty(course.getCourseTeachingMode())) {
+			CourseTeachingMode courseTeachingMode = course.getCourseTeachingMode();
+			courseTeachingMode.setTeacMethod(course.getCourseTeachingMode().toString());
+			courseTeachingMode.setCourseId(courseId);
+			courseTeachingMode.setPeriod(course.getCursClassHour());
+			courseTeachingModeService.save(courseTeachingMode);
+		}
 		courseService.save(course);
 		if(!org.springframework.util.StringUtils.isEmpty(classIds)) {
 			for(String classId:classIds) {

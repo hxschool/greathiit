@@ -18,7 +18,7 @@
 					  jsonName: 'name',
 					  jsonValue: 'value',
 					  jsonSub: 'sub'
-					}); 
+					});
 				
 				$('#element_course_educational').cxSelect({ 
 					  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
@@ -36,9 +36,17 @@
 				url : '${ctx}/teacher/teacher/ajaxTeacher',
 				async : false,
 				success : function(data) {
-					$.each(data, function(index, item) {
+					
+					var teacherNumber="";
+					<c:if test="${course!=null&&course.teacher!=null&&course.teacher.teacherNumber!=null}">
+						teacherNumber = "${course.teacher.teacherNumber}";
+					</c:if>
+					
+					$.each(data, function(index, item) {						
 						$("#teacherNumber").append( "<option value="+item.teacherNumber+">" + item.tchrName+ "</option>"); 
 					});		
+					var ddd = $("#teacherNumber").select2();
+					ddd.val(teacherNumber).trigger("change");
 				}
 			});
 			
@@ -268,7 +276,7 @@
 					class="input-large required">
 					<option value="" label="" />
 					<c:forEach items="${fns:getDictList('teac_method')}" var="dict">
-						<option value="${dict.value}">${dict.label}</option>
+						<option value="${dict.value}" <c:if test="${course!=null&&course.courseTeachingMode!=null&&course.courseTeachingMode.teacMethod==dict.value}"> selected </c:if> >${dict.label}</option>
 					</c:forEach>
 				</select>
 			</div>
@@ -313,6 +321,17 @@
 								multiple="multiple"><option>请选择</option></select>
 						</div>
 					</div>
+					<c:if test="${course!=null&&param.cursProperty!=50}">
+					<div class="control-group">
+						<label class="control-label">选择班级:</label>
+						<div class="controls">
+							 
+							 <c:forEach items="${ccs}" var="cs">
+        							${cs.cls.name }
+   							</c:forEach>
+						</div>
+					</div>
+					</c:if>
 				</div>
 			</c:otherwise>
 

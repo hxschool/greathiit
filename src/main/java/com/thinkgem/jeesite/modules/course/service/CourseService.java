@@ -14,9 +14,12 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -179,6 +182,16 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			CourseClass courseClass = new CourseClass();
 			courseClass.setCourse(course);
 			List<CourseClass> ccs = courseClassDao.findList(courseClass);
+			CellStyle cellCourseNameStyle = wb.createCellStyle();
+		    cellCourseNameStyle.setFont(POIUtils.getFont(wb));
+		    cellCourseNameStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		    
+			CellStyle cellCourseIdStyle = wb.createCellStyle();
+			Font courseIdFont = wb.createFont();
+			courseIdFont.setColor(HSSFColor.WHITE.index);
+			cellCourseIdStyle.setFont(courseIdFont);
+			cellCourseIdStyle.setAlignment(CellStyle.ALIGN_CENTER);
+		    
 			for(CourseClass cc:ccs) {
 				Office cls = cc.getCls();
 				Office clazz = officeDao.get(cls);
@@ -186,18 +199,22 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				Office school = officeDao.get(major.getParent());
 				if(!StringUtils.isEmpty(clazz)) {
 					HSSFSheet clazzSheet = wb.createSheet(clazz.getName());
+					
+					Footer footer = clazzSheet.getFooter();
+					footer.setLeft("任课教师 ：          命题教师：              评分教师：                                                               \n" + 
+							"录分人：             教研室主任：            录分日期：  年  月  日                                 ");
 					POIUtils.copySheet(wb, sheet , clazzSheet, true);
 					Row schoolreportRow = clazzSheet.getRow(0);
 					Cell courseNameCell = schoolreportRow.getCell(0);
-				    CellStyle cellStyle = wb.createCellStyle();
-				    cellStyle.setFont(POIUtils.getFont(wb));
-				    cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+				    
 					courseNameCell.setCellValue("  "+course.getCursName()+"   （科）成绩单");
-					courseNameCell.setCellStyle(cellStyle);
+					courseNameCell.setCellStyle(cellCourseNameStyle);
 					
 					Row courseIdRow = clazzSheet.getRow(1);
 					Cell courseIdCell = courseIdRow.getCell(0);
+					
 					courseIdCell.setCellValue(course.getId());
+					courseIdCell.setCellStyle(cellCourseIdStyle);
 
 					Row departmentRow = clazzSheet.getRow(2);
 					Cell departmentCell = departmentRow.getCell(0);

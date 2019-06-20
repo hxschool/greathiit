@@ -20,4 +20,5 @@ public interface CourseDao extends CrudDao<Course> {
 
 	public List<Course> findCoursesByPaike(Course course);
 	public Course getCourse(Course course) ;
+	public void submit(Course course) ;
 }

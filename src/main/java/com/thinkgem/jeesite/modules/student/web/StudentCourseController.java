@@ -32,6 +32,7 @@ import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
@@ -115,9 +116,6 @@ public class StudentCourseController extends BaseController {
 			studentCourse.setCourse(course);
 		}
 		
-		if(org.springframework.util.StringUtils.isEmpty(studentCourse.getTermYear())) {
-			studentCourse.setTermYear(config.getTermYear());
-		}
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		model.addAttribute("page", page);
 		return "modules/student/studentcourse/studentCourseList";
@@ -178,33 +176,12 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:import")
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
-		
-		ImportExcel ei;
 		try {
-			ei = new ImportExcel(file, 1, 0);
-			Row courseRow = ei.getRow(1);
-			Cell courseIdCell = courseRow.getCell(5);   
-			String courseId = courseIdCell.getStringCellValue();
-			Course course = courseService.get(courseId);
-			if(org.springframework.util.StringUtils.isEmpty(course)) {
-				throw new GITException("40000404","上传成绩文件异常,缺少课程编号");
+			ImportResult<Course> ir = studentCourseService.importStudentCourse(file);
+			if (ir.getFailureNum()>0){
+				ir.getFailureMsg().insert(0, "，失败 "+ir.getFailureNum()+" 条成绩，导入信息如下：");
 			}
-			Course entity = new Course();
-			entity.setTeacher(UserUtils.getTeacher());
-			List<Course> courses = courseService.findList(entity);
-			List<String> csList = new ArrayList<String>();
-			if(!isAdmin()) {
-				for(Course cs : courses) {
-					csList.add(cs.getId());
-				}
-			}
-			if(!CollectionUtils.isEmpty(csList) && !csList.contains(courseId)) {
-				throw new GITException("40000404","上传成绩不是当前任课教师课程,请检查上传文件内容");
-			}
-			ei = new ImportExcel(file, 2, 0);
-			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
-			
-			addMessage(redirectAttributes, studentCourseService.importStudentCourse(course,list));
+			addMessage(redirectAttributes, "已成功导入 "+ir.getSuccessNum()+" 条成绩"+ir.getFailureMsg());
 		}catch (Exception e) {
 			addMessage(redirectAttributes, "成绩数据！失败信息："+e.getMessage());
 		}

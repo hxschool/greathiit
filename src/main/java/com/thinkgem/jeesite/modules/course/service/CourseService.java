@@ -74,7 +74,9 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	private StudentDao studentDao;
 	@Autowired
 	private SelectCourseDao selectCourseDao;
-
+	public void submit(Course course) {
+		 courseDao.submit(course);
+	}
 	public Course getCourseByCourseId(String courseId) {
 		Course course = new Course();
 		course.setId(courseId);
@@ -156,7 +158,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						studentCourse.setStudentNumber(studentNumber);
 						studentCourse.setStudentName(name);
 						studentCourse.setCourse(course);
-						studentCourse.setTermYear(course.getCursYearTerm());
 
 						studentCourse.setClassEvaValue(classEvaValue);
 						studentCourse.setFinEvaValue(finEvaValue);
@@ -308,7 +309,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					StudentCourse scEntity = new StudentCourse();
 					scEntity.setStudent(student);
 					scEntity.setCourse(course);
-					scEntity.setTermYear(course.getCursYearTerm());
 					StudentCourse studentCourse = studentCourseService.getStudentCourseByStudentCourse(scEntity);
 					// 判断成绩是否为空,如果是空那么进行创建空行
 					if (StringUtils.isEmpty(studentCourse)) {
@@ -475,7 +475,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							StudentCourse scEntity = new StudentCourse();
 							scEntity.setStudent(student);
 							scEntity.setCourse(course);
-							scEntity.setTermYear(course.getCursYearTerm());
 							StudentCourse studentCourse = studentCourseService
 									.getStudentCourseByStudentCourse(scEntity);
 							// 判断成绩是否为空,如果是空那么进行创建空行

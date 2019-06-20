@@ -89,6 +89,9 @@
 			<if test="termYear != null and termYear != ''">
 			AND a.term_year = #{termYear}
 			</if>
+			<if test="status != null and status != ''">
+			AND a.status	 = #{status}
+			</if>
 			<if test="student != null and student.studentNumber!= null and student.studentNumber != ''">
 				and a.student_number = #{student.studentNumber}
 			</if>

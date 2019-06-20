@@ -290,7 +290,8 @@ public class StudentController extends BaseController {
 		}
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudentNumber(studentNumber);
-		studentCourse.setTermYear(sysConfig.getTermYear());
+		//zhaojunfei
+		//studentCourse.setTermYear(sysConfig.getTermYear());
 		model.addAttribute("config", sysConfig);
 		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
 		return "modules/student/studentcourse/StudentCourseGrade";

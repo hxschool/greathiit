@@ -82,18 +82,7 @@
 				href="${ctx}/course/course/import/template">下载模板</a>
 		</form>
 	</div>
-	
-	<div id="importStudentCourseBox" class="hide">
-		<form id="importStudentCourseForm" action="${ctx}/course/course/importStudentCourse" method="post"
-			enctype="multipart/form-data" class="form-search"
-			style="padding-left: 20px; text-align: center;"
-			onsubmit="loading('正在导入，请稍等...');">
-			<br /> <input id="uploadFile" name="file" type="file"
-				style="width: 330px" /><br />
-			<br /> <input id="btnImportSubmit" class="btn btn-primary"
-				type="submit" value="   导    入   " /> 
-		</form>
-	</div>
+
 	
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/course/course/${ctx}/course/course/?cursProperty=${param.cursProperty} ">课程维护</a></li>
@@ -128,8 +117,6 @@
 				id="btnExport" class="btn btn-primary" type="button" value="课程导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
 				
-				 <input
-				id="btnImportStudentCourse" class="btn btn-primary" type="button" value="成绩导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -227,10 +214,10 @@
 					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出选课</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:studentCourse">
-    				<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
+    					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="course:course:export">
-    				<a  class="btn btn-success" href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出成绩单</a>
+    					<a  class="btn btn-success" href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出成绩单</a>
 					</shiro:hasPermission>
 				</td>
 			</tr>

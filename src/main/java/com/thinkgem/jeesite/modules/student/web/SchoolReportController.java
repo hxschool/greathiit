@@ -89,39 +89,7 @@ public class SchoolReportController extends BaseController {
     @RequestMapping(value = "import", method=RequestMethod.POST)
     public String importFile(MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
 		
-		
-		ImportExcel ei;
-		try {
-			ei = new ImportExcel(file, 1, 0);
-			Row courseRow = ei.getRow(1);
-			Cell courseCell = courseRow.getCell(0);   
-			String courseId = courseCell.getStringCellValue();
-			Course course = courseService.get(courseId);
-			if(org.springframework.util.StringUtils.isEmpty(course)) {
-				throw new GITException("40000404","上传成绩文件异常,缺少课程编号");
-			}
-			Course entity = new Course();
-			entity.setTeacher(UserUtils.getTeacher());
-			List<Course> courses = courseService.findList(entity);
-			List<String> csList = new ArrayList<String>();
-			for(Course cs : courses) {
-				csList.add(cs.getId());
-			}
-			if(!csList.contains(courseId)) {
-				throw new GITException("40000404","上传成绩不是当前任课教师课程,请检查上传文件内容");
-			}
-			ei = new ImportExcel(file, 13, 0);
-			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
-			studentCourseService.importStudentCourse(course,list);
-		} catch (InvalidFormatException e) {
-			throw new GITException("50000404","读取excel文件异常");
-		} catch (IOException e) {
-			throw new GITException("50000404","读取excel文件异常");
-		} catch (InstantiationException e) {
-			throw new GITException("50000404","系统异常,请联系管理员 : 18801029695");
-		} catch (IllegalAccessException e) {
-			throw new GITException("50000404","系统异常,请联系管理员 : 18801029695");
-		}
+
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }
 	/**

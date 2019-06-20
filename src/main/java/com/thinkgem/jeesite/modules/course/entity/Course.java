@@ -54,9 +54,55 @@ public class Course extends DataEntity<Course> {
 	private Integer lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
 	private CourseTeachingMode courseTeachingMode;//教学模式
+	private CourseCompositionRules courseCompositionRules;//规则
 	private String teachingMode;
 	private List<String> item;
+	private String examTime;//考试时间
+	private String propositioner;//命题人
+	private String rater;//评分人
+	private String category;//成绩类别
+	private String enter;//录入人
 	
+	public String getEnter() {
+		return enter;
+	}
+
+	public void setEnter(String enter) {
+		this.enter = enter;
+	}
+
+	public String getExamTime() {
+		return examTime;
+	}
+
+	public void setExamTime(String examTime) {
+		this.examTime = examTime;
+	}
+
+	public String getPropositioner() {
+		return propositioner;
+	}
+
+	public void setPropositioner(String propositioner) {
+		this.propositioner = propositioner;
+	}
+
+	public String getRater() {
+		return rater;
+	}
+
+	public void setRater(String rater) {
+		this.rater = rater;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
+
 	public List<String> getItem() {
 		return item;
 	}
@@ -297,6 +343,15 @@ public class Course extends DataEntity<Course> {
 	public void setCourseTeachingMode(CourseTeachingMode courseTeachingMode) {
 		this.courseTeachingMode = courseTeachingMode;
 	}
+	
+	public CourseCompositionRules getCourseCompositionRules() {
+		return courseCompositionRules;
+	}
+
+	public void setCourseCompositionRules(CourseCompositionRules courseCompositionRules) {
+		this.courseCompositionRules = courseCompositionRules;
+	}
+
 	@Override
 	public String toString() {
 		return cursName;

@@ -155,7 +155,8 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.student = student;
 	}
 
-	@Length(min=0, max=1, message="状态标记长度必须介于 0 和 1 之间")
+	@Length(min=0, max=1, message="考核状态")
+	@ExcelField(title="考核状态", type=0, align=2, sort=7,dictType="student_course_result")
 	public String getStatus() {
 		return status;
 	}

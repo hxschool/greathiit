@@ -80,8 +80,6 @@ public class CourseController extends BaseController {
 	@Autowired
 	private CourseMaterialService courseMaterialService;
 	@Autowired
-	private CourseCompositionRulesService courseCompositionRulesService;
-	@Autowired
 	private CourseTeachingtargetService courseTeachingtargetService;
 	@Autowired
 	private CourseTeachingModeService courseTeachingModeService;
@@ -100,6 +98,8 @@ public class CourseController extends BaseController {
 	private CourseClassService courseClassService;
 	@Autowired
 	private OfficeService officeService;
+	@Autowired
+	private CourseCompositionRulesService courseCompositionRulesService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -182,6 +182,10 @@ public class CourseController extends BaseController {
 			courseTeachingMode.setPeriod(course.getCursClassHour());
 			courseTeachingModeService.save(courseTeachingMode);
 		}
+		if(!org.springframework.util.StringUtils.isEmpty(course.getCourseCompositionRules())) {
+			CourseCompositionRules courseCompositionRules = new CourseCompositionRules();
+			courseCompositionRules.setCourseId(courseId);
+		}
 		courseService.save(course);
 		if(!org.springframework.util.StringUtils.isEmpty(classIds)) {
 			for(String classId:classIds) {
@@ -198,6 +202,24 @@ public class CourseController extends BaseController {
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}
+	
+	@RequiresPermissions("course:course:submit")
+	@RequestMapping(value = "submit")
+	@ResponseBody
+	public Map<String,String> submit(Course course, Model model,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("responseCode", "00000000");
+		map.put("responseMessage", "操作成功");
+		try {
+			courseService.submit(course);
+		}catch(Exception e) {
+			map.put("responseCode", "99999999");
+			map.put("responseMessage", "操作异常"+e.getMessage());
+		}
+		return map;
+	}
+	
 	
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "delete")

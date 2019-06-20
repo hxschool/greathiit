@@ -728,12 +728,13 @@ public class CourseController extends BaseController {
     }
 	
 	@RequestMapping("importStudentCourse")
-	public String importCourse(MultipartFile file,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+	public String importCourse(MultipartFile file,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		courseService.importCourse(file);
-		return "modules/course/course?repage";
+		addMessage(redirectAttributes, "导入成功");
+		return "redirect:" + adminPath + "/course/course/list?repage";
 	}
 	@RequestMapping("exportStudentCourse")
-	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response) throws FileNotFoundException, IOException {
+	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		
 		if(org.springframework.util.StringUtils.isEmpty(course)) {
 			throw new GITException("40400099","系统异常,未选择课程");
@@ -744,7 +745,8 @@ public class CourseController extends BaseController {
 		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
 		File file = new File(modelPath);
 		courseService.exportCourse(file, course, response.getOutputStream());
-		return "modules/course/course?repage";
+		addMessage(redirectAttributes, "导出成功");
+		return "redirect:" + adminPath + "/course/course/list?repage";
 	}
 	
 	/**

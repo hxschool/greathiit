@@ -131,7 +131,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					if (!StringUtils.isEmpty(studentNumber)) {
 						String name = row.getCell(1).getStringCellValue();
 						String classEvaValue = POIUtils.getCell(row.getCell(2));
-						;
+						
 
 						String midEvaValue = POIUtils.getCell(row.getCell(3));
 						String finEvaValue = POIUtils.getCell(row.getCell(4));

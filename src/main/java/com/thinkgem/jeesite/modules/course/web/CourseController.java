@@ -202,22 +202,17 @@ public class CourseController extends BaseController {
 		addMessage(redirectAttributes, "保存课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}
-	
+	@RequiresPermissions("course:course:view")
+	@RequestMapping(value = "submit",method=RequestMethod.GET)
+	public String submit(Course course, Model model) {
+		model.addAttribute("course", course);
+		return "modules/course/courseSubmit";
+	}
 	@RequiresPermissions("course:course:submit")
-	@RequestMapping(value = "submit")
-	@ResponseBody
-	public Map<String,String> submit(Course course, Model model,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		
-		Map<String,String> map = new HashMap<String,String>();
-		map.put("responseCode", "00000000");
-		map.put("responseMessage", "操作成功");
-		try {
-			courseService.submit(course);
-		}catch(Exception e) {
-			map.put("responseCode", "99999999");
-			map.put("responseMessage", "操作异常"+e.getMessage());
-		}
-		return map;
+	@RequestMapping(value = "submit",method=RequestMethod.POST)
+	public String submit(Course course, Model model,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		courseService.submit(course);
+		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}
 	
 	

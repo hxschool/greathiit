@@ -48,6 +48,7 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
 import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
 import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
@@ -251,6 +252,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			if (StringUtils.isEmpty(course.getRater())) {
 				throw new GITException("50000404", "当前课程成绩评分人,请重新设置评分人");
 			}
+			//设置录入人信息
+			course.setEnter(UserUtils.getUser().getName());
 			CourseCompositionRules courseCompositionRules = courseCompositionRulesDao
 					.getCourseCompositionRulesByCourseId(course.getId());
 			if (StringUtils.isEmpty(courseCompositionRules)) {

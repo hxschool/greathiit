@@ -211,8 +211,13 @@
 					</c:if>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:select">
+					<c:if test="${course!=null&&course.cursProperty==50}">
 					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出选课</a>
+					</c:if>
 					</shiro:hasPermission>
+					
+					<a class="btn btn-primary"  href="${ctx}/course/course/submit?id=${course.id}">添加成绩参数</a>
+					
 					<shiro:hasPermission name="course:course:studentCourse">
     					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
     				</shiro:hasPermission>

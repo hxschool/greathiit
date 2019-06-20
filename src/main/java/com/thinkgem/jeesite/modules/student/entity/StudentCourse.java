@@ -156,7 +156,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	}
 
 	@Length(min=0, max=1, message="考核状态")
-	@ExcelField(title="考核状态", type=0, align=2, sort=7,dictType="student_course_result")
+	@ExcelField(title="考核状态", type=0, align=2, sort=8,dictType="student_course_result")
 	public String getStatus() {
 		return status;
 	}
@@ -173,7 +173,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.clazzId = clazzId;
 	}
 
-	@ExcelField(title="备注", type=0, align=2, sort=8)
+	@ExcelField(title="备注", type=0, align=2, sort=9)
 	public String getRemarks() {
 		return super.getRemarks();
 	}

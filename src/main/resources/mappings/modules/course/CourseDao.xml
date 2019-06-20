@@ -28,6 +28,14 @@
 		a.lower_limit AS "lowerLimit",
 		t.teacher_number AS "teacher.teacherNumber",
 		t.tchr_name as "teacher.tchrName",
+		
+		a.exam_time as "examTime",
+		a.propositioner as "propositioner",
+		a.rater as "rater",
+		a.category as "category",
+		a.enter as enter,
+		
+		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -282,7 +290,7 @@
 	</update>
 	
 	<delete id="delete">
-		DELETE FROM course id = #{id}
+		DELETE FROM course where id = #{id}
 	</delete>
 	
 </mapper>

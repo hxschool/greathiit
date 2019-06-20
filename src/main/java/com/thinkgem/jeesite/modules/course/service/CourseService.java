@@ -74,6 +74,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	private StudentDao studentDao;
 	@Autowired
 	private SelectCourseDao selectCourseDao;
+	@Transactional(readOnly = false)
 	public void submit(Course course) {
 		 courseDao.submit(course);
 	}

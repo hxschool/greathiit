@@ -34,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.POIUtils;
+import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
@@ -101,9 +102,13 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	}
 
 	@Transactional(readOnly = false)
-	public Course importCourse(MultipartFile file) {
+	public ImportResult<Course> importCourse(MultipartFile file) {
 		logger.info("根据课程导入成绩");
+		int successNum = 0;
+		int failureNum = 0;
+		StringBuilder failureMsg = new StringBuilder();
 		Course course = null;
+		ImportResult<Course> importResult = new ImportResult<Course>();
 		try {
 			Workbook wb = null;
 			InputStream is = file.getInputStream();
@@ -121,7 +126,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			Row courseIdRow = clazzSheet.getRow(1);
 			Cell courseIdCell = courseIdRow.getCell(0);
 			course = courseDao.get(courseIdCell.getStringCellValue());
-
+			
 			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 				Sheet sheet = wb.getSheetAt(i);
 				int rowNum = sheet.getLastRowNum();
@@ -129,6 +134,18 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					Row row = sheet.getRow(rowIndex);
 					String studentNumber = row.getCell(0).getStringCellValue();
 					if (!StringUtils.isEmpty(studentNumber)) {
+						StudentCourse sc = new StudentCourse();
+						sc.setCourse(course);
+						Student student = new Student();
+						student.setStudentNumber(studentNumber);
+						sc.setStudent(student);
+						StudentCourse score = studentCourseService.getStudentCourseByStudentCourse(sc);
+						if(!StringUtils.isEmpty(score)) {
+							logger.info("当前课程,当前学号成绩已存在");
+							failureNum++;
+							failureMsg.append("<br/>学号: "+studentNumber+" 当前课程成绩已存在");
+							continue;
+						}
 						String name = row.getCell(1).getStringCellValue();
 						String classEvaValue = POIUtils.getCell(row.getCell(2));
 						
@@ -182,6 +199,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						studentCourse.setPoint(point);
 						studentCourse.setEvaValue(evaValue);
 						studentCourseService.save(studentCourse);
+						successNum ++;
 					}
 				}
 			}
@@ -191,7 +209,11 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return course;
+		importResult.setFailureNum(failureNum);
+		importResult.setFailureMsg(failureMsg);
+		importResult.setObject(course);
+		importResult.setSuccessNum(successNum);
+		return importResult;
 	}
 
 	public void exportCourse(File file, Course course, OutputStream os) {

@@ -149,7 +149,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						if (!POIUtils.isNumeric(finEvaValue)) {
 							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
 						}
-						String evaValue = "";
+						String evaValue = "0";
 						// zhaojunfei
 						switch (course.getCursType()) {
 						case Course.COURSE_TYPE_EXA:

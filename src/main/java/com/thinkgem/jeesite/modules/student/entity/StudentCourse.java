@@ -17,7 +17,7 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 public class StudentCourse extends DataEntity<StudentCourse> {
 	
 	private static final long serialVersionUID = 1L;
-	private String classEvaValue;		// 课堂表现成绩
+	private String classEvaValue;		// 平时成绩
 	private String evaValue;		// 综合成绩
 	private String expEvaValue;		// 实验成绩
 	private String finEvaValue;		// 期末成绩
@@ -57,7 +57,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	public void setCursType(String cursType) {
 		this.cursType = cursType;
 	}
-	@ExcelField(title="课堂表现成绩", type=0, align=2, sort=2)
+	@ExcelField(title="平时成绩", type=0, align=2, sort=2)
 	public String getClassEvaValue() {
 		return classEvaValue;
 	}

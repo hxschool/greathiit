@@ -219,7 +219,7 @@
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:class">
-					<c:if test="${course!=null&&param.cursProperty!=50}">
+					<c:if test="${course!=null&&course.cursProperty!=50}">
 					<a href="javascript:void(0)" onclick="showClass('${course.id}','${course.cursName}')" class="btn btn-warning">查看班级</a>
 					</c:if>
 					</shiro:hasPermission>

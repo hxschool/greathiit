@@ -25,7 +25,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li><label>课堂表现成绩：</label>
+			<li><label>平时成绩：</label>
 				<form:input path="classEvaValue" htmlEscape="false" class="input-medium"/>
 			</li>
 			<li><label>综合成绩：</label>
@@ -56,7 +56,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>课堂表现成绩</th>
+				<th>平时成绩</th>
 				<th>期末成绩</th>
 				<th>综合成绩</th>
 				<th>学期</th>

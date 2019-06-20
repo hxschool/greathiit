@@ -88,13 +88,20 @@
 		<div class="control-group">
 			<label class="control-label">政治面貌：</label>
 			<div class="controls">
-				<form:input path="political" htmlEscape="false" maxlength="18" class="input-xlarge "/>
+				<form:select path="political" class="input-xlarge ">
+							<form:options items="${fns:getDictList('political')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">民族：</label>
 			<div class="controls">
-				<form:input path="nation" htmlEscape="false" maxlength="18" class="input-xlarge "/>
+				
+				<form:select path="nation" class="input-xlarge ">
+							<form:options items="${fns:getDictList('nation')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</div>
 		</div>
 		<div class="control-group">
@@ -148,13 +155,28 @@
 		<div class="control-group">
 			<label class="control-label">学历：</label>
 			<div class="controls">
-				<form:input path="edu" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				
+				<form:select path="edu"
+					class="input-medium" style="width:178px">
+					<form:option value="" label="请选择" />
+					<form:option value="本科" label="本科" />
+					<form:option value="专科" label="专科" />
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
 			<label class="control-label">学制：</label>
 			<div class="controls">
-				<form:input path="schoolSystem" htmlEscape="false" maxlength="64" class="input-xlarge "/>
+				
+				
+				<form:select path="schoolSystem"
+					class="input-xlarge" >
+					<form:option value="" label="请选择" />
+					<form:option value="2" label="2" />
+					<form:option value="3" label="3" />
+					<form:option value="4" label="4" />
+					<form:option value="5" label="5" />
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">

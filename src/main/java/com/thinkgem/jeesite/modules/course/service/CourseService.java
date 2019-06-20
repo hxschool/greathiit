@@ -215,7 +215,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				Row schoolreportRow = clazzSheet.getRow(0);
 				Cell courseNameCell = schoolreportRow.getCell(0);
 
-				courseNameCell.setCellValue("  " + course.getCursName() + "   （科）成绩单");
+				courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
 				courseNameCell.setCellStyle(cellCourseNameStyle);
 
 				Row courseIdRow = clazzSheet.getRow(1);
@@ -383,7 +383,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);
 
-						courseNameCell.setCellValue("  " + course.getCursName() + "   （科）成绩单");
+						courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
 						courseNameCell.setCellStyle(cellCourseNameStyle);
 
 						Row courseIdRow = clazzSheet.getRow(1);

@@ -32,6 +32,7 @@ import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.POIUtils;
 import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
@@ -738,7 +739,7 @@ public class CourseController extends BaseController {
 			throw new GITException("40400099","系统异常,未选择课程");
 		}
 		course = courseService.get(course);
-		String filename = course.getCursName().concat("成绩单.xls");
+		String filename = course.getCursNum().concat("成绩单.xls");
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
 		File file = new File(modelPath);

@@ -12,6 +12,7 @@ import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -230,7 +231,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				String[] ss = course.getCursYearTerm().split("-");
 				String startYear = ss[0];
 				String endYear = ss[1];
-				String n = ss[2];
+				String n = ss[2]=="01"?"一":"二";
 				Row yearTermRow = clazzSheet.getRow(3);
 				Cell yearTermCell = yearTermRow.getCell(0);
 				yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
@@ -298,8 +299,12 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						finEvaValueCell.setCellValue(finEvaValue);
 						Cell evaValueCell = getCell(studentRow, style, 5);
 						String evaValue = studentCourse.getEvaValue();
+						
 						evaValueCell.setCellValue(evaValue);
-						Integer eva = Integer.valueOf(evaValue);
+						if(StringUtils.isEmpty(evaValue)) {
+							evaValue = "0";
+						}
+						Integer eva = Double.valueOf(evaValue).intValue();
 
 						if (0 < eva && eva <= 9) {
 							p7d++;
@@ -395,7 +400,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						String[] ss = course.getCursYearTerm().split("-");
 						String startYear = ss[0];
 						String endYear = ss[1];
-						String n = ss[2];
+						String n = ss[2]=="01"?"一":"二";
 						Row yearTermRow = clazzSheet.getRow(3);
 						Cell yearTermCell = yearTermRow.getCell(0);
 						yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
@@ -462,9 +467,13 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								finEvaValueCell.setCellValue(finEvaValue);
 								Cell evaValueCell = getCell(studentRow, style, 5);
 								String evaValue = studentCourse.getEvaValue();
+								
 								evaValueCell.setCellValue(evaValue);
-								Integer eva = Integer.valueOf(evaValue);
-
+								if(StringUtils.isEmpty(evaValue)) {
+									evaValue = "0";
+								}
+								Integer eva = Double.valueOf(evaValue).intValue();
+								
 								if (0 < eva && eva <= 9) {
 									p7d++;
 								} else if (10 < eva && eva <= 19) {

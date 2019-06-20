@@ -216,6 +216,8 @@ public class POIUtils {
 		if(StringUtils.isEmpty(str)) {
 			return "";
 		}
-		return str.replaceAll("*", "");
+		 String reg = "[^\u4e00-\u9fa5]";  
+		 //《生活趣味“化”*》
+		return str.replace("*", "").replace("\"", "").replace("“", "").replace("”", "").replace("《", "").replace("》", "");
 	}
 }

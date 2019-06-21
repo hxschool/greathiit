@@ -330,32 +330,21 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						String evaValue = studentCourse.getEvaValue();
 						
 						evaValueCell.setCellValue(evaValue);
+						
 						if(StringUtils.isEmpty(evaValue)) {
-							evaValue = "0";
+							evaValue = "不及格";
 						}
-						Integer eva = Double.valueOf(evaValue).intValue();
 						
-						
-						if (0 <= eva && eva <10) {
-							p7d++;
-						} else if (10 <= eva && eva < 20) {
-							p7e++;
-						} else if (20 <= eva && eva < 30) {
-							p7f++;
-						} else if (30 <= eva && eva < 40) {
-							p7g++;
-						} else if (40 <= eva && eva < 50) {
-							p7h++;
-						} else if (50 <= eva && eva < 60) {
-							p9d++;
-						} else if (60 <= eva && eva < 70) {
-							p9e++;
-						} else if (70 <= eva && eva < 80) {
-							p9f++;
-						} else if (80 <= eva && eva < 90) {
-							p9g++;
-						} else if (90 <= eva && eva <= 100) {
-							p9h++;
+						if (evaValue.equals("优") || evaValue.equals("优秀")) {
+							p11d++;
+						} else if (evaValue.equals("良") || evaValue.equals("良好")) {
+							p11e++;
+						} else if (evaValue.equals("中") || evaValue.equals("中等")) {
+							p11f++;
+						} else if (evaValue.equals("及格")) {
+							p11g++;
+						} else  {
+							p11h++;
 						}
 
 						Cell creditCell = getCell(studentRow, style, 6);

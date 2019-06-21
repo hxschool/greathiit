@@ -3,17 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.student.service;
 
-import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +20,6 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
-import com.thinkgem.jeesite.common.utils.POIUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
@@ -46,7 +40,6 @@ import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
-import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
@@ -289,51 +282,44 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				Student student = studentCourse.getStudent();
 				if (!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {
 					studentCourse.setCourse(course);
-//					String status = "0";
-//					if(!StringUtils.isEmpty(studentCourse.getB())) {
-//						status = "1";
-//					}else if(!StringUtils.isEmpty(studentCourse.getC())) {
-//						status = "2";
-//					}else if(!StringUtils.isEmpty(studentCourse.getD())) {
-//						status = "3";
-//					}else if(!StringUtils.isEmpty(studentCourse.getE())) {
-//						status = "4";
-//					}else if(!StringUtils.isEmpty(studentCourse.getF())) {
-//						status = "5";
-//					}else if(!StringUtils.isEmpty(studentCourse.getG())) {
-//						status = "6";
-//					}
-//					studentCourse.setStatus(status);
+					if(StringUtils.isEmpty(studentCourse.getStatus())) {
+						logger.info("如果状态未设置,认为状态正常");
+						studentCourse.setStatus("0");
+					}
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
 					if (StringUtils.isEmpty(sc)) {
-						// 判断课程类型
-						String classEvaValue = studentCourse.getClassEvaValue();// 课堂成绩
-						String finEvaValue = studentCourse.getFinEvaValue();// 期末成绩
-						if (StringUtils.isEmpty(classEvaValue)) {
-							classEvaValue = "0";
+						if(!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+							// 判断课程类型
+							String classEvaValue = studentCourse.getClassEvaValue();// 课堂成绩
+							String finEvaValue = studentCourse.getFinEvaValue();// 期末成绩
+							if (StringUtils.isEmpty(classEvaValue)) {
+								classEvaValue = "0";
+							}
+							if (StringUtils.isEmpty(finEvaValue)) {
+								finEvaValue = "0";
+							}
+							/*
+							if (!POIUtils.isNumeric(classEvaValue)) {
+								classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
+							}
+							if (!POIUtils.isNumeric(finEvaValue)) {
+								finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
+							}
+							*/
+	
+							String evaValue = String.valueOf(Double
+									.valueOf((Double.parseDouble(classEvaValue)
+											* Double.parseDouble(courseCompositionRules.getClazzPer())
+											+ Double.parseDouble(finEvaValue)
+													* Double.parseDouble(courseCompositionRules.getFinalExamper())))
+									.intValue());
+	
+							String point = df
+									.format((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
+											* Double.valueOf(coursePoint.getPoint()));
+							studentCourse.setPoint(point);
+							studentCourse.setEvaValue(evaValue);
 						}
-						if (StringUtils.isEmpty(finEvaValue)) {
-							finEvaValue = "0";
-						}
-						if (!POIUtils.isNumeric(classEvaValue)) {
-							classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
-						}
-						if (!POIUtils.isNumeric(finEvaValue)) {
-							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
-						}
-
-						String evaValue = String.valueOf(Double
-								.valueOf((Double.parseDouble(classEvaValue)
-										* Double.parseDouble(courseCompositionRules.getClazzPer())
-										+ Double.parseDouble(finEvaValue)
-												* Double.parseDouble(courseCompositionRules.getFinalExamper())))
-								.intValue());
-
-						String point = df
-								.format((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
-										* Double.valueOf(coursePoint.getPoint()));
-						studentCourse.setPoint(point);
-						studentCourse.setEvaValue(evaValue);
 						this.save(studentCourse);
 						successNum++;
 					}

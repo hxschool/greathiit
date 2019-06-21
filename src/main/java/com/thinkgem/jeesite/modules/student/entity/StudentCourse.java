@@ -33,7 +33,9 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 	private String clazzId;
 	private String cursType;
 	
-	@ExcelField(title="学分", type=1, align=2, sort=6)
+	
+
+	@ExcelField(title="学分", type=0, align=2, sort=6)
 	public String getCredit() {
 		return credit;
 	}
@@ -86,7 +88,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 			student.setName(name);
 	}
 	
-	@ExcelField(title="综合成绩", type=1, align=2, sort=5)
+	@ExcelField(title="综合成绩", type=0, align=2, sort=5)
 	public String getEvaValue() {
 		return evaValue;
 	}
@@ -173,7 +175,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.clazzId = clazzId;
 	}
 
-	@ExcelField(title="备注", type=0, align=2, sort=9)
+	@ExcelField(title="备注", type=0, align=2, sort=99)
 	public String getRemarks() {
 		return super.getRemarks();
 	}

@@ -139,7 +139,7 @@ public class Course extends DataEntity<Course> {
 		this.cursName = cursName;
 	}
 	
-	@Length(min=1, max=255, message="英文名称长度必须介于 1 和 255 之间")
+	
 	public String getCursEngName() {
 		return cursEngName;
 	}
@@ -148,7 +148,6 @@ public class Course extends DataEntity<Course> {
 		this.cursEngName = cursEngName;
 	}
 	
-	@Length(min=0, max=255, message="专业长度必须介于 0 和 255 之间")
 	public String getCursMajor() {
 		return cursMajor;
 	}

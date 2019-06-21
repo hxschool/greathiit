@@ -289,7 +289,21 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				Student student = studentCourse.getStudent();
 				if (!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {
 					studentCourse.setCourse(course);
-					
+//					String status = "0";
+//					if(!StringUtils.isEmpty(studentCourse.getB())) {
+//						status = "1";
+//					}else if(!StringUtils.isEmpty(studentCourse.getC())) {
+//						status = "2";
+//					}else if(!StringUtils.isEmpty(studentCourse.getD())) {
+//						status = "3";
+//					}else if(!StringUtils.isEmpty(studentCourse.getE())) {
+//						status = "4";
+//					}else if(!StringUtils.isEmpty(studentCourse.getF())) {
+//						status = "5";
+//					}else if(!StringUtils.isEmpty(studentCourse.getG())) {
+//						status = "6";
+//					}
+//					studentCourse.setStatus(status);
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
 					if (StringUtils.isEmpty(sc)) {
 						// 判断课程类型

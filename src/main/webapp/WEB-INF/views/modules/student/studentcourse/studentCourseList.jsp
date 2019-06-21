@@ -168,7 +168,9 @@
 					<td>${studentCourse.expEvaValue}</td>
 					<td>${studentCourse.credit}</td>
 					<td>${studentCourse.point}</td>
-					<td>${studentCourse.status}</td>
+					<td>
+					${fns:getDictLabel(studentCourse.status,'student_course_result',"正常")} 
+					</td>
 					<td><fmt:formatDate value="${studentCourse.updateDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 

@@ -231,7 +231,8 @@ public class StudentCourseController extends BaseController {
 			}
 			
 			String fileName = course.getCursName().concat("成绩导入模板.xlsx");
-			List<StudentCourse> list =studentCourseService.getStudentCourses(course);
+			
+			List<StudentCourse> list = studentCourseService.getStudentCourses(course);
 			
 			ExportExcel exportExcel = new ExportExcel();
 			List<String> headerList = exportExcel.getHeaders(StudentCourse.class);

@@ -12,10 +12,19 @@ public class StudentCourseUtil {
 		case "优":
 			value = "95";
 			break;
+		case "优秀":
+			value = "95";
+			break;
 		case "良":
 			value = "85";
 			break;
+		case "良好":
+			value = "85";
+			break;
 		case "中":
+			value = "75";
+			break;
+		case "中等":
 			value = "75";
 			break;
 		case "及格":

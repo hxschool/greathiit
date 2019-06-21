@@ -334,26 +334,27 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							evaValue = "0";
 						}
 						Integer eva = Double.valueOf(evaValue).intValue();
-
-						if (0 < eva && eva <= 9) {
+						
+						
+						if (0 <= eva && eva <10) {
 							p7d++;
-						} else if (10 < eva && eva <= 19) {
+						} else if (10 <= eva && eva < 20) {
 							p7e++;
-						} else if (20 < eva && eva <= 29) {
+						} else if (20 <= eva && eva < 30) {
 							p7f++;
-						} else if (30 < eva && eva <= 39) {
+						} else if (30 <= eva && eva < 40) {
 							p7g++;
-						} else if (40 < eva && eva <= 49) {
+						} else if (40 <= eva && eva < 50) {
 							p7h++;
-						} else if (50 < eva && eva <= 59) {
+						} else if (50 <= eva && eva < 60) {
 							p9d++;
-						} else if (60 < eva && eva <= 69) {
+						} else if (60 <= eva && eva < 70) {
 							p9e++;
-						} else if (70 < eva && eva <= 79) {
+						} else if (70 <= eva && eva < 80) {
 							p9f++;
-						} else if (80 < eva && eva <= 89) {
+						} else if (80 <= eva && eva < 90) {
 							p9g++;
-						} else if (90 < eva && eva <= 100) {
+						} else if (90 <= eva && eva <= 100) {
 							p9h++;
 						}
 
@@ -502,25 +503,25 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								}
 								Integer eva = Double.valueOf(evaValue).intValue();
 								
-								if (0 < eva && eva <= 9) {
+								if (0 <= eva && eva <10) {
 									p7d++;
-								} else if (10 < eva && eva <= 19) {
+								} else if (10 <= eva && eva < 20) {
 									p7e++;
-								} else if (20 < eva && eva <= 29) {
+								} else if (20 <= eva && eva < 30) {
 									p7f++;
-								} else if (30 < eva && eva <= 39) {
+								} else if (30 <= eva && eva < 40) {
 									p7g++;
-								} else if (40 < eva && eva <= 49) {
+								} else if (40 <= eva && eva < 50) {
 									p7h++;
-								} else if (50 < eva && eva <= 59) {
+								} else if (50 <= eva && eva < 60) {
 									p9d++;
-								} else if (60 < eva && eva <= 69) {
+								} else if (60 <= eva && eva < 70) {
 									p9e++;
-								} else if (70 < eva && eva <= 79) {
+								} else if (70 <= eva && eva < 80) {
 									p9f++;
-								} else if (80 < eva && eva <= 89) {
+								} else if (80 <= eva && eva < 90) {
 									p9g++;
-								} else if (90 < eva && eva <= 100) {
+								} else if (90 <= eva && eva <= 100) {
 									p9h++;
 								}
 

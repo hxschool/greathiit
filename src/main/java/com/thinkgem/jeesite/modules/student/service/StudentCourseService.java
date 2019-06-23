@@ -278,7 +278,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 
 			ei = new ImportExcel(file, 3, 0);
 			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
-			Collections.sort(list);
+			
 			for (StudentCourse studentCourse : list) {
 				Student student = studentCourse.getStudent();
 				if (!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {

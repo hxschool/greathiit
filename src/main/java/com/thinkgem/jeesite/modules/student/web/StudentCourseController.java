@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.student.web;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -265,7 +266,7 @@ public class StudentCourseController extends BaseController {
 			statusRemarkLabelCell.setCellValue("正常、重考、缓考、未选修、旷考、违纪、补考");
 			
 			exportExcel.setHeader(headerList);
-			
+			Collections.sort(list);
 			exportExcel.setDataList(list).write(response, fileName).dispose();
 
 		} catch (Exception e) {

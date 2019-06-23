@@ -154,7 +154,7 @@
 					<td><a
 						href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">${studentCourse.student.studentNumber}</a></td>
 					<td>${studentCourse.student.name}</td>
-					<td>${studentCourse.course.cursYearTerm}</td>
+					<td>${studentCourse.termYear}</td>
 					<td>${studentCourse.course.cursName}</td>
 					<td>${studentCourse.course.teacher.tchrName}</td>
 

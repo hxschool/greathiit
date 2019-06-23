@@ -49,6 +49,7 @@ import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 
 /**
  * 课程基本信息Service
@@ -476,20 +477,27 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							} else {
 								Cell classEvaValueCell = getCell(studentRow, style, 2);
 								String classEvaValue = studentCourse.getClassEvaValue();
+								if(StringUtils.isEmpty(classEvaValue)) {
+									classEvaValue = "0";
+								}
 								classEvaValueCell.setCellValue(classEvaValue);
 								Cell midEvaValueCell = getCell(studentRow, style, 3);
 								String midEvaValue = studentCourse.getMidEvaValue();
+								
 								midEvaValueCell.setCellValue(midEvaValue);
 								Cell finEvaValueCell = getCell(studentRow, style, 4);
 								String finEvaValue = studentCourse.getFinEvaValue();
+								if(StringUtils.isEmpty(finEvaValue)) {
+									finEvaValue = "0";
+								}
 								finEvaValueCell.setCellValue(finEvaValue);
 								Cell evaValueCell = getCell(studentRow, style, 5);
 								String evaValue = studentCourse.getEvaValue();
-								
-								evaValueCell.setCellValue(evaValue);
 								if(StringUtils.isEmpty(evaValue)) {
 									evaValue = "0";
 								}
+								evaValueCell.setCellValue(evaValue);
+								
 								Integer eva = Double.valueOf(evaValue).intValue();
 								
 								if (0 <= eva && eva <10) {
@@ -524,7 +532,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								pointCell.setCellValue(point);
 								Cell remarkCell = getCell(studentRow, style, 8);
 								String remark = studentCourse.getRemarks();
-								remarkCell.setCellValue(remark);
+								
+								remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
 								sk++;
 							}
 

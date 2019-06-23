@@ -297,6 +297,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							if (StringUtils.isEmpty(finEvaValue)) {
 								finEvaValue = "0";
 							}
+							classEvaValue = String.valueOf(Double.valueOf(classEvaValue).intValue());
+							finEvaValue = String.valueOf(Double.valueOf(finEvaValue).intValue());
 							/*
 							if (!POIUtils.isNumeric(classEvaValue)) {
 								classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
@@ -306,16 +308,20 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							}
 							*/
 	
-							String evaValue = String.valueOf(Double
+							String evaValue = String.valueOf(Double.valueOf(Double
 									.valueOf((Double.parseDouble(classEvaValue)
 											* Double.parseDouble(courseCompositionRules.getClazzPer())
 											+ Double.parseDouble(finEvaValue)
-													* Double.parseDouble(courseCompositionRules.getFinalExamper())))
+													* Double.parseDouble(courseCompositionRules.getFinalExamper()))).intValue())
 									.intValue());
-	
-							String point = df
-									.format((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
-											* Double.valueOf(coursePoint.getPoint()));
+							String point = "0";
+							if(Integer.valueOf(evaValue)>60) {
+								point = df
+										.format((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
+												* Double.valueOf(coursePoint.getPoint()));
+							}
+							 
+							
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}

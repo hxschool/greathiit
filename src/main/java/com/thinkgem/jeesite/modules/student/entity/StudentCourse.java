@@ -3,6 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -14,7 +19,7 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
  * @author 赵俊飞
  * @version 2018-01-30
  */
-public class StudentCourse extends DataEntity<StudentCourse> {
+public class StudentCourse extends DataEntity<StudentCourse> implements Comparable<StudentCourse> {
 	
 	private static final long serialVersionUID = 1L;
 	private String classEvaValue;		// 平时成绩
@@ -188,5 +193,31 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.point = point;
 	}
 
-	
+    @Override
+    public int compareTo(StudentCourse studentCourse) {
+        if (Integer.valueOf(student.getStudentNumber()) > Integer.valueOf(studentCourse.getStudent().getStudentNumber())) {
+            return 1;
+        }
+        if (Integer.valueOf(student.getStudentNumber()) < Integer.valueOf(studentCourse.getStudent().getStudentNumber())) {
+            return -1;
+        }
+      return 0;
+    }
+    public static void main(String[] args) {
+    	List<StudentCourse> studentCourses = new ArrayList<StudentCourse>();
+    	StudentCourse StudentCourse1 = new StudentCourse();
+    	Student student1= new Student();
+    	student1.setStudentNumber("20190802");
+    	StudentCourse1.setStudent(student1);
+    	StudentCourse StudentCourse2 = new StudentCourse();
+    	Student student2= new Student();
+    	student2.setStudentNumber("20190801");
+    	StudentCourse2.setStudent(student2);
+    	studentCourses.add(StudentCourse1);
+    	studentCourses.add(StudentCourse2);
+    	Collections.sort(studentCourses);
+    	for(StudentCourse sc:studentCourses) {
+    		System.out.println(sc.getStudentNumber());
+    	}
+    }
 }

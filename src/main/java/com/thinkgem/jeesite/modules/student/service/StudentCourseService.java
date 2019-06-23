@@ -297,8 +297,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							if (StringUtils.isEmpty(finEvaValue)) {
 								finEvaValue = "0";
 							}
-							classEvaValue = String.valueOf(Double.valueOf(classEvaValue).intValue());
-							finEvaValue = String.valueOf(Double.valueOf(finEvaValue).intValue());
+							studentCourse.setClassEvaValue(String.valueOf(Double.valueOf(classEvaValue).intValue()));
+							studentCourse.setFinEvaValue(String.valueOf(Double.valueOf(finEvaValue).intValue()));
 							/*
 							if (!POIUtils.isNumeric(classEvaValue)) {
 								classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
@@ -321,10 +321,12 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 												* Double.valueOf(coursePoint.getPoint()));
 							}
 							 
-							
+							DecimalFormat df = new DecimalFormat("#.0");
+							point = df.format(point);
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}
+						studentCourse.setCredit(course.getCursCredit());
 						studentCourse.setTermYear(course.getCursYearTerm());
 						this.save(studentCourse);
 						successNum++;

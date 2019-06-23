@@ -252,14 +252,20 @@ public class StudentCourseController extends BaseController {
 			courseIdLabelCell.setCellValue("课程编码");
 			Cell courseIdValueCell = row.createCell(5);
 			courseIdValueCell.setCellValue(course.getId());
-
-			Cell teacherLabelCell = row.createCell(6);
+			Row row1 = exportExcel.addRow();
+			
+			Cell teacherLabelCell = row1.createCell(0);
 			teacherLabelCell.setCellValue("任课教师");
-			Cell teacherValueCell = row.createCell(7);
+			Cell teacherValueCell = row1.createCell(1);
 			teacherValueCell.setCellValue(course.getTeacher().getTchrName());
-
+			
+			Cell statusLabelCell = row1.createCell(2);
+			statusLabelCell.setCellValue("考核状态(注)");
+			Cell statusRemarkLabelCell = row1.createCell(3);
+			statusRemarkLabelCell.setCellValue("正常、重考、缓考、未选修、旷考、违纪、补考");
+			
 			exportExcel.setHeader(headerList);
-
+			
 			exportExcel.setDataList(list).write(response, fileName).dispose();
 
 		} catch (Exception e) {

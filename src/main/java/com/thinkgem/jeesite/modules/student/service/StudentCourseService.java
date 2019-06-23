@@ -275,7 +275,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				coursePoint = coursePointDao.getCoursePointByCourseId(cp);
 			}
 
-			ei = new ImportExcel(file, 2, 0);
+			ei = new ImportExcel(file, 3, 0);
 			List<StudentCourse> list = ei.getDataList(StudentCourse.class);
 			for (StudentCourse studentCourse : list) {
 				Student student = studentCourse.getStudent();

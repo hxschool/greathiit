@@ -50,10 +50,9 @@
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
 			<br /> <input id="uploadFile" name="file" type="file"
-				style="width: 330px" /><br />
-			 <br /> <input id="btnImportSubmit" class="btn btn-primary"
-				type="submit" value="   导    入   " /> <a
-				href="${ctx}/student/studentCourse/import/template">下载模板</a> 
+				style="width: 330px" /><br /> <br /> <input id="btnImportSubmit"
+				class="btn btn-primary" type="submit" value="   导    入   " /> <a
+				href="${ctx}/student/studentCourse/import/template">下载模板</a>
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
@@ -62,38 +61,38 @@
 			<li><a href="${ctx}/student/studentCourse/form">学生成绩添加</a></li>
 		</shiro:hasPermission>
 	</ul>
-	
+
 	<form:form id="searchForm" modelAttribute="studentCourse"
 		action="${ctx}/student/studentCourse/" method="post"
 		class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}" />
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
-			<% 
+		<% 
 			String cursProperty = request.getParameter("course.cursProperty");
 			if(cursProperty!=null && !cursProperty.equals("")){
 			%>
-			<input name="course.cursProperty" type="hidden"
+		<input name="course.cursProperty" type="hidden"
 			value="<%=cursProperty %>" />
-			<%}%>
+		<%}%>
 		<ul class="ul-form" id="element_id">
 
-		
 
 
-				<li><label>学院：</label> <select class="province input-medium"><option>请选择</option></select>
-				</li>
 
-				<li><label>专业：</label> <select id="city"
-					class="city input-medium" style="width: 178px"><option>请选择</option></select>
-				</li>
+			<li><label>学院：</label> <select class="province input-medium"><option>请选择</option></select>
+			</li>
 
-				<li><label>班级：</label> <select id="area"
-					class="area input-medium" name="clazzId" style="width: 178px"><option>请选择</option></select>
+			<li><label>专业：</label> <select id="city"
+				class="city input-medium" style="width: 178px"><option>请选择</option></select>
+			</li>
 
-				</li>
+			<li><label>班级：</label> <select id="area"
+				class="area input-medium" name="clazzId" style="width: 178px"><option>请选择</option></select>
 
-			
+			</li>
+
+
 			<li><label>教师姓名：</label> <form:input
 					path="course.teacher.tchrName" htmlEscape="false" maxlength="64"
 					class="input-medium" /></li>
@@ -114,16 +113,14 @@
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
 
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
-				type="submit" value="查询" /> 
-				<shiro:hasPermission name="student:studentCourse:export">
-				<input id="btnExport"
-				class="btn btn-primary" type="button" value="导出" /> 
-				</shiro:hasPermission>
-				<shiro:hasPermission name="student:studentCourse:import">
-				<input
-				id="btnImport" class="btn btn-primary" type="button" value="导入" />
-				</shiro:hasPermission>
-			</li>
+				type="submit" value="查询" /> <shiro:hasPermission
+					name="student:studentCourse:export">
+					<input id="btnExport" class="btn btn-primary" type="button"
+						value="导出" />
+				</shiro:hasPermission> <shiro:hasPermission name="student:studentCourse:import">
+					<input id="btnImport" class="btn btn-primary" type="button"
+						value="导入" />
+				</shiro:hasPermission></li>
 
 
 			<li class="clearfix"></li>
@@ -136,6 +133,7 @@
 			<tr>
 				<th>学号</th>
 				<th>学生姓名</th>
+				<th>学期</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
 				<th>平时成绩</th>
@@ -145,37 +143,46 @@
 				<th>绩点</th>
 				<th>状态标记</th>
 				<th>导入时间</th>
-				<shiro:hasPermission name="student:studentCourse:edit"><th>操作</th></shiro:hasPermission>
+				<shiro:hasPermission name="student:studentCourse:edit">
+					<th>操作</th>
+				</shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${page.list}" var="studentCourse">
 				<tr>
-				<td><a
+					<td><a
 						href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">${studentCourse.student.studentNumber}</a></td>
 					<td>${studentCourse.student.name}</td>
+					<td>${studentCourse.course.cursYearTerm}</td>
 					<td>${studentCourse.course.cursName}</td>
 					<td>${studentCourse.course.teacher.tchrName}</td>
-					
+
 					<td>${studentCourse.classEvaValue}</td>
-					
+
 					<td>${studentCourse.finEvaValue}</td>
 					<td>${studentCourse.evaValue}</td>
 					<td>${studentCourse.credit}</td>
 					<td>${studentCourse.point}</td>
 					<td>
-					${fns:getDictLabel(studentCourse.status,'student_course_result',"正常")} 
+						${fns:getDictLabel(studentCourse.status,'student_course_result',"正常")}
 					</td>
 					<td><fmt:formatDate value="${studentCourse.updateDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 
-					<shiro:hasPermission name="student:studentCourse:edit">
-						<td><a
-							href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">修改</a>
+
+					<td><shiro:hasPermission
+							name="student:studentCourse:operation">
 							<a
-							href="${ctx}/student/studentCourse/delete?id=${studentCourse.id}"
-							onclick="return confirmx('确认要删除该学生成绩吗？', this.href)">删除</a></td>
-					</shiro:hasPermission>
+								href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">修改</a>
+
+							<shiro:hasPermission name="student:studentCourse:edit">
+								<a
+									href="${ctx}/student/studentCourse/delete?id=${studentCourse.id}"
+									onclick="return confirmx('确认要删除该学生成绩吗？', this.href)">删除</a>
+							</shiro:hasPermission>
+						</shiro:hasPermission></td>
+
 				</tr>
 			</c:forEach>
 		</tbody>

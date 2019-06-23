@@ -316,13 +316,11 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 									.intValue());
 							String point = "0";
 							if(Integer.valueOf(evaValue)>60) {
-								point = df
-										.format((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
-												* Double.valueOf(coursePoint.getPoint()));
+								point = String.format("%.1f",((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
+										* Double.valueOf(coursePoint.getPoint())));;
 							}
 							 
-							DecimalFormat df = new DecimalFormat("#.0");
-							point = df.format(point);
+							
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}

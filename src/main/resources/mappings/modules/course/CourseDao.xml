@@ -33,7 +33,6 @@
 		a.propositioner as "propositioner",
 		a.rater as "rater",
 		a.category as "category",
-		a.enter as enter,
 		
 		
 		a.create_by AS "createBy.id",
@@ -284,7 +283,6 @@
 			exam_time = #{examTime},
 			propositioner = #{propositioner},
 			rater = #{rater},
-			enter = #{enter},
 			category = #{category}
 		WHERE id = #{id}
 	</update>

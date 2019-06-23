@@ -246,7 +246,6 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				throw new GITException("50000404", "当前课程成绩评分人,请重新设置评分人");
 			}
 			//设置录入人信息
-			course.setEnter(UserUtils.getUser().getName());
 			CourseCompositionRules courseCompositionRules = courseCompositionRulesDao
 					.getCourseCompositionRulesByCourseId(course.getId());
 			if (StringUtils.isEmpty(courseCompositionRules)) {
@@ -320,6 +319,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}
+						studentCourse.setTermYear(course.getCursYearTerm());
 						this.save(studentCourse);
 						successNum++;
 					}

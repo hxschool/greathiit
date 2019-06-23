@@ -61,15 +61,7 @@ public class Course extends DataEntity<Course> {
 	private String propositioner;//命题人
 	private String rater;//评分人
 	private String category;//成绩类别
-	private String enter;//录入人
-	
-	public String getEnter() {
-		return enter;
-	}
 
-	public void setEnter(String enter) {
-		this.enter = enter;
-	}
 
 	public String getExamTime() {
 		return examTime;

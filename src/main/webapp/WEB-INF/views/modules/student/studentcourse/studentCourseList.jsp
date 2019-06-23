@@ -138,12 +138,9 @@
 				<th>学生姓名</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
-				
 				<th>平时成绩</th>
-				<th>期中成绩</th>
 				<th>期末成绩</th>
 				<th>综合成绩</th>
-				<th>实验成绩</th>
 				<th>学分</th>
 				<th>绩点</th>
 				<th>状态标记</th>
@@ -161,11 +158,9 @@
 					<td>${studentCourse.course.teacher.tchrName}</td>
 					
 					<td>${studentCourse.classEvaValue}</td>
-					<td>${studentCourse.midEvaValue}</td>
 					
 					<td>${studentCourse.finEvaValue}</td>
 					<td>${studentCourse.evaValue}</td>
-					<td>${studentCourse.expEvaValue}</td>
 					<td>${studentCourse.credit}</td>
 					<td>${studentCourse.point}</td>
 					<td>

@@ -175,7 +175,7 @@ public class StudentCourse extends DataEntity<StudentCourse> {
 		this.clazzId = clazzId;
 	}
 
-	//@ExcelField(title="备注", type=0, align=2, sort=99)
+	@ExcelField(title="备注", type=0, align=2, sort=5)
 	public String getRemarks() {
 		return super.getRemarks();
 	}

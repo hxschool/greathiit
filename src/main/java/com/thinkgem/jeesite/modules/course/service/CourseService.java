@@ -75,10 +75,12 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	private StudentDao studentDao;
 	@Autowired
 	private SelectCourseDao selectCourseDao;
+
 	@Transactional(readOnly = false)
 	public void submit(Course course) {
-		 courseDao.submit(course);
+		courseDao.submit(course);
 	}
+
 	public Course getCourseByCourseId(String courseId) {
 		Course course = new Course();
 		course.setId(courseId);
@@ -130,7 +132,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			Row courseIdRow = clazzSheet.getRow(1);
 			Cell courseIdCell = courseIdRow.getCell(0);
 			course = courseDao.get(courseIdCell.getStringCellValue());
-			
+
 			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
 				Sheet sheet = wb.getSheetAt(i);
 				int rowNum = sheet.getLastRowNum();
@@ -144,15 +146,14 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						student.setStudentNumber(studentNumber);
 						sc.setStudent(student);
 						StudentCourse score = studentCourseService.getStudentCourseByStudentCourse(sc);
-						if(!StringUtils.isEmpty(score)) {
+						if (!StringUtils.isEmpty(score)) {
 							logger.info("当前课程,当前学号成绩已存在");
 							failureNum++;
-							failureMsg.append("<br/>学号: "+studentNumber+" 当前课程成绩已存在");
+							failureMsg.append("<br/>学号: " + studentNumber + " 当前课程成绩已存在");
 							continue;
 						}
 						String name = row.getCell(1).getStringCellValue();
 						String classEvaValue = POIUtils.getCell(row.getCell(2));
-						
 
 						String midEvaValue = POIUtils.getCell(row.getCell(3));
 						String finEvaValue = POIUtils.getCell(row.getCell(4));
@@ -169,10 +170,10 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						if (!POIUtils.isNumeric(finEvaValue)) {
 							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
 						}
-						if(StringUtils.isEmpty(classEvaValue)) {
+						if (StringUtils.isEmpty(classEvaValue)) {
 							classEvaValue = "0";
 						}
-						if(StringUtils.isEmpty(finEvaValue)) {
+						if (StringUtils.isEmpty(finEvaValue)) {
 							finEvaValue = "0";
 						}
 						String evaValue = "0";
@@ -202,7 +203,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						studentCourse.setPoint(point);
 						studentCourse.setEvaValue(evaValue);
 						studentCourseService.save(studentCourse);
-						successNum ++;
+						successNum++;
 					}
 				}
 			}
@@ -262,7 +263,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				String[] ss = course.getCursYearTerm().split("-");
 				String startYear = ss[0];
 				String endYear = ss[1];
-				String n = ss[2]=="01"?"一":"二";
+				String n = ss[2] == "01" ? "一" : "二";
 				Row yearTermRow = clazzSheet.getRow(3);
 				Cell yearTermCell = yearTermRow.getCell(0);
 				yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
@@ -329,13 +330,13 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						finEvaValueCell.setCellValue(finEvaValue);
 						Cell evaValueCell = getCell(studentRow, style, 5);
 						String evaValue = studentCourse.getEvaValue();
-						
+
 						evaValueCell.setCellValue(evaValue);
-						
-						if(StringUtils.isEmpty(evaValue)) {
+
+						if (StringUtils.isEmpty(evaValue)) {
 							evaValue = "不及格";
 						}
-						
+
 						if (evaValue.equals("优") || evaValue.equals("优秀")) {
 							p11d++;
 						} else if (evaValue.equals("良") || evaValue.equals("良好")) {
@@ -344,7 +345,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							p11f++;
 						} else if (evaValue.equals("及格")) {
 							p11g++;
-						} else  {
+						} else {
 							p11h++;
 						}
 
@@ -403,7 +404,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);
 
-						courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
+						courseNameCell.setCellValue(
+								"  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
 						courseNameCell.setCellStyle(cellCourseNameStyle);
 
 						Row courseIdRow = clazzSheet.getRow(1);
@@ -420,7 +422,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						String[] ss = course.getCursYearTerm().split("-");
 						String startYear = ss[0];
 						String endYear = ss[1];
-						String n = ss[2]=="01"?"一":"二";
+						String n = ss[2] == "01" ? "一" : "二";
 						Row yearTermRow = clazzSheet.getRow(3);
 						Cell yearTermCell = yearTermRow.getCell(0);
 						yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
@@ -467,77 +469,78 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							StudentCourse scEntity = new StudentCourse();
 							scEntity.setStudent(student);
 							scEntity.setCourse(course);
-							//StudentCourse studentCourse = studentCourseService.getStudentCourseByStudentCourse(scEntity);
-							List<StudentCourse> scs = studentCourseService.findList(scEntity);
-							for(StudentCourse studentCourse : scs){
-								// 判断成绩是否为空,如果是空那么进行创建空行
-								if (StringUtils.isEmpty(studentCourse)) {
-									for (int j = 2; j < 9; j++) {
-										getCell(studentRow, style, j);
-									}
-								} else {
-									Cell classEvaValueCell = getCell(studentRow, style, 2);
-									String classEvaValue = studentCourse.getClassEvaValue();
-									if(StringUtils.isEmpty(classEvaValue)) {
-										classEvaValue = "0";
-									}
-									classEvaValueCell.setCellValue(classEvaValue);
-									Cell midEvaValueCell = getCell(studentRow, style, 3);
-									String midEvaValue = studentCourse.getMidEvaValue();
-									
-									midEvaValueCell.setCellValue(midEvaValue);
-									Cell finEvaValueCell = getCell(studentRow, style, 4);
-									String finEvaValue = studentCourse.getFinEvaValue();
-									if(StringUtils.isEmpty(finEvaValue)) {
-										finEvaValue = "0";
-									}
-									finEvaValueCell.setCellValue(finEvaValue);
-									Cell evaValueCell = getCell(studentRow, style, 5);
-									String evaValue = studentCourse.getEvaValue();
-									if(StringUtils.isEmpty(evaValue)) {
-										evaValue = "0";
-									}
-									evaValueCell.setCellValue(evaValue);
-									
-									Integer eva = Double.valueOf(evaValue).intValue();
-									
-									if (0 <= eva && eva <10) {
-										p7d++;
-									} else if (10 <= eva && eva < 20) {
-										p7e++;
-									} else if (20 <= eva && eva < 30) {
-										p7f++;
-									} else if (30 <= eva && eva < 40) {
-										p7g++;
-									} else if (40 <= eva && eva < 50) {
-										p7h++;
-									} else if (50 <= eva && eva < 60) {
-										p9d++;
-									} else if (60 <= eva && eva < 70) {
-										p9e++;
-									} else if (70 <= eva && eva < 80) {
-										p9f++;
-									} else if (80 <= eva && eva < 90) {
-										p9g++;
-									} else if (90 <= eva && eva <= 100) {
-										p9h++;
-									}
-	
-									Cell creditCell = getCell(studentRow, style, 6);
-	
-									String credit = studentCourse.getCredit();
-									creditCell.setCellValue(credit);
-	
-									Cell pointCell = getCell(studentRow, style, 7);
-									String point = studentCourse.getPoint();
-									pointCell.setCellValue(point);
-									Cell remarkCell = getCell(studentRow, style, 8);
-									String remark = studentCourse.getRemarks();
-									
-									remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
-									sk++;
+							 StudentCourse studentCourse =
+							 studentCourseService.getStudentCourseByStudentCourse(scEntity);
+
+							// 判断成绩是否为空,如果是空那么进行创建空行
+							if (StringUtils.isEmpty(studentCourse)) {
+								for (int j = 2; j < 9; j++) {
+									getCell(studentRow, style, j);
 								}
+							} else {
+								Cell classEvaValueCell = getCell(studentRow, style, 2);
+								String classEvaValue = studentCourse.getClassEvaValue();
+								if (StringUtils.isEmpty(classEvaValue)) {
+									classEvaValue = "0";
+								}
+								classEvaValueCell.setCellValue(classEvaValue);
+								Cell midEvaValueCell = getCell(studentRow, style, 3);
+								String midEvaValue = studentCourse.getMidEvaValue();
+
+								midEvaValueCell.setCellValue(midEvaValue);
+								Cell finEvaValueCell = getCell(studentRow, style, 4);
+								String finEvaValue = studentCourse.getFinEvaValue();
+								if (StringUtils.isEmpty(finEvaValue)) {
+									finEvaValue = "0";
+								}
+								finEvaValueCell.setCellValue(finEvaValue);
+								Cell evaValueCell = getCell(studentRow, style, 5);
+								String evaValue = studentCourse.getEvaValue();
+								if (StringUtils.isEmpty(evaValue)) {
+									evaValue = "0";
+								}
+								evaValueCell.setCellValue(evaValue);
+
+								Integer eva = Double.valueOf(evaValue).intValue();
+
+								if (0 <= eva && eva < 10) {
+									p7d++;
+								} else if (10 <= eva && eva < 20) {
+									p7e++;
+								} else if (20 <= eva && eva < 30) {
+									p7f++;
+								} else if (30 <= eva && eva < 40) {
+									p7g++;
+								} else if (40 <= eva && eva < 50) {
+									p7h++;
+								} else if (50 <= eva && eva < 60) {
+									p9d++;
+								} else if (60 <= eva && eva < 70) {
+									p9e++;
+								} else if (70 <= eva && eva < 80) {
+									p9f++;
+								} else if (80 <= eva && eva < 90) {
+									p9g++;
+								} else if (90 <= eva && eva <= 100) {
+									p9h++;
+								}
+
+								Cell creditCell = getCell(studentRow, style, 6);
+
+								String credit = studentCourse.getCredit();
+								creditCell.setCellValue(credit);
+
+								Cell pointCell = getCell(studentRow, style, 7);
+								String point = studentCourse.getPoint();
+								pointCell.setCellValue(point);
+								Cell remarkCell = getCell(studentRow, style, 8);
+								String remark = studentCourse.getRemarks();
+
+								remarkCell.setCellValue(
+										DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
+								sk++;
 							}
+
 							rowIndex++;
 						}
 						// 进行成绩段值的填充

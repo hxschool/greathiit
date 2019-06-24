@@ -203,21 +203,4 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
         }
       return 0;
     }
-    public static void main(String[] args) {
-    	List<StudentCourse> studentCourses = new ArrayList<StudentCourse>();
-    	StudentCourse StudentCourse1 = new StudentCourse();
-    	Student student1= new Student();
-    	student1.setStudentNumber("20190802");
-    	StudentCourse1.setStudent(student1);
-    	StudentCourse StudentCourse2 = new StudentCourse();
-    	Student student2= new Student();
-    	student2.setStudentNumber("20190801");
-    	StudentCourse2.setStudent(student2);
-    	studentCourses.add(StudentCourse1);
-    	studentCourses.add(StudentCourse2);
-    	Collections.sort(studentCourses);
-    	for(StudentCourse sc:studentCourses) {
-    		System.out.println(sc.getStudentNumber());
-    	}
-    }
 }

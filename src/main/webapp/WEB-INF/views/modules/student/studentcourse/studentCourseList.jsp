@@ -141,7 +141,7 @@
 				<th>综合成绩</th>
 				<th>学分</th>
 				<th>绩点</th>
-				<th>状态标记</th>
+				<th>状态</th>
 				<th>导入时间</th>
 				<shiro:hasPermission name="student:studentCourse:edit">
 					<th>操作</th>

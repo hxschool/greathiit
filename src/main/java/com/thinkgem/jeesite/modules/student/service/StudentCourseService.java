@@ -42,6 +42,7 @@ import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
 import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
@@ -282,11 +283,14 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				Student student = studentCourse.getStudent();
 				if (!StringUtils.isEmpty(student) && !StringUtils.isEmpty(student.getStudentNumber())) {
 					studentCourse.setCourse(course);
-					if(StringUtils.isEmpty(studentCourse.getStatus())) {
-						logger.info("如果状态未设置,认为状态正常");
-						studentCourse.setStatus("0");
-					}
+					String status = studentCourse.getStatus();
+					studentCourse.setStatus(null);
 					StudentCourse sc = studentCourseDao.getStudentCourseByStudentCourse(studentCourse);
+					if (!StringUtils.isEmpty(sc)) {
+						failureNum++;
+						failureMsg.append("当前学生:"+studentCourse.getStudentName() +"课程:"+studentCourse.getCourse().getCursName() +"成绩已存在，成绩状态:"+DictUtils.getDictLabel(sc.getStatus(), "student_course_result", "未知状态"));
+						continue;
+					}
 					if (StringUtils.isEmpty(sc)) {
 						if(!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 							// 判断课程类型
@@ -330,6 +334,11 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 						
 						
 						studentCourse.setTermYear(course.getCursYearTerm());
+						if(StringUtils.isEmpty(status)) {
+							logger.info("如果状态未设置,认为状态正常");
+							status = "0";
+						}
+						studentCourse.setStatus(status);
 						this.save(studentCourse);
 						successNum++;
 					}

@@ -467,76 +467,77 @@ public class CourseService extends CrudService<CourseDao, Course> {
 							StudentCourse scEntity = new StudentCourse();
 							scEntity.setStudent(student);
 							scEntity.setCourse(course);
-							StudentCourse studentCourse = studentCourseService
-									.getStudentCourseByStudentCourse(scEntity);
-							// 判断成绩是否为空,如果是空那么进行创建空行
-							if (StringUtils.isEmpty(studentCourse)) {
-								for (int j = 2; j < 9; j++) {
-									getCell(studentRow, style, j);
+							//StudentCourse studentCourse = studentCourseService.getStudentCourseByStudentCourse(scEntity);
+							List<StudentCourse> scs = studentCourseService.findList(scEntity);
+							for(StudentCourse studentCourse : scs){
+								// 判断成绩是否为空,如果是空那么进行创建空行
+								if (StringUtils.isEmpty(studentCourse)) {
+									for (int j = 2; j < 9; j++) {
+										getCell(studentRow, style, j);
+									}
+								} else {
+									Cell classEvaValueCell = getCell(studentRow, style, 2);
+									String classEvaValue = studentCourse.getClassEvaValue();
+									if(StringUtils.isEmpty(classEvaValue)) {
+										classEvaValue = "0";
+									}
+									classEvaValueCell.setCellValue(classEvaValue);
+									Cell midEvaValueCell = getCell(studentRow, style, 3);
+									String midEvaValue = studentCourse.getMidEvaValue();
+									
+									midEvaValueCell.setCellValue(midEvaValue);
+									Cell finEvaValueCell = getCell(studentRow, style, 4);
+									String finEvaValue = studentCourse.getFinEvaValue();
+									if(StringUtils.isEmpty(finEvaValue)) {
+										finEvaValue = "0";
+									}
+									finEvaValueCell.setCellValue(finEvaValue);
+									Cell evaValueCell = getCell(studentRow, style, 5);
+									String evaValue = studentCourse.getEvaValue();
+									if(StringUtils.isEmpty(evaValue)) {
+										evaValue = "0";
+									}
+									evaValueCell.setCellValue(evaValue);
+									
+									Integer eva = Double.valueOf(evaValue).intValue();
+									
+									if (0 <= eva && eva <10) {
+										p7d++;
+									} else if (10 <= eva && eva < 20) {
+										p7e++;
+									} else if (20 <= eva && eva < 30) {
+										p7f++;
+									} else if (30 <= eva && eva < 40) {
+										p7g++;
+									} else if (40 <= eva && eva < 50) {
+										p7h++;
+									} else if (50 <= eva && eva < 60) {
+										p9d++;
+									} else if (60 <= eva && eva < 70) {
+										p9e++;
+									} else if (70 <= eva && eva < 80) {
+										p9f++;
+									} else if (80 <= eva && eva < 90) {
+										p9g++;
+									} else if (90 <= eva && eva <= 100) {
+										p9h++;
+									}
+	
+									Cell creditCell = getCell(studentRow, style, 6);
+	
+									String credit = studentCourse.getCredit();
+									creditCell.setCellValue(credit);
+	
+									Cell pointCell = getCell(studentRow, style, 7);
+									String point = studentCourse.getPoint();
+									pointCell.setCellValue(point);
+									Cell remarkCell = getCell(studentRow, style, 8);
+									String remark = studentCourse.getRemarks();
+									
+									remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
+									sk++;
 								}
-							} else {
-								Cell classEvaValueCell = getCell(studentRow, style, 2);
-								String classEvaValue = studentCourse.getClassEvaValue();
-								if(StringUtils.isEmpty(classEvaValue)) {
-									classEvaValue = "0";
-								}
-								classEvaValueCell.setCellValue(classEvaValue);
-								Cell midEvaValueCell = getCell(studentRow, style, 3);
-								String midEvaValue = studentCourse.getMidEvaValue();
-								
-								midEvaValueCell.setCellValue(midEvaValue);
-								Cell finEvaValueCell = getCell(studentRow, style, 4);
-								String finEvaValue = studentCourse.getFinEvaValue();
-								if(StringUtils.isEmpty(finEvaValue)) {
-									finEvaValue = "0";
-								}
-								finEvaValueCell.setCellValue(finEvaValue);
-								Cell evaValueCell = getCell(studentRow, style, 5);
-								String evaValue = studentCourse.getEvaValue();
-								if(StringUtils.isEmpty(evaValue)) {
-									evaValue = "0";
-								}
-								evaValueCell.setCellValue(evaValue);
-								
-								Integer eva = Double.valueOf(evaValue).intValue();
-								
-								if (0 <= eva && eva <10) {
-									p7d++;
-								} else if (10 <= eva && eva < 20) {
-									p7e++;
-								} else if (20 <= eva && eva < 30) {
-									p7f++;
-								} else if (30 <= eva && eva < 40) {
-									p7g++;
-								} else if (40 <= eva && eva < 50) {
-									p7h++;
-								} else if (50 <= eva && eva < 60) {
-									p9d++;
-								} else if (60 <= eva && eva < 70) {
-									p9e++;
-								} else if (70 <= eva && eva < 80) {
-									p9f++;
-								} else if (80 <= eva && eva < 90) {
-									p9g++;
-								} else if (90 <= eva && eva <= 100) {
-									p9h++;
-								}
-
-								Cell creditCell = getCell(studentRow, style, 6);
-
-								String credit = studentCourse.getCredit();
-								creditCell.setCellValue(credit);
-
-								Cell pointCell = getCell(studentRow, style, 7);
-								String point = studentCourse.getPoint();
-								pointCell.setCellValue(point);
-								Cell remarkCell = getCell(studentRow, style, 8);
-								String remark = studentCourse.getRemarks();
-								
-								remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
-								sk++;
 							}
-
 							rowIndex++;
 						}
 						// 进行成绩段值的填充

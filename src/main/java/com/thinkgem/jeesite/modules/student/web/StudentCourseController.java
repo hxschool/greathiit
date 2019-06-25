@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,11 +37,15 @@ import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
+import com.thinkgem.jeesite.modules.student.entity.StudentCourseExt;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
 
@@ -52,7 +57,10 @@ import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
 @Controller
 @RequestMapping(value = "${adminPath}/student/studentCourse")
 public class StudentCourseController extends BaseController {
-	
+	@Autowired
+	private OfficeService officeService;
+	@Autowired
+	private SystemService systemService;
 	@Autowired
 	private TeacherClassService teacherClassService;
 	@Autowired
@@ -66,6 +74,7 @@ public class StudentCourseController extends BaseController {
 	@Autowired
 	private SysConfigService sysConfigService;
 	private SysConfig config;
+
 	@ModelAttribute
 	public StudentCourse get(@RequestParam(required=false) String id,Model model) {
 		StudentCourse entity = null;
@@ -112,7 +121,29 @@ public class StudentCourseController extends BaseController {
 		}
 		
 		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
-		model.addAttribute("page", page);
+		
+		List<StudentCourseExt> ses = Lists.newArrayList();
+		for (StudentCourse sc : page.getList()) {
+			StudentCourseExt se = new StudentCourseExt();
+			BeanUtils.copyProperties(sc, se);
+			String studentNumber = sc.getStudentNumber();
+			User user = systemService.getCasByLoginName(studentNumber);
+			if (!org.springframework.util.StringUtils.isEmpty(user.getClazz())) {
+				Office clazz = officeService.get(user.getClazz());
+				se.setClazz(clazz);
+				Office office = officeService.get(clazz.getParentId());
+				se.setOffice(office);
+				Office company = officeService.get(office.getParentId());
+				se.setCompany(company);
+			}
+			Course entity = courseService.get(sc.getCourse());
+			se.setCourse(entity);
+			ses.add(se);
+		}
+		Page<StudentCourseExt> pp = new Page<StudentCourseExt>();
+		BeanUtils.copyProperties(page, pp);
+		pp.setList(ses);
+		model.addAttribute("page", pp);
 		return "modules/student/studentcourse/studentCourseList";
 	}
 
@@ -146,12 +177,31 @@ public class StudentCourseController extends BaseController {
     @RequestMapping(value = "export")
     public String exportFile(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
-            String fileName = "成绩数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            String fileName = "成绩汇总表"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
-    		new ExportExcel("成绩数据", StudentCourse.class).setDataList(page.getList()).write(response, fileName).dispose();
+            
+            List<StudentCourseExt> ses = Lists.newArrayList();  
+            for(StudentCourse sc : page.getList()) {
+            	StudentCourseExt se = new StudentCourseExt();
+            	BeanUtils.copyProperties(sc, se);
+            	String studentNumber = sc.getStudentNumber();
+            	User user = systemService.getCasByLoginName(studentNumber);
+            	if(!org.springframework.util.StringUtils.isEmpty(user.getClazz())) {
+            		Office clazz = officeService.get(user.getClazz());
+            		se.setClazz(clazz);
+            		Office office = officeService.get(clazz.getParentId());
+            		se.setOffice(office);
+            		Office company = officeService.get(office.getParentId());
+            		se.setCompany(company);
+            	}
+            	Course course = courseService.get(sc.getCourse());
+            	se.setCourse(course);
+            	ses.add(se);
+            }
+    		new ExportExcel("成绩数据", StudentCourseExt.class).setDataList(ses).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
-			addMessage(redirectAttributes, "成绩数据！失败信息："+e.getMessage());
+			addMessage(redirectAttributes, "成绩汇总表！失败信息："+e.getMessage());
 		}
 		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
     }

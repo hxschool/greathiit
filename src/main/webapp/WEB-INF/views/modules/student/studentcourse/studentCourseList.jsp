@@ -131,14 +131,20 @@
 		class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>学院</th>
+				<th>专业</th>
+				<th>班级</th>
 				<th>学号</th>
 				<th>学生姓名</th>
 				<th>学期</th>
 				<th>课程名称</th>
+				<th>课程类型</th>
+				
 				<th>任课教师</th>
 				<th>平时成绩</th>
 				<th>期末成绩</th>
 				<th>综合成绩</th>
+				<th>评分人</th>
 				<th>学分</th>
 				<th>绩点</th>
 				<th>状态</th>
@@ -151,11 +157,19 @@
 		<tbody>
 			<c:forEach items="${page.list}" var="studentCourse">
 				<tr>
-					<td><a
+					<td>${studentCourse.company.name}</td>
+					<td>${studentCourse.office.name}</td>
+					<td>${studentCourse.clazz.name}</td>
+					<td>
+					
+					<a
 						href="${ctx}/student/studentCourse/form?id=${studentCourse.id}">${studentCourse.student.studentNumber}</a></td>
 					<td>${studentCourse.student.name}</td>
 					<td>${studentCourse.termYear}</td>
 					<td>${studentCourse.course.cursName}</td>
+					<td>
+					${fns:getDictLabel(studentCourse.course.cursType,'course_curs_type',"未知")}
+					</td>
 					<td>${studentCourse.course.teacher.tchrName}</td>
 
 					<td>${studentCourse.classEvaValue}</td>
@@ -163,6 +177,7 @@
 					<td>${studentCourse.finEvaValue}</td>
 					<td>${studentCourse.evaValue}</td>
 					<td>${studentCourse.credit}</td>
+					<td>${studentCourse.course.rater}</td>
 					<td>${studentCourse.point}</td>
 					<td>
 						${fns:getDictLabel(studentCourse.status,'student_course_result',"正常")}

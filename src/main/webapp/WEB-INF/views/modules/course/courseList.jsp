@@ -119,7 +119,7 @@
 				<th>课程编号</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
-				<th>专业</th>
+				<!-- <th>专业</th> -->
 				<th>学时</th>
 				<th>学分</th>
 				<th>开设学期</th>
@@ -147,9 +147,9 @@
 				<td>
 					${course.teacher.tchrName}
 				</td>
-				<td>
+				<!-- <td>
 					${course.cursMajor}
-				</td>
+				</td -->
 				<td>
 					${course.cursClassHour}
 				</td>

@@ -60,9 +60,9 @@
 							selected
 							</c:when>
 							<c:otherwise>
-								<c:if test="${termYear.key==config.termYear}">selected</c:if>
+								<c:if test="${course==null&&termYear.key==config.termYear}">selected</c:if>
 							</c:otherwise>
-							</c:choose>>${termYear.key}</option>
+							</c:choose> >${termYear.key}</option>
 					</c:forEach>
 				</select>
 

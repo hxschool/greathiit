@@ -272,7 +272,7 @@ public class StudentCourseController extends BaseController {
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导入模板下载失败！失败信息：" + e.getMessage());
 		}
-		return "redirect:" + adminPath + "/student/studentCourse/list?repage";
+		return "redirect:" + adminPath + "/course/course/list?repage";
     }
 	
 }

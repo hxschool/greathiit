@@ -210,7 +210,7 @@
 					<a class="btn btn-primary"  href="${ctx}/course/course/submit?id=${course.id}">添加成绩参数</a>
 					
 					<shiro:hasPermission name="course:course:studentCourse">
-    					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出成绩</a>
+    					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">下载空模板</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="course:course:export">
     					<a  class="btn btn-success" href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出成绩单</a>

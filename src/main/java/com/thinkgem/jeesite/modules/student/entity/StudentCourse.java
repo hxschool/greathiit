@@ -3,10 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.math.BigInteger;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -193,14 +190,10 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 		this.point = point;
 	}
 
-    @Override
-    public int compareTo(StudentCourse studentCourse) {
-        if (Integer.valueOf(student.getStudentNumber()) > Integer.valueOf(studentCourse.getStudent().getStudentNumber())) {
-            return 1;
-        }
-        if (Integer.valueOf(student.getStudentNumber()) < Integer.valueOf(studentCourse.getStudent().getStudentNumber())) {
-            return -1;
-        }
-      return 0;
-    }
+	@Override
+	public int compareTo(StudentCourse studentCourse) {
+		BigInteger a = new BigInteger(student.getStudentNumber());
+		BigInteger b = new BigInteger(studentCourse.getStudent().getStudentNumber());
+		return a.compareTo(b);
+	}
 }

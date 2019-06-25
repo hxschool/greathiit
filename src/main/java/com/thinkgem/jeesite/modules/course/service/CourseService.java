@@ -256,15 +256,15 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						}else {
 							remarkCell.setCellValue(remark);
 						}
-						sk++;
+						//sk++;
 					}
 
 					rowIndex++;
 				}
 				// 进行成绩段值的填充
 
-				setCell(clazzSheet, 6, 0, yk);
-				setCell(clazzSheet, 8, 0, sk);
+				//setCell(clazzSheet, 6, 0, yk);
+				//setCell(clazzSheet, 8, 0, sk);
 				setCell(clazzSheet, 6, 3, p7d);
 				setCell(clazzSheet, 6, 4, p7e);
 				setCell(clazzSheet, 6, 5, p7f);
@@ -444,8 +444,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						}
 						// 进行成绩段值的填充
 
-						setCell(clazzSheet, 6, 0, yk);
-						setCell(clazzSheet, 8, 0, sk);
+						//setCell(clazzSheet, 6, 0, yk);
+						//setCell(clazzSheet, 8, 0, sk);
 						setCell(clazzSheet, 6, 3, p7d);
 						setCell(clazzSheet, 6, 4, p7e);
 						setCell(clazzSheet, 6, 5, p7f);

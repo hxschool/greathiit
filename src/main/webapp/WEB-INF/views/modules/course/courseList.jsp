@@ -17,16 +17,7 @@
 				});
 				top.$('.jbox-body .jbox-icon').css('top', '55px');
 			});
-			$("#btnImportStudentCourse").click(function() {
-				$.jBox($("#importStudentCourseBox").html(), {
-					title : "导入成绩数据",
-					buttons : {
-						"关闭" : true
-					},
-					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
-				});
-			});
-			
+
 			$("#btnImport").click(function() {
 				$.jBox($("#importBox").html(), {
 					title : "导入课程数据",
@@ -134,8 +125,8 @@
 				<th>开设学期</th>
 				
 				<!--<th>与相关课程的分工衔接</th>
-				<th>其他说明</th>  -->
-				<th>先修课程</th>
+				<th>其他说明</th> 
+				<th>先修课程</th> -->
 				<th>课程性质</th>
 				<th>课程类型</th>
 				<th>考核</th>
@@ -174,13 +165,13 @@
 				</td>
 				<td>
 					${course.cursNote2}
-				</td> -->
+				</td> 
 				<td>
 					${course.cursPreCourses}
-				</td>
+				</td> -->
 				<td>
 		
-					${fns:getDictLabel(course.cursType, 'course_property', '')}
+					${fns:getDictLabel(course.cursProperty, 'course_property', '')}
 				</td>
 
 				<td>

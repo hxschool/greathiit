@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -60,6 +62,8 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 @Service
 @Transactional(readOnly = true)
 public class CourseService extends CrudService<CourseDao, Course> {
+	
+
 	DecimalFormat df = new DecimalFormat("#.00");
 	@Autowired
 	private OfficeDao officeDao;
@@ -107,119 +111,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		return super.findPage(page, course);
 	}
 
-	@Transactional(readOnly = false)
-	public ImportResult<Course> importCourse(MultipartFile file) {
-		logger.info("根据课程导入成绩");
-		int successNum = 0;
-		int failureNum = 0;
-		StringBuilder failureMsg = new StringBuilder();
-		Course course = null;
-		ImportResult<Course> importResult = new ImportResult<Course>();
-		try {
-			Workbook wb = null;
-			InputStream is = file.getInputStream();
-			String fileName = file.getOriginalFilename();
-			if (StringUtils.isEmpty(fileName)) {
-				throw new RuntimeException("导入文档为空!");
-			} else if (fileName.toLowerCase().endsWith("xls")) {
-				wb = new HSSFWorkbook(is);
-			} else if (fileName.toLowerCase().endsWith("xlsx")) {
-				wb = new XSSFWorkbook(is);
-			} else {
-				throw new RuntimeException("文档格式不正确!");
-			}
-			Sheet clazzSheet = wb.getSheetAt(0);
-			Row courseIdRow = clazzSheet.getRow(1);
-			Cell courseIdCell = courseIdRow.getCell(0);
-			course = courseDao.get(courseIdCell.getStringCellValue());
-
-			for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-				Sheet sheet = wb.getSheetAt(i);
-				int rowNum = sheet.getLastRowNum();
-				for (int rowIndex = 14; rowIndex <= rowNum; rowIndex++) {
-					Row row = sheet.getRow(rowIndex);
-					String studentNumber = row.getCell(0).getStringCellValue();
-					if (!StringUtils.isEmpty(studentNumber)) {
-						StudentCourse sc = new StudentCourse();
-						sc.setCourse(course);
-						Student student = new Student();
-						student.setStudentNumber(studentNumber);
-						sc.setStudent(student);
-						StudentCourse score = studentCourseService.getStudentCourseByStudentCourse(sc);
-						if (!StringUtils.isEmpty(score)) {
-							logger.info("当前课程,当前学号成绩已存在");
-							failureNum++;
-							failureMsg.append("<br/>学号: " + studentNumber + " 当前课程成绩已存在");
-							continue;
-						}
-						String name = row.getCell(1).getStringCellValue();
-						String classEvaValue = POIUtils.getCell(row.getCell(2));
-
-						String midEvaValue = POIUtils.getCell(row.getCell(3));
-						String finEvaValue = POIUtils.getCell(row.getCell(4));
-						StudentCourse studentCourse = new StudentCourse();
-						studentCourse.setStudentNumber(studentNumber);
-						studentCourse.setStudentName(name);
-						studentCourse.setCourse(course);
-
-						studentCourse.setClassEvaValue(classEvaValue);
-						studentCourse.setFinEvaValue(finEvaValue);
-						if (!POIUtils.isNumeric(classEvaValue)) {
-							classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
-						}
-						if (!POIUtils.isNumeric(finEvaValue)) {
-							finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
-						}
-						if (StringUtils.isEmpty(classEvaValue)) {
-							classEvaValue = "0";
-						}
-						if (StringUtils.isEmpty(finEvaValue)) {
-							finEvaValue = "0";
-						}
-						String evaValue = "0";
-						// zhaojunfei
-						switch (course.getCursType()) {
-						case Course.COURSE_TYPE_EXA:
-							// 考试课：平时成绩*30%+期末成绩*70%=综合成绩
-
-							evaValue = String.valueOf(Double
-									.valueOf((Double.parseDouble(classEvaValue) * Double.parseDouble("0.30")
-											+ Double.parseDouble(finEvaValue) * Double.parseDouble("0.70")))
-									.intValue());
-							break;
-						case Course.COURSE_TYPE_TEST:
-							// 考察课：平时成绩*40%+期末成绩*60%=综合成绩
-							evaValue = String.valueOf(Double
-									.valueOf((Double.parseDouble(classEvaValue) * Double.parseDouble("0.40")
-											+ Double.parseDouble(finEvaValue) * Double.parseDouble("0.60")))
-									.intValue());
-							break;
-						case Course.COURSE_TYPE_OTHER:
-							break;
-						default:
-							break;
-						}
-						String point = df.format((Double.valueOf(evaValue) - 60) * Double.valueOf("0.1"));
-						studentCourse.setPoint(point);
-						studentCourse.setEvaValue(evaValue);
-						studentCourseService.save(studentCourse);
-						successNum++;
-					}
-				}
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		importResult.setFailureNum(failureNum);
-		importResult.setFailureMsg(failureMsg);
-		importResult.setObject(course);
-		importResult.setSuccessNum(successNum);
-		return importResult;
-	}
-
+	
 	public void exportCourse(File file, Course course, OutputStream os) {
 		logger.info("根据课程生成全部sheet班级信息");
 		try {

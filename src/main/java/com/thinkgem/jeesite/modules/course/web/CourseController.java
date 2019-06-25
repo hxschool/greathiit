@@ -745,16 +745,6 @@ public class CourseController extends BaseController {
 		return "redirect:" + adminPath + "/course/course/list?repage";
     }
 	
-	@RequestMapping("importStudentCourse")
-	public String importCourse(MultipartFile file,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
-		ImportResult<Course> ir =courseService.importCourse(file);
-		
-		if (ir.getFailureNum()>0){
-			ir.getFailureMsg().insert(0, "，失败 "+ir.getFailureNum()+" 条成绩，导入信息如下：");
-		}
-		addMessage(redirectAttributes, "已成功导入 "+ir.getSuccessNum()+" 条成绩"+ir.getFailureMsg());
-		return "redirect:" + adminPath + "/course/course/list?repage";
-	}
 	@RequestMapping("exportStudentCourse")
 	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		

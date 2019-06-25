@@ -6,7 +6,9 @@ package com.thinkgem.jeesite.modules.student.service;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -57,6 +59,37 @@ import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 @Service
 @Transactional(readOnly = true)
 public class StudentCourseService extends CrudService<StudentCourseDao, StudentCourse> {
+	
+	private static Map<String,String> fiveMap = new HashMap<String,String>();
+	private static Map<String,String> fivePointMap = new HashMap<String,String>();
+	static {
+		fiveMap.put("优秀优秀","优秀");
+		fiveMap.put("优秀良好","优秀");
+		fiveMap.put("优秀中等","中等");
+		fiveMap.put("优秀及格","中等");
+
+		fiveMap.put("良好优秀","良好");
+		fiveMap.put("良好良好","良好");
+		fiveMap.put("良好中等","良好");
+		fiveMap.put("良好及格","及格");
+
+		fiveMap.put("中等优秀","良好");
+		fiveMap.put("中等良好","中等");
+		fiveMap.put("中等中等","中等");
+		fiveMap.put("中等及格","及格");
+
+		fiveMap.put("及格优秀","中等");
+		fiveMap.put("及格良好","中等");
+		fiveMap.put("及格中等","及格");
+		fiveMap.put("及格及格","及格");
+
+		fivePointMap.put("优秀", "3.5");
+		fivePointMap.put("良好", "2.5");
+		fivePointMap.put("中等", "1.5");
+		fivePointMap.put("及格", "0.5");
+		fivePointMap.put("不及格", "0");
+	}
+	
 	DecimalFormat df = new DecimalFormat("#.00");
 	@Autowired
 	private StudentCourseDao studentCourseDao;
@@ -292,10 +325,25 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 						continue;
 					}
 					if (StringUtils.isEmpty(sc)) {
-						if(!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+						logger.info("当前课程模式:{},{}",course.getCursProperty(),DictUtils.getDictLabel(course.getCursProperty(), "course_property", "未知"));
+						String classEvaValue = studentCourse.getClassEvaValue();// 课堂成绩
+						String finEvaValue = studentCourse.getFinEvaValue();// 期末成绩
+						if(course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+							String evaValue = "不及格";
+							String point = "0";
+							studentCourse.setCredit("0");
+							if(!StringUtils.isEmpty(classEvaValue)&&!StringUtils.isEmpty(finEvaValue)) {
+								if(!StringUtils.isEmpty(fiveMap.get(classEvaValue.concat(finEvaValue)))) {
+									evaValue = fiveMap.get(classEvaValue.concat(finEvaValue));
+									point = fivePointMap.get(evaValue);
+									studentCourse.setCredit(course.getCursCredit());
+								}
+							}
+							studentCourse.setPoint(point);
+							studentCourse.setEvaValue(evaValue);
+						}else{
 							// 判断课程类型
-							String classEvaValue = studentCourse.getClassEvaValue();// 课堂成绩
-							String finEvaValue = studentCourse.getFinEvaValue();// 期末成绩
+							
 							if (StringUtils.isEmpty(classEvaValue)) {
 								classEvaValue = "0";
 							}
@@ -304,14 +352,6 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							}
 							studentCourse.setClassEvaValue(String.valueOf(Double.valueOf(classEvaValue).intValue()));
 							studentCourse.setFinEvaValue(String.valueOf(Double.valueOf(finEvaValue).intValue()));
-							/*
-							if (!POIUtils.isNumeric(classEvaValue)) {
-								classEvaValue = StudentCourseUtil.getPercentageSocre(classEvaValue);
-							}
-							if (!POIUtils.isNumeric(finEvaValue)) {
-								finEvaValue = StudentCourseUtil.getPercentageSocre(finEvaValue);
-							}
-							*/
 	
 							String evaValue = String.valueOf(Double.valueOf(Double
 									.valueOf((Double.parseDouble(classEvaValue)
@@ -326,8 +366,6 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 								point = String.format("%.1f",((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
 										* Double.valueOf(coursePoint.getPoint())));;
 							}
-							 
-							
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}

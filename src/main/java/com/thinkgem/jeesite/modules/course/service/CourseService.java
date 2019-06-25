@@ -251,7 +251,11 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						pointCell.setCellValue(point);
 						Cell remarkCell = getCell(studentRow, style, 8);
 						String remark = studentCourse.getRemarks();
-						remarkCell.setCellValue(remark);
+						if(StringUtils.isEmpty(studentCourse.getStatus())&&!studentCourse.getStatus().equals("")) {
+							remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
+						}else {
+							remarkCell.setCellValue(remark);
+						}
 						sk++;
 					}
 
@@ -427,9 +431,12 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								pointCell.setCellValue(point);
 								Cell remarkCell = getCell(studentRow, style, 8);
 								String remark = studentCourse.getRemarks();
-
-								remarkCell.setCellValue(
-										DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
+								if(StringUtils.isEmpty(studentCourse.getStatus())&&!studentCourse.getStatus().equals("")) {
+									remarkCell.setCellValue(DictUtils.getDictLabel(studentCourse.getStatus(), "student_course_result", ""));
+								}else {
+									remarkCell.setCellValue(remark);
+								}
+								
 								sk++;
 							}
 

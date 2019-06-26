@@ -430,7 +430,7 @@ public class ApiController extends BaseController {
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "roleId", value = "教师编码", required = true, dataType = "String", paramType = "query")})
 	@ResponseBody
-	@RequestMapping(value = "ajaxUser")
+	@RequestMapping(value = "ajaxUser",method= {RequestMethod.GET,RequestMethod.POST})
 	public List<User> ajaxUser(HttpServletRequest request, HttpServletResponse response) {
 		String roleId = request.getParameter("roleId");
 		return systemService.findUserByRoleId(roleId);
@@ -441,7 +441,7 @@ public class ApiController extends BaseController {
 			@ApiImplicitParam(name = "teacherNumber", value = "教师编码", required = true, dataType = "String", paramType = "query"),
 			@ApiImplicitParam(name = "yearTerm", value = "学期", required = false, dataType = "String", paramType = "query")})
 	@ResponseBody
-	@RequestMapping(value = "getCourseByTeacher")
+	@RequestMapping(value = "getCourseByTeacher",method= {RequestMethod.GET,RequestMethod.POST})
 	public Result<List<Course>> getCourseByTeacher(HttpServletRequest request, HttpServletResponse response) {
 		Result<List<Course>> result = new Result<List<Course>>();
 		result.setCode(200);

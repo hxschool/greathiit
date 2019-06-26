@@ -241,7 +241,7 @@
 	<!--默认配置,.htm|.do|.json等等配置 -->
 	<servlet-mapping>
 		<servlet-name>springServlet</servlet-name>
-		<url-pattern>*.htm</url-pattern>
+		<url-pattern>doc.html</url-pattern>
 	</servlet-mapping>
 	<!-- 配置swagger-bootstrap-ui的url请求路径 -->
 	<servlet-mapping>

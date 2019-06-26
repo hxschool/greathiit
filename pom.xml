@@ -138,31 +138,7 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
-		<dependency>
-
-			<groupId>io.springfox</groupId>
-
-			<artifactId>springfox-swagger2</artifactId>
-
-			<version>2.2.2</version>
-
-		</dependency>
-
-		<dependency>
-
-			<groupId>io.springfox</groupId>
-
-			<artifactId>springfox-swagger-ui</artifactId>
-
-			<version>2.2.2</version>
-
-		</dependency>
-
-		<dependency>
-			<groupId>com.github.xiaoymin</groupId>
-			<artifactId>swagger-bootstrap-ui</artifactId>
-			<version>1.9.3</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>sword.org</groupId>
 			<artifactId>wechat4j</artifactId>
@@ -276,10 +252,6 @@
 				<exclusion>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpclient</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>

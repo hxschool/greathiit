@@ -46,13 +46,7 @@ import com.thinkgem.jeesite.modules.sys.service.SysAppconfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import springfox.documentation.annotations.ApiIgnore;
-@Api(value = "API")
+//@Api(value = "API")
 @Controller
 @RequestMapping(value = "api")
 public class ApiController extends BaseController {
@@ -66,7 +60,7 @@ public class ApiController extends BaseController {
 	private SysAppconfigService sysAppconfigService;
 	@Autowired
 	private CourseService  courseService;
-	@ApiIgnore
+	//@ApiIgnore
 	private <T> T getRequest(HttpServletRequest request, HttpServletResponse response,Class<T> clazz) throws Exception {
 		try {
 			String json = IOUtils.toString(request.getInputStream());
@@ -114,11 +108,12 @@ public class ApiController extends BaseController {
 		}
 	}
 	
-	 
+	 /*
 	@ApiOperation(value="通过姓名身份证获取学号信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "username", value = "姓名", required = true, dataType = "String", paramType = "query"),
 			@ApiImplicitParam(name = "idCard", value = "身份证号", required = true, dataType = "String", paramType = "query")})
+			*/
 	@RequestMapping(value = "getStudentNumber",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudentNumber(String username,String idCard) {
@@ -131,7 +126,7 @@ public class ApiController extends BaseController {
 		return map;
 	}
 	 
-	@ApiOperation(value="获取全部学生信息")
+	//@ApiOperation(value="获取全部学生信息")
 	@RequestMapping(value = "getStudents",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudents(HttpServletRequest request,HttpServletResponse response) {
@@ -166,9 +161,11 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
+	/*
 	@ApiOperation(value="通过学号获取学号信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "studentNumber", value = "学号", required = true, dataType = "String", paramType = "query")})
+			*/
 	@RequestMapping(value = "getStudent",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudent(HttpServletRequest request,HttpServletResponse response) {
@@ -196,7 +193,7 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
-	@ApiOperation(value="通过全部教师信息")
+	//@ApiOperation(value="通过全部教师信息")
 	@RequestMapping(value = "getTeachers",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getTeachers(HttpServletRequest request,HttpServletResponse response) {
@@ -221,9 +218,11 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
+	/*
 	@ApiOperation(value="通过教师号获取教师信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "teacherNumber", value = "教师号", required = true, dataType = "String", paramType = "query")})
+			*/
 	@RequestMapping(value = "getTeacher",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getTeacher(HttpServletRequest request,HttpServletResponse response) {
@@ -244,8 +243,9 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
-	
+	/*
 	@ApiOperation(value="获取字典信息")
+	*/
 	@RequestMapping(value = "getDicts",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getDicts(Dict dict,HttpServletRequest request,HttpServletResponse response) {
@@ -261,10 +261,12 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
+	/*
 	@ApiOperation(value="通过字典类型字典值获取字典信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "type", value = "字典类型", required = true, dataType = "String", paramType = "query"),
 			@ApiImplicitParam(name = "value", value = "字典值", required = true, dataType = "String", paramType = "query")})
+			*/
 	@RequestMapping(value = "getDict",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getDict(HttpServletRequest request,HttpServletResponse response) {
@@ -284,10 +286,11 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
+	/*
 	@ApiOperation(value="通过班号获取班级信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
-	
+	*/
 	@RequestMapping(value = "getClass",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getClass(HttpServletRequest request,HttpServletResponse response) {
@@ -303,9 +306,11 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
+	/*
 	@ApiOperation(value="通过班号获取学生信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
+			*/
 	@RequestMapping(value = "getInClass",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getInClass(HttpServletRequest request,HttpServletResponse response) {
@@ -321,10 +326,11 @@ public class ApiController extends BaseController {
 		}
 		return map;
 	}
-	
+	/*
 	@ApiOperation(value="通过角色信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
+			*/
 	@ResponseBody
 	@RequestMapping(value = "getRole",method= {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> getRole(HttpServletRequest request, HttpServletResponse response) {
@@ -338,7 +344,7 @@ public class ApiController extends BaseController {
 	
 	
 	
-	@ApiIgnore
+	//@ApiIgnore
 	@RequestMapping(value = "getUser",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getUser(HttpServletRequest request) throws Exception {
@@ -376,7 +382,7 @@ public class ApiController extends BaseController {
 
 	
 	//获取学院信息
-	@ApiOperation(value="获取学院信息")
+	//@ApiOperation(value="获取学院信息")
 	@RequestMapping(value = "getCollege",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getCollege() {
@@ -388,7 +394,7 @@ public class ApiController extends BaseController {
 	}
 	
 
-	@ApiOperation(value="获取专业信息")
+	//@ApiOperation(value="获取专业信息")
 	@RequestMapping(value = "getMajor",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getMajor() {
@@ -398,7 +404,7 @@ public class ApiController extends BaseController {
 		map.put("result", apiService.getMajor());
 		return map;
 	}
-	@ApiOperation(value="获取行政区信息")
+	//@ApiOperation(value="获取行政区信息")
 	@RequestMapping(value = "getArea",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getArea(String parentId) {
@@ -409,7 +415,7 @@ public class ApiController extends BaseController {
 		return map;
 	}
 
-	@ApiOperation(value="获取全部角色信息")
+	//@ApiOperation(value="获取全部角色信息")
 	@ResponseBody
 	@RequestMapping(value = "ajaxRoles",method= {RequestMethod.GET,RequestMethod.POST})
 	public List<Role> ajaxRoles(HttpServletRequest request, HttpServletResponse response) {
@@ -426,20 +432,20 @@ public class ApiController extends BaseController {
 		}
 		return ret;
 	}
-	@ApiOperation(value="通过角色下全部用户信息")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "roleId", value = "教师编码", required = true, dataType = "String", paramType = "query")})
+	//@ApiOperation(value="通过角色下全部用户信息")
+	/*@ApiImplicitParams({
+			@ApiImplicitParam(name = "roleId", value = "教师编码", required = true, dataType = "String", paramType = "query")})*/
 	@ResponseBody
 	@RequestMapping(value = "ajaxUser",method= {RequestMethod.GET,RequestMethod.POST})
 	public List<User> ajaxUser(HttpServletRequest request, HttpServletResponse response) {
 		String roleId = request.getParameter("roleId");
 		return systemService.findUserByRoleId(roleId);
 	}
-	
+	/*
 	@ApiOperation(value="通过教师号获取教师课程")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "teacherNumber", value = "教师编码", required = true, dataType = "String", paramType = "query"),
-			@ApiImplicitParam(name = "yearTerm", value = "学期", required = false, dataType = "String", paramType = "query")})
+			@ApiImplicitParam(name = "yearTerm", value = "学期", required = false, dataType = "String", paramType = "query")})*/
 	@ResponseBody
 	@RequestMapping(value = "getCourseByTeacher",method= {RequestMethod.GET,RequestMethod.POST})
 	public Result<List<Course>> getCourseByTeacher(HttpServletRequest request, HttpServletResponse response) {

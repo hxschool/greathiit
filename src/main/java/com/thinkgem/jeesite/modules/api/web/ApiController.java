@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.FieldNamingPolicy;
@@ -32,6 +33,9 @@ import com.thinkgem.jeesite.modules.api.web.adapter.BigDecimalDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.DoubleDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.IntegerDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.LongDefault0Adapter;
+import com.thinkgem.jeesite.modules.api.web.response.Result;
+import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -43,6 +47,12 @@ import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import springfox.documentation.annotations.ApiIgnore;
+@Api(value = "API")
 @Controller
 @RequestMapping(value = "api")
 public class ApiController extends BaseController {
@@ -54,9 +64,10 @@ public class ApiController extends BaseController {
 	private DictService dictService;
 	@Autowired
 	private SysAppconfigService sysAppconfigService;
-	
-	
-	public <T> T getRequest(HttpServletRequest request, HttpServletResponse response,Class<T> clazz) throws Exception {
+	@Autowired
+	private CourseService  courseService;
+	@ApiIgnore
+	private <T> T getRequest(HttpServletRequest request, HttpServletResponse response,Class<T> clazz) throws Exception {
 		try {
 			String json = IOUtils.toString(request.getInputStream());
 			if (StringUtils.isEmpty(json)) {
@@ -80,6 +91,9 @@ public class ApiController extends BaseController {
 			SecureRequest secureRequest = gson.fromJson(json, SecureRequest.class);
 			String appid = secureRequest.getAPPID();
 			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(appid);
+			if(StringUtils.isEmpty(sysAppconfig)) {
+				throw new Exception("授权信息不合法,未查找到相关授权信息");
+			}
 			String otherPublicKey = sysAppconfig.getPublickey();
 			
 			String resultJson = SecureUtil.decryptTradeInfo(appid, secureRequest.getCER(), secureRequest.getDATA(), secureRequest.getSIGN(), Global.privateKey, otherPublicKey);
@@ -95,14 +109,17 @@ public class ApiController extends BaseController {
 			return t;
 		} catch (Exception ex) {
 			logger.error("解析出错...错误原因:{}",ex.getMessage());
-			throw new Exception("解析异常");
+			throw new Exception("解析异常"+ex.getMessage());
 			
 		}
 	}
 	
 	 
-	
-	@RequestMapping(value = "getStudentNumber")
+	@ApiOperation(value="通过姓名身份证获取学号信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "username", value = "姓名", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "idCard", value = "身份证号", required = true, dataType = "String", paramType = "query")})
+	@RequestMapping(value = "getStudentNumber",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudentNumber(String username,String idCard) {
 		
@@ -113,20 +130,16 @@ public class ApiController extends BaseController {
 		map.put("studentNumber", studentNumber);
 		return map;
 	}
-	
-	@RequestMapping(value = "getStudents")
+	 
+	@ApiOperation(value="获取全部学生信息")
+	@RequestMapping(value = "getStudents",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudents(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			
 			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
-			SysAppconfig sysAppconfig = sysAppconfigService.getByAppId(baseRequest.getAppid());
-			if(StringUtils.isEmpty(sysAppconfig)) {
-				map.put("status", "99999999");
-				map.put("message", "请求没有授权,请求消息APPID不存在");
-				return map;
-			}
+			
 			LogUtils.saveLog(request, "APPID:"+baseRequest.getAppid()+"获取全部学生数据");
 			map.put("status", "00000000");
 			map.put("message", "获取全部学生信息成功");
@@ -150,12 +163,13 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
-	
-	@RequestMapping(value = "getStudent")
+	@ApiOperation(value="通过学号获取学号信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "studentNumber", value = "学号", required = true, dataType = "String", paramType = "query")})
+	@RequestMapping(value = "getStudent",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getStudent(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -179,12 +193,11 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
-	
-	@RequestMapping(value = "getTeachers")
+	@ApiOperation(value="通过全部教师信息")
+	@RequestMapping(value = "getTeachers",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getTeachers(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -205,12 +218,13 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
-
-	@RequestMapping(value = "getTeacher")
+	@ApiOperation(value="通过教师号获取教师信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "teacherNumber", value = "教师号", required = true, dataType = "String", paramType = "query")})
+	@RequestMapping(value = "getTeacher",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getTeacher(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -227,13 +241,12 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
 	
-	
-	@RequestMapping(value = "getDicts")
+	@ApiOperation(value="获取字典信息")
+	@RequestMapping(value = "getDicts",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getDicts(Dict dict,HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -245,12 +258,14 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
-	
-	@RequestMapping(value = "getDict")
+	@ApiOperation(value="通过字典类型字典值获取字典信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "type", value = "字典类型", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "value", value = "字典值", required = true, dataType = "String", paramType = "query")})
+	@RequestMapping(value = "getDict",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getDict(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -266,13 +281,14 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
+	@ApiOperation(value="通过班号获取班级信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
 	
-	
-	@RequestMapping(value = "getClass")
+	@RequestMapping(value = "getClass",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getClass(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -284,12 +300,13 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
-	
-	@RequestMapping(value = "getInClass")
+	@ApiOperation(value="通过班号获取学生信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
+	@RequestMapping(value = "getInClass",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getInClass(HttpServletRequest request,HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -301,14 +318,15 @@ public class ApiController extends BaseController {
 		} catch (Exception e) {
 			map.put("status", "99999999");
 			map.put("message", e.getMessage());
-			renderString(response, map);
 		}
 		return map;
 	}
 	
-	
+	@ApiOperation(value="通过角色信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "classno", value = "班号", required = true, dataType = "String", paramType = "query")})
 	@ResponseBody
-	@RequestMapping(value = "getRole")
+	@RequestMapping(value = "getRole",method= {RequestMethod.GET,RequestMethod.POST})
 	public Map<String, Object> getRole(HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Role> list1 = systemService.findAllRoles();
@@ -320,8 +338,8 @@ public class ApiController extends BaseController {
 	
 	
 	
-	
-	@RequestMapping(value = "getUser")
+	@ApiIgnore
+	@RequestMapping(value = "getUser",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getUser(HttpServletRequest request) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -358,7 +376,8 @@ public class ApiController extends BaseController {
 
 	
 	//获取学院信息
-	@RequestMapping(value = "getCollege")
+	@ApiOperation(value="获取学院信息")
+	@RequestMapping(value = "getCollege",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getCollege() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -369,8 +388,8 @@ public class ApiController extends BaseController {
 	}
 	
 
-	
-	@RequestMapping(value = "getMajor")
+	@ApiOperation(value="获取专业信息")
+	@RequestMapping(value = "getMajor",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getMajor() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -379,8 +398,8 @@ public class ApiController extends BaseController {
 		map.put("result", apiService.getMajor());
 		return map;
 	}
-	
-	@RequestMapping(value = "getArea")
+	@ApiOperation(value="获取行政区信息")
+	@RequestMapping(value = "getArea",method= {RequestMethod.GET,RequestMethod.POST})
 	@ResponseBody
 	public Map<String, Object> getArea(String parentId) {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -390,9 +409,9 @@ public class ApiController extends BaseController {
 		return map;
 	}
 
-	
+	@ApiOperation(value="获取全部角色信息")
 	@ResponseBody
-	@RequestMapping(value = "ajaxRoles")
+	@RequestMapping(value = "ajaxRoles",method= {RequestMethod.GET,RequestMethod.POST})
 	public List<Role> ajaxRoles(HttpServletRequest request, HttpServletResponse response) {
 
 		List<Role> list1 = systemService.findAllRoles();
@@ -407,10 +426,41 @@ public class ApiController extends BaseController {
 		}
 		return ret;
 	}
+	@ApiOperation(value="通过角色下全部用户信息")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "roleId", value = "教师编码", required = true, dataType = "String", paramType = "query")})
 	@ResponseBody
 	@RequestMapping(value = "ajaxUser")
 	public List<User> ajaxUser(HttpServletRequest request, HttpServletResponse response) {
 		String roleId = request.getParameter("roleId");
 		return systemService.findUserByRoleId(roleId);
 	}
+	
+	@ApiOperation(value="通过教师号获取教师课程")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "teacherNumber", value = "教师编码", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "yearTerm", value = "学期", required = false, dataType = "String", paramType = "query")})
+	@ResponseBody
+	@RequestMapping(value = "getCourseByTeacher")
+	public Result<List<Course>> getCourseByTeacher(HttpServletRequest request, HttpServletResponse response) {
+		Result<List<Course>> result = new Result<List<Course>>();
+		result.setCode(200);
+		result.setMsg("查询成功");
+		try {
+			BaseRequest  baseRequest = getRequest(request,response,BaseRequest.class);
+			String teacherNumber = baseRequest.getTeacherNumber();
+			String yearTerm = baseRequest.getYearTerm();
+			Course course = new Course();
+			Teacher teacher = new Teacher();
+			teacher.setTeacherNumber(teacherNumber);
+			course.setTeacher(teacher);
+			course.setCursYearTerm(yearTerm);
+			result.setData(courseService.findList(course));
+		} catch (Exception e) {
+			result.setCode(404);
+			result.setMsg(e.getMessage());
+		}
+		return result;
+	}
+	
 }

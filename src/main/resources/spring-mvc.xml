@@ -78,6 +78,8 @@
 	<!-- 静态资源映射 -->
     <mvc:resources mapping="/static/**" location="/static/" cache-period="31536000"/>
     <mvc:resources mapping="/themes/**" location="/themes/" cache-period="31536000"/>
+	<mvc:resources location="classpath:/META-INF/resources/" mapping="doc.html"/>
+	<mvc:resources location="classpath:/META-INF/resources/webjars/" mapping="/webjars/**"/>
 	
 	<!-- 定义无Controller的path<->view直接映射 -->
 	<mvc:view-controller path="/" view-name="redirect:${web.view.index}"/>

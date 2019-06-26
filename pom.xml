@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -137,7 +138,31 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
+		<dependency>
 
+			<groupId>io.springfox</groupId>
+
+			<artifactId>springfox-swagger2</artifactId>
+
+			<version>2.2.2</version>
+
+		</dependency>
+
+		<dependency>
+
+			<groupId>io.springfox</groupId>
+
+			<artifactId>springfox-swagger-ui</artifactId>
+
+			<version>2.2.2</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.xiaoymin</groupId>
+			<artifactId>swagger-bootstrap-ui</artifactId>
+			<version>1.9.3</version>
+		</dependency>
 		<dependency>
 			<groupId>sword.org</groupId>
 			<artifactId>wechat4j</artifactId>
@@ -150,20 +175,20 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
 			<version>4.5.6</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.40</version>
 		</dependency>
-	
+
 
 		<dependency>
 			<groupId>javax.websocket</groupId>
@@ -172,7 +197,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		
+
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -190,15 +215,15 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb -->
-<dependency>
-    <groupId>org.springframework.data</groupId>
-    <artifactId>spring-data-mongodb</artifactId>
-    <version>1.6.0.RELEASE</version>
-</dependency>
-		
-		
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb</artifactId>
+			<version>1.6.0.RELEASE</version>
+		</dependency>
+
+
 		<!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
 		<dependency>
 			<groupId>com.alipay.sdk</groupId>
@@ -251,6 +276,10 @@
 				<exclusion>
 					<groupId>org.apache.httpcomponents</groupId>
 					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.google.guava</groupId>
+					<artifactId>guava</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -587,11 +616,6 @@
 		</dependency>
 
 		<!-- google java lib -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>${guava.version}</version>
-		</dependency>
 
 		<!-- jackson json -->
 		<dependency>
@@ -904,7 +928,8 @@
 				<version>${jetty.version}</version>
 				<configuration>
 					<connectors>
-						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+						<connector
+							implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
 							<port>${webserver.port}</port>
 						</connector>
 					</connectors>
@@ -993,9 +1018,9 @@
 									/> -->
 
 								<property file="src/main/resources/jeesite.properties" />
-								<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
-									password="${jdbc.password}" onerror="continue"
-									encoding="${project.build.sourceEncoding}">
+								<sql driver="${jdbc.driver}" url="${jdbc.url}"
+									userid="${jdbc.username}" password="${jdbc.password}"
+									onerror="continue" encoding="${project.build.sourceEncoding}">
 									<classpath refid="maven.test.classpath" />
 									<transaction src="db/sys/jeesite_${jdbc.type}.sql" />
 									<transaction src="db/cms/jeesite_${jdbc.type}.sql" />
@@ -1017,24 +1042,26 @@
 										src="db/act/create/activiti.${jdbc.type}.create.identity.sql" />
 								</sql>
 
-								<taskdef name="dbunit" classname="org.dbunit.ant.DbUnitTask"
+								<taskdef name="dbunit"
+									classname="org.dbunit.ant.DbUnitTask"
 									classpathref="maven.test.classpath" />
 
 								<!-- mysql、mssql -->
-								<dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}"
-									password="${jdbc.password}">
+								<dbunit driver="${jdbc.driver}" url="${jdbc.url}"
+									userid="${jdbc.username}" password="${jdbc.password}">
 
 									<!-- oracle <dbunit driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.username}" 
 										password="${jdbc.password}" schema="${jdbc.username}" > -->
 
 									<dbconfig>
-										<property name="datatypeFactory" value="${dbunit.datatype}" />
+										<property name="datatypeFactory"
+											value="${dbunit.datatype}" />
 									</dbconfig>
 									<classpath refid="maven.test.classpath" />
-									<operation type="INSERT" src="db/sys/jeesite_data.xls"
-										format="xls" transaction="true" />
-									<operation type="INSERT" src="db/cms/jeesite_data.xls"
-										format="xls" transaction="true" />
+									<operation type="INSERT"
+										src="db/sys/jeesite_data.xls" format="xls" transaction="true" />
+									<operation type="INSERT"
+										src="db/cms/jeesite_data.xls" format="xls" transaction="true" />
 
 								</dbunit>
 

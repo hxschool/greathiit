@@ -7,6 +7,7 @@ public class BaseRequest implements Serializable{
 	private String classno;
 	private String studentNumber;
 	private String teacherNumber;
+	private String yearTerm;
 	public String getAppid() {
 		return appid;
 	}
@@ -31,6 +32,12 @@ public class BaseRequest implements Serializable{
 	}
 	public void setTeacherNumber(String teacherNumber) {
 		this.teacherNumber = teacherNumber;
+	}
+	public String getYearTerm() {
+		return yearTerm;
+	}
+	public void setYearTerm(String yearTerm) {
+		this.yearTerm = yearTerm;
 	}
 	
 }

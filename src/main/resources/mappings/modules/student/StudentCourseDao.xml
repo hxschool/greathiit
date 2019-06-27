@@ -181,19 +181,13 @@
 				AND a.teacher_number = #{course.teacher.teacherNumber}
 			</if>
 			
-		 	<if test="clazzId != null and clazzId != ''">
- 				and 
-			 case length(a.student_number) 
-			  when 7 then 
-			 concat("20",SUBSTRING(a.student_number,1,4),"0",SUBSTRING(a.student_number,5,1))=#{clazzId}  
-			  when 8 then
-			 concat("20",SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,5,2))=#{clazzId}    
-			   when 10 then
-			   SUBSTRING(a.student_number,1,8)=#{clazzId}  
-			   when 12 then
-			  concat(SUBSTRING(a.student_number,1,4),SUBSTRING(a.student_number,7,4))=#{clazzId}  
-			 end
- 			</if>
+			<if test="item!=null and item!='' and item.size() > 0">
+				and a.student_number in 
+				<foreach collection="item" index="index" item="item" open="(" separator="," close=")">
+	            	#{item}
+	        	</foreach>
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">

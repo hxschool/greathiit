@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.student.entity;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -32,10 +33,19 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 
 	private Student student;		// 学号
 	private String status;		// 状态标记
+	
+	private List<String> item;
+	
 	private String clazzId;
 	private String cursType;
-	
-	
+
+	public List<String> getItem() {
+		return item;
+	}
+
+	public void setItem(List<String> item) {
+		this.item = item;
+	}
 
 	//@ExcelField(title="学分", type=0, align=2, sort=6)
 	public String getCredit() {

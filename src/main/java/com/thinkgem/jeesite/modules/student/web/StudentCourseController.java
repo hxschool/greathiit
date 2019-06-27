@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -111,6 +112,47 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
+		String companyId = request.getParameter("companyId");
+		String officeId = request.getParameter("officeId");
+		String clazzId = request.getParameter("clazzId");
+		List<String> item = Lists.newArrayList();
+		User user = new User();
+		List<User> users = null;
+		if (!org.springframework.util.StringUtils.isEmpty(companyId)) {
+			Office company = new Office();
+			company.setId(companyId);
+			user.setCompany(company);
+			users = systemService.findUser(user);
+		}
+		
+		if (!org.springframework.util.StringUtils.isEmpty(officeId)) {
+			item.clear();
+			Office office = new Office();
+			office.setId(officeId);
+			user.setOffice(office);
+			users = systemService.findUser(user);
+		}
+		
+		if (!org.springframework.util.StringUtils.isEmpty(clazzId)) {
+			item.clear();
+			Office clazz = new Office();
+			clazz.setId(clazzId);
+			user.setClazz(clazz);
+			users = systemService.findUser(user);
+		}
+		if(!CollectionUtils.isEmpty(users)) {
+			for(User u :users) {
+				if (!org.springframework.util.StringUtils.isEmpty(u.getNo()) && u.getNo().length() != 4) {
+					item.add(u.getNo());
+				}
+			}
+		}
+
+		//过滤学生数据
+		if(!CollectionUtils.isEmpty(item)) {
+			studentCourse.setItem(item);
+		}
+		
 		Course course = studentCourse.getCourse();
 		if(!isAdmin()) {
 			if(org.springframework.util.StringUtils.isEmpty(course)) {
@@ -120,16 +162,22 @@ public class StudentCourseController extends BaseController {
 			studentCourse.setCourse(course);
 		}
 		
-		Page<StudentCourse> page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
+		Page<StudentCourse> page = null;
+		if((!org.springframework.util.StringUtils.isEmpty(companyId)||!org.springframework.util.StringUtils.isEmpty(officeId)||!org.springframework.util.StringUtils.isEmpty(clazzId))&&CollectionUtils.isEmpty(users)) {
+			page = new Page<StudentCourse>();
+		}else {
+			page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
+		}
+		
 		
 		List<StudentCourseExt> ses = Lists.newArrayList();
 		for (StudentCourse sc : page.getList()) {
 			StudentCourseExt se = new StudentCourseExt();
 			BeanUtils.copyProperties(sc, se);
 			String studentNumber = sc.getStudentNumber();
-			User user = systemService.getCasByLoginName(studentNumber);
-			if (!org.springframework.util.StringUtils.isEmpty(user.getClazz())) {
-				Office clazz = officeService.get(user.getClazz());
+			User u = systemService.getCasByLoginName(studentNumber);
+			if (!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
+				Office clazz = officeService.get(u.getClazz());
 				se.setClazz(clazz);
 				Office office = officeService.get(clazz.getParentId());
 				se.setOffice(office);

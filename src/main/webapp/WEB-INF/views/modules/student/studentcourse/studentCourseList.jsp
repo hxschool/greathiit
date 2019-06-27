@@ -80,11 +80,11 @@
 
 
 
-			<li><label>学院：</label> <select class="province input-medium"><option>请选择</option></select>
+			<li><label>学院：</label> <select name="companyId" class="province input-medium"><option>请选择</option></select>
 			</li>
 
 			<li><label>专业：</label> <select id="city"
-				class="city input-medium" style="width: 178px"><option>请选择</option></select>
+				class="city input-medium" name="officeId" style="width: 178px"><option>请选择</option></select>
 			</li>
 
 			<li><label>班级：</label> <select id="area"
@@ -141,10 +141,9 @@
 				<th>课程类型</th>
 				
 				<th>任课教师</th>
-				<th>平时成绩</th>
-				<th>期末成绩</th>
+
 				<th>综合成绩</th>
-				<th>评分人</th>
+
 				<th>学分</th>
 				<th>绩点</th>
 				<th>状态</th>
@@ -171,13 +170,8 @@
 					${fns:getDictLabel(studentCourse.course.cursType,'course_curs_type',"未知")}
 					</td>
 					<td>${studentCourse.course.teacher.tchrName}</td>
-
 					<td>${studentCourse.classEvaValue}</td>
-
-					<td>${studentCourse.finEvaValue}</td>
-					<td>${studentCourse.evaValue}</td>
 					<td>${studentCourse.credit}</td>
-					<td>${studentCourse.course.rater}</td>
 					<td>${studentCourse.point}</td>
 					<td>
 						${fns:getDictLabel(studentCourse.status,'student_course_result',"正常")}

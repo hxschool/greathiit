@@ -179,9 +179,9 @@ public class StudentCourseController extends BaseController {
 			if (!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
 				Office clazz = officeService.get(u.getClazz());
 				se.setClazz(clazz);
-				Office office = officeService.get(clazz.getParentId());
+				Office office = officeService.get(u.getOffice());
 				se.setOffice(office);
-				Office company = officeService.get(office.getParentId());
+				Office company = officeService.get(u.getCompany());
 				se.setCompany(company);
 			}
 			Course entity = courseService.get(sc.getCourse());

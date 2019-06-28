@@ -107,8 +107,13 @@ public class SysConfigController extends BaseController {
 	@RequiresPermissions("sys:sysConfig:edit")
 	@RequestMapping(value = "batch")
 	public String batch(SysConfig sysConfig, RedirectAttributes redirectAttributes) {
-		courseScheduleService.executeAsyncJsonAvailability(sysConfig);
-		addMessage(redirectAttributes, "操作成功");
+		try {
+			courseScheduleService.executeAsyncJsonAvailability(sysConfig);
+			addMessage(redirectAttributes, "操作成功");
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "操作异常,异常信息:"+e.getMessage());
+		}
+		
 		return "redirect:"+Global.getAdminPath()+"/sys/sysConfig/schedule?repage";
 	}
 }

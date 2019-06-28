@@ -252,7 +252,9 @@ public class StudentController extends BaseController {
 		}
 		Student student = UserUtils.getStudent();
 		CourseScheduleExt cse = new CourseScheduleExt();
-		cse.setCourseClass(student.getClazz().getId());
+		if(!org.springframework.util.StringUtils.isEmpty(student.getClazz())) {
+			cse.setCourseClass(student.getClazz().getId());
+		}
 		cse.setTimeAdd("%"+weekNumber+"__");
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(cse);
 		SelectCourse selectCourse = new SelectCourse();

@@ -35,6 +35,8 @@ import com.thinkgem.jeesite.modules.api.web.adapter.IntegerDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.adapter.LongDefault0Adapter;
 import com.thinkgem.jeesite.modules.api.web.response.Result;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseEducational;
+import com.thinkgem.jeesite.modules.course.service.CourseEducationalService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
@@ -66,6 +68,8 @@ public class ApiController extends BaseController {
 	private SysAppconfigService sysAppconfigService;
 	@Autowired
 	private CourseService  courseService;
+	@Autowired
+	private CourseEducationalService courseEducationalService;
 	@ApiIgnore
 	private <T> T getRequest(HttpServletRequest request, HttpServletResponse response,Class<T> clazz) throws Exception {
 		try {
@@ -386,6 +390,19 @@ public class ApiController extends BaseController {
 		map.put("result", apiService.getCollege());
 		return map;
 	}
+	
+	//获取学院信息
+	@ApiOperation(value="获取教务处课程编码")
+	@RequestMapping(value = "getCourseEducational",method= {RequestMethod.GET,RequestMethod.POST})
+	@ResponseBody
+	public Map<String, Object> getCourseEducational() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("status", "00000000");
+		map.put("message", "获取参数信息成功");
+		map.put("result", courseEducationalService.findList(new CourseEducational()));
+		return map;
+	}
+	
 	
 
 	@ApiOperation(value="获取专业信息")

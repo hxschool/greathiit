@@ -44,6 +44,12 @@
 		  <if test="parent!= null and parent.id != null and parent.id!=''">  
           	and   a.parent_Id=#{parent.id}  
           </if>
+           <if test="value!= null and value!=''">  
+          	and   a.value=#{value}  
+          </if>
+            <if test="label!= null and label!=''">  
+          	and   a.label LIKE CONCAT('%',#{label},'%')
+          </if>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}

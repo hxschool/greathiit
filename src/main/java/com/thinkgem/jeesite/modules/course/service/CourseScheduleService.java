@@ -80,13 +80,19 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 
 	@Transactional(readOnly = false)
 	@Async
-	public void executeAsyncJsonAvailability(SysConfig sysConfig) {
+	public void executeAsyncJsonAvailability(SysConfig sysConfig) throws Exception{
 		
-		courseScheduleDao.history();
+		
 		String termYear = sysConfig.getTermYear();
 		if(StringUtils.isEmpty(termYear)) {
 			termYear = sysConfigService.getModule(Global.SYSCONFIG_COURSE).getTermYear();
 		}
+
+				
+		if(!StringUtils.isEmpty(get(termYear.concat("011010111")))) {
+			throw new Exception();
+		}
+	
 		List<SchoolRoot> schoolRoots = schoolRootDao.findByParentId("0");
 		for (SchoolRoot schoolRoot : schoolRoots) {
 			List<SchoolRoot> roots = schoolRootDao.findByParentId(schoolRoot.getId());

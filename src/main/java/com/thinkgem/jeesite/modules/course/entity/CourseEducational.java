@@ -10,15 +10,21 @@ import org.hibernate.validator.constraints.Length;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * 教务课程信息Entity
  * @author 赵俊飞
  * @version 2018-11-22
  */
+@ApiModel(value="教务处课程模型")
 public class CourseEducational extends DataEntity<CourseEducational> {
 	
 	private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value="课程编码" ,required=true)
 	private String cursNum;		// 课程编码
+    @ApiModelProperty(value="课程名称" ,required=true)
 	private String cursName;		// 课程名称
 	
 	public CourseEducational() {

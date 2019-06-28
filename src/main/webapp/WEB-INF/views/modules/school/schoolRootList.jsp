@@ -25,6 +25,12 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li><label>教室编码：</label>
+					<form:input path="value" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			<li><label>教室名称：</label>
+					<form:input path="label" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -33,8 +39,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>教室</th>
-				<th>名称</th>
+				<th>教室编码</th>
+				<th>教室名称</th>
 				<th>类型</th>
 				<th>描述</th>
 				<th>更新时间</th>

@@ -187,7 +187,7 @@ alert("${config.tip}");
 			<!--/#page-content-->
 			
 			<div class="row" >
-				<div class="col-md-12 text-center"><p>Copyright @ 1998-2017 Harbin Institute Of Information Technology All Rights Reservd 黑ICP备05007064号</p>
+				<div class="col-md-12 text-center"><p>Copyright @ 1998-2017 Harbin Institute Of Information Technology All Rights Reservd <a href="http://www.beian.miit.gov.cn/state/outPortal/loginPortal.action;jsessionid=4m6bhsPrU8snY9Zb3G1ISsj27lr5kky-Bzvtqd4bSk8fjW6k5UsD!-81678781">黑ICP备05007064号</a></p>
         <p>学院地址：哈尔滨市宾西经济技术开发区大学城9 号　　邮编：150025 　 电话：13284997565
             2018-03-09T15:43:36.000+08:00</p></div>
 			</div>

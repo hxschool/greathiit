@@ -90,7 +90,7 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 
 				
 		if(!StringUtils.isEmpty(get(termYear.concat("011010111")))) {
-			throw new Exception();
+			throw new Exception("已设置学期日历,请勿重复设置");
 		}
 	
 		List<SchoolRoot> schoolRoots = schoolRootDao.findByParentId("0");

@@ -148,10 +148,10 @@
 			<div class="controls">
 
 				<select id="eduCourseNum" name="eduCourseNum"
-					class="cursNum input-large required">
+					class="cursNum input-xlarge required">
 					<option>请选择</option>
 					<c:if test="${course.id!=null and course.id!=''}">
-						<option value="${course.cursNum}" selected>${course.cursName}</option>
+						<option value="${course.cursNum}" selected>${course.cursNum}|${course.cursName}</option>
 					</c:if>
 				</select> <span class="help-inline"><font color="red">如果是教务处课程可以通过选择课程自动填写课程信息.如果是选课课程需要填写课程编号和课程名称</font>
 				</span>

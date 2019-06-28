@@ -5,6 +5,21 @@
 <title>学生成绩管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
+function repairDel() {
+	// 批量删除
+	var id = document.getElementsByName("ids");// 获取全选复选框
+	var ids = "";// 用于拼接所有已选中的id
+	// 拼接所有id
+	for (var i = 0; i < id.length; i++) {
+		if (id[i].checked) {
+			ids += id[i].value + ",";
+		}
+	}
+	ids = ids.substring(0, ids.length - 1);// 干掉字符串最后一个逗号
+	$("#searchForm").attr("action",
+			"${ctx}/student/studentCourse/deleteList?ids=" + ids);
+	$("#searchForm").submit();
+}
 		$(document).ready(function() {
 			$('#element_id').cxSelect({ 
 				  url: '${ctx}/sys/office/treeLink',
@@ -131,6 +146,8 @@
 		class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<shiro:hasPermission
+							name="student:studentCourse:operation"><th> </th></shiro:hasPermission>
 				<th>学院</th>
 				<th>专业</th>
 				<th>班级</th>
@@ -156,6 +173,8 @@
 		<tbody>
 			<c:forEach items="${page.list}" var="studentCourse">
 				<tr>
+					<shiro:hasPermission
+							name="student:studentCourse:operation"><td><input type="checkbox" name="ids" value="${studentCourse.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
 					<td>${studentCourse.company.name}</td>
 					<td>${studentCourse.office.name}</td>
 					<td>${studentCourse.clazz.name}</td>
@@ -195,6 +214,13 @@
 				</tr>
 			</c:forEach>
 		</tbody>
+		<shiro:hasPermission
+							name="student:studentCourse:operation">
+		<tfoot><tr>
+			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> <a href="#" onclick="checkdel()" class="btn btn-primary">批量删除</a></th>
+			</tr>
+		</tfoot>
+		</shiro:hasPermission>
 	</table>
 	<div class="pagination">${page}</div>
 </body>

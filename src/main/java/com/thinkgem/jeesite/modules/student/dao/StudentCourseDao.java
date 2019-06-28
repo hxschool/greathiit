@@ -5,6 +5,8 @@ package com.thinkgem.jeesite.modules.student.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.thinkgem.jeesite.common.persistence.CrudDao;
 import com.thinkgem.jeesite.common.persistence.annotation.MyBatisDao;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
@@ -26,8 +28,6 @@ public interface StudentCourseDao extends CrudDao<StudentCourse> {
 	 * @return
 	 */
 	List<StudentCourse> findListByStudentCourseAndCourse(StudentCourse studentCourse);
-
-	
 
 	StudentCourse getStudentCourseByStudentCourse(StudentCourse studentCourse);
 	

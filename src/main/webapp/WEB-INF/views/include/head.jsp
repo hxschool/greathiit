@@ -23,6 +23,6 @@
 <script src="${ctxStatic}/echart/echarts-all.js" type="text/javascript"></script>
 <script src="${ctxStatic}/jquery-select/jquery.cxselect.js"  type="text/javascript"></script>
 <script src="${ctxStatic}/layer/layer.js"  type="text/javascript"></script>
-
+<script src="${ctxStatic}/common/checkboxAll.js"  type="text/javascript"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>
 

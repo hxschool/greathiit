@@ -35,12 +35,10 @@ import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
-import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourseExt;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
-import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -48,7 +46,6 @@ import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.teacher.service.TeacherClassService;
 
 /**
  * 学生成绩Controller
@@ -62,12 +59,6 @@ public class StudentCourseController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private SystemService systemService;
-	@Autowired
-	private TeacherClassService teacherClassService;
-	@Autowired
-	private StudentService studentService;
-	@Autowired
-	private SelectCourseService selectCourseService;
 	@Autowired
 	private StudentCourseService studentCourseService;
 	@Autowired
@@ -220,6 +211,22 @@ public class StudentCourseController extends BaseController {
 		addMessage(redirectAttributes, "删除学生成绩成功");
 		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
 	}
+	@RequiresPermissions("student:studentCourse:operation")
+	@RequestMapping(value = "deleteList")
+	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
+		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+			String[] arrayIds = ids.split(",");
+			for(String id:arrayIds) {
+				StudentCourse studentCourse = new StudentCourse();
+				studentCourse.setId(id);
+				studentCourseService.delete(studentCourse);
+			}
+		}
+		
+		addMessage(redirectAttributes, "删除学生成绩成功");
+		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
+	}
+	
 
 	@RequiresPermissions("student:studentCourse:export")
     @RequestMapping(value = "export")

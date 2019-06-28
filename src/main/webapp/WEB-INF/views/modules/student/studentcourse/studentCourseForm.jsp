@@ -47,7 +47,6 @@
 		<form:hidden path="id" />
 		<sys:message content="${message}" />
 
-
 		<div class="control-group">
 			<label class="control-label">课程编号：</label>
 			<div class="controls">
@@ -74,13 +73,6 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">期中成绩：</label>
-			<div class="controls">
-				<form:input path="midEvaValue" htmlEscape="false"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
 			<label class="control-label">期末成绩：</label>
 			<div class="controls">
 				<form:input path="finEvaValue" htmlEscape="false"
@@ -93,20 +85,7 @@
 				<form:input path="evaValue" htmlEscape="false" class="input-xlarge " />
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">实验成绩：</label>
-			<div class="controls">
-				<form:input path="expEvaValue" htmlEscape="false"
-					class="input-xlarge " />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">作业成绩：</label>
-			<div class="controls">
-				<form:input path="workEvaValue" htmlEscape="false"
-					class="input-xlarge " />
-			</div>
-		</div>
+	
 		<div class="control-group">
 			<label class="control-label">学分：</label>
 			<div class="controls">
@@ -137,12 +116,14 @@
 		<div class="control-group">
 			<label class="control-label">状态标记：</label>
 			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="1"
-					class="input-xlarge " />
+				<form:select path="status" class="input-large required">
+					<form:options items="${fns:getDictList('student_course_result')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">remarks：</label>
+			<label class="control-label">备注：</label>
 			<div class="controls">
 				<form:textarea path="remarks" htmlEscape="false" rows="4"
 					maxlength="255" class="input-xxlarge " />

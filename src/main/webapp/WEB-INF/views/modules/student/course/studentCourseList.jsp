@@ -64,7 +64,7 @@
 				<th>学号</th>
 				<th>状态标记</th>
 				<th>更新时间</th>
-				<th>remarks</th>
+				<th>备注</th>
 				<shiro:hasPermission name="student:course:studentCourse:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>

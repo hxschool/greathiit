@@ -283,7 +283,6 @@
 			
 			<if test="course != null and course != '' and course.id!=null and course.id!=''">
 			course_id = #{course.id},
-			
 			course_name = #{course.cursName},
 			teacher_number = #{course.teacher.teacherNumber},
 			teacher_name = #{course.teacher.tchrName},
@@ -298,11 +297,9 @@
 			remarks = #{remarks}
 		WHERE id = #{id}
 	</update>
-	
-	<update id="delete">
-		UPDATE student_course SET 
-			del_flag = #{DEL_FLAG_DELETE}
-		WHERE id = #{id}
-	</update>
+
+	<delete id="delete">
+		delete from student_course where id = #{id}
+	</delete>
 	
 </mapper>

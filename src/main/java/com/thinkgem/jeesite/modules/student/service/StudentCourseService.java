@@ -109,10 +109,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private CourseClassDao courseClassDao;
 	@Autowired
 	private SelectCourseDao selectCourseDao;
-	@Autowired
-	private OfficeDao officeDao;
-	@Autowired
-	private UcStudentDao ucStudentDao;
+
 	@Autowired
 	private CourseDao courseDao;
 
@@ -247,6 +244,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		super.delete(studentCourse);
 	}
 
+	
 	@Transactional(readOnly = false)
 	public ImportResult<Course> importStudentCourse(MultipartFile file) throws GITException {
 

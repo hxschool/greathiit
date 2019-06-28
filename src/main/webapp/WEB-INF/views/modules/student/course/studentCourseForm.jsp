@@ -64,7 +64,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">termYear：</label>
+			<label class="control-label">学期：</label>
 			<div class="controls">
 				<form:input path="termYear" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>
@@ -92,7 +92,11 @@
 		<div class="control-group">
 			<label class="control-label">状态标记：</label>
 			<div class="controls">
-				<form:input path="status" htmlEscape="false" maxlength="1" class="input-xlarge "/>
+				
+				<form:select path="status" class="input-large required">
+					<form:options items="${fns:getDictList('student_course_result')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
 			</div>
 		</div>
 		<div class="control-group">

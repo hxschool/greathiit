@@ -361,10 +361,12 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 									.intValue());
 							String point = "0";
 							studentCourse.setCredit("0");
-							if(Integer.valueOf(evaValue)>60) {
+							if(Integer.valueOf(evaValue)>=60) {
 								studentCourse.setCredit(course.getCursCredit());
+								if(Integer.valueOf(evaValue)>60) {
 								point = String.format("%.1f",((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
-										* Double.valueOf(coursePoint.getPoint())));;
+										* Double.valueOf(coursePoint.getPoint())));
+								}
 							}
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);

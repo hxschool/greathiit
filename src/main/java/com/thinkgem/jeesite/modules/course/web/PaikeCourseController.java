@@ -402,14 +402,15 @@ public class PaikeCourseController extends BaseController {
 		List<Course> list1  = null;
 		Course course = new Course();
 		course.setCursYearTerm(termYear);
-		if(!StringUtils.isEmpty(cursProperty)&&cursProperty.equals(Course.COURSE_PROPERTY_SELECT)) {
-			course.setCursProperty(cursProperty);
-		}
+
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
+		course.setCursProperty("99");
+		if(!StringUtils.isEmpty(cursProperty)&&cursProperty.equals(Course.COURSE_PROPERTY_SELECT)) {
+			course.setCursProperty(cursProperty);
+		}
 		list1 = courseService.findList(course);
-		
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
 		for(Course c:list1) {
 			TreeLink treeLink = new TreeLink();
@@ -422,6 +423,8 @@ public class PaikeCourseController extends BaseController {
 		}
 		return treeLinks1;
 	}
+	
+
 	
 	@RequestMapping(value = "view")
 	public String view() {

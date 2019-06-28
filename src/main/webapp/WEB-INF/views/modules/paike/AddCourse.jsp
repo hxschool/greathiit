@@ -197,7 +197,7 @@ td {
 				class="button button-primary button-small">普通课</a>&nbsp;&nbsp;<a
 				onclick="renxuanke()" class="button  button-caution button-small">公选课</a>
 				&nbsp;&nbsp;<a
-				onclick="quick()" class="button  button-caution button-small">QUICK</a>
+				onclick="quick()" class="button  button-caution button-small">快速排课</a>
 				<input type="hidden" name="time" id="time" />
 				</div>
 
@@ -316,10 +316,7 @@ td {
 					</div>
 
 				</div>
-				<div class="control-group">
-					<label class="control-label"> 班级:</label>
-					<div class="controls" id="my_course_class"></div>
-				</div>
+
 
 				<div class="control-group">
 					<label class="control-label">周期:</label>
@@ -331,7 +328,7 @@ td {
 				<div class="control-group">
 					<label class="control-label">备注:</label>
 					<div class="controls">
-						<textarea id="renxuanke_tips" name="renxuanke_tips"
+						<textarea id="quick_tips" name="quick_tips"
 							placeholder="请输入备注信息"></textarea>
 					</div>
 				</div>

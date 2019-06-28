@@ -355,7 +355,7 @@ public class StudentCourseController extends BaseController {
 			Cell statusLabelCell = row1.createCell(2);
 			statusLabelCell.setCellValue("考核状态(注)");
 			Cell statusRemarkLabelCell = row1.createCell(3);
-			statusRemarkLabelCell.setCellValue("正常、重考、缓考、未选修、旷考、违纪");
+			statusRemarkLabelCell.setCellValue("重修、缓考、未选修、旷考、违纪");
 			
 			exportExcel.setHeader(headerList);
 			Collections.sort(list);

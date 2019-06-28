@@ -33,8 +33,10 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
+import com.thinkgem.jeesite.modules.course.service.CourseClassService;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
@@ -83,6 +85,8 @@ public class PaikeCourseController extends BaseController {
 	private SchoolRootService schoolRootService;
 	@Autowired
 	private SysConfigService sysConfigService;
+	@Autowired
+	private CourseClassService courseClassService;
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
@@ -154,7 +158,30 @@ public class PaikeCourseController extends BaseController {
 	@RequestMapping(value = "ajaxAddCourse")
 	@ResponseBody
 	public String ajaxAddCourse(String time_add,String student_id,String course_id,String tips,@RequestParam(value="w",required=false,defaultValue="0")int w, Model model) {
-		
+		Course course = null;
+		if(StringUtils.isEmpty(course_id)) {
+			return "9";
+		}
+		course = courseService.get(course_id);
+		if(course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+			student_id = "00000000";
+		}
+		if(!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)&&StringUtils.isEmpty(student_id)) {
+			CourseClass courseClass = new CourseClass();
+			courseClass.setCourse(course);
+			List<CourseClass> ccs = courseClassService.findList(courseClass);
+			StringBuffer sb = new StringBuffer();
+			for(CourseClass cs : ccs) {
+				Office cla = cs.getCls();
+				if(!StringUtils.isEmpty(cla)) {
+					sb.append(cla.getId());
+					sb.append(",");
+				}
+			}
+			if(sb.length()>0) {
+				student_id = student_id.substring(0,sb.length()-1);
+			}
+		}
 		int s = Integer.valueOf( CourseUtil.GetTimeCol(time_add).get("week"));
 		if(StringUtils.isEmpty(w)||w==0) {
 			w = s;
@@ -182,8 +209,6 @@ public class PaikeCourseController extends BaseController {
 		}
 		
 		if(flag) {
-			//设置已排课
-			Course course = courseService.get(course_id);
 			course.setCursStatus(Course.PAIKE_STATUS_YI_PAIKE);
 			courseService.save(course);
 			return "1";
@@ -371,22 +396,27 @@ public class PaikeCourseController extends BaseController {
 	@ResponseBody
 	@RequestMapping(value = "ajaxAllCourse")
 	public List<TreeLink> ajaxAllCourse( HttpServletRequest request, HttpServletResponse response) {
+		
+		String termYear = request.getParameter("termYear");
+		String cursProperty = request.getParameter("cursProperty");
 		List<Course> list1  = null;
-		if(isAdmin()) {
-			list1 = courseService.findCoursesByPaike(new Course());
-		}else {
-			Course course = new Course();
-			course.setTeacher(UserUtils.getTeacher());
-			list1 = courseService.findList(course);
+		Course course = new Course();
+		course.setCursYearTerm(termYear);
+		if(!StringUtils.isEmpty(cursProperty)&&cursProperty.equals(Course.COURSE_PROPERTY_SELECT)) {
+			course.setCursProperty(cursProperty);
 		}
+		if(!isAdmin()) {
+			course.setTeacher(UserUtils.getTeacher());
+		}
+		list1 = courseService.findList(course);
 		
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
-		for(Course course:list1) {
+		for(Course c:list1) {
 			TreeLink treeLink = new TreeLink();
-			treeLink.setValue(course.getId());
-			Teacher teacher = course.getTeacher();
+			treeLink.setValue(c.getId());
+			Teacher teacher = c.getTeacher();
 			if(!StringUtils.isEmpty(teacher)) {
-				treeLink.setName(course.getCursName().concat("("+course.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
+				treeLink.setName(c.getCursName().concat("("+c.getCursClassHour()+")").concat("|").concat(teacher.getTchrName()));
 			}
 			treeLinks1.add(treeLink);
 		}

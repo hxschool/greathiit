@@ -125,7 +125,7 @@ td {
 					<div id="top">
 						<input type="hidden" name="url_time" value=""> <input
 							type="hidden" name="servers_time" value="${mm}@${dd}">
-						学期: <select name="year" style="width: 200px;">
+						学期: <select name="year" id="termYear" style="width: 200px;">
 							<c:forEach items="${fns:termYear()}" var="termYear">
 								<option value="${termYear.key}"
 									<c:if test="${termYear.key==yearTerm}">selected</c:if>>${termYear.key}</option>
@@ -191,17 +191,17 @@ td {
 		<form action="" method="post" class="form-horizontal smart-green" id="corseForm">
 			<h1>
 				排课操作<span id="title_message"></span>
-				
-				
 			</h1>
 			<div class="control-group">
 			 <div style="text-align:center"> <a onclick="putongke()"
 				class="button button-primary button-small">普通课</a>&nbsp;&nbsp;<a
-				onclick="renxuanke()" class="button  button-caution button-small">任选课</a>
+				onclick="renxuanke()" class="button  button-caution button-small">公选课</a>
+				&nbsp;&nbsp;<a
+				onclick="quick()" class="button  button-caution button-small">QUICK</a>
 				<input type="hidden" name="time" id="time" />
 				</div>
 
-</div>
+			</div>
 			<div id="putongke">
 				<div class="control-group">
 					<label class="control-label">学院 :</label>
@@ -232,11 +232,10 @@ td {
 				</div>
 				<div class="control-group">
 					<label class="control-label">班级:</label>
-					<div id="controls ptk_course_class"
-						style="float: right; width: 410px"></div>
+					<div class="controls" id="ptk_course_class"></div>
 				</div>
 
-				<div class="allCourse">
+			
 					<div class="control-group">
 						<label class="control-label">课程:</label>
 						<div class="controls">
@@ -246,7 +245,7 @@ td {
 							</select>
 						</div>
 					</div>
-				</div>
+				
 
 				<div class="control-group">
 					<label class="control-label">周期:</label>
@@ -270,7 +269,7 @@ td {
 
 
 			<div id="renxuanke">
-				<div class="control-group allCourse">
+				<div class="control-group">
 					<label class="control-label">课程:</label>
 					<div class="controls">
 						<select name="course" id="renxuanke_course" class="course"
@@ -306,6 +305,43 @@ td {
 				</div>
 			</div>
 
+			<div id="quick">
+				<div class="control-group">
+					<label class="control-label">课程:</label>
+					<div class="controls">
+						<select name="course" id="quick_course" class="course"
+							style="width: 280px" onchange="">
+							<option value="" selected="selected">==请选择课程==</option>
+						</select>
+					</div>
+
+				</div>
+				<div class="control-group">
+					<label class="control-label"> 班级:</label>
+					<div class="controls" id="my_course_class"></div>
+				</div>
+
+				<div class="control-group">
+					<label class="control-label">周期:</label>
+					<div class="controls">
+						<select name="quick_w" id="quick_select_id"
+							style="width: 280px"></select>
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">备注:</label>
+					<div class="controls">
+						<textarea id="renxuanke_tips" name="renxuanke_tips"
+							placeholder="请输入备注信息"></textarea>
+					</div>
+				</div>
+					<div class="form-actions"> <input name="add" type="button"
+					value="添加" onclick="quick_resure()" class="button" /> <input
+					name="over" type="button" value="返回" onclick="cancel()"
+					class="button" />
+				</div>
+			</div>
+
 
 
 		</form>
@@ -329,6 +365,7 @@ td {
 		//页面加载完成后执行change()填表格操作
 		$(document).ready(function() {
 			$("#renxuanke").hide();
+			$("#quick").hide();
 			//设置默认值为信息学院
 			select_ini("h_school", "04");
 			var url_time = document.form0.url_time.value;
@@ -594,15 +631,19 @@ td {
 		function putongke() {
 			$("#putongke").show();
 			$("#renxuanke").hide();
+			$("#quick").hide();
 			$("#title_message").html("普通科");
 			renxuanke_or_putongke = 1;
 			select_ini("school", "04");//设置学院默认值为信息学院
 			document.getElementById("corseForm").school.disabled = "";
 			document.getElementById("corseForm").major.disabled = "";
 			document.getElementById("corseForm").grade.disabled = "";
+			
+			getCourse( $("#termYear").children('option:selected').val(),0);
 		}
 		//任选课
 		function renxuanke() {
+			$("#quick").hide();
 			$("#putongke").hide();
 			$("#renxuanke").show();
 			$("#title_message").html("任选课");
@@ -614,6 +655,23 @@ td {
 			document.getElementById("corseForm").school.disabled = "false";
 			document.getElementById("corseForm").major.disabled = "false";
 			document.getElementById("corseForm").grade.disabled = "false";
+			getCourse( $("#termYear").children('option:selected').val(),50);
+		}
+		
+		function quick() {
+			$("#quick").show();
+			$("#putongke").hide();
+			$("#renxuanke").hide();
+			$("#title_message").html("QUICK");
+			renxuanke_or_putongke = 0;
+			select_ini("school", "");//设置学院默认值为空即｛==请选择学院==｝
+			select_ini("major", "");
+			select_ini("grade", "");
+			//禁用部分下拉列表
+			document.getElementById("corseForm").school.disabled = "false";
+			document.getElementById("corseForm").major.disabled = "false";
+			document.getElementById("corseForm").grade.disabled = "false";
+			getCourse( $("#termYear").children('option:selected').val(),1);
 		}
 		//确定按钮 用来加一门课
 
@@ -639,6 +697,20 @@ td {
 				/****************************
 				 *****************************/
 				//通过ajax给数据库添加一个课程安排
+				submitCourse(time_add, course_id, student_id, tips, w);
+			}
+		}
+		
+		function quick_resure() {
+			
+			var course_id = $("#quick_course").children('option:selected').val();
+			tips = document.getElementById("corseForm").quick_tips.value;
+			var w = document.getElementById("corseForm").quick_w.value;
+			time_add = document.getElementById("corseForm").time.value;
+
+			if (course_id == "") {
+				alert("您需要选择课程");
+			} else {
 				submitCourse(time_add, course_id, student_id, tips, w);
 			}
 		}
@@ -779,14 +851,9 @@ td {
 							$('#renxuanke_course')
 									.change(
 											function() {
-												var courseId = $(
-														"#renxuanke_course")
-														.children(
-																'option:selected')
-														.val();
+												var courseId = $("#renxuanke_course").children('option:selected').val();
 
-												$
-														.ajax({
+												$.ajax({
 															url : '${ctx}/course/paike/ajaxAllClassByCourseId',
 															async : false,
 															data : {
@@ -794,20 +861,15 @@ td {
 															},
 															success : function(
 																	data) {
-																$(
-																		"#rxk_course_class")
-																		.empty();
+																$("#rxk_course_class").empty();
 																if (data.length == 0) {
-																	$(
-																			"#rxk_course_class")
-																			.append(
-																					"<div style='width:100px;float:left;'> <input type='checkbox' class='classNumber' value='00000000' checked disabled name='classNumber'/>公共课</div>");
+																	$("#rxk_course_class")
+																			.append("<div style='width:100px;float:left;'> <input type='checkbox' class='classNumber' value='00000000' checked disabled name='classNumber'/>公共课</div>");
 																}
 
 																for (var i = 0; i < data.length; i++) {
 																	var clazz = data[i].clazz;
-																	$(
-																			"#rxk_course_class")
+																	$("#rxk_course_class")
 																			.append(
 																					"<div style='width:100px;float:left;'> <input type='checkbox' class='classNumber' value='"+clazz.id+"' name='classNumber'/>"
 																							+ clazz.name
@@ -817,53 +879,64 @@ td {
 														});
 											});
 
-							$('#grade')
-									.change(
-											function() {
+							$('#grade').change(function() {
+								
+												debugger;
+												var parnetId =$("#major").children('option:selected').val();
 
-												var parnetId = $("#major")
-														.children(
-																'option:selected')
-														.val();
-												var grade = $("#grade")
-														.children(
-																'option:selected')
-														.val();
-												$
-														.ajax({
+												var grade = $("#grade").children('option:selected').val();
+												$.ajax({
 															url : '${ctx}/sys/office/ajaxClass',
 															async : false,
 															data : {
 																parnetId : parnetId,
 																grade : grade
 															},
-															success : function(
-																	data) {
-																$(
-																		"#ptk_course_class")
-																		.empty();
+															success : function(data) {
+																$("#ptk_course_class").empty();
 																if (data.length == 0) {
 																}
 
 																for (var i = 0; i < data.length; i++) {
-																	$(
-																			"#ptk_course_class")
-																			.append(
-																					"<div style='width:100px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' name='classNumber'/>"
-																							+ data[i].name
-																							+ "</div>");
+																	$("#ptk_course_class").append("<div style='width:100px;float:left;'> <input type='checkbox' class='classNumber' value='"+data[i].id+"' name='classNumber'/>"+ data[i].name+ "</div>");
 																}
 															}
 														});
 											});
-
-							$('.allCourse').cxSelect({
-								url : '${ctx}/course/paike/ajaxAllCourse',
-								selects : [ 'course' ],
-								jsonName : 'name',
-								jsonValue : 'value'
-							});
+							getCourse( $("#termYear").children('option:selected').val(),0);
+							
 						});
+		
+		
+		function getCourse(termYear,cursProperty){
+			debugger;
+			$.ajax({
+				url : '${ctx}/course/paike/ajaxAllCourse',
+				async : false,
+				data : {
+					cursProperty :cursProperty,
+					termYear :termYear
+				},
+				success : function(
+						data) {
+					$("#course").empty();
+					$("#quick_course").empty();
+					$("#renxuanke_course").empty();
+					for (var i = 0; i < data.length; i++) {
+						var item =data[i];
+						if(cursProperty==0){
+							$("#course").append("<option value="+item.value+">" + item.name+ "</option>");
+						}else if(cursProperty==1){
+							$("#quick_course").append("<option value="+item.value+">" + item.name+ "</option>");
+						}else if(cursProperty==50){
+							$("#renxuanke_course").append("<option value="+item.value+">" + item.name+ "</option>");
+						}
+					}
+					
+				}
+			});
+		}
+		
 	</script>
 
 

@@ -272,6 +272,7 @@
 	
 	<update id="submit">
 		UPDATE course SET 	
+			curs_type =#{cursType},
 			exam_time = #{examTime},
 			propositioner = #{propositioner},
 			rater = #{rater},

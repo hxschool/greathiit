@@ -203,7 +203,7 @@
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:select">
 					<c:if test="${course!=null&&course.cursProperty==50}">
-					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出选课</a>
+					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">学生名单</a>
 					</c:if>
 					</shiro:hasPermission>
 					

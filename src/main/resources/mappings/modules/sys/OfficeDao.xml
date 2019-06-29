@@ -99,7 +99,8 @@
 			substring(a.id,1,4) as id
 		FROM sys_office a
 		<include refid="officeJoins"/>
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_id = #{parentId}
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.parent_id = #{parentId}  
+		<![CDATA[ and substring(a.id,1,4) > (year(CURRENT_DATE) -4) ]]>
 		 group by substring(a.id,1,4)  order by substring(a.id,1,4) 
 	</select>
 	

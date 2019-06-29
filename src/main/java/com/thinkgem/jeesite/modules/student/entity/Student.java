@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
  * @author 赵俊飞
  * @version 2017-12-13
  */
-public class Student extends DataEntity<Student> {
+public class Student extends DataEntity<Student> implements Comparable<Student> {
 	
 	private static final long serialVersionUID = 1L;
 	private String name;		// 姓名
@@ -247,4 +248,10 @@ public class Student extends DataEntity<Student> {
 		this.classno = classno;
 	}
 
+	@Override
+	public int compareTo(Student student) {
+		BigInteger a = new BigInteger(student.getStudentNumber());
+		BigInteger b = new BigInteger(this.getStudentNumber());
+		return a.compareTo(b);
+	}
 }

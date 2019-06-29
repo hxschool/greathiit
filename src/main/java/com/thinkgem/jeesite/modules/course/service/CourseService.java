@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,7 +185,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				int p11f = 0;
 				int p11g = 0;
 				int p11h = 0;
-
+				Collections.sort(list);
 				for (SelectCourse sc : list) {
 					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
@@ -347,7 +348,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						int p11f = 0;
 						int p11g = 0;
 						int p11h = 0;
-
+						Collections.sort(list);
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
 							studentRow.setHeight((short) 370);// 目的是想把行高设置成25px

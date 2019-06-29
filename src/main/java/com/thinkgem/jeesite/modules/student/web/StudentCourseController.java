@@ -330,7 +330,7 @@ public class StudentCourseController extends BaseController {
 				addMessage(redirectAttributes, "课程信息异常,非法参数");
 			}
 			
-			String fileName = course.getCursName().concat("成绩导入模板.xlsx");
+			String fileName = course.getCursNum().concat("成绩导入模板.xlsx");
 			
 			List<StudentCourse> list = studentCourseService.getStudentCourses(course);
 			

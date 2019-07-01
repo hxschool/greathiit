@@ -14,12 +14,29 @@
 			    <c:if test="${param.cursProperty!=50 }">
 			    $('#element_id').cxSelect({ 
 					  url: '${ctx}/sys/office/treeClassLink',
-					  selects: ['province', 'city','clazz', 'area'], 
+					  selects: ['province', 'city','clazz'], 
 					  jsonName: 'name',
 					  jsonValue: 'value',
 					  jsonSub: 'sub'
 					});
-				
+			    $('#clazz').change(function(){
+					var parnetId = $("#city").children('option:selected').val();
+					var grade = $(this).children('option:selected').val();
+					
+					$.ajax({
+						url : '${ctx}/sys/office/ajaxClass',
+						data: {"parnetId":parnetId,"grade":grade},
+						async : false,
+						success : function(data) {
+							for(var i=0;i<data.length;i++){
+								var cla = data[i];
+								$("#area").append("<option value='"+cla.id+"'>"+cla.name+"</option>"); 
+							}
+						}
+					});
+					
+					
+				});
 				$('#element_course_educational').cxSelect({ 
 					  url: '${ctx}/course/courseEducational/ajaxCourseEducational',
 					  selects: ['cursNum'], 
@@ -131,9 +148,7 @@
 					<div class="controls">
 						<form:select path="cursProperty" id="cursProperty"
 							class="input-large required">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('course_property')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
+							<option value="10">公共基础课</option>
 						</form:select>
 						<span class="help-inline"><font color="red">如果是公共选课请设置课程性质公共选课</font>
 						</span>
@@ -317,7 +332,7 @@
 					<div class="control-group">
 						<label class="control-label">选择班级:</label>
 						<div class="controls">
-							<select id="area" class="area input-xxlarge" name="classIds"
+							<select id="area" class="area input-xlarge" name="classIds"
 								multiple="multiple"><option>请选择</option></select>
 						</div>
 					</div>

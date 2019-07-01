@@ -97,6 +97,8 @@ public class TeacherController extends BaseController {
 			user.setName(teacher.getTchrName());
 			user.setLoginName(idcard);
 			user.setNo(no);
+			user.setMobile(teacher.getTchrPhone());
+			user.setPhone(teacher.getTchrPhone());
 			Role role = systemService.getRoleByEnname("teacher");
 			user.setRole(role);
 			List<Role> roleList = new ArrayList<Role>();

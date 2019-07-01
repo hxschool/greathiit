@@ -22,7 +22,15 @@
 			    $('#clazz').change(function(){
 					var parnetId = $("#city").children('option:selected').val();
 					var grade = $(this).children('option:selected').val();
+					var tmpSelect = "";
+			        debugger;
+					$("#area option:selected").each(function(){
+			            tmpSelect = tmpSelect + "<option value='"+$(this).val()+"' selected>"+$(this).text()+"</option>"; 
+			        });
 					
+			   
+  					$("#area").empty();
+  					$("#area").append(tmpSelect);
 					$.ajax({
 						url : '${ctx}/sys/office/ajaxClass',
 						data: {"parnetId":parnetId,"grade":grade},

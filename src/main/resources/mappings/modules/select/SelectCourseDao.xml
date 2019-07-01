@@ -122,9 +122,10 @@
 	<select id="exportSelectCourse"
 	resultType="com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel"
 	parameterType="com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel">
-
+select @rownum := @rownum + 1 AS id,tt.* from 
+(
 	select
-	@rownum := @rownum + 1 AS id,
+	
 	c.id AS "course.id",
 	c.curs_num AS "course.cursNum",
 	c.curs_edu_num AS "course.cursEduNum",
@@ -181,7 +182,8 @@
 		<if test="course!=null and course.cursYearTerm!=null and course.cursYearTerm!=''">
 			AND c.curs_year_term=#{course.cursYearTerm}
 		</if>
-		
+		group by a.student_number
+		) as tt
 	</where>
 </select>
 	

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -330,7 +331,7 @@ public class StudentCourseController extends BaseController {
 				addMessage(redirectAttributes, "课程信息异常,非法参数");
 			}
 			
-			String fileName = course.getCursNum().concat("成绩导入模板.xlsx");
+			String fileName = StringEscapeUtils.unescapeHtml4(course.getCursName()).concat("成绩导入模板.xlsx");
 			
 			List<StudentCourse> list = studentCourseService.getStudentCourses(course);
 			

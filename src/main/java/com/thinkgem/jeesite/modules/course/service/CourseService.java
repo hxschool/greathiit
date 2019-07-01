@@ -152,7 +152,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				String[] ss = course.getCursYearTerm().split("-");
 				String startYear = ss[0];
 				String endYear = ss[1];
-				String n = ss[2] == "01" ? "一" : "二";
+				String n = ss[2].equals("01")? "一" : "二";
 				Row yearTermRow = clazzSheet.getRow(3);
 				Cell yearTermCell = yearTermRow.getCell(0);
 				yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
@@ -315,7 +315,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						String[] ss = course.getCursYearTerm().split("-");
 						String startYear = ss[0];
 						String endYear = ss[1];
-						String n = ss[2] == "01" ? "一" : "二";
+						String n = ss[2].equals("01") ? "一" : "二";
 						Row yearTermRow = clazzSheet.getRow(3);
 						Cell yearTermCell = yearTermRow.getCell(0);
 						yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");

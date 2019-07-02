@@ -139,8 +139,8 @@
 		<tbody>
 			<c:forEach items="${list}" var="f">
 				<tr>
-					<th>${f.name }</th>
-					<th><a href="/resources/selectcourse/${f.name}">点击下载</a></th>
+					<td>${f.name }</td>
+					<td><a  class="btn btn-primary" href="/resources/selectcourse/${f.name}">点击下载</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

@@ -778,7 +778,7 @@ public class CourseController extends BaseController {
 	}
 	
 	@RequestMapping("selectCourse")
-	public String selectCourse(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+	public String selectCourse(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws Exception {
 		String termYear = config.getTermYear();
 		String cursName  = "";
 		if(!org.springframework.util.StringUtils.isEmpty(selectCourse.getCourse())) {
@@ -796,17 +796,7 @@ public class CourseController extends BaseController {
 			addMessage(redirectAttributes, "操作失败,请等待系统处理相关数据或者直接下载生成的课程数据");
 			return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 		}
-		if(!file.exists()) {
-			file.createNewFile();
-		}
-		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
-		ExportExcel exportExcel =  new ExportExcel("学生数据", SelectCourse.class);
-		exportExcel.setDataList(selectCourses);
-		
-		FileOutputStream os = new FileOutputStream(file);
-		exportExcel.write(os);
-		os.flush();
-		os.close();
+		courseService.selectCourse(file, selectCourse);
 		addMessage(redirectAttributes, "操作导出成功,请等待系统处理相关数据");
 		return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 	}

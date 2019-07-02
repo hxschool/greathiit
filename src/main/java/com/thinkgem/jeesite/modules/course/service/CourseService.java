@@ -6,14 +6,12 @@ package com.thinkgem.jeesite.modules.course.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -26,18 +24,16 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.POIUtils;
-import com.thinkgem.jeesite.common.utils.excel.ImportResult;
+import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseDao;
 import com.thinkgem.jeesite.modules.course.dao.CourseScheduleDao;
@@ -49,7 +45,6 @@ import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
-import com.thinkgem.jeesite.modules.student.util.StudentCourseUtil;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
@@ -474,6 +469,22 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		}
 	}
 
+	@Async
+	public void selectCourse(File file, SelectCourse selectCourse) throws Exception {
+
+		if (!file.exists()) {
+			file.createNewFile();
+		}
+		List<SelectCourse> selectCourses = selectCourseDao.findList(selectCourse);
+		ExportExcel exportExcel = new ExportExcel("学生数据", SelectCourse.class);
+		exportExcel.setDataList(selectCourses);
+
+		FileOutputStream os = new FileOutputStream(file);
+		exportExcel.write(os);
+		os.flush();
+		os.close();
+	}
+	
 	public void setCell(Sheet sheet, int row, int cell, int value) {
 		Row tmpRow = sheet.getRow(row);
 		Cell tempCell = tmpRow.getCell(cell);

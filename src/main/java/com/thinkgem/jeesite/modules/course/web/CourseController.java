@@ -779,20 +779,35 @@ public class CourseController extends BaseController {
 	
 	@RequestMapping("selectCourse")
 	public String selectCourse(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
-		String filename = StringEscapeUtils.unescapeHtml4(DateUtils.getDate() + "公共选课学生名单.xls");
-		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
-		ExportExcel exportExcel =  new ExportExcel("学生数据", SelectCourse.class);
-		exportExcel.setDataList(selectCourses);
+		String termYear = config.getTermYear();
+		String cursName  = "";
+		if(!org.springframework.util.StringUtils.isEmpty(selectCourse.getCourse())) {
+			if(!org.springframework.util.StringUtils.isEmpty(selectCourse.getCourse().getCursYearTerm())) {
+				termYear = selectCourse.getCourse().getCursYearTerm();
+			}
+			cursName = selectCourse.getCourse().getCursName();
+		}
+		String filename = StringEscapeUtils.unescapeHtml4( termYear + cursName + "公共选课学生名单.xls");
+		
+		
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/selectcourse/");
 		File file = new File(modelPath,filename);
+		if(file.exists()) {
+			addMessage(redirectAttributes, "操作失败,请等待系统处理相关数据或者直接下载生成的课程数据");
+			return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
+		}
 		if(!file.exists()) {
 			file.createNewFile();
 		}
+		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+		ExportExcel exportExcel =  new ExportExcel("学生数据", SelectCourse.class);
+		exportExcel.setDataList(selectCourses);
+		
 		FileOutputStream os = new FileOutputStream(file);
 		exportExcel.write(os);
 		os.flush();
 		os.close();
-		addMessage(redirectAttributes, "操作导出成功,请等待后天处理相关数据");
+		addMessage(redirectAttributes, "操作导出成功,请等待系统处理相关数据");
 		return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 	}
 	

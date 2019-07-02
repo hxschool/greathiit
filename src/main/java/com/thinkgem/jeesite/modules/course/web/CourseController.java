@@ -5,7 +5,9 @@ package com.thinkgem.jeesite.modules.course.web;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +16,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.h2.mvstore.DataUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +63,6 @@ import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
@@ -766,16 +770,30 @@ public class CourseController extends BaseController {
 	}
 	
 	@RequestMapping("selectCourseView")
-	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes,Model model) throws FileNotFoundException, IOException {
+		File directory = new File(request.getSession().getServletContext().getRealPath("/resources/selectcourse"));
+		Collection<File> list = FileUtils.listFiles(directory, FileFilterUtils.suffixFileFilter("xls"), null);
+		model.addAttribute("list",list);
 		return "modules/course/selectCourseView";
 	}
 	
 	@RequestMapping("selectCourse")
 	public String selectCourse(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
-		String filename = StringEscapeUtils.unescapeHtml4("公共选课学生名单.xls");
+		String filename = StringEscapeUtils.unescapeHtml4(DateUtils.getDate() + "公共选课学生名单.xls");
 		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
-		new ExportExcel("学生数据", SelectCourse.class).setDataList(selectCourses).write(response, filename).dispose();
-		return "redirect:" + adminPath + "/course/course/list?repage";
+		ExportExcel exportExcel =  new ExportExcel("学生数据", SelectCourse.class);
+		exportExcel.setDataList(selectCourses);
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/selectcourse/");
+		File file = new File(modelPath,filename);
+		if(!file.exists()) {
+			file.createNewFile();
+		}
+		FileOutputStream os = new FileOutputStream(file);
+		exportExcel.write(os);
+		os.flush();
+		os.close();
+		addMessage(redirectAttributes, "操作导出成功,请等待后天处理相关数据");
+		return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 	}
 	
 	/**

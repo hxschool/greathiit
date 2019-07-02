@@ -127,7 +127,24 @@
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
-
+	<table id="contentTable"
+		class="table table-striped table-bordered table-condensed">
+		<thead>
+			<tr>
+				<th>文件名</th>
+				<th>点击下载</th>
+				
+			</tr>
+		</thead>
+		<tbody>
+			<c:forEach items="${list}" var="f">
+				<tr>
+					<th>${f.name }</th>
+					<th><a href="/resources/selectcourse/${f.name}">点击下载</a></th>
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
 
 </body>
 </html>

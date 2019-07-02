@@ -185,7 +185,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
 					Row studentRow = clazzSheet.createRow(rowIndex);
-					studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
+					studentRow.setHeight((short) 280);// 目的是想把行高设置成25px
 
 					Cell studentNumberCell = studentRow.createCell(0);
 					studentNumberCell.setCellValue(student.getStudentNumber());
@@ -346,7 +346,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Collections.sort(list);
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
-							studentRow.setHeight((short) 370);// 目的是想把行高设置成25px
+							studentRow.setHeight((short) 280);// 目的是想把行高设置成25px
 
 							Cell studentNumberCell = studentRow.createCell(0);
 							studentNumberCell.setCellValue(student.getStudentNumber());

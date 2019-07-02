@@ -14,6 +14,8 @@
 		c.id as "course.id",
 		c.curs_num as "course.cursNum",
 		c.curs_name as "course.cursName",
+		c.curs_year_term as "course.cursYearTerm",
+		c.teacher_number as "course.teacher.teacherNumber",
 		s.student_number as "student.studentNumber",
 		s.name as "student.name",
 		a.del_flag AS "delFlag"
@@ -78,11 +80,15 @@
         	and a.course_id = #{course.id}
       	</if>
       	
-      		<if test="course != null and course.cursYearTerm!=null and course.cursYearTerm!=''" >
+      	<if test="course.cursName!=null and course.cursName!=''">
+			and c.curs_name  LIKE concat(concat('%',#{course.cursName}),'%')
+		</if>
+      	
+      	<if test="course != null and course.cursYearTerm!=null and course.cursYearTerm!=''" >
         	and c.curs_year_term = #{course.cursYearTerm}
       	</if>
       	
-      	<if test="course != null and course.teacher!=null and course.teacher.teacherNumber!=''" >
+      	<if test="course != null and course.teacher!=null and course.teacher.teacherNumber!=null and course.teacher.teacherNumber!=''" >
         	and c.teacher_number = #{course.teacher.teacherNumber}
       	</if>
       	

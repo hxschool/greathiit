@@ -69,7 +69,7 @@
 
 <c:if test="${config.status==1}">  
 <script>
-alert("${config.tip}");
+//alert("${config.tip}");
 </script>
 </c:if>
 <body class=" layout-home">

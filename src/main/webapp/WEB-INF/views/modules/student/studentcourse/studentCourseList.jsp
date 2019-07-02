@@ -189,7 +189,7 @@ function repairDel() {
 					${fns:getDictLabel(studentCourse.course.cursType,'course_curs_type',"未知")}
 					</td>
 					<td>${studentCourse.course.teacher.tchrName}</td>
-					<td>${studentCourse.classEvaValue}</td>
+					<td>${studentCourse.evaValue}</td>
 					<td>${studentCourse.credit}</td>
 					<td>${studentCourse.point}</td>
 					<td>

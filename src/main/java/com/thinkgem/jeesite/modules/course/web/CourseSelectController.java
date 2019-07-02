@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -286,6 +287,8 @@ public class CourseSelectController extends BaseController {
 		}
 		return "redirect:" + adminPath + "/course/select/?cursProperty=20&repage";
     }
+    
+    
     /**
      * 可以废弃的导出成绩单功能
      * @param course
@@ -362,6 +365,9 @@ public class CourseSelectController extends BaseController {
     }
 	
 
+    
+
+	
 	
 	
 	@RequestMapping(value = "student/delete")

@@ -53,9 +53,12 @@ import com.thinkgem.jeesite.modules.course.service.CourseSpecificContentService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingtargetService;
 import com.thinkgem.jeesite.modules.course.web.param.CourseRequestParam;
+import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
+import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
+import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
@@ -99,6 +102,8 @@ public class CourseController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private CourseCompositionRulesService courseCompositionRulesService;
+	@Autowired
+	private SelectCourseService selectCourseService;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
 		Course entity = null;
@@ -757,6 +762,19 @@ public class CourseController extends BaseController {
 		File file = new File(modelPath);
 		courseService.exportCourse(file, course, response.getOutputStream());
 		addMessage(redirectAttributes, "导出成功");
+		return "redirect:" + adminPath + "/course/course/list?repage";
+	}
+	
+	@RequestMapping("selectCourseView")
+	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+		return "modules/course/selectCourseView";
+	}
+	
+	@RequestMapping("selectCourse")
+	public String selectCourse(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+		String filename = StringEscapeUtils.unescapeHtml4("公共选课学生名单.xls");
+		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+		new ExportExcel("学生数据", SelectCourse.class).setDataList(selectCourses).write(response, filename).dispose();
 		return "redirect:" + adminPath + "/course/course/list?repage";
 	}
 	

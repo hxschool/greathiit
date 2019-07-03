@@ -73,10 +73,7 @@ public class TeacherController extends BaseController {
 		model.addAttribute("teacher", teacher);
 		return "modules/teacher/teacherForm";
 	}
-	public static void main(String[] args) {
-		String no = "201906101159";
-		System.out.println(no.substring(no.length()-4));
-	}
+
 	@RequiresPermissions("teacher:teacher:edit")
 	@RequestMapping(value = "save")
 	public String save(Teacher teacher, Model model, RedirectAttributes redirectAttributes) {

@@ -15,23 +15,28 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
+import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
+import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.course.web.excel.CourseSelectExcel;
@@ -48,8 +53,11 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.service.UserOperationLogService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
@@ -73,6 +81,11 @@ public class CourseSelectController extends BaseController {
 	private SysConfigService sysConfigService;
 	@Autowired
 	private CourseTeachingModeService courseTeachingModeService;
+	@Autowired
+	private CourseScheduleService courseScheduleService;
+	@Autowired
+	private SystemService systemService;
+	
 	private SysConfig config;
 	@ModelAttribute
 	public Course get(@RequestParam(required=false) String id,Model model) {
@@ -365,7 +378,127 @@ public class CourseSelectController extends BaseController {
     }
 	
 
-    
+    @RequestMapping(value = "import_select_view")
+	public String viewSelect() {
+		return "modules/course/select/import_select_view";
+	}
+	@RequestMapping(value = "import_select")
+	public String importSelectFile(MultipartFile file, HttpServletRequest request,
+			HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
+
+		try {
+			int successNum = 0;
+			int failureNum = 0;
+			StringBuilder failureMsg = new StringBuilder();
+			ImportExcel importExcel = new ImportExcel(file, 2);
+			String[][] selectCourses = importExcel.importFile();
+			for (String[] selectCourse : selectCourses) {
+				try {
+					String curs_num = selectCourse[0];// 课程编码
+					String curs_edu_num = curs_num;// 课程编码
+					String curs_name = selectCourse[1];// 课程名称
+					String tchr_name = selectCourse[2];// 教师名称
+					String curs_class_hour = selectCourse[3];// 总学时
+					String curs_credit = selectCourse[4];// 学分
+					String curs_year_term = selectCourse[5];// 学期
+					String curs_property = DictUtils.getDictValue(selectCourse[6], "course_property", "公共选修课");// 课程性质
+					String teac_method = DictUtils.getDictValue(selectCourse[7], "teac_method", "面授");// 授课类型/课程类型
+					String remark = selectCourse[8];
+					String curs_face = selectCourse[9];// 面向学生
+					String upper_limit = selectCourse[10];// 上限
+					String lower_limit = selectCourse[11];// 下限
+
+					User user = systemService.isExisUser("", "", tchr_name, null, null);
+
+					Teacher teacher = new Teacher();
+					teacher.setTeacherNumber(user.getNo());
+					Course course = new Course();
+					course.setIsNewRecord(true);
+					String courseId = systemService.getSequence("serialNo10");
+					course.setId(courseId);
+					course.setTeacher(teacher);
+					course.setCursEduNum(curs_edu_num);
+					course.setCursNum(curs_num);
+					course.setCursName(curs_name);
+					course.setCursClassHour(curs_class_hour);
+					course.setCursCredit(curs_credit);
+					course.setCursYearTerm(curs_year_term);
+					course.setCursProperty(curs_property);
+
+					int upperLimit = 0, lowerLimit = 0;
+					if (!StringUtils.isEmpty(lower_limit) && !lower_limit.equals("无")) {
+						lowerLimit = new Double(lower_limit).intValue();
+					}
+					if (!StringUtils.isEmpty(upper_limit) && !upper_limit.equals("无")) {
+						upperLimit = new Double(upper_limit).intValue();
+					}
+					course.setLowerLimit(lowerLimit);
+					course.setUpperLimit(upperLimit);
+					course.setCursFace(CourseUtil.grade(curs_face));
+					course.setCursStatus(Course.PAIKE_STATUS_YI_PAIKE);
+					String curs_type = "考查";
+					course.setCursType(DictUtils.getDictValue(curs_type, "course_curs_type", "考查"));
+					String cursForm = "其他";
+					course.setCursForm(DictUtils.getDictValue(cursForm, "course_curs_form", "其他"));
+					course.setCursIntro(remark);
+					course.setRemarks(remark);
+					
+					CourseTeachingMode courseTeachingMode = new CourseTeachingMode();
+					courseTeachingMode.setTeacMethod(teac_method);
+					courseTeachingMode.setCourseId(courseId);
+					courseTeachingMode.setPeriod(curs_class_hour);
+					courseTeachingModeService.save(courseTeachingMode);
+					
+					
+					if(!StringUtils.isEmpty(selectCourse[7])) {
+						String method = selectCourse[7].trim();
+						if(method.equals("面授")) {
+							String time = selectCourse[12];
+							String address = selectCourse[13];
+							if(!StringUtils.isEmpty(time)&&!StringUtils.isEmpty(address)) {
+								//周一，5-6节
+								String ss[] = time.split("，");
+								if(ss.length==2) {
+									String zhou = CourseUtil.zhouValue(ss[0]);
+									String jie =  CourseUtil.jieValue(ss[1]);;
+									String school = CourseUtil.schoolRootMap.get(address.substring(0,1));
+									String room = address.substring(1);
+									String time_add = curs_year_term.concat(school).concat(room).concat("01").concat(zhou).concat(jie);
+									CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+									if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+										courseSchedule.setScLock("2");
+										courseSchedule.setCourseClass("00000000");
+										courseSchedule.setCourseId(courseId);
+										courseSchedule.setTips(remark);
+										courseScheduleService.save(courseSchedule);
+									}
+								}
+	
+							}
+							
+						}
+					}
+					courseService.save(course);
+					successNum++;
+				} catch (Exception e) {
+					e.printStackTrace();
+					failureMsg.append("<br/>课程信息异常: " + selectCourse + " ; " + e.getMessage());
+					failureNum++;
+
+				}
+				if (failureNum > 0) {
+					failureMsg.insert(0, "，失败 " + failureNum + " 条，导入信息如下：");
+				}
+
+				addMessage(redirectAttributes, "已成功导入 " + successNum + " 条课程信息" + failureMsg);
+			}
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			addMessage(model, "导入失败！失败信息："+ex.getMessage());
+		}
+		return "redirect:" + adminPath + "/course/select/import_select_view?repage";
+	}
 
 	
 	

@@ -101,9 +101,9 @@ public class SystemService extends BaseService implements InitializingBean {
 				office.setId("1");
 			}
 			
-			String serialNo = getSequence("serialNo3");
+			String seq = getSequence("serialNo4");
+			String no = seq.substring(seq.length() - 4);
 			user = new User();
-			String no = DateUtils.getYear().concat(serialNo.substring(serialNo.length() - 4));// 自增剩下教师号
 			user.setNo(no);
 			user.setLoginName(no);
 			user.setName(tchr_name);
@@ -137,8 +137,8 @@ public class SystemService extends BaseService implements InitializingBean {
 		Teacher teacher = teacherService.getTeacherByTeacherNumber(user.getNo());
 		if(org.springframework.util.StringUtils.isEmpty(teacher)) {
 			teacher = new Teacher();
+			teacher.setTeacherNumber(user.getNo());
 			teacher.setTchrName(tchr_name);
-			teacher.setUser(user);
 			teacher.setDelFlag("0");
 			teacher.setTchrTitle(tchr_title);
 			teacherService.save(teacher);

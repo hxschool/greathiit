@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,9 +38,11 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
+import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.service.CourseClassService;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
+import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
@@ -87,6 +91,8 @@ public class PaikeCourseController extends BaseController {
 	private SysConfigService sysConfigService;
 	@Autowired
 	private CourseClassService courseClassService;
+	@Autowired
+	private CourseTeachingModeService courseTeachingModeService;
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
@@ -579,135 +585,7 @@ public class PaikeCourseController extends BaseController {
 		return "modules/paike/ImportView";
 	}
 	
-	@RequestMapping(value = "viewSelect")
-	public String viewSelect() {
-		return "modules/paike/ImportSelectView";
-	}
-	@RequestMapping(value = "import_select")
-	public String importSelectFile(MultipartFile file, String currTerm, HttpServletRequest request,
-			HttpServletResponse response, Model model, RedirectAttributes redirectAttributes) {
-		Dict dict = new Dict();
-		dict.setType("course_curs_type");
-		List<Dict> courseCurrsTypes = dictService.findList(dict);
-		dict.setType("course_curs_form");
-		List<Dict> courseCurrsForms = dictService.findList(dict);
-		dict.setType("course_property");
-		List<Dict> coursePropertys = dictService.findList(dict);
-		try {
-			int successNum = 0;
-			int failureNum = 0;
-			StringBuilder failureMsg = new StringBuilder();
-			ImportExcel importExcel = new ImportExcel(file, 2);
-			String[][] selectCourses = importExcel.importFile();
-			for (String[] selectCourse : selectCourses) {
-				try {
-					String curs_num = selectCourse[0];// 课程编码
-					String curs_edu_num = curs_num;// 课程编码
-					String curs_name = selectCourse[1];// 课程名称
-					String tchr_name = selectCourse[2];// 教师名称
-					String curs_class_hour = selectCourse[3];// 总学时
-					String curs_credit = selectCourse[4];// 学分
-					String curs_year_term = selectCourse[5];// 学期
-					String course_property = DictUtils.getDictValue(selectCourse[6], "course_property", "公共选修课");// 学期
-					
-					String select_course_type = selectCourse[1];
-					
-					String upper_limit = selectCourse[5];// 上限
-					String lower_limit = selectCourse[6];// 下限
-					
-					String tchr_title = selectCourse[8];// 职称
-					
-			
-					String teac_method = selectCourse[11];// 授课类型
-					String remark = selectCourse[14];// 备注
-					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);
-					if(StringUtils.isEmpty(curs_num)||curs_num.equals("——")) {
-						curs_num = curs_edu_num;
-					}
-					Teacher tt = new Teacher();
-					tt.setUser(user);
-					Course course = new Course();
-					course.setTeacher(tt);
-					course.setCursNum(curs_num);
-					course.setCursName(curs_name);
-					Course entity = courseService.getCourse(course);
-					if (StringUtils.isEmpty(entity)) {
-						// 新增课程相关信息
-						entity = new Course();
-						entity.setId(systemService.getSequence("serialNo10"));
-						entity.setIsNewRecord(true);
-						String select_course_type_item_id = null;
-						if (select_course_type.indexOf("（") > -1 && select_course_type.indexOf("）") > -1) {
-							
-							String label  = select_course_type.substring(select_course_type.indexOf("（") + 1,
-									select_course_type.lastIndexOf("）"));
-							
-							select_course_type_item_id = DictUtils.getDictValue(label,"select_course_type_item","01");
-						}
-						entity.setCursSelectCourseType(select_course_type_item_id);
-						entity.setCursYearTerm(currTerm);
-						entity.setCursCredit(curs_credit);
-						entity.setTeacher(tt);
-						entity.setCursNum(curs_num);
-						entity.setCursEduNum(curs_edu_num);
-						entity.setCursName(curs_name);
-						int upperLimit=0,lowerLimit = 0;
-						if(!StringUtils.isEmpty(lower_limit)&&!lower_limit.equals("无")) {
-							lowerLimit = new Double(lower_limit).intValue();
-						}
-						if(!StringUtils.isEmpty(upper_limit)&&!upper_limit.equals("无")) {
-							upperLimit =new Double(upper_limit).intValue(); 
-						}
-						entity.setLowerLimit(lowerLimit);
-						entity.setUpperLimit(upperLimit);
-						entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
-						String curs_type = "考查";
-						curs_type = curs_type.substring(0, 2);
-						String cursValue = "other";
-						for (Dict d : courseCurrsTypes) {
-							if (d.getLabel().indexOf(curs_type) > -1) {
-								cursValue = d.getValue();
-								break;
-							}
-						}
-						entity.setCursType(cursValue);
-
-						String cursForm = "99";
-						String assessment_type = "其他";
-						for (Dict d : courseCurrsForms) {
-							if (d.getLabel().indexOf(assessment_type) > -1) {
-								cursForm = d.getValue();
-								break;
-							}
-						}
-
-						entity.setCursForm(cursForm);
-
-						entity.setCursClassHour(new Double(curs_class_hour).intValue() + "");
-						entity.setCursIntro(remark);
-						entity.setRemarks(remark);
-						courseService.save(entity);
-					}
-					successNum++;
-				} catch (Exception e) {
-					e.printStackTrace();
-					failureMsg.append("<br/>课程信息异常: " + selectCourse + " ; " + e.getMessage());
-					failureNum++;
-
-				}
-				if (failureNum > 0) {
-					failureMsg.insert(0, "，失败 " + failureNum + " 条，导入信息如下：");
-				}
-
-				addMessage(redirectAttributes, "已成功导入 " + successNum + " 条课程信息" + failureMsg);
-			}
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			addMessage(model, "导入失败！失败信息："+ex.getMessage());
-		}
-		return "modules/paike/ImportSelectView";
-	}
+	
 		
 	
 	public void auto(HttpServletRequest request) {
@@ -807,10 +685,35 @@ public class PaikeCourseController extends BaseController {
 	}
 	
 	
+
+	
 	public static void main(String[] args) {
-		String a="2.0";
-		String b="人文（历史与文化）";
-		System.out.println(b.substring(0,b.indexOf("（")));
-		System.out.println(b.substring(b.indexOf("（")+1,b.lastIndexOf("）")));
+		String str="16、18本科";
+		String reg = "[\u4e00-\u9fa5]";
+
+		Pattern pat = Pattern.compile(reg);  
+
+		Matcher mat=pat.matcher(str); 
+
+		String repickStr = mat.replaceAll("");
+		//	A330
+		System.out.println("去中文后:"+repickStr);
+		String time = "周一，5-6节";
+		String address = "A330";
+		String curs_year_term = "2018-2019-01";
+		if(!StringUtils.isEmpty(time)&&!StringUtils.isEmpty(address)) {
+			//周一，5-6节
+			String ss[] = time.split("，");
+			if(ss.length==2) {
+				//String zhou = CourseUtil.zhouValue(ss[1]);
+				//String jie =  CourseUtil.jieValue(ss[1]);
+				//String school = CourseUtil.schoolRootMap.get(address.substring(0,1));
+				String room = address.substring(1);
+				System.out.println(curs_year_term.concat("01").concat(room).concat("01").concat("1").concat("1"));
+			}
+			
+			
+			
+		}
 	}
 }

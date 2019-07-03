@@ -6,17 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#btnExport").click(function() {
-				top.$.jBox.confirm("确认要导出用户数据吗？", "系统提示", function(v, h, f) {
-					if (v == "ok") {
-						$("#searchForm").attr("action", "${ctx}/course/paike/export_select");
-						$("#searchForm").submit();
-					}
-				}, {
-					buttonsFocus : 1
-				});
-				top.$('.jbox-body .jbox-icon').css('top', '55px');
-			});
+			
 			$("#btnImport").click(function() {
 				$.jBox($("#importBox").html(), {
 					title : "导入数据",
@@ -37,21 +27,17 @@
 </head>
 <body>
 <div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/course/paike/import_select" method="post"
+		<form id="importForm" action="${ctx}/course/select/import_select" method="post"
 			enctype="multipart/form-data" class="form-search"
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
 			<br />
-	
-			
-			<input type="radio" name="currTerm" value="1" checked="checked"> 第一学期
-			<input type="radio" name="currTerm" value="2"> 第二学期
-			
+
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="${ctx}/course/paike/template">下载模板</a>
+				href="resources/course/选课模板.xlsx">下载模板</a>
 		</form>
 	</div>
 	<div class="breadcrumb form-search">

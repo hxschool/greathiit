@@ -820,3 +820,7 @@ select
 	LEFT JOIN course c on a.course_id=c.id
 	
 	where a.del_flag = 0 and c.curs_year_term=2
+
+	
+	INSERT INTO teacher(id,  tchr_email,  tchr_name,  tchr_phone, teacher_number, create_by, create_date, update_by, update_date, remarks, del_flag) 
+select no ,email,name,phone,no ,create_by, create_date, update_by, update_date, remarks, del_flag from sys_user where length(no)=4 and no not in (select teacher_number from teacher)

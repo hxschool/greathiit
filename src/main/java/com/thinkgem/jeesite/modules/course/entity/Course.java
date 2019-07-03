@@ -50,6 +50,7 @@ public class Course extends DataEntity<Course> {
 	private String cursTotal;
 	private String cursForm;
 	private String cursStatus;
+	private String cursFace;
 	private Integer upperLimit;//班额上限
 	private Integer lowerLimit;//班额下限
 	private Teacher teacher;		// 教师号
@@ -62,6 +63,14 @@ public class Course extends DataEntity<Course> {
 	private String rater;//评分人
 	private String category;//成绩类别
 
+
+	public String getCursFace() {
+		return cursFace;
+	}
+
+	public void setCursFace(String cursFace) {
+		this.cursFace = cursFace;
+	}
 
 	public String getExamTime() {
 		return examTime;

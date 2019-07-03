@@ -127,7 +127,7 @@ public class CourseController extends BaseController {
 		if (entity == null){
 			entity = new Course();
 		}
-		config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+		config = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
 		Map<Dict,List<Dict>> groupSelect = new HashMap<Dict,List<Dict>>();
 		List<Dict> dicts = DictUtils.getDictList("select_course_type");
 		for(Dict dict:dicts) {

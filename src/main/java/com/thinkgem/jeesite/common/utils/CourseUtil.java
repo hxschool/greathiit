@@ -6,6 +6,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
 
@@ -20,8 +22,24 @@ public class CourseUtil {
 		schoolRootMap.put("01", "A栋");
 		schoolRootMap.put("02", "B栋");
 		schoolRootMap.put("03", "C栋");
+		
+		schoolRootMap.put("A栋", "01");
+		schoolRootMap.put("B栋", "02");
+		schoolRootMap.put("C栋", "03");
+		
+		schoolRootMap.put("A", "01");
+		schoolRootMap.put("B", "02");
+		schoolRootMap.put("C", "03");
 	}
-	
+	public static String grade(String str) {
+		if(StringUtils.isEmpty(str)) {
+			return "";
+		}
+		String reg = "[\u4e00-\u9fa5]";
+		Pattern pat = Pattern.compile(reg);  
+		Matcher mat=pat.matcher(str); 
+		return mat.replaceAll("");
+	}
 	public static String jie(String $j)
 	{
 	        if($j.equals("1"))
@@ -36,6 +54,22 @@ public class CourseUtil {
 	                return "9-10节";
 	        if($j.equals("6"))
                 return "11-12节";
+			return $j;
+	}
+	public static String jieValue(String $j)
+	{
+	        if($j.equals("1-2节"))
+	                return "1";
+	        if($j.equals("3-4节"))
+	                return "2";
+	        if($j.equals("5-6节"))
+	                return "3";
+	        if($j.equals("7-8节"))
+	                return "4";
+	        if($j.equals("9-10节"))
+	                return "5";
+	        if($j.equals("11-12节"))
+                return "6";
 			return $j;
 	}
 	//返回周
@@ -55,6 +89,25 @@ public class CourseUtil {
 	                return "周六";
 	        if($z.equals("7"))
 	                return "周日";
+			return $z;
+	}
+	
+	public static String zhouValue(String $z)
+	{
+	        if($z.equals("周一"))
+	                return "1";
+	        if($z.equals("周二"))
+	                return "2";
+	        if($z.equals("周三"))
+	                return "3";
+	        if($z.equals("周四"))
+	                return "4";
+	        if($z.equals("周五"))
+	                return "5";
+	        if($z.equals("周六"))
+	                return "6";
+	        if($z.equals("周日"))
+	                return "7";
 			return $z;
 	}
 	

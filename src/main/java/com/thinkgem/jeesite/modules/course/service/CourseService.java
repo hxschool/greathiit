@@ -120,9 +120,17 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			courseIdFont.setColor(HSSFColor.WHITE.index);
 			cellCourseIdStyle.setFont(courseIdFont);
 			cellCourseIdStyle.setAlignment(CellStyle.ALIGN_CENTER);
+			
+			
+			
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
-
+				
+				Row r = clazzSheet.getRow(1);
+				r.setHeight((short) 10);// 目的是想把行高设置成25px
+				Row r1 = clazzSheet.getRow(4);
+				r1.setHeight((short) 10);// 目的是想把行高设置成25px
+				
 				Footer footer = clazzSheet.getFooter();
 				footer.setLeft(
 						"任课教师 ：          命题教师：              评分教师：                                                               \n"
@@ -185,7 +193,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
 					Row studentRow = clazzSheet.createRow(rowIndex);
-					studentRow.setHeight((short) 280);// 目的是想把行高设置成25px
+					studentRow.setHeight((short) 290);// 目的是想把行高设置成25px
 
 					Cell studentNumberCell = studentRow.createCell(0);
 					studentNumberCell.setCellValue(student.getStudentNumber());
@@ -289,6 +297,12 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								"任课教师 ：          命题教师：              评分教师：                                                               \n"
 										+ "录分人：             教研室主任：            录分日期：  年  月  日                                 ");
 						POIUtils.copySheet(wb, sheet, clazzSheet, true);
+						
+						Row r = clazzSheet.getRow(1);
+						r.setHeight((short) 10);// 目的是想把行高设置成25px
+						Row r1 = clazzSheet.getRow(4);
+						r1.setHeight((short) 10);// 目的是想把行高设置成25px
+						
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);
 
@@ -346,7 +360,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Collections.sort(list);
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
-							studentRow.setHeight((short) 280);// 目的是想把行高设置成25px
+							studentRow.setHeight((short) 290);// 目的是想把行高设置成25px
 
 							Cell studentNumberCell = studentRow.createCell(0);
 							studentNumberCell.setCellValue(student.getStudentNumber());

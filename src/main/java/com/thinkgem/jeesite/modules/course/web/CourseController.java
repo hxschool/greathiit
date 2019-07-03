@@ -752,7 +752,7 @@ public class CourseController extends BaseController {
     }
 	
 	@RequestMapping("exportStudentCourse")
-	public String exportCourse(Course course,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
+	public String exportStudentCourse(Course course,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException {
 		
 		if(org.springframework.util.StringUtils.isEmpty(course)) {
 			throw new GITException("40400099","系统异常,未选择课程");

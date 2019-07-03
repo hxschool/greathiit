@@ -98,7 +98,6 @@ public class POIUtils {
 		for (Iterator rowIt = fromSheet.rowIterator(); rowIt.hasNext();) {
 			HSSFRow tmpRow = (HSSFRow) rowIt.next();
 			HSSFRow newRow = toSheet.createRow(tmpRow.getRowNum());
-			//行复制
 			copyRow(wb,tmpRow,newRow,copyValueFlag);
 		}
 	}

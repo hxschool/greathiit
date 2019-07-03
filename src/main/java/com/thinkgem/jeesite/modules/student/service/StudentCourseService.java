@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.student.service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -351,12 +352,15 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							studentCourse.setClassEvaValue(String.valueOf(Double.valueOf(classEvaValue).intValue()));
 							studentCourse.setFinEvaValue(String.valueOf(Double.valueOf(finEvaValue).intValue()));
 	
-							String evaValue = String.valueOf(Double.valueOf(Double
-									.valueOf((Double.parseDouble(classEvaValue)
-											* Double.parseDouble(courseCompositionRules.getClazzPer())
-											+ Double.parseDouble(finEvaValue)
-													* Double.parseDouble(courseCompositionRules.getFinalExamper()))).intValue())
-									.intValue());
+							String evaValue =
+									String.valueOf(new BigDecimal(classEvaValue).multiply(new BigDecimal(courseCompositionRules.getClazzPer())).add(new BigDecimal(finEvaValue).multiply(new BigDecimal(courseCompositionRules.getFinalExamper()))).intValue());	
+									
+//									String.valueOf(Double.valueOf(Double
+//									.valueOf((Double.parseDouble(classEvaValue)
+//											* Double.parseDouble(courseCompositionRules.getClazzPer())
+//											+ Double.parseDouble(finEvaValue)
+//													* Double.parseDouble(courseCompositionRules.getFinalExamper()))).intValue())
+//									.intValue());
 							String point = "0";
 							studentCourse.setCredit("0");
 							if(Integer.valueOf(evaValue)>=60) {

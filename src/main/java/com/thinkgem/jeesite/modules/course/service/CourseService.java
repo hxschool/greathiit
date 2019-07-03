@@ -130,6 +130,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				r.setHeight((short) 10);// 目的是想把行高设置成25px
 				Row r1 = clazzSheet.getRow(4);
 				r1.setHeight((short) 10);// 目的是想把行高设置成25px
+				Row r2 = clazzSheet.getRow(12);
+				r2.setHeight((short) 10);// 目的是想把行高设置成25px
 				
 				Footer footer = clazzSheet.getFooter();
 				footer.setLeft(
@@ -302,6 +304,9 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						r.setHeight((short) 10);// 目的是想把行高设置成25px
 						Row r1 = clazzSheet.getRow(4);
 						r1.setHeight((short) 10);// 目的是想把行高设置成25px
+						
+						Row r2 = clazzSheet.getRow(12);
+						r2.setHeight((short) 10);// 目的是想把行高设置成25px
 						
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);

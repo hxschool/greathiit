@@ -591,7 +591,8 @@ public class PaikeCourseController extends BaseController {
 		List<Dict> courseCurrsTypes = dictService.findList(dict);
 		dict.setType("course_curs_form");
 		List<Dict> courseCurrsForms = dictService.findList(dict);
-		
+		dict.setType("course_property");
+		List<Dict> coursePropertys = dictService.findList(dict);
 		try {
 			int successNum = 0;
 			int failureNum = 0;
@@ -600,17 +601,23 @@ public class PaikeCourseController extends BaseController {
 			String[][] selectCourses = importExcel.importFile();
 			for (String[] selectCourse : selectCourses) {
 				try {
-					String id = selectCourse[0];
+					String curs_num = selectCourse[0];// 课程编码
+					String curs_edu_num = curs_num;// 课程编码
+					String curs_name = selectCourse[1];// 课程名称
+					String tchr_name = selectCourse[2];// 教师名称
+					String curs_class_hour = selectCourse[3];// 总学时
+					String curs_credit = selectCourse[4];// 学分
+					String curs_year_term = selectCourse[5];// 学期
+					String course_property = DictUtils.getDictValue(selectCourse[6], "course_property", "公共选修课");// 学期
+					
 					String select_course_type = selectCourse[1];
-					String curs_num = selectCourse[2];// 课程编码
-					String curs_edu_num = selectCourse[3];// 课程编码
-					String curs_name = selectCourse[4];// 课程名称
+					
 					String upper_limit = selectCourse[5];// 上限
 					String lower_limit = selectCourse[6];// 下限
-					String tchr_name = selectCourse[7];// 教师名称
+					
 					String tchr_title = selectCourse[8];// 职称
-					String curs_credit = selectCourse[9];// 学分
-					String curs_class_hour = selectCourse[10];// 学时
+					
+			
 					String teac_method = selectCourse[11];// 授课类型
 					String remark = selectCourse[14];// 备注
 					User user = systemService.isExisUser("", "", tchr_name, tchr_title, null);

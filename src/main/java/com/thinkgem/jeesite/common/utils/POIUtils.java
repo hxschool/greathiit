@@ -205,7 +205,7 @@ public class POIUtils {
 
 	public static Font getFont(Workbook wb) {
 		Font font = wb.createFont();
-		font.setFontHeightInPoints((short) 16);
+		font.setFontHeightInPoints((short) 20);
 		font.setFontName("黑体");
 		font.setUnderline(Font.U_SINGLE); // 下划线
 		return font;

@@ -332,7 +332,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						String n = ss[2].equals("01") ? "一" : "二";
 						Row yearTermRow = clazzSheet.getRow(3);
 						Cell yearTermCell = yearTermRow.getCell(0);
-						yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
+						yearTermCell.setCellValue("    " + startYear + " — " + endYear + " 学年度第" + n + "学期        ");
 						logger.info("根据班级查找相关学生信息");
 						//
 						Student entity = new Student();

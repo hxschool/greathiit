@@ -122,7 +122,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			cellCourseIdStyle.setAlignment(CellStyle.ALIGN_CENTER);
 			
 			
-			String  title = StringEscapeUtils.unescapeHtml4(course.getCursEduNum().concat("--").concat(course.getCursName()).replace("★", "") );
+			String  title = StringEscapeUtils.unescapeHtml4(course.getCursEduNum().concat("  ").concat(course.getCursName()).replace("★", "") );
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				

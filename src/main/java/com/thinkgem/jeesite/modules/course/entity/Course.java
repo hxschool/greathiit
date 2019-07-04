@@ -352,8 +352,4 @@ public class Course extends DataEntity<Course> {
 		this.courseCompositionRules = courseCompositionRules;
 	}
 
-	@Override
-	public String toString() {
-		return cursName;
-	}
 }

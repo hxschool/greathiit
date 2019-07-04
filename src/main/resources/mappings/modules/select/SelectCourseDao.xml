@@ -40,6 +40,10 @@
         and a.course_id = #{course.id}
       	</if>
       	
+      	<if test="course != null and course.cursYearTerm!=null and course.cursYearTerm!=''" >
+        and c.curs_year_term = #{course.cursYearTerm}
+      	</if>
+      	
       	<if test="student != null and student.studentNumber!=null and student.studentNumber!=''" >
         and s.student_number = #{student.studentNumber}
       	</if>
@@ -76,21 +80,24 @@
 	  					#{c.id}
 					</foreach>
 			</if>
-		<if test="course != null and course.id!=null and course.id!=''" >
-        	and a.course_id = #{course.id}
-      	</if>
+			<if test="course != null" >
+				<if test="course.id!=null and course.id!=''" >
+	        	and a.course_id = #{course.id}
+	        	</if>
+	        	<if test="course.cursName!=null and course.cursName!=''">
+				and c.curs_name  LIKE concat(concat('%',#{course.cursName}),'%')
+				</if>
+		      	
+		      	<if test="course.cursYearTerm!=null and course.cursYearTerm!=''" >
+		        	and c.curs_year_term = #{course.cursYearTerm}
+		      	</if>
+		      	
+		      	<if test="course.teacher!=null and course.teacher.teacherNumber!=null and course.teacher.teacherNumber!=''" >
+		        	and c.teacher_number = #{course.teacher.teacherNumber}
+		      	</if>
+	      	</if>
       	
-      	<if test="course.cursName!=null and course.cursName!=''">
-			and c.curs_name  LIKE concat(concat('%',#{course.cursName}),'%')
-		</if>
       	
-      	<if test="course != null and course.cursYearTerm!=null and course.cursYearTerm!=''" >
-        	and c.curs_year_term = #{course.cursYearTerm}
-      	</if>
-      	
-      	<if test="course != null and course.teacher!=null and course.teacher.teacherNumber!=null and course.teacher.teacherNumber!=''" >
-        	and c.teacher_number = #{course.teacher.teacherNumber}
-      	</if>
       	
       	<if test="student != null and student.studentNumber!=null and student.studentNumber!=''" >
        	and s.student_number = #{student.studentNumber}

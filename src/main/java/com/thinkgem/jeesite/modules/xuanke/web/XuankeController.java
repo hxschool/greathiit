@@ -134,7 +134,7 @@ public class XuankeController extends BaseController {
 	public String index(Course course, HttpServletRequest request, HttpServletResponse response,RedirectAttributes redirectAttributes, Model model) {
 		boolean isSelected = false;
 		if(StringUtils.isEmpty(course.getCursProperty())) {
-			course.setCursProperty("50");
+			course.setCursProperty(Course.COURSE_PROPERTY_SELECT);
 		}
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(sysConfig.getTermYear());
@@ -151,7 +151,7 @@ public class XuankeController extends BaseController {
 			courseScheduleMap.put(courseScheduleExt.getCourseId(), courseScheduleExt);
 		}
 		Student student = UserUtils.getStudent();
-		if(!StringUtils.isEmpty(student)&&!StringUtils.isEmpty(student.getStudent())) {
+		if(!StringUtils.isEmpty(student)) {
 			
 			SelectCourse selectCourse = new SelectCourse();
 			selectCourse.setStudent(student);
@@ -162,9 +162,7 @@ public class XuankeController extends BaseController {
 				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
 			}
 			
-			if(UserUtils.getUser().getRoleIdList().contains("99")||UserUtils.getUser().getUserType().equals("99")) {
-				isSelected = true;
-			}
+			isSelected = true;
 		}
 
 		//List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
@@ -257,11 +255,11 @@ public class XuankeController extends BaseController {
 			selectCourse.setCourse(entity);
 			SelectCourse selectCourseEntity = selectCourseService.get(selectCourse);
 			//教学模式
-			CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(entity.getId());
+			//CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(entity.getId());
 			
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
-				
-				if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") &&  cnt > entity.getUpperLimit()) {
+				//if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") &&  cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(entity.getUpperLimit()) && !entity.getUpperLimit().equals("0") && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 					courseService.save(entity);
 				}
@@ -269,7 +267,8 @@ public class XuankeController extends BaseController {
 				saveSelectCourseLog(request, entity,GlobalConstants.Global_FAL,student.getStudentNumber());
 				addMessage(redirectAttributes, "退课成功");
 			}else {
-				if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
+				//if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(entity.getUpperLimit()) && !entity.getUpperLimit().equals("0") && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
 					courseService.save(entity);
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");

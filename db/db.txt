@@ -824,3 +824,12 @@ select
 	
 	INSERT INTO teacher(id,  tchr_email,  tchr_name,  tchr_phone, teacher_number, create_by, create_date, update_by, update_date, remarks, del_flag) 
 select no ,email,name,phone,no ,create_by, create_date, update_by, update_date, remarks, del_flag from sys_user where length(no)=4 and no not in (select teacher_number from teacher)
+
+
+
+delete from course_teaching_mode where course_id in
+(select id from course where curs_year_term='2019-2020-01')
+;
+update course_schedule set course_id='00000000' ,course_class='' ,sc_lock=1 where time_add like '2019-2020-01%' and sc_lock!=1
+delete 
+ from course where curs_year_term='2019-2020-01';

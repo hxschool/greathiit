@@ -53,8 +53,14 @@
 				}); 
 				
 				$('#eduCourseNum').change(function(){  
-					$('#cursNum').val($(this).children('option:selected').val()); 
-					$('#cursName').val($(this).children('option:selected').text()); 
+					$('#cursNum').val($(this).children('option:selected').val());
+					var stringObject = $(this).children('option:selected').text();
+					var ss = stringObject.split("|");
+					var cursName = stringObject;
+					if(ss.length==2){
+						cursName=ss[1];
+					}
+					$('#cursName').val(cursName); 
 				});
 				</c:if>
 			$.ajax({

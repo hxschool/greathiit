@@ -141,7 +141,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				Row schoolreportRow = clazzSheet.getRow(0);
 				Cell courseNameCell = schoolreportRow.getCell(0);
 
-				courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
+				courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()).replace("★", "") + "   成绩单");
 				courseNameCell.setCellStyle(cellCourseNameStyle);
 
 				Row courseIdRow = clazzSheet.getRow(1);
@@ -160,7 +160,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				String n = ss[2].equals("01")? "一" : "二";
 				Row yearTermRow = clazzSheet.getRow(3);
 				Cell yearTermCell = yearTermRow.getCell(0);
-				yearTermCell.setCellValue("    " + startYear + " —— " + endYear + " 学年度第" + n + "学期        ");
+				yearTermCell.setCellValue("    " + startYear + "—" + endYear + " 学年度第" + n + "学期        ");
 				logger.info("根据班级查找相关学生信息");
 				//
 				SelectCourse selectCourse = new SelectCourse();
@@ -312,7 +312,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Cell courseNameCell = schoolreportRow.getCell(0);
 
 						courseNameCell.setCellValue(
-								"  " + StringEscapeUtils.unescapeHtml4(course.getCursName()) + "   （科）成绩单");
+								"  " + StringEscapeUtils.unescapeHtml4(course.getCursName()).replace("★", "") + "   成绩单");
 						courseNameCell.setCellStyle(cellCourseNameStyle);
 
 						Row courseIdRow = clazzSheet.getRow(1);

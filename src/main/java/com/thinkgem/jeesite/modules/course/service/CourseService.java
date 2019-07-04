@@ -122,7 +122,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			cellCourseIdStyle.setAlignment(CellStyle.ALIGN_CENTER);
 			
 			
-			
+			String  title = StringEscapeUtils.unescapeHtml4(course.getCursEduNum().concat("--").concat(course.getCursName()).replace("★", "") );
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				
@@ -141,7 +141,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				Row schoolreportRow = clazzSheet.getRow(0);
 				Cell courseNameCell = schoolreportRow.getCell(0);
 
-				courseNameCell.setCellValue("  " + StringEscapeUtils.unescapeHtml4(course.getCursName()).replace("★", "") + "   成绩单");
+				courseNameCell.setCellValue("  " + title + "   成绩单");
 				courseNameCell.setCellStyle(cellCourseNameStyle);
 
 				Row courseIdRow = clazzSheet.getRow(1);
@@ -311,8 +311,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);
 
-						courseNameCell.setCellValue(
-								"  " + StringEscapeUtils.unescapeHtml4(course.getCursName()).replace("★", "") + "   成绩单");
+						courseNameCell.setCellValue("  " + title + "   成绩单");
 						courseNameCell.setCellStyle(cellCourseNameStyle);
 
 						Row courseIdRow = clazzSheet.getRow(1);

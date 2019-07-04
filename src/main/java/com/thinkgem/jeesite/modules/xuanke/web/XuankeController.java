@@ -1,6 +1,8 @@
 package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -142,6 +145,7 @@ public class XuankeController extends BaseController {
 		Map<String,String> selectedCourseMap = new HashMap<String,String>();
 		CourseScheduleExt cse = new CourseScheduleExt();
 		cse.setCourseClass("00000000");
+		cse.setTermYear(sysConfigService.getModule(Global.SYSCONFIG_SELECT).getTermYear());
 		List<CourseScheduleExt> courseScheduleExts = courseScheduleService.getCourseScheduleExt(cse);
 		for(CourseScheduleExt courseScheduleExt:courseScheduleExts) {
 			courseScheduleMap.put(courseScheduleExt.getCourseId(), courseScheduleExt);
@@ -158,34 +162,46 @@ public class XuankeController extends BaseController {
 				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
 			}
 			
-			if(UserUtils.getUser().getRoleIdList().contains("99")) {
+			if(UserUtils.getUser().getRoleIdList().contains("99")||UserUtils.getUser().getUserType().equals("99")) {
 				isSelected = true;
 			}
 		}
 
 		//List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
-		if(!StringUtils.isEmpty(student)) {
-			String studentNumber = student.getStudentNumber();
-			if(!StringUtils.isEmpty(studentNumber)) {
-				Iterator<Course> it = courses.iterator();
-				String benke = "B".toUpperCase();
-				while(it.hasNext()){
-					Course c = it.next();
-					String courseId = c.getId();
-					CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(courseId);
-					if(!StringUtils.isEmpty(courseTeachingMode)) {
-						//courseTeachingModes.add(courseTeachingMode);
-						c.setCourseTeachingMode(courseTeachingMode);
+
+		Iterator<Course> it = courses.iterator();
+
+		while (it.hasNext()) {
+			Course c = it.next();
+			String courseId = c.getId();
+			CourseTeachingMode courseTeachingMode = courseTeachingModeService.getCourseTeachingModeByCourse(courseId);
+			if (!StringUtils.isEmpty(courseTeachingMode)) {
+				c.setCourseTeachingMode(courseTeachingMode);
+			}
+			if (!StringUtils.isEmpty(student)&&isSelected) {
+				String studentNumber = student.getStudentNumber();
+				if (!StringUtils.isEmpty(studentNumber)) {
+					String benke = "B".toUpperCase();
+					String cursFace = c.getCursFace();
+					List<String> grade = null;
+					if (!StringUtils.isEmpty(cursFace)) {
+						grade = Arrays.asList(cursFace.split("、"));
 					}
-					
-					if(studentNumber.length()==10||studentNumber.length()==12) {//本科
-						if(!c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
+					String year = null;
+					if (studentNumber.length() == 10 || studentNumber.length() == 12) {// 本科
+						year = studentNumber.substring(2, 4);
+						if (!c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
-					}else if(studentNumber.length()==7||studentNumber.length()==8){
-						if(c.getCursNum().substring(0,1).toUpperCase().equals(benke)) {
+					} else if (studentNumber.length() == 7 || studentNumber.length() == 8) {
+						year = studentNumber.substring(2, 4);
+						if (c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
 							it.remove();
 						}
+
+					}
+					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year)) {
+						it.remove();
 					}
 				}
 			}
@@ -418,5 +434,9 @@ public class XuankeController extends BaseController {
 			}
 		}
 		return "成功";
+	}
+	public static void main(String[] args) {
+		String st= "20180101";
+		System.out.println(st.substring(0,2));
 	}
 }

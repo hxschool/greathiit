@@ -37,15 +37,14 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="resources/course/选课模板.xlsx">下载模板</a>
+				href="resources/course/import_select_download.xlsx">下载模板</a>
 		</form>
 	</div>
 	<div class="breadcrumb form-search">
 		
 		<ul class="ul-form">
 			
-			<li class="btns"><input
-				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
+			<li class="btns"> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
 			<li class="clearfix"></li>
 		</ul>

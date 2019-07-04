@@ -131,10 +131,11 @@
 
 															<td>${course.cursCredit}</td>
 															<td>
+														
 																<c:if test="${course.courseTeachingMode!=null}">
 																	<c:choose>
 																		<c:when
-																			test="${course.courseTeachingMode.teacMethod=='01'}">
+																			test="${course.courseTeachingMode.teacMethod=='01'||course.courseTeachingMode.teacMethod=='04'}">
 																			<c:if test="${!empty courseScheduleMap[course.id]}">
 																				<c:set var="timeAdd"
 																					value="${courseScheduleMap[course.id].timeAdd}"

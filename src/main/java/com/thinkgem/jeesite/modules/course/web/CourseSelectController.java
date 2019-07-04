@@ -458,12 +458,29 @@ public class CourseSelectController extends BaseController {
 							if(!StringUtils.isEmpty(time)&&!StringUtils.isEmpty(address)) {
 								//周一，5-6节
 								String ss[] = time.split("，");
-								if(ss.length==2) {
-									String zhou = CourseUtil.zhouValue(ss[0]);
-									String jie =  CourseUtil.jieValue(ss[1]);;
+								
+								if(ss.length==1) {
+									String xq = CourseUtil.zhouValue("周一");
+									String jie =  CourseUtil.jieValue(ss[0]);
 									String school = CourseUtil.schoolRootMap.get(address.substring(0,1));
 									String room = address.substring(1);
-									String time_add = curs_year_term.concat(school).concat(room).concat("01").concat(zhou).concat(jie);
+									String time_add = curs_year_term.concat(school).concat(room).concat("01").concat(jie).concat(xq);
+									CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+									if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
+										courseSchedule.setScLock("2");
+										courseSchedule.setCourseClass("00000000");
+										courseSchedule.setCourseId(courseId);
+										courseSchedule.setTips(remark);
+										courseScheduleService.save(courseSchedule);
+									}
+								}
+								
+								if(ss.length==2) {
+									String xq = CourseUtil.zhouValue(ss[0]);
+									String jie =  CourseUtil.jieValue(ss[1]);
+									String school = CourseUtil.schoolRootMap.get(address.substring(0,1));
+									String room = address.substring(1);
+									String time_add = curs_year_term.concat(school).concat(room).concat("01").concat(jie).concat(xq);
 									CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
 									if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
 										courseSchedule.setScLock("2");

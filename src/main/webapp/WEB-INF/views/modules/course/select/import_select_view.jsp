@@ -26,6 +26,7 @@
 	</style>
 </head>
 <body>
+
 <div id="importBox" class="hide">
 		<form id="importForm" action="${ctx}/course/select/import_select" method="post"
 			enctype="multipart/form-data" class="form-search"
@@ -37,7 +38,7 @@
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="btn btn-primary"
 				type="submit" value="   导    入   " /> <a
-				href="resources/course/import_select_download.xlsx">下载模板</a>
+				href="${pageContext.request.contextPath}/resources/course/import_select_download.xlsx">下载模板</a>
 		</form>
 	</div>
 	<div class="breadcrumb form-search">
@@ -45,7 +46,7 @@
 		<ul class="ul-form">
 			
 			<li class="btns"> <input
-				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
+				id="btnImport" class="btn btn-primary" type="button" value="导入选课数据" /></li>
 			<li class="clearfix"></li>
 		</ul>
 	</div>

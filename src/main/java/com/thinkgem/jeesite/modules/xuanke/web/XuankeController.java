@@ -186,19 +186,21 @@ public class XuankeController extends BaseController {
 						grade = Arrays.asList(cursFace.split("、"));
 					}
 					String year = null;
+					boolean ret = true;
 					if (studentNumber.length() == 10 || studentNumber.length() == 12) {// 本科
 						year = studentNumber.substring(2, 4);
 						if (!c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
 							it.remove();
+							ret = false;
 						}
 					} else if (studentNumber.length() == 7 || studentNumber.length() == 8) {
-						year = studentNumber.substring(2, 4);
+						year = studentNumber.substring(0, 2);
 						if (c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
 							it.remove();
+							ret = false;
 						}
-
 					}
-					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year)) {
+					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year)&&ret) {
 						it.remove();
 					}
 				}

@@ -202,10 +202,13 @@
 															var="upperLimit" value="${course.upperLimit }"
 															scope="request" /> <c:set var="count"
 															value="${fnc:countStudents(course.id) }" scope="request" />
-														<c:if test="${count>=upperLimit }">
-
-														</c:if> <c:choose>
-															<c:when test="${count>=upperLimit }">
+															
+														<c:if test="${upperLimit==0 }">
+																<c:set var="count" value="0" scope="request" />
+																<c:set var="upperLimit" value="2000" scope="request" />
+														</c:if> 
+														<c:choose>
+															<c:when test="${count>=upperLimit and upperLimit!=0}">
 																<div class="progress progress-striped active"
 																	style="padding: 0px; margin: 0px; height: 2px;">
 																	<div class="progress-bar progress-bar-danger"

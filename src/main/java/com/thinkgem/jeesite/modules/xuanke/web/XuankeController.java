@@ -261,7 +261,7 @@ public class XuankeController extends BaseController {
 			
 			if(!StringUtils.isEmpty(selectCourseEntity)) {
 				//if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") &&  cnt > entity.getUpperLimit()) {
-				if (!StringUtils.isEmpty(entity.getUpperLimit()) && !entity.getUpperLimit().equals("0") && cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(entity.getUpperLimit()) && entity.getUpperLimit()!=0 && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_WEI_PAIKE);
 					courseService.save(entity);
 				}
@@ -270,7 +270,7 @@ public class XuankeController extends BaseController {
 				addMessage(redirectAttributes, "退课成功");
 			}else {
 				//if (!StringUtils.isEmpty(courseTeachingMode) && !StringUtils.isEmpty(courseTeachingMode.getPeriod()) && !courseTeachingMode.getPeriod().equals("0") && cnt > entity.getUpperLimit()) {
-				if (!StringUtils.isEmpty(entity.getUpperLimit()) && !entity.getUpperLimit().equals("0") && cnt > entity.getUpperLimit()) {
+				if (!StringUtils.isEmpty(entity.getUpperLimit()) && entity.getUpperLimit()!=0 && cnt > entity.getUpperLimit()) {
 					entity.setCursStatus(Course.PAIKE_STATUS_OVER_PAIKE);
 					courseService.save(entity);
 					addMessage(redirectAttributes, "当前课程已满,请选择其他课程");

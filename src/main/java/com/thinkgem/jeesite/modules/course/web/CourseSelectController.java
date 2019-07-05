@@ -405,8 +405,8 @@ public class CourseSelectController extends BaseController {
 					String teac_method = DictUtils.getDictValue(selectCourse[7], "teac_method", "面授");// 授课类型/课程类型
 					String remark = selectCourse[8];
 					String curs_face = selectCourse[9];// 面向学生
-					String upper_limit = selectCourse[10];// 上限
-					String lower_limit = selectCourse[11];// 下限
+					String lower_limit = selectCourse[10];// 下限
+					String upper_limit = selectCourse[11];// 上限
 
 					User user = systemService.isExisUser("", "", tchr_name, null, null);
 

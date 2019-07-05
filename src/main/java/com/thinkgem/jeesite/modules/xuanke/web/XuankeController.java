@@ -2,7 +2,6 @@ package com.thinkgem.jeesite.modules.xuanke.web;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +46,7 @@ import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
@@ -198,6 +198,15 @@ public class XuankeController extends BaseController {
 						if (c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
 							it.remove();
 							ret = false;
+						}
+					}
+					User u = UserUtils.getUser();
+					Office clazz = u.getClazz();
+					if(!StringUtils.isEmpty(clazz)) {
+						//班级年,参军回来的.大于学号的
+						String bjn = clazz.getId().substring(2, 4);
+						if(Integer.valueOf(bjn)>Integer.valueOf(year)) {
+							year = bjn;
 						}
 					}
 					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year)&&ret) {

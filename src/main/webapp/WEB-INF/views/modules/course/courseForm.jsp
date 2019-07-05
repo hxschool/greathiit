@@ -310,10 +310,38 @@
 				</select>
 			</div>
 		</div>
+		
+		
 
 		<c:choose>
-			<c:when test="${param.cursProperty==50 }">
-
+			<c:when test="${param.cursProperty==50||course.cursProperty==50}">
+				
+				
+						<div class="control-group">
+			<label class="control-label">人数下限：</label>
+			<div class="controls">
+				<form:input path="lowerLimit" htmlEscape="false" maxlength="5" oninput="value=value.replace(/[^\d]/g,'')"	class="input-large required" />
+			</div>
+		</div>
+		
+		<div class="control-group">
+			<label class="control-label">人数上限：</label>
+			<div class="controls">
+				<form:input path="upperLimit" htmlEscape="false" maxlength="5" oninput="value=value.replace(/[^\d]/g,'')"	class="input-large required" />
+					
+			</div>
+		</div>
+		
+			<div class="control-group">
+			<label class="control-label">面向学生：</label>
+			<div class="controls">
+				<form:input path="cursFace" htmlEscape="false" maxlength="255"
+					class="input-large required" />
+					<span class="help-inline"><font color="red">多个班级请使用，分割</font>
+						</span>
+			</div>
+		</div>
+				
 			</c:when>
 			<c:otherwise>
 

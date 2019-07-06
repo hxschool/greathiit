@@ -213,7 +213,17 @@
     					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">下载空模板</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="course:course:export">
-    					<a  class="btn btn-success" href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出成绩单</a>
+<div class="btn-group">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    成绩单 <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+   	 <li><a   href="${ctx}/course/course/exportStudentCourse?id=${course.id}">导出</a></li>
+     <li><a   href="${ctx}/course/course/viewExcel?id=${course.id}" target="_blank">浏览</a></li>
+  </ul>
+</div>
+    				
+    					
 					</shiro:hasPermission>
 				</td>
 			</tr>

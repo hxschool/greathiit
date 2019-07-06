@@ -3,9 +3,12 @@
  */
 package com.thinkgem.jeesite.modules.course.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +17,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +45,7 @@ import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.SnowflakeIdWorker;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.ExcelUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
@@ -762,10 +770,36 @@ public class CourseController extends BaseController {
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		response.setHeader("Content-Disposition", "attachment; filename="+new String(filename.getBytes("gbk"),"ISO-8859-1"));
 		File file = new File(modelPath);
-		courseService.exportCourse(file, course, response.getOutputStream());
+		HSSFWorkbook wb = courseService.exportCourse(file, course);
+		OutputStream os = response.getOutputStream();
+		wb.removeSheetAt(0);
+		wb.write(os);
+		os.flush();
+		os.close();
 		addMessage(redirectAttributes, "导出成功");
 		return "redirect:" + adminPath + "/course/course/list?repage";
 	}
+	@RequestMapping("viewExcel")
+	public void viewExcel(Course course,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws FileNotFoundException, IOException, InvalidFormatException, ParserConfigurationException, TransformerException {
+		
+		if(org.springframework.util.StringUtils.isEmpty(course)) {
+			throw new GITException("40400099","系统异常,未选择课程");
+		}
+		course = courseService.get(course);
+		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
+		response.setContentType("text/html;charset=utf-8");
+		File file = new File(modelPath);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		HSSFWorkbook wb = courseService.exportCourse(file, course);
+		wb.removeSheetAt(0);
+		wb.write(os);
+		ByteArrayInputStream is = new ByteArrayInputStream(os.toByteArray());
+		
+		ExcelUtils.convertExceltoHtml(is, response.getOutputStream());
+				
+		
+	}
+	
 	
 	@RequestMapping("selectCourseView")
 	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes,Model model) throws FileNotFoundException, IOException {

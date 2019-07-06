@@ -168,7 +168,8 @@ public class XuankeController extends BaseController {
 		//List<CourseTeachingMode> courseTeachingModes = new ArrayList<CourseTeachingMode>();
 
 		Iterator<Course> it = courses.iterator();
-
+		User u = UserUtils.getUser();
+		Office clazz = u.getClazz();
 		while (it.hasNext()) {
 			Course c = it.next();
 			String courseId = c.getId();
@@ -200,8 +201,7 @@ public class XuankeController extends BaseController {
 							ret = false;
 						}
 					}
-					User u = UserUtils.getUser();
-					Office clazz = u.getClazz();
+					
 					if(!StringUtils.isEmpty(clazz)) {
 						//班级年,参军回来的.大于学号的
 						String bjn = clazz.getId().substring(2, 4);

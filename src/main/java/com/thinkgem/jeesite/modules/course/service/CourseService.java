@@ -104,7 +104,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 	}
 
 	
-	public void exportCourse(File file, Course course, OutputStream os) {
+	public HSSFWorkbook exportCourse(File file, Course course) {
 		logger.info("根据课程生成全部sheet班级信息");
 		try {
 			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
@@ -476,15 +476,14 @@ public class CourseService extends CrudService<CourseDao, Course> {
 
 				}
 			}
-			wb.removeSheetAt(0);
-			wb.write(os);
-			os.flush();
-			os.close();
+			
+			return wb;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	@Async

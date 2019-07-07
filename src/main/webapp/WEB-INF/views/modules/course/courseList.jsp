@@ -190,8 +190,8 @@
 				<td>
 					<shiro:hasPermission name="course:course:oper">
     				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
-    				<a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a>
-					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
+    				<!-- <a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a> -->
+					
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:del">
 					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>

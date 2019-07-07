@@ -127,11 +127,20 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				
 				Row r = clazzSheet.getRow(1);
-				r.setHeight((short) 10);// 目的是想把行高设置成25px
+				if(!StringUtils.isEmpty(r)) {
+					r.setHeight((short) 10);// 目的是想把行高设置成25px
+				}
+				
 				Row r1 = clazzSheet.getRow(4);
-				r1.setHeight((short) 10);// 目的是想把行高设置成25px
+				if(!StringUtils.isEmpty(r1)) {
+					r1.setHeight((short) 10);// 目的是想把行高设置成25px
+				}
 				Row r2 = clazzSheet.getRow(11);
-				r2.setHeight((short) 10);// 目的是想把行高设置成25px
+				if(!StringUtils.isEmpty(r2)) {
+					r2.setHeight((short) 10);// 目的是想把行高设置成25px
+				}
+				
+				
 				
 				Footer footer = clazzSheet.getFooter();
 				footer.setLeft(
@@ -301,12 +310,19 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						POIUtils.copySheet(wb, sheet, clazzSheet, true);
 						
 						Row r = clazzSheet.getRow(1);
-						r.setHeight((short) 10);// 目的是想把行高设置成25px
-						Row r1 = clazzSheet.getRow(4);
-						r1.setHeight((short) 10);// 目的是想把行高设置成25px
 						
+						if(!StringUtils.isEmpty(r)) {
+							r.setHeight((short) 10);// 目的是想把行高设置成25px
+						}
+						
+						Row r1 = clazzSheet.getRow(4);
+						if(!StringUtils.isEmpty(r1)) {
+							r1.setHeight((short) 10);// 目的是想把行高设置成25px
+						}
 						Row r2 = clazzSheet.getRow(11);
-						r2.setHeight((short) 10);// 目的是想把行高设置成25px
+						if(!StringUtils.isEmpty(r2)) {
+							r2.setHeight((short) 10);// 目的是想把行高设置成25px
+						}
 						
 						Row schoolreportRow = clazzSheet.getRow(0);
 						Cell courseNameCell = schoolreportRow.getCell(0);

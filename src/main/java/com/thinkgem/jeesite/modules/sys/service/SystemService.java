@@ -90,6 +90,10 @@ public class SystemService extends BaseService implements InitializingBean {
 		return userDao.getUserSingleByName(name);
 	}
 	@Transactional(readOnly = false)
+	public User isExisUser(String tchr_name) {
+		return isExisUser(null, null, tchr_name, null, null);
+	}
+	@Transactional(readOnly = false)
 	public User isExisUser(String office_name, String curs_type, String tchr_name, String tchr_title, Office major) {
 		User user = getUserSingleByName(tchr_name);
 		

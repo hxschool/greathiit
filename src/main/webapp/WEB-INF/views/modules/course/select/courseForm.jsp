@@ -74,7 +74,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">curs_curr_term：</label>
+			<label class="control-label">学期：</label>
 			<div class="controls">
 				<form:input path="cursYearTerm" htmlEscape="false" maxlength="255" class="input-xlarge "/>
 			</div>

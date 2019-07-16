@@ -31,6 +31,7 @@ import com.thinkgem.jeesite.common.utils.CourseUtil;
 import com.thinkgem.jeesite.common.utils.RegexUtils;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
+import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.calendar.entity.CourseCalendar;
 import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
@@ -38,11 +39,11 @@ import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseClass;
 import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
-import com.thinkgem.jeesite.modules.course.entity.CourseTeachingMode;
 import com.thinkgem.jeesite.modules.course.service.CourseClassService;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.course.service.CourseService;
 import com.thinkgem.jeesite.modules.course.service.CourseTeachingModeService;
+import com.thinkgem.jeesite.modules.course.service.TimetableService;
 import com.thinkgem.jeesite.modules.school.entity.SchoolRoot;
 import com.thinkgem.jeesite.modules.school.service.SchoolRootService;
 import com.thinkgem.jeesite.modules.sys.entity.Dict;
@@ -52,7 +53,6 @@ import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
@@ -93,6 +93,8 @@ public class PaikeCourseController extends BaseController {
 	private CourseClassService courseClassService;
 	@Autowired
 	private CourseTeachingModeService courseTeachingModeService;
+	@Autowired
+	private TimetableService timetableService;
 	@RequiresPermissions("course:paike:edit")
 	@RequestMapping(value = "lock")
 	public String lock(CourseCalendar courseCalendar, Model model) {
@@ -586,6 +588,8 @@ public class PaikeCourseController extends BaseController {
 	}
 	
 	
+	
+	
 		
 	
 	public void auto(HttpServletRequest request) {
@@ -684,7 +688,20 @@ public class PaikeCourseController extends BaseController {
 		return 0;
 	}
 	
+	@RequestMapping(value = "timetable")
+	public String timetable(HttpServletRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
+		return "modules/paike/Timetable";
+	}
 	
+	@RequestMapping(value = "importTimetable")
+	public String importTimetable(MultipartFile file,HttpServletRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
+		ImportResult ir = timetableService.importFile(file);
+		if (ir.getFailureNum()>0){
+			ir.getFailureMsg().insert(0, "，失败 "+ir.getFailureNum()+" 条，导入信息如下：");
+		}
+		addMessage(redirectAttributes, "已成功导入 "+ir.getSuccessNum()+" 条"+ir.getFailureMsg());
+		return "redirect:" + adminPath + "/course/paike/timetable?repage";
+	}
 
 	
 	public static void main(String[] args) {
@@ -711,9 +728,6 @@ public class PaikeCourseController extends BaseController {
 				String room = address.substring(1);
 				System.out.println(curs_year_term.concat("01").concat(room).concat("01").concat("1").concat("1"));
 			}
-			
-			
-			
 		}
 	}
 }

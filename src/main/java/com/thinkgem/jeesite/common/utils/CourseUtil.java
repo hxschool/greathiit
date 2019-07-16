@@ -198,6 +198,10 @@ public class CourseUtil {
 		System.out.println(getCompleteTimeAdd(timeAdd));
 	}
 	
+	public static String  scheduleResolver() {
+		return "";
+	}
+	
 	public static String addDate(String today,int day) {
 		 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");  
 		 Date date = null;  

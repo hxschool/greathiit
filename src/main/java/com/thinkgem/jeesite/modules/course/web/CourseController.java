@@ -180,8 +180,7 @@ public class CourseController extends BaseController {
 		if (!beanValidator(model, course)){
 			return form(course, model);
 		}
-		SnowflakeIdWorker snowflakeIdWorker = new SnowflakeIdWorker(0,0);
-		String courseId = String.valueOf(snowflakeIdWorker.nextId());
+		String courseId = systemService.getSequence("serialNo10");
 		course.setCursEduNum(course.getCursNum());
 		course.setIsNewRecord(true);
 		course.setId(courseId);

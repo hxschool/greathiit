@@ -51,7 +51,9 @@ public class RegexUtils {
 	/** * 正则：URL */
 	public static final String REGEX_URL = "[a-zA-z]+://[^\\s]*";
 	/** * 正则：汉字 */
-	public static final String REGEX_ZH = "^[\\u4e00-\\u9fa5]+$";
+	public static final String REGEX_ZH = "^[\u4e00-\u9fa5]+$";
+	public static final String REGEX_ZH_EXT = "[\u4e00-\u9fa5]";
+	
 	/** * 正则：用户名，取值范围为a-z,A-Z,0-9,"_",汉字，不能以"_"结尾,用户名必须是6-20位 */
 	public static final String REGEX_USERNAME = "^[\\w\\u4e00-\\u9fa5]{6,20}(?<!_)$";
 	/** * 正则：yyyy-MM-dd格式的日期校验，已考虑平闰年 */
@@ -165,6 +167,25 @@ public class RegexUtils {
 		return str;
 	}
 	
+	public static String getChineseExt(String paramValue) {
+
+		String str = "";
+		Matcher matcher = Pattern.compile(REGEX_ZH_EXT).matcher(paramValue);
+		while (matcher.find()) {
+			str += matcher.group();
+		}
+		return str;
+	}
+	
+	public static boolean isContainChinese(String str) {
+		Pattern p = Pattern.compile(REGEX_ZH_EXT);
+		Matcher m = p.matcher(str);
+		if (m.find()) {
+			return true;
+		}
+		return false;
+	}
+	
 	public static String getUnChinese(String str) {
 		if(str!=null) {
 			Pattern pat = Pattern.compile(REGEX_ZH);  
@@ -174,6 +195,15 @@ public class RegexUtils {
 		return str;
 	}
 	
+	
+	public static String removeChinese(String str) {
+		if(str!=null) {
+			Pattern pat = Pattern.compile(REGEX_ZH_EXT);  
+			Matcher mat=pat.matcher(str); 
+			return mat.replaceAll("");
+		}
+		return str;
+	}
 
 	/**
 	 * * 验证用户名 *

@@ -4,7 +4,6 @@
     
 	<sql id="chatMsgHistoryColumns">
 		a.id AS "id",
-		a.gid AS "gid",
 		a.from_user AS "fromUser",
 		a.to_user AS "toUser",
 		a.msg AS "msg",
@@ -69,7 +68,6 @@
 	<insert id="insert">
 		INSERT INTO chat_msg_history(
 			id,
-			gid,
 			from_user,
 			to_user,
 			msg,
@@ -84,7 +82,6 @@
 			del_flag
 		) VALUES (
 			#{id},
-			#{gid},
 			#{fromUser},
 			#{toUser},
 			#{msg},
@@ -102,7 +99,6 @@
 	
 	<update id="update">
 		UPDATE chat_msg_history SET 	
-			gid = #{gid},
 			from_user = #{fromUser},
 			to_user = #{toUser},
 			msg = #{msg},

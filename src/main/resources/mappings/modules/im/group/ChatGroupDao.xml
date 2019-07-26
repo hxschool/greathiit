@@ -4,6 +4,7 @@
     
 	<sql id="chatGroupColumns">
 		a.id AS "id",
+		a.uid AS "uid",
 		a.group_type AS "groupType",
 		a.online AS "online",
 		a.avatar AS "avatar",
@@ -36,6 +37,9 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="groupType != null and groupType != ''">
 				AND a.group_type = #{groupType}
+			</if>
+			<if test="uid != null and uid != ''">
+				AND a.uid = #{uid}
 			</if>
 			<if test="online != null and online != ''">
 				AND a.online = #{online}
@@ -98,6 +102,7 @@
 	<insert id="insert">
 		INSERT INTO chat_group(
 			id,
+			uid,
 			group_type,
 			online,
 			avatar,
@@ -110,6 +115,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{uid},
 			#{groupType},
 			#{online},
 			#{avatar},
@@ -125,6 +131,7 @@
 	
 	<update id="update">
 		UPDATE chat_group SET 	
+			uid = #{uid},
 			group_type = #{groupType},
 			online = #{online},
 			avatar = #{avatar},

@@ -24,6 +24,7 @@ import com.thinkgem.jeesite.modules.im.admin.entity.friend.ChatFriend;
 import com.thinkgem.jeesite.modules.im.admin.entity.msg.ChatMsgHistory;
 import com.thinkgem.jeesite.modules.im.admin.entity.user.ChatUser;
 import com.thinkgem.jeesite.modules.im.admin.service.friend.ChatFriendService;
+import com.thinkgem.jeesite.modules.im.admin.service.group.ChatGroupService;
 import com.thinkgem.jeesite.modules.im.admin.service.msg.ChatMsgHistoryService;
 import com.thinkgem.jeesite.modules.im.admin.service.user.ChatUserService;
 import com.thinkgem.jeesite.modules.im.websocket.message.MessageType;
@@ -71,7 +72,6 @@ public class ImWebSocketServer {
 		case MessageType.GROUP:// 群聊
 		{
 			String to = toServerMessageTo.getId();
-			chatMsgHistory.setGid(to);
 			
 			ChatFriend chatFriend = new ChatFriend();
 			chatFriend.setGid(to);
@@ -160,12 +160,12 @@ public class ImWebSocketServer {
 			List<ChatFriend>  chatFriends = chatFriendService.findList(chatFriend);
 			String textMessage = getToClientMessage(uid,ToClientMessageType.ONLINE_ON);
 			for(ChatFriend cf : chatFriends) {
-				if(Integer.valueOf(cf.getGid())<10) {
+				//if(Integer.valueOf(cf.getGid())<10) {
 					Session session_to = mapUS.get(cf.getFid());
 					if (session_to != null) {
 						session_to.getAsyncRemote().sendText(textMessage);
 					}
-				}
+				//}
 				
 			}
 		}
@@ -190,12 +190,10 @@ public class ImWebSocketServer {
 				List<ChatFriend>  chatFriends = chatFriendService.findList(chatFriend);
 				String textMessage = getToClientMessage(uid,ToClientMessageType.ONLINE_OFF);
 				for(ChatFriend cf : chatFriends) {
-					if(Integer.valueOf(cf.getGid())<10) {
 						Session session_to = mapUS.get(cf.getFid());
 						if (session_to != null) {
 							session_to.getAsyncRemote().sendText(textMessage);
 						}
-					}
 				}
 			}
 			

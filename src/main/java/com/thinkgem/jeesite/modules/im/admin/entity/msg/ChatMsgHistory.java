@@ -15,7 +15,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ChatMsgHistory extends DataEntity<ChatMsgHistory> {
 	
 	private static final long serialVersionUID = 1L;
-	private String gid;		// gid
+
 	private String fromUser;		// from_user
 	private String toUser;		// to_user
 	private String msg;		// msg
@@ -30,15 +30,6 @@ public class ChatMsgHistory extends DataEntity<ChatMsgHistory> {
 
 	public ChatMsgHistory(String id){
 		super(id);
-	}
-
-	@Length(min=1, max=64, message="gid长度必须介于 1 和 64 之间")
-	public String getGid() {
-		return gid;
-	}
-
-	public void setGid(String gid) {
-		this.gid = gid;
 	}
 	
 	@Length(min=0, max=64, message="from_user长度必须介于 0 和 64 之间")

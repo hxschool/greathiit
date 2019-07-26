@@ -15,6 +15,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class ChatGroup extends DataEntity<ChatGroup> {
 	
 	private static final long serialVersionUID = 1L;
+	private String uid;//uid
 	private String groupType;		// group_type
 	private String online;		// online
 	private String avatar;		// avatar
@@ -62,6 +63,14 @@ public class ChatGroup extends DataEntity<ChatGroup> {
 
 	public void setGroupname(String groupname) {
 		this.groupname = groupname;
+	}
+
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 	
 }

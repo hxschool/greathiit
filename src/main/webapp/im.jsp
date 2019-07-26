@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>LayIM_JavaClient by Pz11111</title>
+  <title>哈尔滨信息工程学院</title>
 <link rel="stylesheet" href="static/layer/css/layui.css"/>
  <script type="text/javascript" src="static/layer/layui.js"></script>
  <script type="text/javascript" src="static/jquery/jquery-1.8.3.js"></script>
@@ -33,7 +33,7 @@
                 if(!uid){
                     console.log('当前用户未登陆，应该跳到login');
                 }else {
-                    var socketUrl = 'ws://localhost:8080/websocket/'+ uid;
+                    var socketUrl = 'ws://172.17.6.210:8080/websocket/'+ uid;
                     socket = new WebSocket(socketUrl);
                     im.startListener();
                 }
@@ -192,13 +192,15 @@
     });
 
     layim.on('sign', function(data){
-    	layer.msg(data);
-      });
+    	$.post("/im/api/sign",{uid:im.getUid(),sign:data},function(result){
+    		//layer.msg(data);
+  	  });
+    });
     
     
 
     //监听收到的聊天消息
-    /*
+    
      socket.on('chatMessage', function (res) {
      layim.getMessage({
      username: res.name
@@ -208,8 +210,10 @@
      ,content: res.content
      });
      });
-     */
-
+   
+     $.ajaxSetup({ 
+    	    async : false 
+    	});    
     //layim建立就绪
     layim.on('ready', function(res){
     	
@@ -221,7 +225,9 @@
                 	  value: username,
                 	  title: '修改昵称'
                 	}, function(value, index, elem){
-                	  alert(value); //得到value
+                	  $.post("/im/api/nickname",{uid:im.getUid(),nickname:value},function(result){
+                		  $(".layui-layim-user").html(value);
+                	  });
                 	  layer.close(index);
                 	});
              });

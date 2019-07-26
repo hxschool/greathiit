@@ -61,5 +61,7 @@ public class ImController extends BaseController {
 	        SNSMember SNSMember = layIMService.head(uid,imageBase64);
 	        return SNSMember;
 	}
+
+	
 	
 }

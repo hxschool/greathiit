@@ -3,18 +3,20 @@ package com.thinkgem.jeesite.modules.im.websocket.service;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.modules.im.admin.dao.friend.ChatFriendDao;
-import com.thinkgem.jeesite.modules.im.admin.dao.group.ChatGroupDao;
 import com.thinkgem.jeesite.modules.im.admin.dao.user.ChatUserDao;
 import com.thinkgem.jeesite.modules.im.admin.entity.friend.ChatFriend;
 import com.thinkgem.jeesite.modules.im.admin.entity.group.ChatGroup;
 import com.thinkgem.jeesite.modules.im.admin.entity.user.ChatUser;
+import com.thinkgem.jeesite.modules.im.admin.service.group.ChatGroupService;
 import com.thinkgem.jeesite.modules.im.websocket.data.SNSFriend;
 import com.thinkgem.jeesite.modules.im.websocket.data.SNSGroup;
 import com.thinkgem.jeesite.modules.im.websocket.data.SNSInit;
@@ -31,7 +33,7 @@ public class LayIMService {
 	@Autowired
 	private ChatFriendDao  chatFriendDao;
 	@Autowired
-	private ChatGroupDao chatGroupDao;
+	private ChatGroupService chatGroupService;
 	@Autowired
 	private StorageService storageService;
 	
@@ -106,7 +108,16 @@ public class LayIMService {
 			
 			
 			//设置好友
-			List<ChatGroup> friendGroups = chatGroupDao.myGroupByUid("0","");
+			ChatGroup cg = new ChatGroup();
+			cg.setUid(uid);
+			List<ChatGroup> friendGroups = chatGroupService.findList(cg);
+			if(CollectionUtils.isEmpty(friendGroups)) {
+				cg.setGroupname("我的好友");
+				cg.setGroupType("0");
+				chatGroupService.save(cg);
+				friendGroups = new ArrayList<ChatGroup>();
+				friendGroups.add(cg);
+			}
 			List<SNSFriend> friends = new ArrayList<SNSFriend>();
 			for(ChatGroup chatGroup : friendGroups) {
 				SNSFriend SNSFriend = new SNSFriend();
@@ -134,17 +145,20 @@ public class LayIMService {
 				friends.add(SNSFriend);
 			}
 			
-			
-			//设置组信息
 			List<SNSGroup> groups = new ArrayList<SNSGroup>();
-			List<ChatGroup> chatGroups = chatGroupDao.myGroupByUid("1",uid);
-			for(ChatGroup chatGroup:chatGroups) {
-				SNSGroup SNSGroup = new SNSGroup();
-				SNSGroup.setId(chatGroup.getId());
-				SNSGroup.setAvatar(chatGroup.getAvatar());
-				SNSGroup.setGroupname(chatGroup.getGroupname());
-				groups.add(SNSGroup);
+			
+			Iterator<ChatGroup> it = friendGroups.iterator();
+			while(it.hasNext()) {
+				ChatGroup chatGroup =  it.next();
+				if(!chatGroup.getGroupType().equals("0")) {
+					SNSGroup SNSGroup = new SNSGroup();
+					SNSGroup.setId(chatGroup.getId());
+					SNSGroup.setAvatar(chatGroup.getAvatar());
+					SNSGroup.setGroupname(chatGroup.getGroupname());
+					groups.add(SNSGroup);
+				}
 			}
+
 			SNSdata.setFriend(friends);
 			SNSdata.setGroup(groups);
 			SNSInit.setData(SNSdata);

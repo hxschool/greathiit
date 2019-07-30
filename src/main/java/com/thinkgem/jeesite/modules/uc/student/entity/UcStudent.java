@@ -61,12 +61,29 @@ public class UcStudent extends DataEntity<UcStudent> {
 	private String currentLevel;		// 当前所在年级
 	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
 	private String overDate;		// 结业日期(预计毕业日期)
-	@ExcelField(title="状态", align=2, sort=23)
+	@ExcelField(title="学籍状态", align=2, sort=23)
 	private String status;		// 状态
 	@ExcelField(title="身份所在城市代码", align=2, sort=24)
 	private String regionCode;		// 身份所在城市代码
 	@ExcelField(title="身份所在城市信息", align=2, sort=25)
 	private String regionName;		// 身份所在城市信息
+	
+	private String state;   //状态
+	private String exaCategory;		// 考生类别
+	private String hokouAddress;		// 户口所在地区
+	private String homeAddress;		// 家庭地址
+	private String zipCode;		// 家庭地址
+	private String addressee;		// 收件人
+	private String noticeNumber;		// 录取通知书编号
+	private String phone;		// 联系电话
+	private String isChange;		// 是否服从定向调剂
+	private String yuwen;		// 语文
+	private String shuxue;		// 数学
+	private String waiyu;		// 外语
+	private String zonghe;		// 综合
+	private String zongfen;		// 总分
+	private String techang;		// 特长
+	
 	
 	
 	public UcStudent() {
@@ -301,5 +318,128 @@ public class UcStudent extends DataEntity<UcStudent> {
 	public void setRegionName(String regionName) {
 		this.regionName = regionName;
 	}
+
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public String getExaCategory() {
+		return exaCategory;
+	}
+
+	public void setExaCategory(String exaCategory) {
+		this.exaCategory = exaCategory;
+	}
+
+	public String getHokouAddress() {
+		return hokouAddress;
+	}
+
+	public void setHokouAddress(String hokouAddress) {
+		this.hokouAddress = hokouAddress;
+	}
+
+	public String getHomeAddress() {
+		return homeAddress;
+	}
+
+	public void setHomeAddress(String homeAddress) {
+		this.homeAddress = homeAddress;
+	}
+
+	public String getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
+	}
+
+	public String getAddressee() {
+		return addressee;
+	}
+
+	public void setAddressee(String addressee) {
+		this.addressee = addressee;
+	}
+
+	public String getNoticeNumber() {
+		return noticeNumber;
+	}
+
+	public void setNoticeNumber(String noticeNumber) {
+		this.noticeNumber = noticeNumber;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getIsChange() {
+		return isChange;
+	}
+
+	public void setIsChange(String isChange) {
+		this.isChange = isChange;
+	}
+
+	public String getYuwen() {
+		return yuwen;
+	}
+
+	public void setYuwen(String yuwen) {
+		this.yuwen = yuwen;
+	}
+
+	public String getShuxue() {
+		return shuxue;
+	}
+
+	public void setShuxue(String shuxue) {
+		this.shuxue = shuxue;
+	}
+
+	public String getWaiyu() {
+		return waiyu;
+	}
+
+	public void setWaiyu(String waiyu) {
+		this.waiyu = waiyu;
+	}
+
+	public String getZonghe() {
+		return zonghe;
+	}
+
+	public void setZonghe(String zonghe) {
+		this.zonghe = zonghe;
+	}
+
+	public String getZongfen() {
+		return zongfen;
+	}
+
+	public void setZongfen(String zongfen) {
+		this.zongfen = zongfen;
+	}
+
+	public String getTechang() {
+		return techang;
+	}
+
+	public void setTechang(String techang) {
+		this.techang = techang;
+	}
+	
+	
 	
 }

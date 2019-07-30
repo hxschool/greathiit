@@ -29,6 +29,22 @@
 		a.status AS "status",
 		a.region_code AS "regionCode",
 		a.region_name AS "regionName",
+		
+		a.exa_category AS "exaCategory",
+		a.hokou_address AS "hokouAddress",
+		a.home_address AS "homeAddress",
+		a.zip_code AS "zipCode",
+		a.addressee AS "addressee",
+		a.notice_number AS "noticeNumber",
+		a.phone AS "phone",
+		a.is_change AS "isChange",
+		a.yuwen AS "yuwen",
+		a.shuxue AS "shuxue",
+		a.waiyu AS "waiyu",
+		a.zonghe AS "zonghe",
+		a.zongfen AS "zongfen",
+		a.techang AS "techang",
+		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -179,6 +195,7 @@
 			status,
 			region_code,
 			region_name,
+			exa_category
 			create_by,
 			create_date,
 			update_by,
@@ -248,11 +265,36 @@
 			status = #{status},
 			region_code = #{regionCode},
 			region_name = #{regionName},
+			exa_category = #{exaCategory},
+			hokou_address = #{hokouAddress},
+			home_address = #{homeAddress},
+			zip_code = #{zipCode},
+			addressee = #{addressee},
+			notice_number = #{noticeNumber},
+			phone = #{phone},
+			is_change = #{isChange},
+			yuwen = #{yuwen},
+			shuxue = #{shuxue},
+			waiyu = #{waiyu},
+			zonghe = #{zonghe},
+			zongfen = #{zongfen},
+			techang = #{techang},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}
-		WHERE id = #{id}
+			WHERE 1=1
+			<if test="id!=null and id!=''">
+			and student_number=#{studentNumber}
+			</if>
+			<if test="studentNumber!=null and studentNumber!=''">
+			and student_number=#{studentNumber}
+			</if>
+			<if test="exaNumber!=null and exaNumber!=''">
+				and exa_number=#{exaNumber}
+			</if>
 	</update>
+	
+	
 	
 	<update id="delete">
 		UPDATE uc_student SET 

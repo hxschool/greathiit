@@ -51,8 +51,9 @@
 	</div>
 
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/uc/student/">学籍信息列表</a></li>
-		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/uc/student/">学籍信息</a></li>
+		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
+		<li><a href="${ctx}/uc/student/result">成绩信息</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

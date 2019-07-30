@@ -166,6 +166,14 @@ public class UcStudentController extends BaseController {
 		model.addAttribute("page", page);
 		return "modules/uc/student/ucStudentList";
 	}
+	
+	@RequiresPermissions("uc:ucStudent:view")
+	@RequestMapping(value = "result")
+	public String result(UcStudent ucStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
+		Page<UcStudent> page = ucStudentService.findPage(new Page<UcStudent>(request, response), ucStudent); 
+		model.addAttribute("page", page);
+		return "modules/uc/student/ucStudentResult";
+	}
 
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping(value = "form")

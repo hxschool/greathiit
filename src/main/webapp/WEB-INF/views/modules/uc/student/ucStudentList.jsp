@@ -196,8 +196,8 @@
 				</td> -->
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
-    				<a href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
-					<a href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">删除</a>
+    				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
+					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>

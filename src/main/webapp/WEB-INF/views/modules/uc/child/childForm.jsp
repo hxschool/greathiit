@@ -47,13 +47,13 @@
 		<form:hidden path="id"/>
 		<sys:message content="${message}" />
 		<div class="control-group">
-			<label class="control-label">上级机构:</label>
+			<label class="control-label">所属${fns:getDictLabel(office.type-1, "sys_office_type", "")}:</label>
 			<div class="controls">
 			
 				<sys:treeselect id="office" name="parent.id"
 					value="${office.parent.id}" labelName="parent.name"
 					labelValue="${office.parent.name}" title=''
-					url="/sys/office/treeData?grade=${office.grade}" extId="${office.id}" cssClass=""
+					url="/sys/office/treeData?grade=${office.grade-1}" extId="${office.id}" cssClass=""
 					 allowClear="${office.currentUser.admin}"/>
 					
 			</div>
@@ -68,7 +68,7 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">组织名称:</label>
+			<label class="control-label">${fns:getDictLabel(office.type, "sys_office_type", "")}名称:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50"
 					class="required" />
@@ -77,13 +77,13 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">组织编码:</label>
+			<label class="control-label">${fns:getDictLabel(office.type, "sys_office_type", "")}编码:</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="50" />
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">组织类型:</label>
+			<label class="control-label">类型:</label>
 			<div class="controls">
 				<form:select path="type" class="input-medium">
 					<form:options items="${fns:getDictList('sys_office_type')}"
@@ -92,7 +92,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">组织级别:</label>
+			<label class="control-label">级别:</label>
 			<div class="controls">
 				<form:select path="grade" class="input-medium">
 					<form:options items="${fns:getDictList('sys_office_grade')}"
@@ -202,21 +202,23 @@
 	</form:form>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			if ($("#officeId").val().length == 2) {
+			if ($("#officeId").val().length == 2 && ${office.grade==4}) {
 				$(".gender").show();
 			} else {
 				$(".gender").hide();
 			}
 			$("#name").blur(function() {
 				if ($(this).val() != null && $(this).val() != "") {
-					$.post("${ctx}//uc/child/generateSequenceNumber", {
+					$.post("${ctx}/uc/child/generateSequenceNumber", {
 						"parent.id" : $("#officeId").val(),
 						"name" : $("#name").val()
 					}, function(result) {
 						var data = result;
 						if (data.code != '20000000') {
-							$("#code").val("");
-							layer.msg(data.msg);
+							if($("#id").val()==""){
+								$("#code").val("");
+								layer.msg(data.msg);
+							}
 						} else {
 							$("#code").val(data.msg);
 						}

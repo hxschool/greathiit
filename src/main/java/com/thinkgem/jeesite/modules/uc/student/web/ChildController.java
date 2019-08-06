@@ -106,7 +106,6 @@ public class ChildController extends BaseController {
 	@RequiresPermissions("uc:child:view")
 	@RequestMapping(value = {"list"})
 	public String list(Office office, Model model) {
-		model.addAttribute("type",office.getType());
 		model.addAttribute("label",DictUtils.getDictLabel(office.getType(), "sys_office_type", ""));
         model.addAttribute("list", officeService.findList(office));
 		return "modules/uc/child/childList";
@@ -124,8 +123,8 @@ public class ChildController extends BaseController {
 		if (office.getArea()==null){
 			office.setArea(user.getOffice().getArea());
 		}
-		if(office.getGrade()==null) {
-			office.setGrade(office.getType());
+		if(office.getType()==null) {
+			office.setType(office.getGrade());
 		}
 		model.addAttribute("office", office);
 		return "modules/uc/child/childForm";

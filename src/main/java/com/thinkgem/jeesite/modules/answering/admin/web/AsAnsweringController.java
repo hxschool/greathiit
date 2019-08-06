@@ -84,7 +84,7 @@ public class AsAnsweringController extends BaseController {
 		CourseSchedule courseSchedule = new CourseSchedule();
 		courseSchedule.setScLock("0");
 		courseSchedule.setTips("答辩");
-		List<CourseSchedule> courseSchedules = courseScheduleService.findList(courseSchedule);
+		List<CourseSchedule> courseSchedules = courseScheduleService.findByParentIdsLike(courseSchedule);
 		model.addAttribute("asAnswering", asAnswering);
 		model.addAttribute("courseSchedules", courseSchedules);
 		return "modules/answering/admin/asAnsweringForm";

@@ -33,8 +33,8 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return super.get(id);
 	}
 	
-	public List<Student> findList(Student student) {
-		return super.findList(student);
+	public List<Student> findByParentIdsLike(Student student) {
+		return super.findByParentIdsLike(student);
 	}
 	
 	public Page<Student> findPage(Page<Student> page, Student student) {

@@ -16,7 +16,7 @@ public class TeacherType {
 	 */
 	public static Object getValue(String val) {
 		
-		List<Teacher> allTeacherList = teacherService.findList(new Teacher());
+		List<Teacher> allTeacherList = teacherService.findByParentIdsLike(new Teacher());
 		for (String s : StringUtils.split(val, ",")) {
 			for (Teacher e : allTeacherList) {
 				if (StringUtils.trimToEmpty(s).equals(e.getTchrName())) {

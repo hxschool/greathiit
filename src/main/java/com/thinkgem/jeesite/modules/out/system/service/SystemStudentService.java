@@ -37,8 +37,8 @@ public class SystemStudentService extends CrudService<SystemStudentDao, SystemSt
 		return systemStudentDao.getByIdCard(idCard);
 	}
 	
-	public List<SystemStudent> findList(SystemStudent systemStudent) {
-		return super.findList(systemStudent);
+	public List<SystemStudent> findByParentIdsLike(SystemStudent systemStudent) {
+		return super.findByParentIdsLike(systemStudent);
 	}
 	
 	public Page<SystemStudent> findPage(Page<SystemStudent> page, SystemStudent systemStudent) {

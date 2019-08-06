@@ -63,11 +63,13 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 			return UserUtils.getOfficeList();
 		}
 	}
-	
 
+	public List<Office> findList(Office office){
+		return dao.findList(office);
+	}
 	
 	@Transactional(readOnly = true)
-	public List<Office> findList(Office office){
+	public List<Office> findByParentIdsLike(Office office){
 		if(office != null){
 			office.setParentIds(office.getParentIds()+"%");
 			return dao.findByParentIdsLike(office);
@@ -86,6 +88,13 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 		super.delete(office);
 		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
 	}
+	@Transactional(readOnly = false)
+	public void remove(Office office) {
+		officeDao.remove(office);
+		UserUtils.removeCache(UserUtils.CACHE_OFFICE_LIST);
+	}
+	
+	
 	@Cacheable(value = "treeLinks", key = "#parnetId")
 	public List<TreeLink> treeLink(String parnetId){
 		List<Office> list1 = findByParentId(parnetId);

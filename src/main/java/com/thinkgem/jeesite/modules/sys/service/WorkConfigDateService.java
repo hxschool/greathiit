@@ -26,8 +26,8 @@ public class WorkConfigDateService extends CrudService<WorkConfigDateDao, WorkCo
 		return super.get(id);
 	}
 	
-	public List<WorkConfigDate> findList(WorkConfigDate workConfigDate) {
-		return super.findList(workConfigDate);
+	public List<WorkConfigDate> findByParentIdsLike(WorkConfigDate workConfigDate) {
+		return super.findByParentIdsLike(workConfigDate);
 	}
 	
 	public Page<WorkConfigDate> findPage(Page<WorkConfigDate> page, WorkConfigDate workConfigDate) {

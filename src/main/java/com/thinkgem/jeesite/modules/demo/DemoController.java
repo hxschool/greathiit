@@ -50,7 +50,7 @@ public class DemoController {
 	@ResponseBody
 	public String list(TmVisitor tmVisitor, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
-		List<UcStudent> list = ucStudentService.findList(new UcStudent());
+		List<UcStudent> list = ucStudentService.findByParentIdsLike(new UcStudent());
 		String companyId = null;
 		String officeId = null;
 		String clazzId = null;

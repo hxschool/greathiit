@@ -35,8 +35,8 @@ public class TestDataMainService extends CrudService<TestDataMainDao, TestDataMa
 		return testDataMain;
 	}
 	
-	public List<TestDataMain> findList(TestDataMain testDataMain) {
-		return super.findList(testDataMain);
+	public List<TestDataMain> findByParentIdsLike(TestDataMain testDataMain) {
+		return super.findByParentIdsLike(testDataMain);
 	}
 	
 	public Page<TestDataMain> findPage(Page<TestDataMain> page, TestDataMain testDataMain) {

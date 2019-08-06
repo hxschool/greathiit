@@ -26,8 +26,8 @@ public class WeixinUserService extends CrudService<WeixinUserDao, WeixinUser> {
 		return super.get(id);
 	}
 	
-	public List<WeixinUser> findList(WeixinUser weixinUser) {
-		return super.findList(weixinUser);
+	public List<WeixinUser> findByParentIdsLike(WeixinUser weixinUser) {
+		return super.findByParentIdsLike(weixinUser);
 	}
 	
 	public Page<WeixinUser> findPage(Page<WeixinUser> page, WeixinUser weixinUser) {

@@ -33,8 +33,8 @@ public class RsStudentResultService extends CrudService<RsStudentResultDao, RsSt
 		return super.get(id);
 	}
 	
-	public List<RsStudentResult> findList(RsStudentResult rsStudentResult) {
-		return super.findList(rsStudentResult);
+	public List<RsStudentResult> findByParentIdsLike(RsStudentResult rsStudentResult) {
+		return super.findByParentIdsLike(rsStudentResult);
 	}
 	
 	public Page<RsStudentResult> findPage(Page<RsStudentResult> page, RsStudentResult rsStudentResult) {

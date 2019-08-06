@@ -35,8 +35,8 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 		return super.get(id);
 	}
 	
-	public List<UcStudent> findList(UcStudent ucStudent) {
-		return super.findList(ucStudent);
+	public List<UcStudent> findByParentIdsLike(UcStudent ucStudent) {
+		return super.findByParentIdsLike(ucStudent);
 	}
 	
 	public Page<UcStudent> findPage(Page<UcStudent> page, UcStudent ucStudent) {

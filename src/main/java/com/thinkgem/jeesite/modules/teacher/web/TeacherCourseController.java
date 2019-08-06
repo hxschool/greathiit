@@ -66,7 +66,7 @@ public class TeacherCourseController extends BaseController {
 			course.setTeacher(UserUtils.getTeacher());
 		}
 
-		List<Course> courses = courseService.findList(course);
+		List<Course> courses = courseService.findByParentIdsLike(course);
 		
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_COURSE);
 		String termYear = sysConfig.getTermYear();
@@ -128,7 +128,7 @@ public class TeacherCourseController extends BaseController {
 	public List<String> ajaxAllClass(String courseId,HttpServletRequest request, HttpServletResponse response, Model model) {
 		CourseSchedule courseSchedule = new CourseSchedule();
 		courseSchedule.setCourseId(courseId);
-		List<CourseSchedule> courseSchedules = courseScheduleService.findList(courseSchedule);
+		List<CourseSchedule> courseSchedules = courseScheduleService.findByParentIdsLike(courseSchedule);
 		List<String> list = new ArrayList<String>();
 		for(CourseSchedule cs : courseSchedules) {
 			String courseClass = cs.getCourseClass();

@@ -23,8 +23,8 @@ import com.thinkgem.jeesite.modules.dorm.entity.UcDormManager;
 public class UcDormManagerService extends CrudService<UcDormManagerDao, UcDormManager> {
 	
 
-	public List<UcDormManager> findList(UcDormManager ucDormManager) {
-		return super.findList(ucDormManager);
+	public List<UcDormManager> findByParentIdsLike(UcDormManager ucDormManager) {
+		return super.findByParentIdsLike(ucDormManager);
 	}
 	
 	public Page<UcDormManager> findPage(Page<UcDormManager> page, UcDormManager ucDorm) {

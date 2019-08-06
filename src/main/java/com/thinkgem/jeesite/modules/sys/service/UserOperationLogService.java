@@ -26,8 +26,8 @@ public class UserOperationLogService extends CrudService<UserOperationLogDao, Us
 		return super.get(id);
 	}
 	
-	public List<UserOperationLog> findList(UserOperationLog userOperationLog) {
-		return super.findList(userOperationLog);
+	public List<UserOperationLog> findByParentIdsLike(UserOperationLog userOperationLog) {
+		return super.findByParentIdsLike(userOperationLog);
 	}
 	
 	public Page<UserOperationLog> findPage(Page<UserOperationLog> page, UserOperationLog userOperationLog) {

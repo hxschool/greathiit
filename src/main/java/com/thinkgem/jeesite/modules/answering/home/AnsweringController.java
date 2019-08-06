@@ -55,16 +55,16 @@ public class AnsweringController extends BaseController {
 	public List<AsAnsweringStudent> list(AsAnsweringStudent asAnsweringStudent) {
 		asAnsweringStudent.setAsAnsweringId(asAnsweringStudent.getAsAnsweringId());
 		asAnsweringStudent.setStatus(AsAnsweringService.HAVE_IN_HAND);
-		List<AsAnsweringStudent> list = asAnsweringStudentService.findList(asAnsweringStudent);
+		List<AsAnsweringStudent> list = asAnsweringStudentService.findByParentIdsLike(asAnsweringStudent);
 		asAnsweringStudent.setStatus(AsAnsweringService.READY);
-		list.addAll(asAnsweringStudentService.findList(asAnsweringStudent));
+		list.addAll(asAnsweringStudentService.findByParentIdsLike(asAnsweringStudent));
 		return list;
 	}
 	
 	@RequestMapping(value = "get")
 	@ResponseBody
 	public List<AnsweringResponse> get() {
-		List<AsAnswering> asAnswerings = asAnsweringService.findList(new AsAnswering());
+		List<AsAnswering> asAnswerings = asAnsweringService.findByParentIdsLike(new AsAnswering());
 		List<AnsweringResponse> list = new LinkedList<AnsweringResponse>();
 		for(AsAnswering asAnswering : asAnswerings) {
 			String jxl = CourseUtil.jiaoxuelou(CourseUtil.GetTimeCol(asAnswering.getTimeAdd()).get("school"));
@@ -81,7 +81,7 @@ public class AnsweringController extends BaseController {
 			if(StringUtils.isEmpty(as)) {
 				asAnsweringStudent.setAsAnsweringId(asAnswering.getId());
 				asAnsweringStudent.setStatus(AsAnsweringService.READY);
-				List<AsAnsweringStudent> ass = asAnsweringStudentService.findList(asAnsweringStudent);
+				List<AsAnsweringStudent> ass = asAnsweringStudentService.findByParentIdsLike(asAnsweringStudent);
 				if(!CollectionUtils.isEmpty(ass)) {
 					AsAnsweringStudent  haveInHand  = ass.get(0);
 					haveInHand.setStatus(AsAnsweringService.HAVE_IN_HAND);
@@ -96,7 +96,7 @@ public class AnsweringController extends BaseController {
 				User next = null;
 				asAnsweringStudent.setAsAnsweringId(asAnswering.getId());
 				asAnsweringStudent.setStatus(AsAnsweringService.READY);
-				List<AsAnsweringStudent> ass = asAnsweringStudentService.findList(asAnsweringStudent);
+				List<AsAnsweringStudent> ass = asAnsweringStudentService.findByParentIdsLike(asAnsweringStudent);
 				if(!CollectionUtils.isEmpty(ass)) {
 					next = UserUtils.getCasByLoginName(ass.get(0).getStudentNumber());
 				}

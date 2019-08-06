@@ -26,8 +26,8 @@ public class ChatGroupService extends CrudService<ChatGroupDao, ChatGroup> {
 		return super.get(id);
 	}
 	
-	public List<ChatGroup> findList(ChatGroup chatGroup) {
-		return super.findList(chatGroup);
+	public List<ChatGroup> findByParentIdsLike(ChatGroup chatGroup) {
+		return super.findByParentIdsLike(chatGroup);
 	}
 	
 	public Page<ChatGroup> findPage(Page<ChatGroup> page, ChatGroup chatGroup) {

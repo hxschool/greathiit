@@ -33,8 +33,8 @@ public class CourseCompositionRulesService extends CrudService<CourseComposition
 	}
 	
 	
-	public List<CourseCompositionRules> findList(CourseCompositionRules courseCompositionRules) {
-		return super.findList(courseCompositionRules);
+	public List<CourseCompositionRules> findByParentIdsLike(CourseCompositionRules courseCompositionRules) {
+		return super.findByParentIdsLike(courseCompositionRules);
 	}
 	
 	public Page<CourseCompositionRules> findPage(Page<CourseCompositionRules> page, CourseCompositionRules courseCompositionRules) {

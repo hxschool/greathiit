@@ -73,7 +73,7 @@ public class PaymentController {
 		}
 		SysPayment queryEntity = new SysPayment();
 		queryEntity.setSysPaymentType(sysPaymentType);
-		List<SysPayment> sysPayments = sysPaymentService.findList(queryEntity);
+		List<SysPayment> sysPayments = sysPaymentService.findByParentIdsLike(queryEntity);
 
 		
 		if(StringUtils.isEmpty(user.getPayStatus())) {
@@ -93,7 +93,7 @@ public class PaymentController {
 		Order order = new Order();
 		order.setStatus(GlobalConstants.TRADESTATUS_SUC);
 		order.setUser(user);
-		List<Order> orders = orderService.findList(order);
+		List<Order> orders = orderService.findByParentIdsLike(order);
 
 		for(Order o:orders) {
 			for(Iterator<PaymentEntity> it = list.iterator();it.hasNext();){
@@ -130,7 +130,7 @@ public class PaymentController {
 		}
 		SysPayment queryEntity = new SysPayment();
 		queryEntity.setSysPaymentType(sysPaymentType);
-		List<SysPayment> sysPayments = sysPaymentService.findList(queryEntity);
+		List<SysPayment> sysPayments = sysPaymentService.findByParentIdsLike(queryEntity);
 		
 		for(SysPayment payment : sysPayments) {
 			if(idsList.contains(payment.getId())) {

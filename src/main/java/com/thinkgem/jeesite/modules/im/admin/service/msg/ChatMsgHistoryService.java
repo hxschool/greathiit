@@ -26,8 +26,8 @@ public class ChatMsgHistoryService extends CrudService<ChatMsgHistoryDao, ChatMs
 		return super.get(id);
 	}
 	
-	public List<ChatMsgHistory> findList(ChatMsgHistory chatMsgHistory) {
-		return super.findList(chatMsgHistory);
+	public List<ChatMsgHistory> findByParentIdsLike(ChatMsgHistory chatMsgHistory) {
+		return super.findByParentIdsLike(chatMsgHistory);
 	}
 	
 	public Page<ChatMsgHistory> findPage(Page<ChatMsgHistory> page, ChatMsgHistory chatMsgHistory) {

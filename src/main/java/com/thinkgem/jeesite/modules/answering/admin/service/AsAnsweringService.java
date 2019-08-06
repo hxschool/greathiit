@@ -29,8 +29,8 @@ public class AsAnsweringService extends CrudService<AsAnsweringDao, AsAnswering>
 		return super.get(id);
 	}
 	
-	public List<AsAnswering> findList(AsAnswering asAnswering) {
-		return super.findList(asAnswering);
+	public List<AsAnswering> findByParentIdsLike(AsAnswering asAnswering) {
+		return super.findByParentIdsLike(asAnswering);
 	}
 	
 	public Page<AsAnswering> findPage(Page<AsAnswering> page, AsAnswering asAnswering) {

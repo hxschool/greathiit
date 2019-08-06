@@ -454,7 +454,7 @@ public class RecruitStudentController extends BaseController {
 	  @RequestMapping(value = "init")
 	  public void init(String pwd,RecruitStudent ss) {
 		  if(pwd.equals("zhaojunfei")) {
-			  List<RecruitStudent>  list = recruitStudentService.findList(ss);
+			  List<RecruitStudent>  list = recruitStudentService.findByParentIdsLike(ss);
 			  for(RecruitStudent rs:list) {
 				  String idCard = rs.getIdCard();
 					User entity = UserUtils.getByLoginName(idCard);

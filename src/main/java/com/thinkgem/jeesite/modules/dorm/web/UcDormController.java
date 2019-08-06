@@ -196,7 +196,7 @@ public class UcDormController extends BaseController {
 		UcDorm ucDorm = new UcDorm();
 		ucDorm.setUcDormBuild(new UcDormBuild(boy));
 		
-		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		List<UcDorm> boyDorms = ucDormService.findByParentIdsLike(ucDorm);
 		
 		 Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {  
 	            @Override  
@@ -222,7 +222,7 @@ public class UcDormController extends BaseController {
 	public void parseDorm(String  ucDormBuild,List<User> users) {
 		UcDorm ucDorm = new UcDorm();
 		ucDorm.setUcDormBuild(new UcDormBuild(ucDormBuild));
-		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		List<UcDorm> boyDorms = ucDormService.findByParentIdsLike(ucDorm);
 		
 		Map<String, List<UcDorm>> floorMap = CommonUtils.group(boyDorms, new GroupBy<String>() {
 			@Override
@@ -364,7 +364,7 @@ public class UcDormController extends BaseController {
 	private void handerDorm(String boy, User user) {
 		UcDorm ucDorm = new UcDorm();
 		ucDorm.setUcDormBuild(new UcDormBuild(boy));
-		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		List<UcDorm> boyDorms = ucDormService.findByParentIdsLike(ucDorm);
 		for(UcDorm dorm:boyDorms) {
 			int total = Integer.valueOf(dorm.getTotal())-Integer.valueOf(dorm.getCnt());
 			for(int i=0;i<total;i++) {
@@ -377,7 +377,7 @@ public class UcDormController extends BaseController {
 	private void hander(String id, User user,List<User> list) {
 		UcDorm ucDorm = new UcDorm();
 		ucDorm.setUcDormBuild(new UcDormBuild(id));
-		List<UcDorm> boyDorms = ucDormService.findList(ucDorm);
+		List<UcDorm> boyDorms = ucDormService.findByParentIdsLike(ucDorm);
 		
 		for(UcDorm dorm:boyDorms) {
 			int total = Integer.valueOf(dorm.getTotal())-Integer.valueOf(dorm.getCnt());

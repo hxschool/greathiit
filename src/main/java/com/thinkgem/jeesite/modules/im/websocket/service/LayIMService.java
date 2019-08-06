@@ -110,7 +110,7 @@ public class LayIMService {
 			//设置好友
 			ChatGroup cg = new ChatGroup();
 			cg.setUid(uid);
-			List<ChatGroup> friendGroups = chatGroupService.findList(cg);
+			List<ChatGroup> friendGroups = chatGroupService.findByParentIdsLike(cg);
 			if(CollectionUtils.isEmpty(friendGroups)) {
 				cg.setGroupname("我的好友");
 				cg.setGroupType("0");

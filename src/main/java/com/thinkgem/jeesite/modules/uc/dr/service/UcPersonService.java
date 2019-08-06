@@ -26,8 +26,8 @@ public class UcPersonService extends CrudService<UcPersonDao, UcPerson> {
 		return super.get(id);
 	}
 	
-	public List<UcPerson> findList(UcPerson ucPerson) {
-		return super.findList(ucPerson);
+	public List<UcPerson> findByParentIdsLike(UcPerson ucPerson) {
+		return super.findByParentIdsLike(ucPerson);
 	}
 	
 	public Page<UcPerson> findPage(Page<UcPerson> page, UcPerson ucPerson) {

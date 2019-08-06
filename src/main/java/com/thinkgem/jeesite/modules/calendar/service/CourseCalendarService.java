@@ -32,8 +32,8 @@ public class CourseCalendarService extends CrudService<CourseCalendarDao, Course
 		return super.get(id);
 	}
 	
-	public List<CourseCalendar> findList(CourseCalendar courseCalendar) {
-		return super.findList(courseCalendar);
+	public List<CourseCalendar> findByParentIdsLike(CourseCalendar courseCalendar) {
+		return super.findByParentIdsLike(courseCalendar);
 	}
 	
 	public Page<CourseCalendar> findPage(Page<CourseCalendar> page, CourseCalendar courseCalendar) {

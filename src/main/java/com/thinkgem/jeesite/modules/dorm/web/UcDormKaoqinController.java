@@ -111,7 +111,7 @@ public class UcDormKaoqinController extends BaseController {
 		UcDormRecord ucDormRecord = new UcDormRecord();
 		ucDormRecord.setDormBuildId(dormBuildId);
 		ucDormRecord.setDetail(detail);
-		List<UcDormRecord> list = ucDormRecordService.findList(ucDormRecord);
+		List<UcDormRecord> list = ucDormRecordService.findByParentIdsLike(ucDormRecord);
 		model.addAttribute("list", list);
 		return "modules/kaoqin/ucDormQuery";
 	}

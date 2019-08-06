@@ -100,7 +100,7 @@ public class DictController extends BaseController {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
 		Dict dict = new Dict();
 		dict.setType(type);
-		List<Dict> list = dictService.findList(dict);
+		List<Dict> list = dictService.findByParentIdsLike(dict);
 		for (int i=0; i<list.size(); i++){
 			Dict e = list.get(i);
 			Map<String, Object> map = Maps.newHashMap();
@@ -117,7 +117,7 @@ public class DictController extends BaseController {
 	public List<Dict> listData(@RequestParam(required=false) String type) {
 		Dict dict = new Dict();
 		dict.setType(type);
-		return dictService.findList(dict);
+		return dictService.findByParentIdsLike(dict);
 	}
 
 }

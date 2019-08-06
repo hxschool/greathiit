@@ -35,25 +35,27 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a
-			href="${ctx}/sys/office/list?id=${office.parent.id}&parentIds=${office.parentIds}">组织列表</a></li>
+			href="${ctx}/uc/child/list?grade=${office.grade}&id=${office.parent.id}&parentIds=${office.parentIds}">组织列表</a></li>
 		<li class="active"><a
-			href="${ctx}/sys/office/form?id=${office.id}&parent.id=${office.parent.id}">组织<shiro:hasPermission
+			href="${ctx}/uc/child/form?grade=${office.grade}&id=${office.id}&parent.id=${office.parent.id}">组织<shiro:hasPermission
 					name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission>
 				<shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="office"
-		action="${ctx}/sys/office/save" method="post" class="form-horizontal">
+		action="${ctx}/uc/child/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
 		<sys:message content="${message}" />
 		<div class="control-group">
 			<label class="control-label">上级机构:</label>
 			<div class="controls">
+			
 				<sys:treeselect id="office" name="parent.id"
 					value="${office.parent.id}" labelName="parent.name"
-					labelValue="${office.parent.name}" title="机构"
-					url="/sys/office/treeData" extId="${office.id}" cssClass=""
-					allowClear="${office.currentUser.admin}" />
+					labelValue="${office.parent.name}" title=''
+					url="/sys/office/treeData?grade=${office.grade}" extId="${office.id}" cssClass=""
+					 allowClear="${office.currentUser.admin}"/>
+					
 			</div>
 		</div>
 		<div class="control-group">
@@ -207,7 +209,7 @@
 			}
 			$("#name").blur(function() {
 				if ($(this).val() != null && $(this).val() != "") {
-					$.post("${ctx}//sys/office/generateSequenceNumber", {
+					$.post("${ctx}//uc/child/generateSequenceNumber", {
 						"parent.id" : $("#officeId").val(),
 						"name" : $("#name").val()
 					}, function(result) {

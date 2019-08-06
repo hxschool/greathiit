@@ -26,8 +26,8 @@ public class ChatFriendService extends CrudService<ChatFriendDao, ChatFriend> {
 		return super.get(id);
 	}
 	
-	public List<ChatFriend> findList(ChatFriend chatFriend) {
-		return super.findList(chatFriend);
+	public List<ChatFriend> findByParentIdsLike(ChatFriend chatFriend) {
+		return super.findByParentIdsLike(chatFriend);
 	}
 	
 	public Page<ChatFriend> findPage(Page<ChatFriend> page, ChatFriend chatFriend) {

@@ -26,8 +26,8 @@ public class TmVisitorService extends CrudService<TmVisitorDao, TmVisitor> {
 		return super.get(id);
 	}
 	
-	public List<TmVisitor> findList(TmVisitor tmVisitor) {
-		return super.findList(tmVisitor);
+	public List<TmVisitor> findByParentIdsLike(TmVisitor tmVisitor) {
+		return super.findByParentIdsLike(tmVisitor);
 	}
 	
 	public Page<TmVisitor> findPage(Page<TmVisitor> page, TmVisitor tmVisitor) {

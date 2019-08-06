@@ -26,11 +26,11 @@ public class TestTreeService extends TreeService<TestTreeDao, TestTree> {
 		return super.get(id);
 	}
 	
-	public List<TestTree> findList(TestTree testTree) {
+	public List<TestTree> findByParentIdsLike(TestTree testTree) {
 		if (StringUtils.isNotBlank(testTree.getParentIds())){
 			testTree.setParentIds(","+testTree.getParentIds()+",");
 		}
-		return super.findList(testTree);
+		return super.findByParentIdsLike(testTree);
 	}
 	
 	@Transactional(readOnly = false)

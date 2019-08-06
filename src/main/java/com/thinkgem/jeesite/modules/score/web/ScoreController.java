@@ -95,7 +95,7 @@ public class ScoreController {
 			st.setStudentNumber(studentNumber);
 			sc.setStudent(st);
 			sc.setTermYear(termYear);
-			scs.put(termYear, studentCourseService.findList(sc));
+			scs.put(termYear, studentCourseService.findByParentIdsLike(sc));
 		}
 		model.addAttribute("scs", scs);
 		model.addAttribute("studentNumber", studentNumber);
@@ -212,7 +212,7 @@ public class ScoreController {
 				st.setStudentNumber(studentNumber);
 				sc.setStudent(st);
 				sc.setTermYear(termYear);
-				List<StudentCourse> scs = studentCourseService.findList(sc);
+				List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
 				int y1 = 482;
 				for (StudentCourse isc : scs) {
 					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
@@ -227,7 +227,7 @@ public class ScoreController {
 				st.setStudentNumber(studentNumber);
 				sc.setStudent(st);
 				sc.setTermYear(termYear);
-				List<StudentCourse> scs = studentCourseService.findList(sc);
+				List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
 				int y1 = 482;
 				for (StudentCourse isc : scs) {
 					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
@@ -262,7 +262,7 @@ public class ScoreController {
 					st.setStudentNumber(studentNumber);
 					sc.setStudent(st);
 					sc.setTermYear(termYear);
-					List<StudentCourse> scs = studentCourseService.findList(sc);
+					List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
 
 					for (StudentCourse isc : scs) {
 						String courseName = ellipsis(isc.getCourse().getCursName(), 10);
@@ -279,7 +279,7 @@ public class ScoreController {
 					st.setStudentNumber(studentNumber);
 					sc.setStudent(st);
 					sc.setTermYear(termYear);
-					List<StudentCourse> scs = studentCourseService.findList(sc);
+					List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
 
 					for (StudentCourse isc : scs) {
 						String courseName = ellipsis(isc.getCourse().getCursName(), 10);

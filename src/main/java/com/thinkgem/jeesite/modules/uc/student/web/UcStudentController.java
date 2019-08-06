@@ -201,13 +201,17 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 	
+    @RequestMapping(value = "download")
+    public String download(UcStudent student, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+    	return "modules/uc/student/ucStudentDownload";
+    }
+
 	
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(UcStudent student, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
 		try {
             String fileName = "学籍信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
-            Page<UcStudent> page = ucStudentService.findPage(new Page<UcStudent>(request, response, -1), student);
-    		new ExportExcel("学籍信息", UcStudent.class).setDataList(page.getList()).write(response, fileName).dispose();
+    		new ExportExcel("学籍信息", UcStudent.class).setDataList(ucStudentService.findByParentIdsLike(student)).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出学籍信息失败！失败信息："+e.getMessage());
@@ -215,6 +219,10 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
     }
 
+    @RequestMapping(value = "view")
+    public String view() {
+    	return "modules/uc/student/ucStudentView";
+    }
 	/**
 	 * 导入用户数据
 	 * @param file

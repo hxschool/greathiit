@@ -31,8 +31,8 @@ public class SysPaymentTypeService extends CrudService<SysPaymentTypeDao, SysPay
 		return super.get(id);
 	}
 	
-	public List<SysPaymentType> findList(SysPaymentType sysPaymentType) {
-		return super.findList(sysPaymentType);
+	public List<SysPaymentType> findByParentIdsLike(SysPaymentType sysPaymentType) {
+		return super.findByParentIdsLike(sysPaymentType);
 	}
 	
 	public Page<SysPaymentType> findPage(Page<SysPaymentType> page, SysPaymentType sysPaymentType) {

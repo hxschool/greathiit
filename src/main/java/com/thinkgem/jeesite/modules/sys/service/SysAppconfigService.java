@@ -32,8 +32,8 @@ public class SysAppconfigService extends CrudService<SysAppconfigDao, SysAppconf
 		return super.get(id);
 	}
 	
-	public List<SysAppconfig> findList(SysAppconfig sysAppconfig) {
-		return super.findList(sysAppconfig);
+	public List<SysAppconfig> findByParentIdsLike(SysAppconfig sysAppconfig) {
+		return super.findByParentIdsLike(sysAppconfig);
 	}
 	
 	public Page<SysAppconfig> findPage(Page<SysAppconfig> page, SysAppconfig sysAppconfig) {

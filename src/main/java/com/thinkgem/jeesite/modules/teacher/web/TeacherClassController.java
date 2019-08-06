@@ -79,7 +79,7 @@ public class TeacherClassController extends BaseController {
 	public List<UcEmergencyContact> emergency(String studentNumber,  HttpServletRequest request, HttpServletResponse response, Model model) {
 		UcEmergencyContact ucEmergencyContact = new UcEmergencyContact();
 		ucEmergencyContact.setStudentNumber(studentNumber);
-		List<UcEmergencyContact> list = ucEmergencyContactService.findList(ucEmergencyContact);
+		List<UcEmergencyContact> list = ucEmergencyContactService.findByParentIdsLike(ucEmergencyContact);
 		return list;
 	}
 	
@@ -88,7 +88,7 @@ public class TeacherClassController extends BaseController {
 	public List<UcContactPerson> contact(String studentNumber,  HttpServletRequest request, HttpServletResponse response, Model model) {
 		UcContactPerson ucContactPerson = new UcContactPerson();
 		ucContactPerson.setStudentNumber(studentNumber);
-		List<UcContactPerson> list = ucContactPersonService.findList(ucContactPerson);
+		List<UcContactPerson> list = ucContactPersonService.findByParentIdsLike(ucContactPerson);
 		return list;
 	}
 	
@@ -99,7 +99,7 @@ public class TeacherClassController extends BaseController {
 		User user = UserUtils.getUser();
 		TeacherClass teacherClass = new TeacherClass();
 		teacherClass.setTeacherNumber(user.getNo());
-		List<TeacherClass> teacherClazzs = teacherClassService.findList(teacherClass);
+		List<TeacherClass> teacherClazzs = teacherClassService.findByParentIdsLike(teacherClass);
 		if(CollectionUtils.isEmpty(teacherClazzs)) {
 			model.addAttribute("message","当前教师未设置班级信息,所以查询不到学生信息");
 			return "modules/teacher/teacherClass/teacherStudentList";

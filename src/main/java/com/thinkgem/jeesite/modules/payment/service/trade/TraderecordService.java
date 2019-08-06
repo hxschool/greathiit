@@ -46,8 +46,8 @@ public class TraderecordService extends CrudService<TraderecordDao, Traderecord>
 		}
 	}
 	
-	public List<Traderecord> findList(Traderecord traderecord) {
-		return super.findList(traderecord);
+	public List<Traderecord> findByParentIdsLike(Traderecord traderecord) {
+		return super.findByParentIdsLike(traderecord);
 	}
 	
 	public Page<Traderecord> findPage(Page<Traderecord> page, Traderecord traderecord) {

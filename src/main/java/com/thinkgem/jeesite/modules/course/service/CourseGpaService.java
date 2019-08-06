@@ -34,8 +34,8 @@ public class CourseGpaService extends CrudService<CourseGpaDao, CourseGpa> {
 		return super.get(id);
 	}
 	
-	public List<CourseGpa> findList(CourseGpa courseGpa) {
-		return super.findList(courseGpa);
+	public List<CourseGpa> findByParentIdsLike(CourseGpa courseGpa) {
+		return super.findByParentIdsLike(courseGpa);
 	}
 	
 	public Page<CourseGpa> findPage(Page<CourseGpa> page, CourseGpa courseGpa) {

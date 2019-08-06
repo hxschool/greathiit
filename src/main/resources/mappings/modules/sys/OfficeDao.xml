@@ -18,6 +18,8 @@
 		a.phone, 
 		a.fax, 
 		a.email, 
+		a.male,
+		a.female,
 		a.remarks,
 		a.create_by AS "createBy.id",
 		a.create_date,
@@ -69,11 +71,14 @@
 		<include refid="officeJoins"/>
 		WHERE a.del_flag = #{DEL_FLAG_NORMAL}
 		<!-- 数据范围过滤 -->
+		<if test="type!=null and type!=''">
+			and	a.type=#{type}
+		</if>
 		${sqlMap.dsf}
-		OR a.id = #{currentUser.office.id}
+		
 		ORDER BY a.code
 	</select>
-			
+		<!-- OR a.id = #{currentUser.office.id} -->	
 	<select id="findAllList" resultType="Office">
 		SELECT
 			<include refid="officeColumns"/>
@@ -141,7 +146,9 @@
 			master, 
 			phone, 
 			fax, 
-			email, 
+			email,
+			male,
+			female, 
 			create_by, 
 			create_date, 
 			update_by, 
@@ -167,6 +174,8 @@
 			#{phone}, 
 			#{fax}, 
 			#{email}, 
+			#{male},
+			#{female},
 			#{createBy.id}, 
 			#{createDate}, 
 			#{updateBy.id}, 
@@ -199,7 +208,10 @@
 			remarks = #{remarks},
 			useable=#{useable},
 			primary_person=#{primaryPerson.id},
+			male = #{male},
+			female = #{female},
 			deputy_person=#{deputyPerson.id}
+			
 		WHERE id = #{id}
 	</update>
 	
@@ -218,5 +230,8 @@
 					<if test="dbName == 'mssql'">'%,'+#{id}+',%'</if>
 					<if test="dbName == 'mysql'">CONCAT('%,', #{id}, ',%')</if>
 	</update>
-	
+	<delete id="remove">
+		delete from  sys_office WHERE id = #{id} OR parent_ids LIKE 
+		CONCAT('%,', #{id}, ',%')
+	</delete>
 </mapper>

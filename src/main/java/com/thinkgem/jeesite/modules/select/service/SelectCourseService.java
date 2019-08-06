@@ -43,8 +43,8 @@ public class SelectCourseService extends CrudService<SelectCourseDao, SelectCour
 		return selectCourseDao.count(selectCourse);
 	}
 	
-	public List<SelectCourse> findList(SelectCourse selectCourse) {
-		return super.findList(selectCourse);
+	public List<SelectCourse> findByParentIdsLike(SelectCourse selectCourse) {
+		return super.findByParentIdsLike(selectCourse);
 	}
 	
 	public Page<SelectCourse> findPage(Page<SelectCourse> page, SelectCourse selectCourse) {

@@ -54,7 +54,7 @@ public class TestTreeController extends BaseController {
 	@RequiresPermissions("test:testTree:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(TestTree testTree, HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<TestTree> list = testTreeService.findList(testTree); 
+		List<TestTree> list = testTreeService.findByParentIdsLike(testTree); 
 		model.addAttribute("list", list);
 		return "jeesite/test/testTreeList";
 	}
@@ -68,7 +68,7 @@ public class TestTreeController extends BaseController {
 			if (StringUtils.isBlank(testTree.getId())){
 				TestTree testTreeChild = new TestTree();
 				testTreeChild.setParent(new TestTree(testTree.getParent().getId()));
-				List<TestTree> list = testTreeService.findList(testTree); 
+				List<TestTree> list = testTreeService.findByParentIdsLike(testTree); 
 				if (list.size() > 0){
 					testTree.setSort(list.get(list.size()-1).getSort());
 					if (testTree.getSort() != null){
@@ -108,7 +108,7 @@ public class TestTreeController extends BaseController {
 	@RequestMapping(value = "treeData")
 	public List<Map<String, Object>> treeData(@RequestParam(required=false) String extId, HttpServletResponse response) {
 		List<Map<String, Object>> mapList = Lists.newArrayList();
-		List<TestTree> list = testTreeService.findList(new TestTree());
+		List<TestTree> list = testTreeService.findByParentIdsLike(new TestTree());
 		for (int i=0; i<list.size(); i++){
 			TestTree e = list.get(i);
 			if (StringUtils.isBlank(extId) || (extId!=null && !extId.equals(e.getId()) && e.getParentIds().indexOf(","+extId+",")==-1)){

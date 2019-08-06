@@ -88,7 +88,7 @@ public class StudentCourseController extends BaseController {
 		Student student = new Student();
 		student.setStudent(user);
 		studentCourse.setStudent(student);
-		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
+		model.addAttribute("studentCourses", studentCourseService.findByParentIdsLike(studentCourse));
 		return "modules/student/studentcourse/StudentCourseWechat";
 	}
 	

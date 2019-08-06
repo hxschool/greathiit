@@ -43,8 +43,8 @@ public class SysConfigService extends CrudService<SysConfigDao, SysConfig> {
 		return sysConfigDao.getModule(sysConfig);
 	}
 	
-	public List<SysConfig> findList(SysConfig sysConfig) {
-		return super.findList(sysConfig);
+	public List<SysConfig> findByParentIdsLike(SysConfig sysConfig) {
+		return super.findByParentIdsLike(sysConfig);
 	}
 	
 	public Page<SysConfig> findPage(Page<SysConfig> page, SysConfig sysConfig) {

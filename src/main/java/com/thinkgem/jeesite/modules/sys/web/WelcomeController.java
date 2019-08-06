@@ -46,7 +46,7 @@ public class WelcomeController extends BaseController {
 	
 	@RequestMapping(value = {"index", ""})
 	public String index(SysAppconfig sysAppconfig, HttpServletRequest request, HttpServletResponse response, Model model) {
-        List<SysAppconfig> list = sysAppconfigService.findList(sysAppconfig);
+        List<SysAppconfig> list = sysAppconfigService.findByParentIdsLike(sysAppconfig);
         model.addAttribute("list", list);
 		return "modules/sys/welcome";
 	}
@@ -55,23 +55,23 @@ public class WelcomeController extends BaseController {
 	public String student(SysAppconfig sysAppconfig, HttpServletRequest request, HttpServletResponse response, Model model) {
 		//应用系统
 		User user = UserUtils.getUser();
-        List<SysAppconfig> list = sysAppconfigService.findList(sysAppconfig);
+        List<SysAppconfig> list = sysAppconfigService.findByParentIdsLike(sysAppconfig);
         
         //成绩
         StudentCourse studentCourse = new StudentCourse();
         studentCourse.setStudentNumber(user.getNo());
-        List<StudentCourse>  studentCourses = studentCourseService.findList(studentCourse);
+        List<StudentCourse>  studentCourses = studentCourseService.findByParentIdsLike(studentCourse);
        
         //公告~
         OaNotify oaNotify = new OaNotify();
         oaNotify.setSelf(true);
-        List<OaNotify> oaNotifys = oaNotifyService.findList(oaNotify);
+        List<OaNotify> oaNotifys = oaNotifyService.findByParentIdsLike(oaNotify);
         model.addAttribute("oaNotifys", oaNotifys);
         
         //我的报修
         UcDormRepair ucDormRepair = new UcDormRepair();
         ucDormRepair.setUser(user);
-        List<UcDormRepair> ucDormRepairs = ucDormRepairService.findList(ucDormRepair);
+        List<UcDormRepair> ucDormRepairs = ucDormRepairService.findByParentIdsLike(ucDormRepair);
 		model.addAttribute("ucDormRepairs", ucDormRepairs);
 		
 		/*
@@ -92,7 +92,7 @@ public class WelcomeController extends BaseController {
 	
 	@RequestMapping(value = "teacher")
 	public String teacher(SysAppconfig sysAppconfig, HttpServletRequest request, HttpServletResponse response, Model model) {
-        List<SysAppconfig> list = sysAppconfigService.findList(sysAppconfig);
+        List<SysAppconfig> list = sysAppconfigService.findByParentIdsLike(sysAppconfig);
         model.addAttribute("list", list);
 		return "modules/sys/teacher";
 	}

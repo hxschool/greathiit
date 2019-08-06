@@ -26,8 +26,8 @@ public class UcEmergencyContactService extends CrudService<UcEmergencyContactDao
 		return super.get(id);
 	}
 	
-	public List<UcEmergencyContact> findList(UcEmergencyContact ucEmergencyContact) {
-		return super.findList(ucEmergencyContact);
+	public List<UcEmergencyContact> findByParentIdsLike(UcEmergencyContact ucEmergencyContact) {
+		return super.findByParentIdsLike(ucEmergencyContact);
 	}
 	
 	public Page<UcEmergencyContact> findPage(Page<UcEmergencyContact> page, UcEmergencyContact ucEmergencyContact) {

@@ -94,7 +94,7 @@ public class UcDormBuildController extends BaseController {
 	@RequestMapping(value = "info")
 	@ResponseBody
 	public List<UcDormBuild> info(UcDormBuild ucDormBuild) {
-		return ucDormBuildService.findList(ucDormBuild);
+		return ucDormBuildService.findByParentIdsLike(ucDormBuild);
 	}
 	
 	
@@ -104,7 +104,7 @@ public class UcDormBuildController extends BaseController {
 	@RequestMapping(value = "treeLink")
 	public List<TreeLink> treeLink( HttpRequest request, HttpServletResponse response) {
 		
-		List<UcDormBuild> list1 = ucDormBuildService.findList(new UcDormBuild());
+		List<UcDormBuild> list1 = ucDormBuildService.findByParentIdsLike(new UcDormBuild());
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
 		for(UcDormBuild dormBuild:list1) {
 			TreeLink treeLink = new TreeLink();
@@ -112,8 +112,8 @@ public class UcDormBuildController extends BaseController {
 			treeLink.setName(dormBuild.getDormBuildName());
 			UcDorm ucDorm = new UcDorm();
 			ucDorm.setUcDormBuild(dormBuild);
-			ucDormService.findList(ucDorm);
-			List<UcDorm> list2 = ucDormService.findList(ucDorm);
+			ucDormService.findByParentIdsLike(ucDorm);
+			List<UcDorm> list2 = ucDormService.findByParentIdsLike(ucDorm);
 			List<TreeLink> treeLinks2 = new ArrayList<TreeLink>();
 			for(UcDorm office2:list2) {
 				TreeLink treeLink2 = new TreeLink();

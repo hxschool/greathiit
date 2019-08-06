@@ -48,8 +48,8 @@ public class TeacherService extends CrudService<TeacherDao, Teacher> {
 		return super.get(id);
 	}
 	
-	public List<Teacher> findList(Teacher teacher) {
-		return super.findList(teacher);
+	public List<Teacher> findByParentIdsLike(Teacher teacher) {
+		return super.findByParentIdsLike(teacher);
 	}
 	
 	public Page<Teacher> findPage(Page<Teacher> page, Teacher teacher) {

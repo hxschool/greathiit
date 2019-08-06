@@ -731,7 +731,7 @@ public class CourseExportController extends BaseController {
 		if(!org.springframework.util.StringUtils.isEmpty(teacherName)) {
 			Teacher teacher = new Teacher();
 			teacher.setTchrName(teacherName);
-			List<Teacher> teachers = teacherService.findList(teacher);
+			List<Teacher> teachers = teacherService.findByParentIdsLike(teacher);
 			StringBuffer sb = new StringBuffer();
 			for(Teacher t:teachers) {
 			      sb.append(t.getTeacherNumber());

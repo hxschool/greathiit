@@ -55,7 +55,7 @@ public class YingxinController {
 		Category linkCategory = new Category();
 		linkCategory.setId("2");
 		link.setCategory(linkCategory);
-		List<Link> links = linkService.findList(link);
+		List<Link> links = linkService.findByParentIdsLike(link);
 		
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		List<Category> categorys = categoryService.findByParentId("2", site.getId());
@@ -73,7 +73,7 @@ public class YingxinController {
 		Category category = new Category();
 		category.setId("200005");
 		entity.setCategory(category);
-		List<Article> list = articleService.findList(entity);
+		List<Article> list = articleService.findByParentIdsLike(entity);
 		List<Article> articles = new ArrayList<Article>();
 		for(Article article:list) {
 			if(article.getWeight()>900) {
@@ -116,7 +116,7 @@ public class YingxinController {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		Article entity = new Article();
 		entity.setCategory(category);
-		List<Article> articles = articleService.findList(entity);
+		List<Article> articles = articleService.findByParentIdsLike(entity);
 		model.addAttribute("category", category);
 		model.addAttribute("articles", articles);
 		model.addAttribute("site", site);

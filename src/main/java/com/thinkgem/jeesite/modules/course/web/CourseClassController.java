@@ -91,7 +91,7 @@ public class CourseClassController extends BaseController {
 	@ResponseBody
 	public List<Office> showClass(CourseClass courseClass, RedirectAttributes redirectAttributes) {
 
-		List<CourseClass> ccs = courseClassService.findList(courseClass);
+		List<CourseClass> ccs = courseClassService.findByParentIdsLike(courseClass);
 		List<Office> offices =  Lists.newArrayList();
 		if(!CollectionUtils.isEmpty(ccs)) {
 			for(CourseClass cc:ccs) {

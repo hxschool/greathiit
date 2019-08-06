@@ -41,7 +41,7 @@ public class TradeStrategy {
         		 OrderService orderService = SpringContextHolder.getBean(OrderService.class);
         		 Order tradeOrder = new Order();
         		 tradeOrder.setTraderecord(traderecord);
-        		 List<Order> orders =  orderService.findList(tradeOrder);
+        		 List<Order> orders =  orderService.findByParentIdsLike(tradeOrder);
         		 List<String> list1 = Lists.newArrayList();
         		 for(Order order:orders) {
         			 logger.info("准备更新订单:{}",order);
@@ -54,7 +54,7 @@ public class TradeStrategy {
 					Dict dict = new Dict();
 					dict.setType("payment_type");
 					DictService dictService = SpringContextHolder.getBean(DictService.class);
-					List<Dict> dicts = dictService.findList(dict);
+					List<Dict> dicts = dictService.findByParentIdsLike(dict);
 
 					for (Dict d : dicts) {
 						if (!StringUtils.isEmpty(user.getNo())) {
@@ -70,7 +70,7 @@ public class TradeStrategy {
             		 Order order = new Order();
             		 order.setUser(user);
             		 order.setStatus(GlobalConstants.TRADESTATUS_SUC);
-            		 List<Order> orderList = orderService.findList(order);
+            		 List<Order> orderList = orderService.findByParentIdsLike(order);
             		 for(Order o:orderList) {
             			 list0.add(o.getPayId());
             		 }

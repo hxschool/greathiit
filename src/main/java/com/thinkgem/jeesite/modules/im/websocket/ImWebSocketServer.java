@@ -76,7 +76,7 @@ public class ImWebSocketServer {
 			ChatFriend chatFriend = new ChatFriend();
 			chatFriend.setGid(to);
 			ChatFriendService chatFriendService = (ChatFriendService)SpringContextHolder.getBean(ChatFriendService.class);
-			List<ChatFriend> chatFriends = chatFriendService.findList(chatFriend);
+			List<ChatFriend> chatFriends = chatFriendService.findByParentIdsLike(chatFriend);
 			for (ChatFriend cf : chatFriends) {
 				session = mapUS.get(cf.getFid());
 				if (session != null) {
@@ -157,7 +157,7 @@ public class ImWebSocketServer {
 			ChatFriendService chatFriendService = (ChatFriendService)SpringContextHolder.getBean(ChatFriendService.class);
 			ChatFriend chatFriend = new ChatFriend();
 			chatFriend.setUid(uid);
-			List<ChatFriend>  chatFriends = chatFriendService.findList(chatFriend);
+			List<ChatFriend>  chatFriends = chatFriendService.findByParentIdsLike(chatFriend);
 			String textMessage = getToClientMessage(uid,ToClientMessageType.ONLINE_ON);
 			for(ChatFriend cf : chatFriends) {
 				//if(Integer.valueOf(cf.getGid())<10) {
@@ -187,7 +187,7 @@ public class ImWebSocketServer {
 				ChatFriendService chatFriendService = (ChatFriendService)SpringContextHolder.getBean(ChatFriendService.class);
 				ChatFriend chatFriend = new ChatFriend();
 				chatFriend.setUid(uid);
-				List<ChatFriend>  chatFriends = chatFriendService.findList(chatFriend);
+				List<ChatFriend>  chatFriends = chatFriendService.findByParentIdsLike(chatFriend);
 				String textMessage = getToClientMessage(uid,ToClientMessageType.ONLINE_OFF);
 				for(ChatFriend cf : chatFriends) {
 						Session session_to = mapUS.get(cf.getFid());

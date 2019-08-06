@@ -137,7 +137,7 @@ public class CourseSelectController extends BaseController {
 		course.setCursYearTerm(config.getTermYear());
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(course);
-		model.addAttribute("list", selectCourseService.findList(selectCourse));
+		model.addAttribute("list", selectCourseService.findByParentIdsLike(selectCourse));
 		return "modules/course/select/studentList";
 	}
 	
@@ -148,9 +148,9 @@ public class CourseSelectController extends BaseController {
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
-		courses = courseService.findList(course);
+		courses = courseService.findByParentIdsLike(course);
 		selectCourse.setCourses(courses);
-		List<SelectCourse> list = selectCourseService.findList(selectCourse);
+		List<SelectCourse> list = selectCourseService.findByParentIdsLike(selectCourse);
 		Map<String,SelectCourseOfficeExt> cls = new HashMap<String,SelectCourseOfficeExt>();
 		
 		for(SelectCourse sc:list) {
@@ -195,14 +195,14 @@ public class CourseSelectController extends BaseController {
 		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(config.getTermYear());
 		List<Course> courses = new ArrayList<Course>();
-		courses = courseService.findList(course);
+		courses = courseService.findByParentIdsLike(course);
 		for(Course c:courses) {
 			c.setCourseTeachingMode(courseTeachingModeService.getCourseTeachingModeByCourse(c.getId()));
 		}
 		
 		selectCourse.setCourses(courses);
 		
-		List<SelectCourse> list = selectCourseService.findList(selectCourse);
+		List<SelectCourse> list = selectCourseService.findByParentIdsLike(selectCourse);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		for(SelectCourse sc:list) {
 			Student student = sc.getStudent();
@@ -241,7 +241,7 @@ public class CourseSelectController extends BaseController {
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());
 		}
-		courses = courseService.findList(course);
+		courses = courseService.findByParentIdsLike(course);
 		courseSelectExcel.setCourses(courses);
 		model.addAttribute("list", selectCourseService.exportSelectCourse(courseSelectExcel));
 		return "modules/course/select/exportView";
@@ -253,7 +253,7 @@ public class CourseSelectController extends BaseController {
 		try {
             String fileName = "未知数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
             
-            List<SelectCourse> list = selectCourseService.findList(new SelectCourse());
+            List<SelectCourse> list = selectCourseService.findByParentIdsLike(new SelectCourse());
     		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 			for (SelectCourse sc : list) {
 				String studentNumber = sc.getStudent().getStudentNumber();
@@ -318,7 +318,7 @@ public class CourseSelectController extends BaseController {
     	Course entity = courseService.get(course);
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(entity);
-		List<SelectCourse>  ll = selectCourseService.findList(selectCourse);
+		List<SelectCourse>  ll = selectCourseService.findByParentIdsLike(selectCourse);
 		String filename = "成绩单.xls";
 		String modelPath = request.getSession().getServletContext().getRealPath("/resources/student/成绩单模版.xls");  
 		

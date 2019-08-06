@@ -32,7 +32,7 @@ public class Office extends TreeEntity<Office> {
 	private String code; 	// 机构编码
 //	private String name; 	// 机构名称
 //	private Integer sort;		// 排序
-	private String type; 	// 机构类型（1：公司；2：部门；3：小组）
+	private String type; 	// 机构类型（1：高校；2：学院；3：专业，4：班级）
 	private String grade; 	// 机构等级（1：一级；2：二级；3：三级；4：四级）
 	private String address; // 联系地址
 	private String zipCode; // 邮政编码
@@ -43,6 +43,9 @@ public class Office extends TreeEntity<Office> {
 	private String useable;//是否可用
 	private User primaryPerson;//主负责人
 	private User deputyPerson;//副负责人
+	private String male;//男
+	private String female;//女
+	
 	private List<String> childDeptList;//快速添加子部门
 	
 	public Office(){
@@ -217,6 +220,22 @@ public class Office extends TreeEntity<Office> {
 //		return parent != null && parent.getId() != null ? parent.getId() : "0";
 //	}
 	
+	public String getMale() {
+		return male;
+	}
+
+	public void setMale(String male) {
+		this.male = male;
+	}
+
+	public String getFemale() {
+		return female;
+	}
+
+	public void setFemale(String female) {
+		this.female = female;
+	}
+
 	@Override
 	public String toString() {
 		return name;

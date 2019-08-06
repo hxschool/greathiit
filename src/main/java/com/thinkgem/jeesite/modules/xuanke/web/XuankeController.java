@@ -87,7 +87,7 @@ public class XuankeController extends BaseController {
 		Category category = categoryService.get("3");
 		Article entity = new Article();
 		entity.setCategory(category);
-		List<Article> list = articleService.findList(entity);
+		List<Article> list = articleService.findByParentIdsLike(entity);
 		List<Article> articles = new ArrayList<Article>();
 		for(Article article:list) {
 			if(article.getWeight()>900) {
@@ -119,7 +119,7 @@ public class XuankeController extends BaseController {
 		Site site = CmsUtils.getSite(Site.defaultSiteId());
 		Article entity = new Article();
 		entity.setCategory(category);
-		List<Article> articles = articleService.findList(entity);
+		List<Article> articles = articleService.findByParentIdsLike(entity);
 		
 		model.addAttribute("category", category);
 		model.addAttribute("articles", articles);
@@ -138,7 +138,7 @@ public class XuankeController extends BaseController {
 		}
 		SysConfig sysConfig = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
 		course.setCursYearTerm(sysConfig.getTermYear());
-		List<Course> courses = courseService.findList(course);
+		List<Course> courses = courseService.findByParentIdsLike(course);
 		List<SelectCourse> selectCourses = new ArrayList<SelectCourse>();
 		
 		Map<String,CourseScheduleExt> courseScheduleMap = new HashMap<String,CourseScheduleExt>();
@@ -156,7 +156,7 @@ public class XuankeController extends BaseController {
 			SelectCourse selectCourse = new SelectCourse();
 			selectCourse.setStudent(student);
 			selectCourse.setCourse(course);
-			selectCourses = selectCourseService.findList(selectCourse);
+			selectCourses = selectCourseService.findByParentIdsLike(selectCourse);
 			
 			for(SelectCourse sc : selectCourses) {
 				selectedCourseMap.put(sc.getCourse().getId(), sc.getCourse().getCursName());
@@ -302,7 +302,7 @@ public class XuankeController extends BaseController {
 		}
 		SelectCourse selectedCourse = new SelectCourse();
 		selectedCourse.setStudent(student);
-		List<SelectCourse> selectedCourses = selectCourseService.findList(selectedCourse);
+		List<SelectCourse> selectedCourses = selectCourseService.findByParentIdsLike(selectedCourse);
 		List<Course> courses = new ArrayList<Course>();
 		String benke = "B".toUpperCase();
 		if(student.getStudentNumber().length()==10) {
@@ -359,7 +359,7 @@ public class XuankeController extends BaseController {
 				SelectCourse selectCourse = new SelectCourse();
 				selectCourse.setCourse(course);
 				selectCourse.setStudent(UserUtils.getStudent());
-				List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+				List<SelectCourse> selectCourses = selectCourseService.findByParentIdsLike(selectCourse);
 				List<String> list = new ArrayList<String>();
 				for (SelectCourse sc : selectCourses) {
 					list.add(sc.getCourse().getId());

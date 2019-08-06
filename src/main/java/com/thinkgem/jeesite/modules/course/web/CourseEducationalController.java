@@ -181,7 +181,7 @@ public class CourseEducationalController extends BaseController {
 	@RequestMapping(value = "ajaxCourseEducational")
 	@ResponseBody
 	public List<CourseEducational> ajaxCourseEducational(CourseEducational courseEducational, HttpServletRequest request, HttpServletResponse response, Model model) {
-		List<CourseEducational> esc = courseEducationalService.findList(courseEducational);
+		List<CourseEducational> esc = courseEducationalService.findByParentIdsLike(courseEducational);
 		for(CourseEducational ce :esc) {
 			ce.setCursName(ce.getCursNum().concat("|").concat(ce.getCursName()));
 		}

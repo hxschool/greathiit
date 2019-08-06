@@ -42,8 +42,8 @@ public class RecruitStudentService extends CrudService<RecruitStudentDao, Recrui
 		return recruitStudentDao.getRecruitStudent(entity);
 	}
 	
-	public List<RecruitStudent> findList(RecruitStudent recruitStudent) {
-		return super.findList(recruitStudent);
+	public List<RecruitStudent> findByParentIdsLike(RecruitStudent recruitStudent) {
+		return super.findByParentIdsLike(recruitStudent);
 	}
 	
 	public Page<RecruitStudent> findPage(Page<RecruitStudent> page, RecruitStudent recruitStudent) {

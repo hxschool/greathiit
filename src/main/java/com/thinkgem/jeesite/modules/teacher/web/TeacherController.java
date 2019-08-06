@@ -125,7 +125,7 @@ public class TeacherController extends BaseController {
 		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
 		teacherExperiment.setUser(UserUtils.getUser());
-		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findList(teacherExperiment);
+		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findByParentIdsLike(teacherExperiment);
 		model.addAttribute("teacherExperiments", teacherExperiments);
 		return "modules/teacher/teacherInfo";
 	}
@@ -138,7 +138,7 @@ public class TeacherController extends BaseController {
 		model.addAttribute("teacher", teacher);
 		TeacherExperiment teacherExperiment = new TeacherExperiment();
 		teacherExperiment.setUser(UserUtils.getUser());
-		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findList(teacherExperiment);
+		List<TeacherExperiment> teacherExperiments = teacherExperimentService.findByParentIdsLike(teacherExperiment);
 		model.addAttribute("teacherExperiments", teacherExperiments);
 		return "modules/teacher/teacherEdit";
 	}
@@ -180,7 +180,7 @@ public class TeacherController extends BaseController {
 	@RequestMapping(value = "ajaxTeacher")
 	@ResponseBody
 	public List<Teacher> ajaxTeacher(Teacher teacher, RedirectAttributes redirectAttributes) {
-		return teacherService.findList(teacher);
+		return teacherService.findByParentIdsLike(teacher);
 	}
 	
 

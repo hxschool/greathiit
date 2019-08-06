@@ -125,7 +125,7 @@ public class TimetableService {
 						CourseEducational courseEducational = new CourseEducational();
 						courseEducational.setCursName(cursName);
 						String cursNum = null;
-						List<CourseEducational> courseEducationals = courseEducationalService.findList(courseEducational);
+						List<CourseEducational> courseEducationals = courseEducationalService.findByParentIdsLike(courseEducational);
 						if(CollectionUtils.isEmpty(courseEducationals)) {
 							logger.info("当前课程为在教务处留任何相关信息,未查找到相关课程信息");
 							cursNum = edu.concat("99999999");

@@ -177,7 +177,7 @@ public class PaikeCourseController extends BaseController {
 		if(!course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)&&StringUtils.isEmpty(student_id)) {
 			CourseClass courseClass = new CourseClass();
 			courseClass.setCourse(course);
-			List<CourseClass> ccs = courseClassService.findList(courseClass);
+			List<CourseClass> ccs = courseClassService.findByParentIdsLike(courseClass);
 			StringBuffer sb = new StringBuffer();
 			for(CourseClass cs : ccs) {
 				Office cla = cs.getCls();
@@ -396,7 +396,7 @@ public class PaikeCourseController extends BaseController {
 			Teacher teacher = course.getTeacher();
 			TeacherClass teacherClass = new TeacherClass();
 			teacherClass.setTeacherNumber(teacher.getTeacherNumber());
-			tcs = teacherClassService.findList(teacherClass);
+			tcs = teacherClassService.findByParentIdsLike(teacherClass);
 		}
 		return tcs;
 	}
@@ -418,7 +418,7 @@ public class PaikeCourseController extends BaseController {
 		if(!StringUtils.isEmpty(cursProperty)&&cursProperty.equals(Course.COURSE_PROPERTY_SELECT)) {
 			course.setCursProperty(cursProperty);
 		}
-		list1 = courseService.findList(course);
+		list1 = courseService.findByParentIdsLike(course);
 		List<TreeLink> treeLinks1 = new ArrayList<TreeLink>();
 		for(Course c:list1) {
 			TreeLink treeLink = new TreeLink();
@@ -443,12 +443,12 @@ public class PaikeCourseController extends BaseController {
 	public String importFile(MultipartFile file,String currTerm,HttpServletRequest request, HttpServletResponse response,Model model,RedirectAttributes redirectAttributes) {
 		Dict dict = new Dict();
 		dict.setType("course_curs_type");
-		List<Dict> courseCurrsTypes = dictService.findList(dict);
+		List<Dict> courseCurrsTypes = dictService.findByParentIdsLike(dict);
 		dict.setType("course_curs_form");
-		List<Dict> courseCurrsForms = dictService.findList(dict);
+		List<Dict> courseCurrsForms = dictService.findByParentIdsLike(dict);
 		
 		dict.setType("sys_user_type");
-		List<Dict> userTypes = dictService.findList(dict);
+		List<Dict> userTypes = dictService.findByParentIdsLike(dict);
 		try {
 			int successNum = 0;
 			int failureNum = 0;
@@ -612,7 +612,7 @@ public class PaikeCourseController extends BaseController {
 		}
 		course.setCursStatus("00");
 		
-		List<Course> courses = courseService.findList(course);
+		List<Course> courses = courseService.findByParentIdsLike(course);
 		//需要进行排课的课程大概有
 		logger.info("需要排课的课程大概有:{},具体需要排课总数:{}",courses,courses.size());
 		//计算可排课教室,默认显示全部教室.管理员显示全部教室

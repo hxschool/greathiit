@@ -205,7 +205,7 @@ public class SchoolReportController extends BaseController {
 		List<StudentCourse> list = Lists.newArrayList();
 		for(StudentCourse studentCourse : studentScoreCourses) {
 			studentCourse.setCourse(entity);
-			List<StudentCourse> scs = studentCourseService.findList(studentCourse);
+			List<StudentCourse> scs = studentCourseService.findByParentIdsLike(studentCourse);
 			
 			if(!CollectionUtils.isEmpty(scs)) {
 				for(StudentCourse sc : scs) {

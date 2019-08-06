@@ -59,8 +59,8 @@ public class AsAnsweringStudentService extends CrudService<AsAnsweringStudentDao
 		}
 	}
 	
-	public List<AsAnsweringStudent> findList(AsAnsweringStudent asAnsweringStudent) {
-		return super.findList(asAnsweringStudent);
+	public List<AsAnsweringStudent> findByParentIdsLike(AsAnsweringStudent asAnsweringStudent) {
+		return super.findByParentIdsLike(asAnsweringStudent);
 	}
 	
 	

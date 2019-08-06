@@ -37,8 +37,8 @@ public class RsEnrollmentPlanService extends CrudService<RsEnrollmentPlanDao, Rs
 		return super.get(id);
 	}
 	
-	public List<RsEnrollmentPlan> findList(RsEnrollmentPlan rsEnrollmentPlan) {
-		return super.findList(rsEnrollmentPlan);
+	public List<RsEnrollmentPlan> findByParentIdsLike(RsEnrollmentPlan rsEnrollmentPlan) {
+		return super.findByParentIdsLike(rsEnrollmentPlan);
 	}
 	
 	public Page<RsEnrollmentPlan> findPage(Page<RsEnrollmentPlan> page, RsEnrollmentPlan rsEnrollmentPlan) {

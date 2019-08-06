@@ -257,7 +257,7 @@ public class ApiController extends BaseController {
 		try {
 			map.put("status", "00000000");
 			map.put("message", "获取字典信息成功");
-			List<Dict> dicts = dictService.findList(dict);
+			List<Dict> dicts = dictService.findByParentIdsLike(dict);
 			map.put("result", dicts);
 		} catch (Exception e) {
 			map.put("status", "99999999");
@@ -399,7 +399,7 @@ public class ApiController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("status", "00000000");
 		map.put("message", "获取参数信息成功");
-		map.put("result", courseEducationalService.findList(new CourseEducational()));
+		map.put("result", courseEducationalService.findByParentIdsLike(new CourseEducational()));
 		return map;
 	}
 	
@@ -472,7 +472,7 @@ public class ApiController extends BaseController {
 			teacher.setTeacherNumber(teacherNumber);
 			course.setTeacher(teacher);
 			course.setCursYearTerm(yearTerm);
-			result.setData(courseService.findList(course));
+			result.setData(courseService.findByParentIdsLike(course));
 		} catch (Exception e) {
 			result.setCode(404);
 			result.setMsg(e.getMessage());

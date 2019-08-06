@@ -26,8 +26,8 @@ public class CourseSpecificContentService extends CrudService<CourseSpecificCont
 		return super.get(id);
 	}
 	
-	public List<CourseSpecificContent> findList(CourseSpecificContent courseSpecificContent) {
-		return super.findList(courseSpecificContent);
+	public List<CourseSpecificContent> findByParentIdsLike(CourseSpecificContent courseSpecificContent) {
+		return super.findByParentIdsLike(courseSpecificContent);
 	}
 	
 	public Page<CourseSpecificContent> findPage(Page<CourseSpecificContent> page, CourseSpecificContent courseSpecificContent) {

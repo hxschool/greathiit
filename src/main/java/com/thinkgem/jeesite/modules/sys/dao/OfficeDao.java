@@ -22,4 +22,5 @@ public interface OfficeDao extends TreeDao<Office> {
 	List<Office> findByParentId(Office office);
 	public List<Office> findByParentIdGroupByYear(Office office);
 	public List<Office> findByParentIdAndYear(Office office);
+	void remove(Office office);
 }

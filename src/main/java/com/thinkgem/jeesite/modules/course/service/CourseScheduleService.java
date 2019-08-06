@@ -70,8 +70,8 @@ public class CourseScheduleService extends CrudService<CourseScheduleDao, Course
 		return courseScheduleDao.findListByTimeAdd(timeAdd);
 	}
 	
-	public List<CourseSchedule> findList(CourseSchedule courseSchedule) {
-		return super.findList(courseSchedule);
+	public List<CourseSchedule> findByParentIdsLike(CourseSchedule courseSchedule) {
+		return super.findByParentIdsLike(courseSchedule);
 	}
 	
 	public Page<CourseSchedule> findPage(Page<CourseSchedule> page, CourseSchedule courseSchedule) {

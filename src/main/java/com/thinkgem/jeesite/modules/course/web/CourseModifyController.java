@@ -110,7 +110,7 @@ public class CourseModifyController extends BaseController {
 	@RequestMapping(value = "teacher_Management_1_selectTchrCourse")
 	public String selectTchrCourse(Course course, Model model) {
 		course.setTeacher(UserUtils.getTeacher());
-		List<Course> teachCourses = courseService.findList(course);
+		List<Course> teachCourses = courseService.findByParentIdsLike(course);
 		model.addAttribute("teachCourses", teachCourses);
 		return "modules/course/teacher/teacher_Management_1_selectTchrCourse";
 	}
@@ -135,7 +135,7 @@ public class CourseModifyController extends BaseController {
 		String courseId = course.getId();
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
-		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findByParentIdsLike(courseTeachingtarget);
 		return "modules/course/modify/courseDetail2";
 	}
 	//课程具体内容
@@ -145,7 +145,7 @@ public class CourseModifyController extends BaseController {
 		String courseId = course.getId();
 		CourseSpecificContent courseSpecificContent = new CourseSpecificContent();
 		courseSpecificContent.setCourseId(courseId);
-		List<CourseSpecificContent> csc = courseSpecificContentService.findList(courseSpecificContent);
+		List<CourseSpecificContent> csc = courseSpecificContentService.findByParentIdsLike(courseSpecificContent);
 		model.addAttribute("csc",csc);
 		return "modules/course/modify/courseDetail3";
 	}
@@ -158,7 +158,7 @@ public class CourseModifyController extends BaseController {
 		String courseId = course.getId();
 		CourseTeachingMode courseTeachingMode = new CourseTeachingMode();
 		courseTeachingMode.setCourseId(courseId);
-		List<CourseTeachingMode> ctm = courseTeachingModeService.findList(courseTeachingMode);
+		List<CourseTeachingMode> ctm = courseTeachingModeService.findByParentIdsLike(courseTeachingMode);
 		model.addAttribute("ctm",ctm);
 		return "modules/course/modify/courseDetail4";
 	}
@@ -172,7 +172,7 @@ public class CourseModifyController extends BaseController {
 		CourseCompositionRules rules = courseCompositionRulesService.getCourseCompositionRulesByCourseId(courseId);
 		CourseTeachingtarget courseTeachingtarget = new CourseTeachingtarget();
 		courseTeachingtarget.setCourseId(courseId);
-		List<CourseTeachingtarget> targets = courseTeachingtargetService.findList(courseTeachingtarget);
+		List<CourseTeachingtarget> targets = courseTeachingtargetService.findByParentIdsLike(courseTeachingtarget);
 
 		model.addAttribute("rules",rules);
 		model.addAttribute("targets",targets);
@@ -186,10 +186,10 @@ public class CourseModifyController extends BaseController {
 		CourseMaterial courseMaterial = new CourseMaterial();
 		courseMaterial.setCourseId(course.getId());
 		courseMaterial.setCmType("1");
-		courseMaterialService.findList(courseMaterial);
-		model.addAttribute("cm",courseMaterialService.findList(courseMaterial));
+		courseMaterialService.findByParentIdsLike(courseMaterial);
+		model.addAttribute("cm",courseMaterialService.findByParentIdsLike(courseMaterial));
 		courseMaterial.setCmType("2");
-		model.addAttribute("crb",courseMaterialService.findList(courseMaterial));
+		model.addAttribute("crb",courseMaterialService.findByParentIdsLike(courseMaterial));
 		return "modules/course/modify/courseDetail7";
 	}
 

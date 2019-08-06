@@ -26,8 +26,8 @@ public class UcDormRepairService extends CrudService<UcDormRepairDao, UcDormRepa
 		return super.get(id);
 	}
 	
-	public List<UcDormRepair> findList(UcDormRepair ucDormRepair) {
-		return super.findList(ucDormRepair);
+	public List<UcDormRepair> findByParentIdsLike(UcDormRepair ucDormRepair) {
+		return super.findByParentIdsLike(ucDormRepair);
 	}
 	
 	public Page<UcDormRepair> findPage(Page<UcDormRepair> page, UcDormRepair ucDormRepair) {

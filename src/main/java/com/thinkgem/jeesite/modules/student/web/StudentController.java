@@ -213,7 +213,7 @@ public class StudentController extends BaseController {
 	public String Student_Performance(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		studentCourse.setStudentNumber(user.getNo());
-		List<StudentCourse> studentCourses = studentCourseService.findList(studentCourse);
+		List<StudentCourse> studentCourses = studentCourseService.findByParentIdsLike(studentCourse);
 		Set<Course> courses = new HashSet();
 		for(StudentCourse sc:studentCourses) {
 			courses.add(sc.getCourse());
@@ -259,7 +259,7 @@ public class StudentController extends BaseController {
 		List<CourseScheduleExt> courseSchedules = courseScheduleService.getCourseScheduleExt(cse);
 		SelectCourse selectCourse = new SelectCourse();
 		selectCourse.setStudent(student);
-		List<SelectCourse> selectCourses = selectCourseService.findList(selectCourse);
+		List<SelectCourse> selectCourses = selectCourseService.findByParentIdsLike(selectCourse);
 		
 		for(SelectCourse sc:selectCourses) {
 			CourseScheduleExt courseScheduleExt = new CourseScheduleExt();
@@ -295,7 +295,7 @@ public class StudentController extends BaseController {
 		//zhaojunfei
 		//studentCourse.setTermYear(sysConfig.getTermYear());
 		model.addAttribute("config", sysConfig);
-		model.addAttribute("studentCourses", studentCourseService.findList(studentCourse));
+		model.addAttribute("studentCourses", studentCourseService.findByParentIdsLike(studentCourse));
 		return "modules/student/studentcourse/StudentCourseGrade";
 	}
 	//获奖记录	30	/student/student/Student_Award
@@ -305,7 +305,7 @@ public class StudentController extends BaseController {
 		User user = UserUtils.getUser();
 		StudentItem studentItem = new StudentItem();
 		studentItem.setStudent(user);
-		List<StudentItem> studentItems = studentItemService.findList(studentItem);
+		List<StudentItem> studentItems = studentItemService.findByParentIdsLike(studentItem);
 		model.addAttribute("studentItems", studentItems);
 		return "modules/student/StudentAward";
 	}

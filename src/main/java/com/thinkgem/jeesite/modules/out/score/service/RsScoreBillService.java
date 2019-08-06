@@ -32,8 +32,8 @@ public class RsScoreBillService extends CrudService<RsScoreBillDao, RsScoreBill>
 		return super.get(id);
 	}
 	
-	public List<RsScoreBill> findList(RsScoreBill rsScoreBill) {
-		return super.findList(rsScoreBill);
+	public List<RsScoreBill> findByParentIdsLike(RsScoreBill rsScoreBill) {
+		return super.findByParentIdsLike(rsScoreBill);
 	}
 	
 	public Page<RsScoreBill> findPage(Page<RsScoreBill> page, RsScoreBill rsScoreBill) {

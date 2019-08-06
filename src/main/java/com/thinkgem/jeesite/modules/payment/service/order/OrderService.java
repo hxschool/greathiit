@@ -30,8 +30,8 @@ public class OrderService extends CrudService<OrderDao, Order> {
 		return order;
 	}
 	
-	public List<Order> findList(Order order) {
-		return super.findList(order);
+	public List<Order> findByParentIdsLike(Order order) {
+		return super.findByParentIdsLike(order);
 	}
 	
 	public Page<Order> findPage(Page<Order> page, Order order) {

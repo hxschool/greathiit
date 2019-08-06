@@ -328,7 +328,7 @@ public class FrontController extends BaseController{
 		RsStudent rsStudent = new RsStudent();
 		rsStudent.setHc_form_xm(username);
 		rsStudent.setHc_form_sfzh(idCardNumber);
-		List<RsStudent> list = rsStudentService.findList(rsStudent);
+		List<RsStudent> list = rsStudentService.findByParentIdsLike(rsStudent);
 		
 		if(list==null||list.size()==0){
 			model.addAttribute(FormAuthenticationFilter.DEFAULT_MESSAGE_PARAM, "根据姓名和身份证号未查找到相关信息,请联系报考教师");

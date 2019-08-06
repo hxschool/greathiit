@@ -3,10 +3,11 @@
  */
 package com.thinkgem.jeesite.modules.sys.web;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,6 +24,9 @@ import com.aliyuncs.http.HttpRequest;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thinkgem.jeesite.common.config.Global;
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.NumberUtils;
+import com.thinkgem.jeesite.common.utils.RegexUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -32,7 +36,7 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
- * 机构Controller
+ * 组织Controller
  * @author ThinkGem
  * @version 2013-5-15
  */
@@ -51,7 +55,7 @@ public class OfficeController extends BaseController {
 			return new Office();
 		}
 	}
-
+	
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = {""})
 	public String index(Office office, Model model) {
@@ -62,9 +66,22 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = {"list"})
 	public String list(Office office, Model model) {
-        model.addAttribute("list", officeService.findList(office));
+        model.addAttribute("list", officeService.findByParentIdsLike(office));
 		return "modules/sys/officeList";
 	}
+	
+	
+	@RequiresPermissions("sys:office:view")
+	@RequestMapping(value = {"detail"})
+	public String detail(Office office, Model model) {
+		model.addAttribute("type",office.getType());
+		model.addAttribute("label",DictUtils.getDictLabel(office.getType(), "sys_office_type", ""));
+        model.addAttribute("list", officeService.findList(office));
+        
+		return "modules/sys/officeDetail";
+	}
+	
+	
 	
 	@RequiresPermissions("sys:office:view")
 	@RequestMapping(value = "form")
@@ -73,11 +90,16 @@ public class OfficeController extends BaseController {
 		if (office.getParent()==null || office.getParent().getId()==null){
 			office.setParent(user.getOffice());
 		}
-		office.setParent(officeService.get(office.getParent().getId()));
+		Office officeParent = officeService.get(office.getParent().getId());
+		int type = Integer.valueOf(officeParent.getType())+1;
+		office.setType(String.valueOf(type));
+		office.setGrade(String.valueOf(type));
+		office.setParent(officeParent);
 		if (office.getArea()==null){
 			office.setArea(user.getOffice().getArea());
 		}
 		// 自动获取排序号
+		/*
 		if (StringUtils.isBlank(office.getId())&&office.getParent()!=null){
 			int size = 0;
 			List<Office> list = officeService.findAll();
@@ -90,19 +112,23 @@ public class OfficeController extends BaseController {
 			}
 			office.setCode(office.getParent().getCode() + StringUtils.leftPad(String.valueOf(size > 0 ? size+1 : 1), 3, "0"));
 		}
+		*/
+		
 		model.addAttribute("office", office);
 		return "modules/sys/officeForm";
 	}
 	
 	@RequiresPermissions("sys:office:edit")
 	@RequestMapping(value = "save")
-	public String save(Office office, Model model, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/office/";
-		}
+	public String save(Office office, Model model, RedirectAttributes redirectAttributes,HttpServletRequest request) {
+
 		if (!beanValidator(model, office)){
 			return form(office, model);
+		}
+		//只有再班级的时候才去操作相关数据
+		if (org.springframework.util.StringUtils.isEmpty(office.getId())) {
+			office.setIsNewRecord(true);
+			office.setId(office.getCode());
 		}
 		officeService.save(office);
 		
@@ -120,7 +146,7 @@ public class OfficeController extends BaseController {
 			}
 		}
 		
-		addMessage(redirectAttributes, "保存机构'" + office.getName() + "'成功");
+		addMessage(redirectAttributes, "保存组织'" + office.getName() + "'成功");
 		String id = "0".equals(office.getParentId()) ? "" : office.getParentId();
 		return "redirect:" + adminPath + "/sys/office/list?id="+id+"&parentIds="+office.getParentIds();
 	}
@@ -128,21 +154,27 @@ public class OfficeController extends BaseController {
 	@RequiresPermissions("sys:office:edit")
 	@RequestMapping(value = "delete")
 	public String delete(Office office, RedirectAttributes redirectAttributes) {
-		if(Global.isDemoMode()){
-			addMessage(redirectAttributes, "演示模式，不允许操作！");
-			return "redirect:" + adminPath + "/sys/office/list";
-		}
+
 //		if (Office.isRoot(id)){
-//			addMessage(redirectAttributes, "删除机构失败, 不允许删除顶级机构或编号空");
+//			addMessage(redirectAttributes, "删除组织失败, 不允许删除顶级组织或编号空");
 //		}else{
 			officeService.delete(office);
-			addMessage(redirectAttributes, "删除机构成功");
+			addMessage(redirectAttributes, "删除组织成功");
 //		}
+		return "redirect:" + adminPath + "/sys/office/list?id="+office.getParentId()+"&parentIds="+office.getParentIds();
+	}
+	
+	@RequiresPermissions("sys:office:edit")
+	@RequestMapping(value = "remove")
+	public String remove(Office office, RedirectAttributes redirectAttributes) {
+
+		officeService.remove(office);
+		addMessage(redirectAttributes, "删除组织成功");
 		return "redirect:" + adminPath + "/sys/office/list?id="+office.getParentId()+"&parentIds="+office.getParentIds();
 	}
 
 	/**
-	 * 获取机构JSON数据。
+	 * 获取组织JSON数据。
 	 * @param extId 排除的ID
 	 * @param type	类型（1：公司；2：部门/小组/其它：3：用户）
 	 * @param grade 显示级别

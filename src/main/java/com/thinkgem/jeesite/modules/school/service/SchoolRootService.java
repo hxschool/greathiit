@@ -111,8 +111,8 @@ public class SchoolRootService extends CrudService<SchoolRootDao, SchoolRoot> {
 		return super.get(id);
 	}
 	
-	public List<SchoolRoot> findList(SchoolRoot schoolRoot) {
-		return super.findList(schoolRoot);
+	public List<SchoolRoot> findByParentIdsLike(SchoolRoot schoolRoot) {
+		return super.findByParentIdsLike(schoolRoot);
 	}
 	
 

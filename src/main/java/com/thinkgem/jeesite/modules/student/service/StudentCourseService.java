@@ -227,8 +227,8 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 		return super.get(id);
 	}
 
-	public List<StudentCourse> findList(StudentCourse studentCourse) {
-		return super.findList(studentCourse);
+	public List<StudentCourse> findByParentIdsLike(StudentCourse studentCourse) {
+		return super.findByParentIdsLike(studentCourse);
 	}
 
 	public Page<StudentCourse> findPage(Page<StudentCourse> page, StudentCourse studentCourse) {

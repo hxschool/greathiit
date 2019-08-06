@@ -26,8 +26,8 @@ public class SchoolCourseService extends CrudService<SchoolCourseDao, SchoolCour
 		return super.get(id);
 	}
 	
-	public List<SchoolCourse> findList(SchoolCourse schoolCourse) {
-		return super.findList(schoolCourse);
+	public List<SchoolCourse> findByParentIdsLike(SchoolCourse schoolCourse) {
+		return super.findByParentIdsLike(schoolCourse);
 	}
 	
 	public Page<SchoolCourse> findPage(Page<SchoolCourse> page, SchoolCourse schoolCourse) {

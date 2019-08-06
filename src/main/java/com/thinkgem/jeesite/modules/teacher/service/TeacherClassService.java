@@ -26,8 +26,8 @@ public class TeacherClassService extends CrudService<TeacherClassDao, TeacherCla
 		return super.get(id);
 	}
 	
-	public List<TeacherClass> findList(TeacherClass teacherClass) {
-		return super.findList(teacherClass);
+	public List<TeacherClass> findByParentIdsLike(TeacherClass teacherClass) {
+		return super.findByParentIdsLike(teacherClass);
 	}
 	
 	public Page<TeacherClass> findPage(Page<TeacherClass> page, TeacherClass teacherClass) {

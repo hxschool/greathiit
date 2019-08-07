@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.uc.student.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.IdcardUtils;
+import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.student.dao.StudentDao;
+import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
+import com.thinkgem.jeesite.modules.sys.entity.Role;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
@@ -25,7 +37,16 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 @Transactional(readOnly = true)
 public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	@Autowired
+	private SystemService systemService;
+	@Autowired
 	private UcStudentDao ucStudentDao;
+	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private OfficeDao officeDao;
+	public UcStudent findByIdCard(String idCard) {
+		return ucStudentDao.findByIdCard(idCard);
+	}
 	
 	public UcStudent findBystudentNumber(String studentNumber) {
 		return ucStudentDao.findBystudentNumber(studentNumber);
@@ -41,6 +62,71 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	
 	public Page<UcStudent> findPage(Page<UcStudent> page, UcStudent ucStudent) {
 		return super.findPage(page, ucStudent);
+	}
+	
+	@Transactional(readOnly = false)
+	public void saveUser(UcStudent ucStudent) {
+		try
+		{
+		save(ucStudent);
+		User user = new User();
+		String password = StringUtils.right(ucStudent.getIdCard().toLowerCase(), 6);
+		user.setNo(ucStudent.getStudentNumber());
+		user.setName(ucStudent.getUsername());
+		user.setLoginName(ucStudent.getIdCard());
+		user.setMobile(ucStudent.getPhone());
+		user.setPhone(ucStudent.getPhone());
+		user.setPassword(SystemService.entryptPassword(password));
+		Role role = new Role("99");
+		List<Role> rs = new ArrayList<Role>();
+		rs.add(role);
+		user.setRole(role);
+		user.setRoleList(rs);
+		user.setLoginFlag("1");
+		user.setUserType("99");
+		
+		String department = ucStudent.getDepartmentName();
+		String major = ucStudent.getMajorName();
+		String clazz = ucStudent.getClassNumber();
+		
+		Office company = officeDao.getOfficeByName(department);
+		Office office = officeDao.getOfficeByName(major);
+		Office cls = officeDao.getOfficeByName(clazz);
+		user.setCompany(company);
+		user.setOffice(office);
+		user.setClazz(cls);
+		User u = UserUtils.get("1");
+		user.setCreateBy(u);
+		user.setCreateDate(new Date());
+		user.setDelFlag("0");
+		user.setUpdateBy(u);
+		user.setUpdateDate(new Date());
+		user.setRemarks("黑龙江省招生办导入学生信息");
+		systemService.saveUser(user);
+		if (!org.springframework.util.StringUtils.isEmpty(ucStudent.getStudentNumber())
+				&& org.springframework.util.StringUtils
+						.isEmpty(studentDao.getStudentByStudentNumber(ucStudent.getStudentNumber()))) {
+			Student student = new Student();
+			student.setName(ucStudent.getUsername());
+			student.setIdCard(ucStudent.getIdCard());
+			Date birthday = DateUtils.parseDate(IdcardUtils.getBirthByIdCard(ucStudent.getIdCard()));
+			student.setBirthday(birthday);
+			student.setGender(IdcardUtils.getGender(ucStudent.getIdCard()));
+			student.setNation(ucStudent.getNation());
+			student.setPolitical(ucStudent.getPolitical());
+			student.setPhone(ucStudent.getPhone());
+			student.setAddress(ucStudent.getAddressee());
+			student.setEdu(ucStudent.getEdu());
+			student.setStudentLength(ucStudent.getSchoolSystem());
+			student.setClazz(cls);
+			student.setStudentNumber(ucStudent.getStudentNumber());
+			studentDao.insert(student);
+		}
+		
+		super.save(ucStudent);
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 	
 	@Transactional(readOnly = false)

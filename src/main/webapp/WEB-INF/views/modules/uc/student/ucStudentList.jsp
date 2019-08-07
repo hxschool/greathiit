@@ -107,9 +107,13 @@
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
-	<table id="contentTable" class="table table-striped table-bordered table-condensed">
+	<table id="contentTable" class="table table-striped table-bordered table-hover ">
 		<thead>
 			<tr>
+					<shiro:hasPermission
+							name="uc:ucStudent:operation">
+				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
+				</shiro:hasPermission>
 				<th>学号</th>
 				<th>真实姓名</th>
 				<th>性别</th>
@@ -136,6 +140,8 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="ucStudent">
 			<tr>
+				<shiro:hasPermission
+							name="uc:ucStudent:operation"><td><input type="checkbox" name="ids" value="${studentCourse.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
 				<td><a href="${ctx}/uc/student/form?id=${ucStudent.id}">
 					${ucStudent.studentNumber}
 				</a></td>
@@ -197,11 +203,22 @@
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
     				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
-					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">删除</a>
+					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">停用</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>
+				<shiro:hasPermission
+							name="uc:ucStudent:operation">
+		<tfoot><tr>
+			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
+			
+			<a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a>
+			
+			</th>
+			</tr>
+		</tfoot>
+		</shiro:hasPermission>
 	</table>
 	<div class="pagination">${page}</div>
 </body>

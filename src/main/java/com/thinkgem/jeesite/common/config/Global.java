@@ -31,6 +31,8 @@ public class Global {
 	public final static String SYSCONFIG_WELCOME= "welcome";//迎新
 	public final static String SYSCONFIG_EXPORT= "export";//选课
 
+	public final static String FILE_SERVER_UPLOAD_URL = "http://photo.greathiit.com/upload";
+	
 	public static List<String> weeks = new ArrayList();
 	static {
 		for(int i=1;i<=20;i++) {

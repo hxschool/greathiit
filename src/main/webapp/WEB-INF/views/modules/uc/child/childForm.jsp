@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
+<c:set var="label" scope="page" value='${fns:getDictLabel(office.type, "sys_office_type", "")}'/>
 <html>
 <head>
-<title>机构管理</title>
+<title>${label}管理</title>
 <meta name="decorator" content="default" />
 <script type="text/javascript">
 	$(document).ready(
@@ -35,9 +36,9 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li><a
-			href="${ctx}/uc/child/list?grade=${office.grade}&id=${office.parent.id}&parentIds=${office.parentIds}">组织列表</a></li>
+			href="${ctx}/uc/child/list?grade=${office.grade}&id=${office.parent.id}&parentIds=${office.parentIds}">列表</a></li>
 		<li class="active"><a
-			href="${ctx}/uc/child/form?grade=${office.grade}&id=${office.id}&parent.id=${office.parent.id}">组织<shiro:hasPermission
+			href="${ctx}/uc/child/form?grade=${office.grade}&id=${office.id}&parent.id=${office.parent.id}"><shiro:hasPermission
 					name="sys:office:edit">${not empty office.id?'修改':'添加'}</shiro:hasPermission>
 				<shiro:lacksPermission name="sys:office:edit">查看</shiro:lacksPermission></a></li>
 	</ul>
@@ -68,7 +69,7 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">${fns:getDictLabel(office.type, "sys_office_type", "")}名称:</label>
+			<label class="control-label">${label}名称:</label>
 			<div class="controls">
 				<form:input path="name" htmlEscape="false" maxlength="50"
 					class="required" />
@@ -77,7 +78,7 @@
 		</div>
 
 		<div class="control-group">
-			<label class="control-label">${fns:getDictLabel(office.type, "sys_office_type", "")}编码:</label>
+			<label class="control-label">${label}编码:</label>
 			<div class="controls">
 				<form:input path="code" htmlEscape="false" maxlength="50" />
 			</div>

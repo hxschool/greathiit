@@ -21,7 +21,7 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 @MyBatisDao
 public interface UcStudentDao extends CrudDao<UcStudent> {
 	
-	
+	public UcStudent findByIdCard(@Param("idCard")String idCard);
 	public UcStudent findBystudentNumber(@Param("studentNumber")String studentNumber);
 	/**
 	 * 通过姓名和身份证号获取学生信息

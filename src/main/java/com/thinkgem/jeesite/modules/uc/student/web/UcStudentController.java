@@ -3,14 +3,21 @@
  */
 package com.thinkgem.jeesite.modules.uc.student.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,14 +31,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.HttpClientUtil;
+import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.file.FileResponse;
+import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
@@ -46,6 +59,8 @@ public class UcStudentController extends BaseController {
 
 	@Autowired
 	private UcStudentService ucStudentService;
+	@Autowired
+	private SystemService systemService;
 	
 	@ModelAttribute
 	public UcStudent get(@RequestParam(required=false) String id) {
@@ -240,10 +255,20 @@ public class UcStudentController extends BaseController {
 			ImportExcel ei = new ImportExcel(file, 1, 0);
 			List<UcStudent> list = ei.getDataList(UcStudent.class);
 			for (UcStudent student : list){
+				if(org.springframework.util.StringUtils.isEmpty(student.getIdCard())) {
+					failureMsg.append("<br/>姓名 "+student.getUsername()+" 信息不合法,身份证信息为空");
+					failureNum++;
+				}
+				if (!org.springframework.util.StringUtils.isEmpty(student.getIdCard())
+						&& !IdcardValidator.validate18Idcard(student.getIdCard())) {
+					failureMsg.append("<br/>姓名 " + student.getUsername() + " 信息不合法,身份证信息不合法");
+					failureNum++;
+				}
 				try{
-					UcStudent entity = ucStudentService.findBystudentNumber(student.getStudentNumber());
+					UcStudent entity = ucStudentService.findByIdCard(student.getIdCard());
 					if (org.springframework.util.StringUtils.isEmpty(entity)){
-						ucStudentService.save(student);
+						
+						ucStudentService.saveUser(student);
 						successNum++;
 					}else{
 						failureMsg.append("<br/>姓名 "+student.getUsername()+" 已存在,学号重复.学号信息:"+student.getStudentNumber()+"; ");
@@ -291,4 +316,82 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
     }
 
+	@RequestMapping(value = "face")
+	public String face() {
+		return "modules/student/studentFace";
+	}
+	@RequestMapping(value = "upload")
+	public String upload(MultipartFile file, RedirectAttributes redirectAttributes) {
+	
+		int successNum = 0;
+		int failureNum = 0;
+		StringBuilder failureMsg = new StringBuilder();
+		try {
+			
+			String name = file.getName();
+			String fix =  name.substring(name.lastIndexOf("."), name.length());
+			File oldFile = File.createTempFile(name.substring(0,name.lastIndexOf(".")),fix);
+			FileUtils.copyInputStreamToFile(file.getInputStream(), oldFile);
+			ZipEntry zipEntry = null;
+			ZipFile zipFile = new ZipFile(oldFile); 
+			ZipInputStream zipInputStream = new ZipInputStream( new FileInputStream(oldFile)); 
+			while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+	            if(!zipEntry.isDirectory()){ 
+	            	  String filename = zipEntry.getName();
+	                  String prefix  =	 filename.substring(0,filename.lastIndexOf("."));
+	                  String idCard = prefix;
+	                  UcStudent ucStudent = ucStudentService.findByIdCard(idCard);
+	                  if(org.springframework.util.StringUtils.isEmpty(ucStudent)) {
+	                	  failureMsg.append("身份信息异常,身份证号不正确" + idCard);
+	                	  failureNum ++ ;
+	                  }else {
+	                	  String suffix = filename.substring(filename.lastIndexOf("."), filename.length());
+		                  File tempFile = File.createTempFile(prefix,suffix);
+		                  FileUtils.copyInputStreamToFile(zipFile.getInputStream(zipEntry), tempFile);
+		                  String str = HttpClientUtil.upload(Global.FILE_SERVER_UPLOAD_URL,filename, tempFile);
+		                  if(!org.springframework.util.StringUtils.isEmpty(str)) {
+		                      Gson gson = new Gson();
+		                      FileResponse fileResponse = gson.fromJson(str, FileResponse.class);
+		                      if(fileResponse.getStatus().equals("00000000")) {
+		                    	  User user = systemService.getUserByLoginName(idCard);
+				                  user.setPhone(fileResponse.getUrl());
+				                  systemService.saveUser(user);
+				                  successNum ++;
+		                      }else {
+		                    	  failureMsg.append("连接文件服务器异常,请联系管理员");
+			                	  failureNum ++ ;
+		                      }
+		                  }else{
+		                	  failureMsg.append("连接文件服务器异常,请联系管理员");
+		                	  failureNum ++ ;
+		                  }
+		                 
+	                  }
+	            }
+	        }
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条头像信息，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条信息"+failureMsg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:"+Global.getAdminPath()+"/uc/student/face?repage";
+	}
+	@RequiresPermissions("uc:student:operation")
+	@RequestMapping(value = "deleteList")
+	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
+		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+			String[] arrayIds = ids.split(",");
+			for(String id:arrayIds) {
+				UcStudent ucStudent = new UcStudent();
+				ucStudent.setId(id);
+				ucStudentService.delete(ucStudent);
+			}
+		}
+		
+		addMessage(redirectAttributes, "删除学生成绩成功");
+		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
+	}
 }

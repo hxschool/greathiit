@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>字典管理</title>
+	<title>管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		function page(n,s){
@@ -15,8 +15,8 @@
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/sys/dict/">字典列表</a></li>
-		<shiro:hasPermission name="sys:dict:edit"><li><a href="${ctx}/sys/dict/form?sort=10">字典添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/sys/dict/?type=${dict.type}">列表</a></li>
+		<shiro:hasPermission name="sys:dict:edit"><li><a href="${ctx}/sys/dict/form?type=${dict.type}&sort=10">添加</a></li></shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="dict" action="${ctx}/sys/dict/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>

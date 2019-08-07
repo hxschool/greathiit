@@ -70,6 +70,13 @@
 		WHERE  a.student_number=#{studentNumber}
 	</select>
 	
+		<select id="findByIdCard" resultType="UcStudent">
+		SELECT
+		<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		WHERE  a.id_card=#{idCard}
+	</select>
+	
 	
 	<select id="findNumberByUsernameAndIdCardAndNumber" resultType="UcStudent">
 		SELECT
@@ -195,7 +202,7 @@
 			status,
 			region_code,
 			region_name,
-			exa_category
+			exa_category,
 			create_by,
 			create_date,
 			update_by,
@@ -229,6 +236,7 @@
 			#{status},
 			#{regionCode},
 			#{regionName},
+			#{exaCategory},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},

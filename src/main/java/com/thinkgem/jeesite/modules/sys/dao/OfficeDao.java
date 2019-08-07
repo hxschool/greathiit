@@ -18,7 +18,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
  */
 @MyBatisDao
 public interface OfficeDao extends TreeDao<Office> {
-	Office getOfficeByName(@Param("name")String name);
+	Office getOfficeByName(@Param("name") String name);
 	List<Office> findByParentId(Office office);
 	public List<Office> findByParentIdGroupByYear(Office office);
 	public List<Office> findByParentIdAndYear(Office office);

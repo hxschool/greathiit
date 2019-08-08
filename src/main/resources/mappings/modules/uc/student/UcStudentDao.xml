@@ -27,9 +27,9 @@
 		a.current_level AS "currentLevel",
 		a.over_date AS "overDate",
 		a.status AS "status",
+		a.description as "description",
 		a.region_code AS "regionCode",
 		a.region_name AS "regionName",
-		
 		a.exa_category AS "exaCategory",
 		a.hokou_address AS "hokouAddress",
 		a.home_address AS "homeAddress",
@@ -44,7 +44,6 @@
 		a.zonghe AS "zonghe",
 		a.zongfen AS "zongfen",
 		a.techang AS "techang",
-		
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -142,6 +141,14 @@
 				AND a.edu = #{edu}
 			</if>
 			
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+			
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			
 			<if test="currentLevel != null and currentLevel != ''">
 				AND a.current_level = #{currentLevel}
 			</if>
@@ -200,6 +207,7 @@
 			current_level,
 			over_date,
 			status,
+			description,
 			region_code,
 			region_name,
 			exa_category,
@@ -234,6 +242,7 @@
 			#{currentLevel},
 			#{overDate},
 			#{status},
+			#{description},
 			#{regionCode},
 			#{regionName},
 			#{exaCategory},
@@ -271,6 +280,7 @@
 			current_level = #{currentLevel},
 			over_date = #{overDate},
 			status = #{status},
+			description = #{description},
 			region_code = #{regionCode},
 			region_name = #{regionName},
 			exa_category = #{exaCategory},

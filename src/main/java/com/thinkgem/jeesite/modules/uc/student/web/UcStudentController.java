@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -379,6 +380,31 @@ public class UcStudentController extends BaseController {
 		
 		return "redirect:"+Global.getAdminPath()+"/uc/student/face?repage";
 	}
+	
+	
+	@RequiresPermissions("uc:student:batch")
+	@RequestMapping(value = "batchAction")
+	public String batch( String ids,String description,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String action = request.getParameter("action");
+		if(!org.springframework.util.StringUtils.isEmpty(action)) {
+			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+				String[] arrayIds = ids.split(",");
+				for(String id:arrayIds) {
+					UcStudent ucStudent = ucStudentService.get(id);
+					if(!org.springframework.util.StringUtils.isEmpty(ucStudent)) {
+						ucStudent.setStatus(action);
+						ucStudent.setDescription(description);
+						ucStudentService.save(ucStudent);
+					}
+				}
+			}
+			addMessage(redirectAttributes, "批量操作成功");
+			return "redirect:"+Global.getAdminPath()+"/uc/student/?action="+action+"&repage";
+		}
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
+	
+	
 	@RequiresPermissions("uc:student:operation")
 	@RequestMapping(value = "deleteList")
 	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
@@ -391,7 +417,7 @@ public class UcStudentController extends BaseController {
 			}
 		}
 		
-		addMessage(redirectAttributes, "删除学生成绩成功");
-		return "redirect:"+Global.getAdminPath()+"/student/studentCourse/?repage";
+		addMessage(redirectAttributes, "停用学生数据成功");
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 }

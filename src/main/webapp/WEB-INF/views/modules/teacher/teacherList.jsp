@@ -93,7 +93,7 @@
 					<td>${fns:getDictLabel(teacher.tchrPolitical,'political','')}</td>
 					<td><fmt:formatDate value="${teacher.tchrBirthday}"
 							pattern="yyyy-MM-dd" /></td>
-					<td>${fns:getDictLabel(teacher.tchrDegree,'sys_edu','')}</td>
+					<td>${fns:getDictLabel(teacher.tchrDegree,'student_edu','')}</td>
 					<td>${teacher.tchrEmail}</td>
 					<td>${teacher.tchrFax}</td>
 					<td>${teacher.tchrGraduateSchool}</td>

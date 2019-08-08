@@ -174,7 +174,7 @@
 					<label class="control-label">学位：</label>
 					<div class="controls">
 						<form:select path="tchrDegree" class="input-xlarge ">
-							<form:options items="${fns:getDictList('sys_edu')}"
+							<form:options items="${fns:getDictList('student_edu')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 					</div>

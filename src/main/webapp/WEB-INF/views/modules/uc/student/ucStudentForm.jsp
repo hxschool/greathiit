@@ -140,8 +140,10 @@
 				<div class="control-group">
 					<label class="control-label">状态：</label>
 					<div class="controls">
-						<form:input path="status" htmlEscape="false" maxlength="64"
-							class="input-xlarge " />
+							<form:select path="status" class="input-xlarge ">
+							<form:options items="${fns:getDictList('student_status')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+							</form:select>
 					</div>
 				</div>
 				<div class="control-group">

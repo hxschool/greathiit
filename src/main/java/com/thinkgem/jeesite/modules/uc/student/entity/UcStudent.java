@@ -49,11 +49,11 @@ public class UcStudent extends DataEntity<UcStudent> {
 	private String majorName;		// 专业名称
 	@ExcelField(title="班号", align=2, sort=16)
 	private String classNumber;		// 班号
-	@ExcelField(title="学历", align=2, sort=17)
+	@ExcelField(title="学历", align=2, sort=17,dictType="student_edu")
 	private String edu;		// 学历
-	@ExcelField(title="学制", align=2, sort=18)
+	@ExcelField(title="学制", align=2, sort=18,dictType="student_school_system")
 	private String schoolSystem;		// 学制
-	@ExcelField(title="学习形式", align=2, sort=19)
+	@ExcelField(title="学习形式", align=2, sort=19,dictType="student_learning")
 	private String learning;		// 学习形式
 	@ExcelField(title="入学日期", align=2, sort=20)
 	private String startDate;		// 入学日期
@@ -61,7 +61,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 	private String currentLevel;		// 当前所在年级
 	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
 	private String overDate;		// 结业日期(预计毕业日期)
-	@ExcelField(title="学籍状态", align=2, sort=23)
+	@ExcelField(title="学籍状态", align=2, sort=23,dictType="student_status")
 	private String status;		// 状态
 	@ExcelField(title="身份所在城市代码", align=2, sort=24)
 	private String regionCode;		// 身份所在城市代码
@@ -84,7 +84,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 	private String zongfen;		// 总分
 	private String techang;		// 特长
 	
-	
+	private String description;//修改状态描述信息
 	
 	public UcStudent() {
 		super();
@@ -438,6 +438,14 @@ public class UcStudent extends DataEntity<UcStudent> {
 
 	public void setTechang(String techang) {
 		this.techang = techang;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

@@ -33,6 +33,24 @@
 			$("#searchForm").submit();
         	return false;
         }
+		
+		function batchAction(action){
+			layer.prompt({title: "${fns:getDictLabel(param.action,'student_status','')}", formType: 2}, function(text, index){
+				$("#action").val(action);
+				$("#description").val(text);
+				var id = document.getElementsByName("ids");// 获取全选复选框
+				var ids = "";
+				for (var i = 0; i < id.length; i++) {
+					if (id[i].checked) {
+						ids += id[i].value + ",";
+					}
+				}
+				ids = ids.substring(0, ids.length - 1);// 干掉字符串最后一个逗号
+				$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + ids);
+				$("#searchForm").submit();
+			    layer.close(index);
+			});
+		}
 	</script>
 </head>
 <body>
@@ -52,13 +70,16 @@
 
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/uc/student/">学籍信息</a></li>
-		<shiro:hasPermission name="uc:ucStudent:edit"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
+		<shiro:hasPermission name="uc:ucStudent:add"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
 		<li><a href="${ctx}/uc/student/result">成绩信息</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+		<li><label>考试号：</label>
+				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
 			<li><label>学号：</label>
 				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
@@ -76,24 +97,26 @@
 			
 			<li><label>学历：</label>
 				
-				<form:select path="edu"
-					class="input-medium" style="width:178px">
-					<form:option value="" label="请选择" />
-					<form:option value="本科" label="本科" />
-					<form:option value="专科" label="专科" />
-				</form:select>
+				<form:select path="edu" class="input-medium ">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_edu')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</li>
 			<li><label>学制：</label>
-				
-				
-				<form:select path="schoolSystem"
-					class="input-medium" style="width:178px">
-					<form:option value="" label="请选择" />
-					<form:option value="2" label="2" />
-					<form:option value="3" label="3" />
-					<form:option value="4" label="4" />
-					<form:option value="5" label="5" />
-				</form:select>
+						<form:select path="schoolSystem" class="input-medium ">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_school_system')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
+			</li>
+			
+			<li><label>状态：</label>
+						<form:select path="status" class="input-medium ">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_status')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</li>
 			
 			<li class="clearfix"></li>
@@ -102,6 +125,9 @@
 			<input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+				
+				<input type="text" name="action" id="action"/>
+				<input type="text" name="description" id="description"/>
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -130,7 +156,7 @@
 				<th>入学日期</th>
 				<th>当前所在年级</th>
 				<th>结业日期</th>
-				<!-- <th>状态</th> -->
+				<th>状态</th>
 				<th>身份所在城市信息</th>
 				<!-- <th>更新时间</th> -->
 				
@@ -174,13 +200,13 @@
 					${ucStudent.classNumber}
 				</td>
 				<td>
-					${ucStudent.edu}
+					${fns:getDictLabel(ucStudent.edu,'student_edu','')}
 				</td>
 				<td>
-					${ucStudent.schoolSystem}
+					${fns:getDictLabel(ucStudent.schoolSystem,'student_school_system','')}
 				</td>
 				<td>
-					${ucStudent.learning}
+					${fns:getDictLabel(ucStudent.learning,'student_learning','')}
 				</td>
 				<td>
 					${ucStudent.startDate}
@@ -191,9 +217,10 @@
 				<td>
 					${ucStudent.overDate}
 				</td>
-				<!-- <td>
-					${ucStudent.status}
-				</td> -->
+				<td>
+					${fns:getDictLabel(ucStudent.status,'student_status','')}
+				</td> 
+				
 				<td>
 					${ucStudent.regionName}
 				</td>
@@ -214,7 +241,13 @@
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
 			
 			<a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a>
+			<c:if test="${param.action!=null and param.action!=1 }">
 			
+			<shiro:hasPermission
+							name="uc:student:batch">
+				<a href="#" onclick="batchAction(${param.action})" class="btn btn-primary">${fns:getDictLabel(param.action,'student_status','')}</a>
+				</shiro:hasPermission>
+			</c:if>
 			</th>
 			</tr>
 		</tfoot>

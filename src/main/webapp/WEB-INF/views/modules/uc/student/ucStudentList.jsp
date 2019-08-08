@@ -126,8 +126,8 @@
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
 				
-				<input type="text" name="action" id="action"/>
-				<input type="text" name="description" id="description"/>
+				<input type="hidden" name="action" id="action"/>
+				<input type="hidden" name="description" id="description"/>
 			</li>
 			<li class="clearfix"></li>
 		</ul>

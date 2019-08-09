@@ -131,6 +131,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	
 	@Transactional(readOnly = false)
 	public void save(UcStudent ucStudent) {
+		//如果数据停用,是否通知修改系统用户信息为不可用
 		super.save(ucStudent);
 	}
 	

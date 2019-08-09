@@ -25,7 +25,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 	private String studentNumber;		// 学号
 	@ExcelField(title="真实姓名", align=2, sort=4)
 	private String username;		// 真实姓名
-	@ExcelField(title="性别", align=2, sort=5)
+	@ExcelField(title="性别", align=2, sort=5,dictType="sex")
 	private String gender;		// 性别
 	@ExcelField(title="出生日期", align=2, sort=6)
 	private String birthday;		// 出生日期

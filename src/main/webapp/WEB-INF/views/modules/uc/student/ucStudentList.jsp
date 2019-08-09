@@ -306,8 +306,6 @@
 				<th>当前所在年级</th>
 				<th>结业日期</th>
 				<th>状态</th>
-				<th>身份所在城市信息</th>
-				<!-- <th>更新时间</th> -->
 				
 				<shiro:hasPermission name="uc:ucStudent:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -330,8 +328,7 @@
 					${ucStudent.birthday}
 				</td>
 				<td>
-					
-					${fns:abbr(ucStudent.idCard,14)}
+					${fns:abbr(ucStudent.idCard,13)}
 				</td>
 				<td>
 					${ucStudent.political}
@@ -368,14 +365,13 @@
 				</td>
 				<td>
 					${fns:getDictLabel(ucStudent.status,'student_status','')}
+					
+					<c:if test="${ucStudent.description!=null}">
+					              <p class="text-warning">${ucStudent.description}</p>
+					</c:if>
 				</td> 
 				
-				<td>
-					${ucStudent.regionName}
-				</td>
-				<!-- <td>
-					<fmt:formatDate value="${ucStudent.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td> -->
+
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
     				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>

@@ -405,6 +405,7 @@ public class UcStudentController extends BaseController {
 	}
 	
 	
+	
 	@RequiresPermissions("uc:student:operation")
 	@RequestMapping(value = "deleteList")
 	public String deleteList(String ids, RedirectAttributes redirectAttributes) {

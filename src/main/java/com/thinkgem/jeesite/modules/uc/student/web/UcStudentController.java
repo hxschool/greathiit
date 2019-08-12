@@ -141,8 +141,7 @@ public class UcStudentController extends BaseController {
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("edu")
 	public String edu(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentEdu(beginDate, endDate);
-				
+		List<Map<String,Object>> list = ucStudentService.studentEdu(beginDate, endDate);	
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentEdu";
 	}
@@ -498,11 +497,16 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 	
-	public static void main(String[] args) {
-		String startDate = "20090901";
-		String yyyy = StringUtils.left(startDate, 4);
-		String mm = StringUtils.substring(startDate, 4,6);
-		System.out.println(yyyy);
-		System.out.println(mm);
+	@RequiresPermissions("uc:ucStudent:view")
+	@RequestMapping("biyesheng")
+	public String biyesheng(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<UcStudent> list = ucStudentService.biyesheng(ucStudent);
+		Page<UcStudent> page = new Page<UcStudent>(request, response); 
+		ucStudent.setPage(page);
+		page.setList(list);
+		model.addAttribute("page", page);
+		return "modules/uc/student/studentBys";
 	}
+	
+
 }

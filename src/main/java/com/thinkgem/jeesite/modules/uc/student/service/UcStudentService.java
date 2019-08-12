@@ -171,4 +171,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	public List<UcStudent> exportList(UcStudent ucStudent){
 		return ucStudentDao.exportList(ucStudent);
 	}
+	public List<UcStudent> biyesheng(UcStudent ucStudent){
+		return ucStudentDao.biyesheng(ucStudent);
+	}
 }

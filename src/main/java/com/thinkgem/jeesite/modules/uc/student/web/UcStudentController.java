@@ -6,7 +6,10 @@ package com.thinkgem.jeesite.modules.uc.student.web;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -23,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,6 +39,7 @@ import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.DocWriter;
 import com.thinkgem.jeesite.common.utils.HttpClientUtil;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.utils.StringUtils;
@@ -44,8 +47,11 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.file.FileResponse;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
@@ -62,6 +68,8 @@ public class UcStudentController extends BaseController {
 	private UcStudentService ucStudentService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private OfficeService officeService;
 	
 	@ModelAttribute
 	public UcStudent get(@RequestParam(required=false) String id) {
@@ -380,6 +388,74 @@ public class UcStudentController extends BaseController {
 		
 		return "redirect:"+Global.getAdminPath()+"/uc/student/face?repage";
 	}
+
+	
+	@RequiresPermissions("uc:ucStudent:edit")
+	@RequestMapping(value = "zhengming")
+	public String zhengming(UcStudent ucStudent,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+		
+
+		
+		UcStudent entity = ucStudentService.get(ucStudent);
+		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
+			String id = entity.getDepartmentId();
+			String filename = null;
+			if(!org.springframework.util.StringUtils.isEmpty(id)) {
+				filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+id+".docx");  
+			}else {
+				String departmentName = entity.getDepartmentName();
+				Office office = officeService.getOfficeByName(departmentName);
+				if(!org.springframework.util.StringUtils.isEmpty(office)) {
+					filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+office.getId()+".docx");  
+				}
+			}
+			if(!org.springframework.util.StringUtils.isEmpty(filename)) {
+				String startDate = entity.getStartDate();
+				String yyyy = StringUtils.left(startDate, 4);
+				String mm = StringUtils.substring(startDate, 4,6);
+				response.setContentType("application/msword;charset=utf-8");
+		       
+				response.setHeader("Content-Disposition", "attachment;filename=".concat(new String(entity.getUsername().getBytes("gbk"),"ISO-8859-1")).concat(".docx"));  
+				OutputStream os = response.getOutputStream();
+				FileInputStream is = new FileInputStream(filename);
+				 Map<String, String> map = new HashMap<String, String>();
+			    map.put("${name}", entity.getUsername());
+			    map.put("${idcard}", entity.getIdCard());
+		        map.put("${yyyy}",yyyy);
+		        map.put("${mm}", mm);
+		        map.put("${zy}", entity.getMajorName());
+		        map.put("${n}",DictUtils.getDictLabel(entity.getSchoolSystem(), "student_school_system", ""));
+		        String edu = DictUtils.getDictLabel(entity.getEdu(), "student_edu", "");
+		        if(!org.springframework.util.StringUtils.isEmpty(edu)) {
+		        	edu = StringUtils.left(edu, 1);
+		        }
+		        map.put("${edu}",edu);
+		        map.put("${date}",DateUtils.getDate("yyyy年MM月dd日"));
+				DocWriter.searchAndReplace(is, os, map);
+				
+			}else {
+				addMessage(redirectAttributes, "学生数据异常,获取学院信息失败");
+			}
+			
+		}
+		
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
+	
+	//批量生成证明
+	@RequestMapping(value = "batchCompress")
+	public String batchCompress( String ids,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String action = request.getParameter("action");
+		if(!org.springframework.util.StringUtils.isEmpty(action)) {
+			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+				String[] arrayIds = ids.split(",");
+				
+			}
+			addMessage(redirectAttributes, "批量操作成功");
+			return "redirect:"+Global.getAdminPath()+"/uc/student/?action="+action+"&repage";
+		}
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
 	
 	
 	@RequiresPermissions("uc:student:batch")
@@ -420,5 +496,13 @@ public class UcStudentController extends BaseController {
 		
 		addMessage(redirectAttributes, "停用学生数据成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
+	
+	public static void main(String[] args) {
+		String startDate = "20090901";
+		String yyyy = StringUtils.left(startDate, 4);
+		String mm = StringUtils.substring(startDate, 4,6);
+		System.out.println(yyyy);
+		System.out.println(mm);
 	}
 }

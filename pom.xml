@@ -138,6 +138,7 @@
 
 	<!-- 依赖项定义 -->
 	<dependencies>
+
 		<dependency>
 
 			<groupId>io.springfox</groupId>
@@ -163,13 +164,13 @@
 			<artifactId>swagger-bootstrap-ui</artifactId>
 			<version>1.9.3</version>
 		</dependency>
-		
-				<dependency>
+
+		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>sword.org</groupId>
 			<artifactId>wechat4j</artifactId>
@@ -683,18 +684,18 @@
 		</dependency>
 
 		<!-- poi office -->
-		<dependency>  
-    <groupId>org.apache.poi</groupId>  
-    <artifactId>poi-scratchpad</artifactId>  
-    <version>${poi.version}</version>  
-    <type>jar</type>  
-    <scope>compile</scope>  
-</dependency>  
-<dependency>  
-    <groupId>net.sourceforge.javacsv</groupId>  
-    <artifactId>javacsv</artifactId>  
-    <version>2.0</version>  
-</dependency>  
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>${poi.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sourceforge.javacsv</groupId>
+			<artifactId>javacsv</artifactId>
+			<version>2.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>

@@ -374,7 +374,11 @@
 
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
+					<shiro:hasPermission name="uc:ucStudent:zhengming">
+    				<a class="btn btn-small btn-success" href="${ctx}/uc/student/zhengming?id=${ucStudent.id}">生成证明</a>
+    				</shiro:hasPermission>
     				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
+    				
 					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">停用</a>
 				</td></shiro:hasPermission>
 			</tr>

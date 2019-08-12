@@ -128,7 +128,7 @@
 				<th>结业日期</th>
 				<th>状态</th>
 				
-				<shiro:hasPermission name="uc:ucStudent:edit"><th>操作</th></shiro:hasPermission>
+			
 			</tr>
 		</thead>
 		<tbody>
@@ -193,10 +193,6 @@
 				</td> 
 				
 
-			
-				<shiro:hasPermission name="uc:ucStudent:edit"><td>
-    				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
-				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

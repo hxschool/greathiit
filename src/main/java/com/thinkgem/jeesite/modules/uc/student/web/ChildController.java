@@ -32,8 +32,10 @@ import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
+import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 组织Controller
@@ -46,7 +48,8 @@ public class ChildController extends BaseController {
 
 	@Autowired
 	private OfficeService officeService;
-	
+	@Autowired
+	private SystemService systemService;
 	@ModelAttribute("office")
 	public Office get(@RequestParam(required=false) String id) {
 		if (StringUtils.isNotBlank(id)){
@@ -95,6 +98,18 @@ public class ChildController extends BaseController {
 		map.put("code", "20000000");
 		map.put("msg", classNumber);
 		return map;
+	}
+	
+	@RequiresPermissions("uc:child:view")
+	@RequestMapping(value = "year")
+	public String year(Office office, Model model) {
+		model.addAttribute("years", officeService.findYear());
+		List<Office> list = null;
+		if(!org.springframework.util.StringUtils.isEmpty(office.getYear())) {
+			list = officeService.findList(office);
+		}
+	    model.addAttribute("list", list);
+		return "modules/uc/child/childYear";
 	}
 	
 	@RequiresPermissions("uc:child:view")
@@ -153,6 +168,41 @@ public class ChildController extends BaseController {
 		officeService.delete(office);
 		addMessage(redirectAttributes, "停用成功");
 		return "redirect:" + adminPath + "/uc/child/list?grade="+office.getGrade();
+	}
+	
+	
+	@RequiresPermissions("uc:child:edit")
+	@RequestMapping(value = "useableList")
+	public String useableList(String ids, RedirectAttributes redirectAttributes) {
+		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+			String[] arrayIds = ids.split(",");
+			for(String id:arrayIds) {
+				Office office = new Office();
+				office.setId(id);
+				office.setUseable("0");
+				officeService.save(office);
+			}
+		}
+		
+		addMessage(redirectAttributes, "批量停用数据成功");
+		return "redirect:"+Global.getAdminPath()+"/uc/child/year?repage";
+	}
+	
+	@RequiresPermissions("uc:child:edit")
+	@RequestMapping(value = "deleteList")
+	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
+		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+			String[] arrayIds = ids.split(",");
+			for(String id:arrayIds) {
+				Office office = new Office();
+				office.setId(id);
+				officeService.delete(office);
+				systemService.batchByClassno(id);
+			}
+		}
+		
+		addMessage(redirectAttributes, "匹配删除数据成功");
+		return "redirect:"+Global.getAdminPath()+"/uc/child/year?repage";
 	}
 	
 	@RequiresPermissions("uc:child:edit")

@@ -69,6 +69,9 @@
 
 	</select>
 
+	<select id="findYear" resultType="Office">
+		select left(id,4) as year from sys_office where del_flag=0 and grade=4 group by left(id,4)
+	</select>
 
 	<select id="findList" resultType="Office">
 		SELECT
@@ -79,6 +82,9 @@
 		<!-- 数据范围过滤 -->
 		<if test="grade!=null and grade!=''">
 			and a.grade=#{grade}
+		</if>
+		<if test="year!=null and year!=''">
+			and left(a.id,4)=#{year}
 		</if>
 		${sqlMap.dsf}
 

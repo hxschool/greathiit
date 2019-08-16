@@ -19,12 +19,11 @@
 		<thead>
 			<tr>
 				<th>${label}名称</th>
-				<th>${label}编码</th>
-				<th>类型</th>
 				<c:if test="param.grade==4">
 					<th>班级人数(男)</th>
 					<th>班级人数(女)</th>
 				</c:if>
+				<th>是否可用</th>
 				<th>备注</th>
 				<shiro:hasPermission name="sys:office:edit">
 					<th>操作</th>
@@ -36,12 +35,11 @@
 			<c:forEach items="${list}" var="office">
 				<tr>
 					<td>${office.name}</td>
-					<td>${office.code}</td>
 					<c:if test="param.grade==4">
 						<td>${office.male}</td>
 						<td>${office.female}</td>
 					</c:if>
-					<td>${fns:getDictLabel(office.type, "sys_office_type", "")}</td>
+					<td>${fns:getDictLabel(office.useable, "yes_no", "")}</td>
 					<td>${office.remarks}</td>
 					<shiro:hasPermission name="sys:office:edit">
 

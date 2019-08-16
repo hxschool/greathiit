@@ -197,7 +197,7 @@
 					<label class="control-label">标注代码：</label>
 					<div class="controls">
 						<form:input path="majorCode" htmlEscape="false" maxlength="64"
-							class="input-xlarge required" />
+							class="input-xlarge " />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
@@ -205,7 +205,7 @@
 					<label class="control-label">专业代码：</label>
 					<div class="controls">
 						<form:input path="majorId" htmlEscape="false" maxlength="64"
-							class="input-xlarge required" />
+							class="input-xlarge " />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
@@ -213,7 +213,7 @@
 					<label class="control-label">专业名称：</label>
 					<div class="controls">
 						<form:input path="majorName" htmlEscape="false" maxlength="64"
-							class="input-xlarge required" />
+							class="input-xlarge " />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
@@ -221,7 +221,7 @@
 					<label class="control-label">班号：</label>
 					<div class="controls">
 						<form:input path="classNumber" htmlEscape="false" maxlength="64"
-							class="input-xlarge required" />
+							class="input-xlarge " />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>
@@ -241,7 +241,7 @@
 					<div class="controls">
 
 
-						<form:select path="schoolSystem" class="input-xlarge">
+						<form:select path="schoolSystem" class="input-medium">
 							<form:option value="" label="请选择" />
 							<form:option value="2" label="2" />
 							<form:option value="3" label="3" />
@@ -268,7 +268,7 @@
 					<label class="control-label">当前所在年级：</label>
 					<div class="controls">
 						<form:input path="currentLevel" htmlEscape="false" maxlength="64"
-							class="input-xlarge required" />
+							class="input-xlarge " />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
 				</div>

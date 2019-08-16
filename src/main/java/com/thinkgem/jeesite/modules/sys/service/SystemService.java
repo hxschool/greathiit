@@ -24,10 +24,11 @@ import com.thinkgem.jeesite.common.security.shiro.session.SessionDAO;
 import com.thinkgem.jeesite.common.service.BaseService;
 import com.thinkgem.jeesite.common.service.ServiceException;
 import com.thinkgem.jeesite.common.utils.CacheUtils;
-import com.thinkgem.jeesite.common.utils.DateUtils;
 import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.web.Servlets;
+import com.thinkgem.jeesite.modules.student.dao.StudentDao;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.dao.MenuDao;
 import com.thinkgem.jeesite.modules.sys.dao.RoleDao;
 import com.thinkgem.jeesite.modules.sys.dao.SystemDao;
@@ -41,6 +42,8 @@ import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
+import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 系统管理，安全相关实体的管理类,包括用户、角色、菜单.
@@ -66,6 +69,10 @@ public class SystemService extends BaseService implements InitializingBean {
 	private SessionDAO sessionDao;
 	@Autowired
 	private SystemAuthorizingRealm systemRealm;
+	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private UcStudentDao ucStudentDao;
 	
 	public SessionDAO getSessionDao() {
 		return sessionDao;
@@ -697,5 +704,25 @@ public class SystemService extends BaseService implements InitializingBean {
 		return userDao.getCurrentTeacherNumber();
 	}
 	///////////////// Synchronized to the Activiti end //////////////////
-	
+	@Transactional(readOnly = false)
+	public void batchByClassno(String classno) {
+		User user = new User();
+		Office clazz = new Office();
+		clazz.setId(classno);
+		user.setClazz(clazz);
+		List<User> users = userDao.findList(user);
+		for(User u:users) {
+			String studentNumber = u.getNo();
+			String idCard = u.getLoginName();
+			if(!org.springframework.util.StringUtils.isEmpty(studentNumber)) {
+				Student student = studentDao.getStudentByStudentNumber(studentNumber);
+				studentDao.delete(student);
+			}
+			if(!org.springframework.util.StringUtils.isEmpty(studentNumber)) {
+				UcStudent us = ucStudentDao.findByIdCard(idCard);
+				ucStudentDao.delete(us);
+			}
+			userDao.delete(u);
+		}
+	}
 }

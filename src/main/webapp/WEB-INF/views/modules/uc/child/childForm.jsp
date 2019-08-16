@@ -46,6 +46,8 @@
 	<form:form id="inputForm" modelAttribute="office"
 		action="${ctx}/uc/child/save" method="post" class="form-horizontal">
 		<form:hidden path="id"/>
+		<input type="hidden" name="area.id" value="230100"/>
+		
 		<sys:message content="${message}" />
 		<div class="control-group">
 			<label class="control-label">所属${fns:getDictLabel(office.type-1, "sys_office_type", "")}:</label>
@@ -59,15 +61,7 @@
 					
 			</div>
 		</div>
-		<div class="control-group">
-			<label class="control-label">归属区域:</label>
-			<div class="controls">
-				<sys:treeselect id="area" name="area.id" value="${office.area.id}"
-					labelName="area.name" labelValue="${office.area.name}" title="区域"
-					url="/sys/area/treeData" cssClass="required" />
-			</div>
-		</div>
-
+		
 		<div class="control-group">
 			<label class="control-label">${label}名称:</label>
 			<div class="controls">
@@ -83,7 +77,7 @@
 				<form:input path="code" htmlEscape="false" maxlength="50" />
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group hide">
 			<label class="control-label">类型:</label>
 			<div class="controls">
 				<form:select path="type" class="input-medium">
@@ -92,7 +86,7 @@
 				</form:select>
 			</div>
 		</div>
-		<div class="control-group">
+		<div class="control-group hide">
 			<label class="control-label">级别:</label>
 			<div class="controls">
 				<form:select path="grade" class="input-medium">
@@ -149,6 +143,7 @@
 					notAllowSelectParent="true" />
 			</div>
 		</div>
+		<!-- 
 		<div class="control-group">
 			<label class="control-label">联系地址:</label>
 			<div class="controls">
@@ -185,6 +180,7 @@
 				<form:input path="email" htmlEscape="false" maxlength="50" />
 			</div>
 		</div>
+		 -->
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">

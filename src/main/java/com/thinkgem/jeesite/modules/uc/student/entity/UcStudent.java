@@ -202,7 +202,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		this.departmentName = departmentName;
 	}
 	
-	@Length(min=1, max=64, message="标注代码长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="标注代码长度必须介于 1 和 64 之间")
 	public String getMajorCode() {
 		return majorCode;
 	}
@@ -211,7 +211,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		this.majorCode = majorCode;
 	}
 	
-	@Length(min=1, max=64, message="专业代码长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="专业代码长度必须介于 1 和 64 之间")
 	public String getMajorId() {
 		return majorId;
 	}
@@ -220,7 +220,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		this.majorId = majorId;
 	}
 	
-	@Length(min=1, max=64, message="专业名称长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="专业名称长度必须介于 1 和 64 之间")
 	public String getMajorName() {
 		return majorName;
 	}
@@ -229,7 +229,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		this.majorName = majorName;
 	}
 	
-	@Length(min=1, max=64, message="班号长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="班号长度必须介于 1 和 64 之间")
 	public String getClassNumber() {
 		return classNumber;
 	}
@@ -274,7 +274,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		this.startDate = startDate;
 	}
 	
-	@Length(min=1, max=64, message="当前所在年级长度必须介于 1 和 64 之间")
+	@Length(min=0, max=64, message="当前所在年级长度必须介于 1 和 64 之间")
 	public String getCurrentLevel() {
 		return currentLevel;
 	}

@@ -98,4 +98,5 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @return
 	 */
 	public List<UcStudent> biyesheng(UcStudent ucStudent);
+	public List<UcStudent> fenban(UcStudent ucStudent);
 }

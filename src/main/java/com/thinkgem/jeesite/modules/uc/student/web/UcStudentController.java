@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,6 +51,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
+import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
@@ -190,6 +190,9 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/ucStudentList";
 	}
 	
+	
+
+	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping(value = "result")
 	public String result(UcStudent ucStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -207,11 +210,12 @@ public class UcStudentController extends BaseController {
 
 	@RequiresPermissions("uc:ucStudent:edit")
 	@RequestMapping(value = "save")
-	public String save(UcStudent ucStudent, Model model, RedirectAttributes redirectAttributes) {
+	public String save(UcStudent ucStudent,HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
 		if (!beanValidator(model, ucStudent)){
 			return form(ucStudent, model);
 		}
 		ucStudentService.save(ucStudent);
+		LogUtils.saveLog(request, ucStudent, null, "学籍异动");
 		addMessage(redirectAttributes, "保存学生基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
@@ -457,27 +461,7 @@ public class UcStudentController extends BaseController {
 	}
 	
 	
-	@RequiresPermissions("uc:student:batch")
-	@RequestMapping(value = "batchAction")
-	public String batch( String ids,String description,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String action = request.getParameter("action");
-		if(!org.springframework.util.StringUtils.isEmpty(action)) {
-			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
-				String[] arrayIds = ids.split(",");
-				for(String id:arrayIds) {
-					UcStudent ucStudent = ucStudentService.get(id);
-					if(!org.springframework.util.StringUtils.isEmpty(ucStudent)) {
-						ucStudent.setStatus(action);
-						ucStudent.setDescription(description);
-						ucStudentService.save(ucStudent);
-					}
-				}
-			}
-			addMessage(redirectAttributes, "批量操作成功");
-			return "redirect:"+Global.getAdminPath()+"/uc/student/?action="+action+"&repage";
-		}
-		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
-	}
+	
 	
 	
 	
@@ -495,6 +479,37 @@ public class UcStudentController extends BaseController {
 		
 		addMessage(redirectAttributes, "停用学生数据成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
+	@RequiresPermissions("uc:ucStudent:fenban")
+	@RequestMapping("fenban")
+	public String fenban(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<UcStudent> list = ucStudentService.fenban(ucStudent);
+		Page<UcStudent> page = new Page<UcStudent>(request, response); 
+		ucStudent.setPage(page);
+		page.setList(list);
+		model.addAttribute("page", page);
+		return "modules/uc/student/studentFenban";
+	}
+	
+	
+	@RequestMapping(value = "batchCls")
+	public String batchCls( String ids,String description,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String action = request.getParameter("action");
+		if(!org.springframework.util.StringUtils.isEmpty(action)) {
+			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+				String[] arrayIds = ids.split(",");
+				for(String id:arrayIds) {
+					UcStudent ucStudent = ucStudentService.get(id);
+					if(!org.springframework.util.StringUtils.isEmpty(ucStudent)) {
+						ucStudent.setClassNumber(description);
+						ucStudentService.save(ucStudent);
+					}
+				}
+			}
+			addMessage(redirectAttributes, "批量操作成功");
+			return "redirect:"+Global.getAdminPath()+"/uc/student/fenban?repage";
+		}
+		return "redirect:"+Global.getAdminPath()+"/uc/student/fenban?repage";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")

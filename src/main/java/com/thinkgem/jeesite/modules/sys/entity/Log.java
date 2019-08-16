@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 
 /**
  * 日志Entity
@@ -50,7 +51,7 @@ public class Log extends DataEntity<Log> {
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	@ExcelField(title="日志标题", type=1, align=2, sort=1)
 	public String getTitle() {
 		return title;
 	}
@@ -58,7 +59,13 @@ public class Log extends DataEntity<Log> {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
+	
+	@ExcelField(title="操作用户", type=1, align=2, sort=2)
+	public String getCreateByName() {
+		return getCreateBy().getName();
+	}
+	
+	@ExcelField(title="IP地址", type=1, align=2, sort=3)
 	public String getRemoteAddr() {
 		return remoteAddr;
 	}
@@ -66,7 +73,7 @@ public class Log extends DataEntity<Log> {
 	public void setRemoteAddr(String remoteAddr) {
 		this.remoteAddr = remoteAddr;
 	}
-
+	@ExcelField(title="用户代理信息", type=1, align=2, sort=5)
 	public String getUserAgent() {
 		return userAgent;
 	}
@@ -74,7 +81,7 @@ public class Log extends DataEntity<Log> {
 	public void setUserAgent(String userAgent) {
 		this.userAgent = userAgent;
 	}
-
+	@ExcelField(title="操作的URI", type=1, align=2, sort=4)
 	public String getRequestUri() {
 		return requestUri;
 	}
@@ -82,7 +89,7 @@ public class Log extends DataEntity<Log> {
 	public void setRequestUri(String requestUri) {
 		this.requestUri = requestUri;
 	}
-
+	@ExcelField(title="操作的方式", type=1, align=2, sort=6)
 	public String getMethod() {
 		return method;
 	}
@@ -90,7 +97,7 @@ public class Log extends DataEntity<Log> {
 	public void setMethod(String method) {
 		this.method = method;
 	}
-
+	@ExcelField(title="请求参数", type=1, align=2, sort=7)
 	public String getParams() {
 		return params;
 	}
@@ -98,7 +105,7 @@ public class Log extends DataEntity<Log> {
 	public void setParams(String params) {
 		this.params = params;
 	}
-	
+	@ExcelField(title="异常数据", type=1, align=2, sort=8)
 	public String getException() {
 		return exception;
 	}
@@ -106,7 +113,7 @@ public class Log extends DataEntity<Log> {
 	public void setException(String exception) {
 		this.exception = exception;
 	}
-
+	@ExcelField(title="开始日期", type=1, align=2, sort=9)
 	public Date getBeginDate() {
 		return beginDate;
 	}
@@ -114,7 +121,7 @@ public class Log extends DataEntity<Log> {
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
-
+	@ExcelField(title="结束日期", type=1, align=2, sort=10)
 	public Date getEndDate() {
 		return endDate;
 	}

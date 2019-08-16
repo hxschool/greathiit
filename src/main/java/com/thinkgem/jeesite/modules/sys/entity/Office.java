@@ -45,6 +45,7 @@ public class Office extends TreeEntity<Office> {
 	private User deputyPerson;//副负责人
 	private String male;//男
 	private String female;//女
+	private String year;
 	
 	private List<String> childDeptList;//快速添加子部门
 	
@@ -234,6 +235,14 @@ public class Office extends TreeEntity<Office> {
 
 	public void setFemale(String female) {
 		this.female = female;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 
 	@Override

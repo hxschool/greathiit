@@ -164,6 +164,55 @@
 	</select>
 	
 	
+	<select id="fenban" resultType="UcStudent">
+		SELECT 
+			<include refid="ucStudentColumns"/>
+		FROM uc_student a
+		<include refid="ucStudentJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_DELETE}
+			and ( a.class_number is null or a.class_number ='')
+			<if test="studentNumber != null and studentNumber != ''">
+				AND a.student_number = #{studentNumber}
+			</if>
+			<if test="username != null and username != ''">
+				AND a.username = #{username}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			
+			<if test="schoolSystem != null and schoolSystem != ''">
+				AND a.school_system = #{schoolSystem}
+			</if>
+			
+			<if test="edu != null and edu != ''">
+				AND a.edu = #{edu}
+			</if>
+			
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+			
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			
+			<if test="currentLevel != null and currentLevel != ''">
+				AND a.current_level = #{currentLevel}
+			</if>
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
 	<select id="findList" resultType="UcStudent">
 		SELECT 
 			<include refid="ucStudentColumns"/>

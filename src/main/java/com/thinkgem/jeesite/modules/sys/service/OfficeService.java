@@ -27,7 +27,9 @@ import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 public class OfficeService extends TreeService<OfficeDao, Office> {
 	@Autowired
 	private OfficeDao officeDao;
-	
+	public List<Office> findYear(){
+		return officeDao.findYear();
+	}
 	public Office getOfficeByName(String name) {
 		return officeDao.getOfficeByName(name);
 	}

@@ -20,6 +20,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 public interface OfficeDao extends TreeDao<Office> {
 	Office getOfficeByName(@Param("name") String name);
 	List<Office> findByParentId(Office office);
+	List<Office> findYear();
 	public List<Office> findByParentIdGroupByYear(Office office);
 	public List<Office> findByParentIdAndYear(Office office);
 	void remove(Office office);

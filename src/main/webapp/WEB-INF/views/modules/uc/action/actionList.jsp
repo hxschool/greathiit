@@ -13,8 +13,9 @@
 			$("#btnExport").click(function() {
 				top.$.jBox.confirm("确认要导出学籍数据吗？", "系统提示", function(v, h, f) {
 					if (v == "ok") {
-						$("#searchForm").attr("action", "${ctx}/uc/student/export");
+						$("#searchForm").attr("action", "${ctx}/uc/action/export");
 						$("#searchForm").submit();
+						$("#searchForm").attr("action", "${ctx}/uc/action/");
 					}
 				}, {
 					buttonsFocus : 1
@@ -38,23 +39,6 @@
         	return false;
         }
 		
-		function batchAction1(action){
-			layer.prompt({title: "${fns:getDictLabel(param.action,'student_status','')}", formType: 2}, function(text, index){
-				$("#action").val(action);
-				$("#description").val(text);
-				var id = document.getElementsByName("ids");// 获取全选复选框
-				var ids = "";
-				for (var i = 0; i < id.length; i++) {
-					if (id[i].checked) {
-						ids += id[i].value + ",";
-					}
-				}
-				ids = ids.substring(0, ids.length - 1);// 干掉字符串最后一个逗号
-				$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + ids);
-				$("#searchForm").submit();
-			    layer.close(index);
-			});
-		}
 	
 		function getIds(){
 			var id = document.getElementsByName("ids");// 获取全选复选框
@@ -84,7 +68,7 @@
 				layer.confirm('您确定修改当前学生信息为在籍?', {
 				  btn: ['确定','取消'] 
 				}, function(text, index){
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+					$("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					$("#searchForm").submit();
 					layer.close(index);
 				});
@@ -107,7 +91,7 @@
 				         var text = window["layui-layer-iframe" + index].callbackdata();
 				         if(text){
 						    $("#description").val(text);
-						    $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+						    $("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 							$("#searchForm").submit();
 				             layer.close(index)
 				         }else{
@@ -136,7 +120,7 @@
 				         var text = window["layui-layer-iframe" + index].callbackdata();
 				         if(text){
 						    $("#description").val(text);
-						    $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+						    $("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 							$("#searchForm").submit();
 				             layer.close(index)
 				         }else{
@@ -154,7 +138,7 @@
 					  title: '请输入学校名称',
 					}, function(text, index, elem){
 					  $("#description").val(text);
-				      $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+				      $("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					  $("#searchForm").submit();
 					  layer.close(index);
 					});
@@ -176,26 +160,26 @@
 					  title: title,
 					}, function(text, index, elem){
 					  $("#description").val(text);
-				      $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+				      $("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					  $("#searchForm").submit();
 					  layer.close(index);
 					});
 			}
 			if(action==9){
 				layer.confirm("是否将当前学生设置已结业", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+					$("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					$("#searchForm").submit();
 			    })
 			}
 			if(action==10){
 				layer.confirm("是否将当前学生设置已毕业", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+					$("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					$("#searchForm").submit();
 			    })
 			}
 			if(action==13){
 				layer.confirm("是否将当前信息设置成预计毕业生,如设置预计毕业生数据将通知离校系统", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
+					$("#searchForm").attr("action","${ctx}/uc/action/batchAction?ids=" + getIds());
 					$("#searchForm").submit();
 			    })
 			}
@@ -204,62 +188,21 @@
 </head>
 <body>
 
-<div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/uc/student/import" method="post"
-			enctype="multipart/form-data" class="form-search"
-			style="padding-left: 20px; text-align: center;"
-			onsubmit="loading('正在导入，请稍等...');">
-			<br /> <input id="uploadFile" name="file" type="file"
-				style="width: 330px" /><br />
-			<br /> <input id="btnImportSubmit" class="btn btn-primary"
-				type="submit" value="   导    入   " /> <a
-				href="${ctx}/uc/student/import/template">下载模板</a>
-		</form>
-	</div>
 
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/uc/student/">学籍信息</a></li>
-		<shiro:hasPermission name="uc:ucStudent:add"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
-		<li><a href="${ctx}/uc/student/result">成绩信息</a></li>
+		<li class="active"><a href="${ctx}/uc/action/">学籍信息</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/?action=search" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/action/?op=search" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-		<li><label>考试号：</label>
-				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+		
 			<li><label>学号：</label>
 				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>真实姓名：</label>
 				<form:input path="username" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>身份证号码：</label>
-				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
-			</li>
-			<li class="clearfix"></li>
-			<li><label>年级：</label>
-				<form:input path="currentLevel" htmlEscape="false" maxlength="18" class="input-medium"/>
-			</li>
-			
-			
-			<li><label>学历：</label>
-				
-				<form:select path="edu" class="input-medium ">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_edu')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
-			<li><label>学制：</label>
-						<form:select path="schoolSystem" class="input-medium ">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_school_system')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
-			
 			<li><label>状态：</label>
 						<form:select path="status" class="input-medium ">
 							<option value="">请选择</option>
@@ -272,9 +215,7 @@
 			
 			<li class="btns"><label></label><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
 			<input
-				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
-				id="btnImport" class="btn btn-primary" type="button" value="导入" />
-				
+				id="btnExport" class="btn btn-primary" type="button" value="导出" /> 
 				<input type="hidden" name="action" id="action"/>
 				<input type="hidden" name="description" id="description"/>
 			</li>
@@ -302,14 +243,13 @@
 				<th>入学日期</th>
 				<th>状态</th>
 				
-				<shiro:hasPermission name="uc:ucStudent:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="ucStudent">
 			<tr>
 				<shiro:hasPermission
-							name="uc:ucStudent:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
+							name="uc:action:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
 
 				<td>
 					${ucStudent.username}
@@ -343,7 +283,7 @@
 				<td>
 					${ucStudent.startDate}
 				</td>
-
+	
 
 				<td>
 					${fns:getDictLabel(ucStudent.status,'student_status','')}
@@ -352,33 +292,21 @@
 					              <p class="text-warning">${ucStudent.description}</p>
 					</c:if>
 				</td> 
-				
-
-			
-				<shiro:hasPermission name="uc:ucStudent:edit"><td>
-					<shiro:hasPermission name="uc:ucStudent:zhengming">
-    				<a class="btn btn-small btn-success" href="${ctx}/uc/student/zhengming?id=${ucStudent.id}">生成证明</a>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="uc:ucStudent:zhengming">
-    				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="uc:ucStudent:tingyong">
-					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">停用</a>
-					</shiro:hasPermission>
-				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>
 				<shiro:hasPermission
-							name="uc:ucStudent:operation">
+							name="uc:action:operation">
 		<tfoot><tr>
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
-			
-			<a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a>
-			<c:if test="${param.action!=null and param.action!=1 }">
+			<shiro:hasPermission
+							name="uc:action:tingyong">
+				<a href="#" onclick="batchBox('${ctx}/uc/action/deleteList')" class="btn btn-primary">批量停用</a>
+			</shiro:hasPermission>
+			<c:if test="${param.action!=null and param.action!='' and param.action!=1 }">
 			
 			<shiro:hasPermission
-							name="uc:student:batch">
+							name="uc:action:batch">
 				<a href="#" onclick="batchAction(${param.action})" class="btn btn-primary">${fns:getDictLabel(param.action,'student_status','')}</a>
 				</shiro:hasPermission>
 			</c:if>

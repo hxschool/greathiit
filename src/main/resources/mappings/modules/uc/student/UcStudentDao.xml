@@ -116,7 +116,7 @@
 	</select>
 	
 	
-	<select id="biyesheng" resultType="UcStudent">
+	<select id="completeList" resultType="UcStudent">
 		SELECT 
 			<include refid="ucStudentColumns"/>
 		FROM uc_student a

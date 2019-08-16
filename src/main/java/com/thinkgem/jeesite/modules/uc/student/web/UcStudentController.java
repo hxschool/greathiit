@@ -512,16 +512,7 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/fenban?repage";
 	}
 	
-	@RequiresPermissions("uc:ucStudent:view")
-	@RequestMapping("biyesheng")
-	public String biyesheng(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<UcStudent> list = ucStudentService.biyesheng(ucStudent);
-		Page<UcStudent> page = new Page<UcStudent>(request, response); 
-		ucStudent.setPage(page);
-		page.setList(list);
-		model.addAttribute("page", page);
-		return "modules/uc/student/studentBys";
-	}
+	
 	
 
 }

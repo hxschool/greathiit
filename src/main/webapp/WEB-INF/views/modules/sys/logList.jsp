@@ -26,8 +26,7 @@
 	    	return false;
 	    }
 	</script>
-	<link rel="stylesheet" href="${ctxStatic}/bootstrap/2.3.1/css_default/bootstrap-table-expandable.css"/>
- <script type="text/javascript" src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap-table-expandable.js"></script>
+
 </head>
 <body>
 <!-- 	<ul class="nav nav-tabs"> -->

@@ -171,9 +171,14 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	public List<UcStudent> exportList(UcStudent ucStudent){
 		return ucStudentDao.exportList(ucStudent);
 	}
-	public List<UcStudent> biyesheng(UcStudent ucStudent){
-		return ucStudentDao.biyesheng(ucStudent);
+
+	
+	public Page<UcStudent> completePage(Page<UcStudent> page, UcStudent ucStudent) {
+		ucStudent.setPage(page);
+		page.setList(ucStudentDao.completeList(ucStudent));
+		return page;
 	}
+	
 	public List<UcStudent> fenban(UcStudent ucStudent){
 		return ucStudentDao.fenban(ucStudent);
 	}

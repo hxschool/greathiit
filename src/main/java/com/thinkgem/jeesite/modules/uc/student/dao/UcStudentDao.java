@@ -97,6 +97,6 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @param ucStudent
 	 * @return
 	 */
-	public List<UcStudent> biyesheng(UcStudent ucStudent);
+	public List<UcStudent> completeList(UcStudent ucStudent);
 	public List<UcStudent> fenban(UcStudent ucStudent);
 }

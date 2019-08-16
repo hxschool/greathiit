@@ -220,7 +220,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/uc/student/">学籍信息</a></li>
 		<shiro:hasPermission name="uc:ucStudent:add"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
-		<li><a href="${ctx}/uc/student/result">成绩信息</a></li>
+	
 	</ul>
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/?action=search" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -263,7 +263,7 @@
 			<li><label>状态：</label>
 						<form:select path="status" class="input-medium ">
 							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_status')}"
+							<form:options items="${fns:getDictList('student_uc_status')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
@@ -282,7 +282,7 @@
 		</ul>
 	</form:form>
 	<sys:message content="${message}"/>
-	<table id="contentTable" class="table table-striped table-bordered table-hover ">
+	<table id="contentTable" class="table table-striped table-bordered table-hover table-expandable">
 		<thead>
 			<tr>
 					<shiro:hasPermission
@@ -346,7 +346,7 @@
 
 
 				<td>
-					${fns:getDictLabel(ucStudent.status,'student_status','')}
+					${fns:getDictLabel(ucStudent.status,'student_uc_status','')}
 					
 					<c:if test="${ucStudent.description!=null}">
 					              <p class="text-warning">${ucStudent.description}</p>
@@ -356,17 +356,49 @@
 
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
-					<shiro:hasPermission name="uc:ucStudent:zhengming">
-    				<a class="btn btn-small btn-success" href="${ctx}/uc/student/zhengming?id=${ucStudent.id}">生成证明</a>
-    				</shiro:hasPermission>
-    				<shiro:hasPermission name="uc:ucStudent:zhengming">
-    				<a class="btn btn-small btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
-    				</shiro:hasPermission>
+    				<a class="btn btn btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
+    				
     				<shiro:hasPermission name="uc:ucStudent:tingyong">
 					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">停用</a>
 					</shiro:hasPermission>
 				</td></shiro:hasPermission>
 			</tr>
+			<tr>
+				<td colspan="14" >
+					
+					<table class="table table-bordered">
+							<thead>
+								<tr>
+
+									<th>录取学院</th>
+									<th>录取专业</th>
+									<th>数学</th>
+									<th>语文</th>
+									<th>外语</th>
+									<th>综合</th>
+									<th>总分</th>
+									<th>特长</th>
+									<th>联系电话</th>
+									<th>省份</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>${ucStudent.departmentName}</td>
+									<td>${ucStudent.majorName}</td>
+									<td>${fn:substring(ucStudent.shuxue, 0, fn:indexOf(ucStudent.shuxue,"."))}</td>
+									<td>${fn:substring(ucStudent.yuwen, 0, fn:indexOf(ucStudent.yuwen,"."))}</td>
+									<td>${fn:substring(ucStudent.waiyu, 0, fn:indexOf(ucStudent.waiyu,"."))}</td>
+									<td>${fn:substring(ucStudent.zonghe, 0, fn:indexOf(ucStudent.zonghe,"."))}</td>
+									<td>${fn:substring(ucStudent.zongfen, 0, fn:indexOf(ucStudent.zongfen,"."))}</td>
+									<td>${fn:substring(ucStudent.techang, 0, fn:indexOf(ucStudent.techang,"."))}</td>
+									<td>${recruitStudent.phone}</td>
+									<td>${recruitStudent.province}</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
 		</c:forEach>
 		</tbody>
 				<shiro:hasPermission

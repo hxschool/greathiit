@@ -3,6 +3,7 @@
 <mapper namespace="com.thinkgem.jeesite.modules.student.dao.StudentDao">
     
 	<sql id="studentColumns">
+		a.exa_number AS "exaNumber",
 		a.id AS "id",
 		a.name AS "name",
 		a.id_card AS "idCard",
@@ -22,6 +23,15 @@
 		a.native_place AS "nativePlace",
 		a.student_length AS "studentLength",
 		a.student_number AS "studentNumber",
+		a.father_works AS  "fatherWorks",
+		a.father_phone AS  "fatherPhone",
+		a.mother_works AS  "motherWorks",
+		a.mother_phone AS  "motherPhone",
+		a.qq AS  "qq",
+		a.wechat AS  "wechat",
+		a.face AS  "face",
+		a.start_date AS  "startDate",		
+		a.over_date AS  "overDate",	
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -173,6 +183,16 @@
 	
 	<update id="update">
 		UPDATE student SET 	
+			exa_number = #{exaNumber},
+			father_works =#{fatherWorks},
+			father_phone =#{fatherPhone},
+			mother_works =#{motherWorks},
+			mother_phone =#{motherPhone},
+			qq =#{qq},
+			wechat =#{wechat},
+			face =#{face},
+			start_date =#{startDate},		
+			over_date =#{overDate},	
 			clazz_id = #{clazz.id},
 			name = #{name},
 			id_card = #{idCard},

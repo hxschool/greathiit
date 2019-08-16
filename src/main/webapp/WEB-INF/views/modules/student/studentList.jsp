@@ -36,6 +36,8 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th>考试号</th>
+				<th>学号</th>
 				<th>姓名</th>
 				<th>身份证号</th>
 				<th>生日</th>
@@ -44,23 +46,20 @@
 				<th>政治面貌</th>
 				<th>联系地址</th>
 				<th>email</th>
-				<th>长期目标</th>
-				<th>中期目标</th>
-				<th>短期目标</th>
-				<th>英文简介</th>
-				<th>中文简介</th>
 				<th>学历</th>
 				<th>户口所在地</th>
 				<th>学制</th>
-				<th>用户号</th>
-				<th>更新时间</th>
-				<th>remarks</th>
+				
 				<shiro:hasPermission name="student:student:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="student">
 			<tr>
+				<td>${student.exaNumber}</td>
+				<td>
+					${student.studentNumber}
+				</td>
 				<td><a href="${ctx}/student/student/form?id=${student.id}">
 					${student.name}
 				</a></td>
@@ -68,7 +67,7 @@
 					${student.idCard}
 				</td>
 				<td>
-					<fmt:formatDate value="${student.birthday}" pattern="yyyy-MM-dd HH:mm:ss"/>
+					<fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/>
 				</td>
 				<td>
 					${student.gender}
@@ -85,21 +84,7 @@
 				<td>
 					${student.mail}
 				</td>
-				<td>
-					${student.longGoal}
-				</td>
-				<td>
-					${student.midGoal}
-				</td>
-				<td>
-					${student.shortGoal}
-				</td>
-				<td>
-					${student.selfEngIntroduce}
-				</td>
-				<td>
-					${student.selfIntroduce}
-				</td>
+
 				<td>
 					${student.edu}
 				</td>
@@ -109,15 +94,7 @@
 				<td>
 					${student.studentLength}
 				</td>
-				<td>
-					${student.student.no}
-				</td>
-				<td>
-					<fmt:formatDate value="${student.updateDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
-				</td>
-				<td>
-					${student.remarks}
-				</td>
+				
 				<shiro:hasPermission name="student:student:edit"><td>
     				<a href="${ctx}/student/student/form?id=${student.id}">修改</a>
 					<a href="${ctx}/student/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>

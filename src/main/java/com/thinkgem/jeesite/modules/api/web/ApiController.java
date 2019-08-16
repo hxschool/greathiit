@@ -150,11 +150,7 @@ public class ApiController extends BaseController {
 			List<Student> students = apiService.getStudents(new Student());
 			
 			for(Student student:students) {
-				if(!StringUtils.isEmpty(student.getStudent())) {
-					String studentNumber = student.getStudent().getNo();
-					student.setStudent(null);
-					student.setStudentNumber(studentNumber);
-				}
+				
 				if(!StringUtils.isEmpty(student.getClazz())) {
 					String classno = student.getClazz().getId();
 					student.setClazz(null);
@@ -183,11 +179,7 @@ public class ApiController extends BaseController {
 			map.put("message", "获取学生信息成功");
 			Student student = apiService.getStudent(baseRequest.getStudentNumber());
 			student.setIdCard(null);
-			if(!StringUtils.isEmpty(student.getStudent())) {
-				String studentNumber = student.getStudent().getNo();
-				student.setStudent(null);
-				student.setStudentNumber(studentNumber);
-			}
+
 			if(!StringUtils.isEmpty(student.getClazz())) {
 				String classno = student.getClazz().getId();
 				student.setClazz(null);

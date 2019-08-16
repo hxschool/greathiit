@@ -39,7 +39,6 @@
 			href="${ctx}/uc/student/form?id=${ucStudent.id}">学籍信息<shiro:hasPermission
 					name="uc:ucStudent:edit">${not empty ucStudent.id?'修改':'添加'}</shiro:hasPermission>
 				<shiro:lacksPermission name="uc:ucStudent:edit">查看</shiro:lacksPermission></a></li>
-		<li><a href="${ctx}/uc/student/result">成绩信息</a></li>
 	</ul>
 	<br />
 	<form:form id="inputForm" modelAttribute="ucStudent"
@@ -141,7 +140,7 @@
 					<label class="control-label">状态：</label>
 					<div class="controls">
 							<form:select path="status" class="input-xlarge ">
-							<form:options items="${fns:getDictList('student_status')}"
+							<form:options items="${fns:getDictList('student_uc_status')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 							</form:select>
 					</div>

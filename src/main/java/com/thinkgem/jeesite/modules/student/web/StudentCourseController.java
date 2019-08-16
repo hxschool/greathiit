@@ -86,7 +86,7 @@ public class StudentCourseController extends BaseController {
 	public String wechat(StudentCourse studentCourse, Model model) {
 		User user = UserUtils.getUser();
 		Student student = new Student();
-		student.setStudent(user);
+		student.setStudentNumber(user.getNo());
 		studentCourse.setStudent(student);
 		model.addAttribute("studentCourses", studentCourseService.findByParentIdsLike(studentCourse));
 		return "modules/student/studentcourse/StudentCourseWechat";

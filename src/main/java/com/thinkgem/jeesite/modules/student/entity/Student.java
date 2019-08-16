@@ -7,14 +7,13 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.NotNull;
-
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.common.utils.excel.fieldtype.OfficeType;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.User;
 
 /**
  * 学生信息Entity
@@ -24,27 +23,58 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 public class Student extends DataEntity<Student> implements Comparable<Student> {
 	
 	private static final long serialVersionUID = 1L;
+	@ExcelField(title="考试号", align=2, sort=1)
+	private String exaNumber;		// 考试号
+	@ExcelField(title="真实姓名", align=2, sort=3)
 	private String name;		// 姓名
+	@ExcelField(title="身份证号码", align=2, sort=4)
 	private String idCard;		// 身份证号
+	@ExcelField(title="出生日期", align=2, sort=6)
 	private Date birthday;		// 生日
+	@ExcelField(title="性别", align=2, sort=5,dictType="sex")
 	private String gender;		// 性别
+	@ExcelField(title="民族", align=2, sort=7,dictType="political")
 	private String nation;		// 民族
+	@ExcelField(title="政治面貌", align=2, sort=8,dictType="political")
 	private String political;		// 政治面貌
+	@ExcelField(title="联系电话", align=2, sort=12)
 	private String phone;		// 联系电话
+	@ExcelField(title="家庭地址", align=2, sort=13)
 	private String address;		// 联系地址
+	@ExcelField(title="email", align=2, sort=14)
 	private String mail;		// email
 	private String longGoal;		// 长期目标
 	private String midGoal;		// 中期目标
 	private String shortGoal;		// 短期目标
 	private String selfEngIntroduce;		// 英文简介
 	private String selfIntroduce;		// 中文简介
+	@ExcelField(title="学历", align=2, sort=10,dictType="student_edu")
 	private String edu;		// 学历
 	private String nativePlace;		// 户口所在地
+	@ExcelField(title="学制", align=2, sort=11,dictType="student_school_system")
 	private String studentLength;		// 学制
-	private User student;		// 用户号
 	private Office clazz;		// 班级编号
+	@ExcelField(title="学号", align=2, sort=2)
 	private String studentNumber;//返回json处理~
+	@ExcelField(title="班号", align=2, sort=9,fieldType=OfficeType.class)
 	private String classno;//返回json处理~
+	@ExcelField(title="父亲职业", align=2, sort=15)
+	private String  fatherWorks;//父亲职业
+	@ExcelField(title="父亲联系方式", align=2, sort=16)
+	private String  fatherPhone;//父亲职业
+	@ExcelField(title="母亲职业", align=2, sort=17)
+	private String  motherWorks;//母亲职业
+	@ExcelField(title="母亲联系方式", align=2, sort=18)
+	private String  motherPhone;//父亲职业
+	@ExcelField(title="QQ", align=2, sort=19)
+	private String  qq;//父亲职业
+	@ExcelField(title="微信", align=2, sort=20)
+	private String  wechat;//父亲职业
+	private String  face;//相片
+	@ExcelField(title="入学日期", align=2, sort=21)
+	private String startDate;		// 入学日期
+	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
+	private String overDate;		// 结业日期(预计毕业日期)
 	private List<String> clazzNumbers;//数组查询添加
 	
 	public Student() {
@@ -223,14 +253,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 		this.studentLength = studentLength;
 	}
 	
-	@NotNull(message="用户号不能为空")
-	public User getStudent() {
-		return student;
-	}
 
-	public void setStudent(User student) {
-		this.student = student;
-	}
 
 	public String getStudentNumber() {
 		return studentNumber;
@@ -246,6 +269,86 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setClassno(String classno) {
 		this.classno = classno;
+	}
+
+	public String getExaNumber() {
+		return exaNumber;
+	}
+
+	public void setExaNumber(String exaNumber) {
+		this.exaNumber = exaNumber;
+	}
+
+	public String getFatherWorks() {
+		return fatherWorks;
+	}
+
+	public void setFatherWorks(String fatherWorks) {
+		this.fatherWorks = fatherWorks;
+	}
+
+	public String getFatherPhone() {
+		return fatherPhone;
+	}
+
+	public void setFatherPhone(String fatherPhone) {
+		this.fatherPhone = fatherPhone;
+	}
+
+	public String getMotherWorks() {
+		return motherWorks;
+	}
+
+	public void setMotherWorks(String motherWorks) {
+		this.motherWorks = motherWorks;
+	}
+
+	public String getMotherPhone() {
+		return motherPhone;
+	}
+
+	public void setMotherPhone(String motherPhone) {
+		this.motherPhone = motherPhone;
+	}
+
+	public String getQq() {
+		return qq;
+	}
+
+	public void setQq(String qq) {
+		this.qq = qq;
+	}
+
+	public String getWechat() {
+		return wechat;
+	}
+
+	public void setWechat(String wechat) {
+		this.wechat = wechat;
+	}
+
+	public String getFace() {
+		return face;
+	}
+
+	public void setFace(String face) {
+		this.face = face;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getOverDate() {
+		return overDate;
+	}
+
+	public void setOverDate(String overDate) {
+		this.overDate = overDate;
 	}
 
 	@Override

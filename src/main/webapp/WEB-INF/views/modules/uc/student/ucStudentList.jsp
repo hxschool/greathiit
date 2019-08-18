@@ -246,14 +246,14 @@
 			
 			<li><label>学历：</label>
 				
-				<form:select path="edu" class="input-medium ">
+				<form:select path="edu" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_edu')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
 			<li><label>学制：</label>
-						<form:select path="schoolSystem" class="input-medium ">
+						<form:select path="schoolSystem" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_school_system')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
@@ -261,7 +261,7 @@
 			</li>
 			
 			<li><label>状态：</label>
-						<form:select path="status" class="input-medium ">
+						<form:select path="status" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_uc_status')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
@@ -318,7 +318,8 @@
 					${fns:getDictValue(ucStudent.gender, 'sex', '男')}
 				</td>
 				<td>
-					${ucStudent.birthday}
+		<fmt:parseDate value="${ucStudent.birthday}" pattern="yyyyMMdd"  var="date1"/>
+		<fmt:formatDate pattern="yyyy-MM-dd" value="${date1}" />	
 				</td>
 				<td>
 					${fns:abbr(ucStudent.idCard,13)}

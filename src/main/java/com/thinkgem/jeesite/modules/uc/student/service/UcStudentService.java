@@ -149,8 +149,8 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	}
 	
 	
-	public List<Map<String,Object>> studentRegion(Date startDate,Date endDate){
-		return ucStudentDao.studentRegion(startDate, endDate);
+	public List<Map<String,Object>> studentRegion(String year){
+		return ucStudentDao.studentRegion(year);
 	}
 	
 	public List<Map<String,Object>> studentEdu(Date startDate,Date endDate){

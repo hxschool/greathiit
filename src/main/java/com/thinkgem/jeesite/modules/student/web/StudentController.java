@@ -3,17 +3,28 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +40,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
+import com.thinkgem.jeesite.common.utils.DocWriter;
+import com.thinkgem.jeesite.common.utils.HttpClientUtil;
 import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
@@ -43,6 +57,7 @@ import com.thinkgem.jeesite.modules.calendar.service.CourseCalendarService;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.course.entity.CourseScheduleExt;
 import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
+import com.thinkgem.jeesite.modules.file.FileResponse;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
@@ -53,11 +68,15 @@ import com.thinkgem.jeesite.modules.student.service.StudentActivityService;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentItemService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生信息Controller
@@ -83,6 +102,10 @@ public class StudentController extends BaseController {
 	private SelectCourseService selectCourseService;
 	@Autowired
 	private StudentCourseService studentCourseService;
+	@Autowired
+	private OfficeService officeService;
+	@Autowired
+	private SystemService systemService;
 	@ModelAttribute
 	public Student get(@RequestParam(required=false) String id,Model model) {
 		Student entity = null;
@@ -367,6 +390,35 @@ public class StudentController extends BaseController {
 	@RequiresPermissions("student:student:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(org.springframework.util.StringUtils.isEmpty(request.getParameter("clazz"))) {
+			String grade = request.getParameter("grade");
+			List<String> clazzNumbers = new ArrayList<String>();
+			List<Office> clsList = null;
+			if(org.springframework.util.StringUtils.isEmpty(grade)) {
+				String specialty = request.getParameter("specialty");
+				if(!org.springframework.util.StringUtils.isEmpty(specialty)) {
+					List<Office> offices = officeService.findByOfficeNameLike(specialty);
+					clsList = new ArrayList();
+					for(Office office:offices) {
+						if(office.getGrade().equals("3")) {
+							List<Office> ofs = officeService.findByParentId(office.getId());
+							clsList.addAll(ofs);
+						}
+					}
+				}
+			}else {
+				Office office = new Office();
+				office.setYear(grade);
+				clsList = officeService.findList(office);
+			}
+			
+			for(Office cls:clsList) {
+				clazzNumbers.add(cls.getId());
+			}
+			if(!org.apache.commons.collections.CollectionUtils.isEmpty(clazzNumbers)) {
+				student.setClazzNumbers(clazzNumbers);
+			}
+		}
 		Page<Student> page = studentService.findPage(new Page<Student>(request, response), student);
         model.addAttribute("page", page);
 		return "modules/student/studentList";
@@ -469,4 +521,152 @@ public class StudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/student/student/?repage";
 	}
 
+	
+	@RequestMapping(value = "face")
+	public String face() {
+		return "modules/student/studentFace";
+	}
+	@RequestMapping(value = "upload")
+	public String upload(MultipartFile file, RedirectAttributes redirectAttributes) {
+	
+		int successNum = 0;
+		int failureNum = 0;
+		StringBuilder failureMsg = new StringBuilder();
+		try {
+			
+			String name = file.getName();
+			String fix =  name.substring(name.lastIndexOf("."), name.length());
+			File oldFile = File.createTempFile(name.substring(0,name.lastIndexOf(".")),fix);
+			FileUtils.copyInputStreamToFile(file.getInputStream(), oldFile);
+			ZipEntry zipEntry = null;
+			ZipFile zipFile = new ZipFile(oldFile); 
+			ZipInputStream zipInputStream = new ZipInputStream( new FileInputStream(oldFile)); 
+			while ((zipEntry = zipInputStream.getNextEntry()) != null) {
+	            if(!zipEntry.isDirectory()){ 
+	            	  String filename = zipEntry.getName();
+	                  String prefix  =	 filename.substring(0,filename.lastIndexOf("."));
+	                  String idCard = prefix;
+	                  Student student = studentService.getStudentByIdCard(idCard);
+	                  if(org.springframework.util.StringUtils.isEmpty(student)) {
+	                	  failureMsg.append("身份信息异常,身份证号不正确" + idCard);
+	                	  failureNum ++ ;
+	                  }else {
+	                	  String suffix = filename.substring(filename.lastIndexOf("."), filename.length());
+		                  File tempFile = File.createTempFile(prefix,suffix);
+		                  FileUtils.copyInputStreamToFile(zipFile.getInputStream(zipEntry), tempFile);
+		                  String str = HttpClientUtil.upload(Global.FILE_SERVER_UPLOAD_URL,filename, tempFile);
+		                  if(!org.springframework.util.StringUtils.isEmpty(str)) {
+		                      Gson gson = new Gson();
+		                      FileResponse fileResponse = gson.fromJson(str, FileResponse.class);
+		                      if(fileResponse.getStatus().equals("00000000")) {
+		                    	  User user = systemService.getUserByLoginName(idCard);
+				                  user.setPhone(fileResponse.getUrl());
+				                  systemService.saveUser(user);
+				                  successNum ++;
+		                      }else {
+		                    	  failureMsg.append("连接文件服务器异常,请联系管理员");
+			                	  failureNum ++ ;
+		                      }
+		                  }else{
+		                	  failureMsg.append("连接文件服务器异常,请联系管理员");
+		                	  failureNum ++ ;
+		                  }
+		                 
+	                  }
+	            }
+	        }
+			if (failureNum>0){
+				failureMsg.insert(0, "，失败 "+failureNum+" 条头像信息，导入信息如下：");
+			}
+			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条信息"+failureMsg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:"+Global.getAdminPath()+"/student/student/face?repage";
+	}
+
+	
+	@RequiresPermissions("student:student:edit")
+	@RequestMapping(value = "zhengming")
+	public String zhengming(Student student,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+
+		Student entity = studentService.get(student);
+		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
+			Office cls = entity.getClazz();
+			if(!org.springframework.util.StringUtils.isEmpty(cls)) {
+				Office major = officeService.get(cls.getParent().getId());
+				Office department = officeService.get(major.getParent().getId());
+				String filename = null;
+				if(!org.springframework.util.StringUtils.isEmpty(department)) {
+					filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+department.getId()+".docx");  
+				}else {
+					String departmentName = department.getName();
+					Office office = officeService.getOfficeByName(departmentName);
+					if(!org.springframework.util.StringUtils.isEmpty(office)) {
+						filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+office.getId()+".docx");  
+					}
+				}
+				if(!org.springframework.util.StringUtils.isEmpty(filename)) {
+					String startDate = entity.getStartDate();
+					String yyyy = StringUtils.left(startDate, 4);
+					String mm = StringUtils.substring(startDate, 4,6);
+					response.setContentType("application/msword;charset=utf-8");
+			       
+					response.setHeader("Content-Disposition", "attachment;filename=".concat(new String(entity.getName().getBytes("gbk"),"ISO-8859-1")).concat(".docx"));  
+					OutputStream os = response.getOutputStream();
+					FileInputStream is = new FileInputStream(filename);
+					 Map<String, String> map = new HashMap<String, String>();
+				    map.put("${name}", entity.getName());
+				    map.put("${idcard}", entity.getIdCard());
+			        map.put("${yyyy}",yyyy);
+			        map.put("${mm}", mm);
+			        map.put("${zy}", major.getName());
+			        map.put("${n}",DictUtils.getDictLabel(entity.getStudentLength(), "student_school_system", ""));
+			        String edu = DictUtils.getDictLabel(entity.getEdu(), "student_edu", "");
+			        if(!org.springframework.util.StringUtils.isEmpty(edu)) {
+			        	edu = StringUtils.left(edu, 1);
+			        }
+			        map.put("${edu}",edu);
+			        map.put("${date}",DateUtils.getDate("yyyy年MM月dd日"));
+					DocWriter.searchAndReplace(is, os, map);
+					
+				}else {
+					addMessage(redirectAttributes, "学生数据异常,获取学院信息失败");
+				}
+			}
+		}
+		
+		return "redirect:"+Global.getAdminPath()+"/student/student/?repage";
+	}
+	//分班
+	@RequiresPermissions("student:student:edit")
+	@RequestMapping("tracked")
+	public String tracked(Student student,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Student> list = studentService.tracked(student);
+		Page<Student> page = new Page<Student>(request, response); 
+		student.setPage(page);
+		page.setList(list);
+		model.addAttribute("page", page);
+		return "modules/student/tracked/studentTracked";
+	}
+	
+	//批量生成证明
+	@RequestMapping(value = "batchCompress")
+	public String batchCompress( String ids,HttpServletRequest request, RedirectAttributes redirectAttributes) {
+		String action = request.getParameter("action");
+		if(!org.springframework.util.StringUtils.isEmpty(action)) {
+			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+				String[] arrayIds = ids.split(",");
+				
+			}
+			addMessage(redirectAttributes, "批量操作成功");
+			return "redirect:"+Global.getAdminPath()+"/uc/student/?action="+action+"&repage";
+		}
+		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+	}
+	
+	
+
+	
 }

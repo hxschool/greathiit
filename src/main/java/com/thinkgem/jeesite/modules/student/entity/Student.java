@@ -77,6 +77,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String overDate;		// 结业日期(预计毕业日期)
 	private List<String> clazzNumbers;//数组查询添加
 	
+	private String status;
 	public Student() {
 		super();
 	}
@@ -349,6 +350,14 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setOverDate(String overDate) {
 		this.overDate = overDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override

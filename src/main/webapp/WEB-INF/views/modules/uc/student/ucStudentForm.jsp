@@ -52,7 +52,7 @@
 				data-toggle="pill">基础信息</a></li>
 			<li><a href="#rule" role="tab" data-toggle="pill">学院信息</a></li>
 			<li><a href="#forum" role="tab" data-toggle="pill">录取通知书</a></li>
-			<li><a href="#security" role="tab" data-toggle="pill">成绩信息</a></li>
+			<li><a href="#security" role="tab" data-toggle="pill">录取成绩</a></li>
 		</ul>
 
 		<div id="myTabContent" class="tab-content">

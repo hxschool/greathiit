@@ -17,43 +17,49 @@
 		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
 	</ul>
 	 -->
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/region" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
-			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-			<label>&nbsp;--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${log.endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;&nbsp;
-			&nbsp;<label for="exception"><input id="exception" name="exception" type="checkbox"${log.exception eq '1'?' checked':''} value="1"/>只查询异常信息</label>
+			<label>选择年份：&nbsp;</label><input id="year" name="year" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
+				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy"/>" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+			
 			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
 		</div>
 	</form:form>
 	<sys:message content="${message}"/>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 1024px;height:530px;margin:0 auto; "></div>
+	<div class="container-fluid">
+		<table id="contentTable"
+			class="table table-striped table-bordered table-hover ">
+			<thead>
+				<tr>
+					<th width="20px;">序号</th>
+					<th>省份名称</th>
+					<th>录取数量</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${list}" var="item" varStatus="status">
+					<tr>
 
-    <script type="text/javascript">
-		    var xAxData = [];
+						<td>${status.index +1}</td>
+						<td>${item.NAME}</td>
+						<td>${item.TOTAL}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+		</table>
+	</div>
+	<script type="text/javascript">
+
 		    var serDataBoy = [];  
-		    var serDataGril = [];  
-		    var labData = [];  
+
 		    <c:forEach var="item" items="${list}" varStatus="status">
-		    xAxData.push('${item.NAME}' || ""); 
-		    labData.push('${item.LABEL}' || ""); 
-		    <c:choose>
-			    <c:when test="${item.LABEL=='1'}"> 
-			    serDataBoy.push({  
-			        name: '${item.NAME}',  
-			        value: ${item.TOTAL} || 0  
-			    }); 
-			    </c:when>
-			    <c:otherwise>
-			    serDataGril.push({  
-			        name: '${item.NAME}',  
-			        value: ${item.TOTAL} || 0  
-			    }); 
-			    </c:otherwise>
-			</c:choose>
-		   
+
+		    serDataBoy.push({  
+		        name: '${item.NAME}',  
+		        value: ${item.TOTAL} || 0  
+		    }); 
 			</c:forEach> 
         // 基于准备好的dom，初始化echarts实例
        
@@ -69,14 +75,9 @@
 					        trigger: 'item'
 					    },
 					   
-					    legend: {
-					        orient: 'vertical',
-					        x:'left',
-					        data:['男','女']
-					    },
 					    dataRange: {
 					        min: 0,
-					        max: 200,
+					        max: 3000,
 					        color:['#E01F54','#001852','#f5e8c8','#b8d2c7','#c6b38e',
 					            '#a4d8c2','#f3d999','#d3758f','#dcc392','#2e4783',
 					            '#82b6e9','#ff6347','#a092f1','#0a915d','#eaf889',
@@ -109,7 +110,7 @@
 					    },
 					    series : [
 					        {
-					            name: '男',
+					            name: '省份',
 					            type: 'map',
 					            mapType: 'china',
 					            roam: false,
@@ -117,19 +118,10 @@
 					                normal:{label:{show:true}},
 					                emphasis:{label:{show:true}}
 					            },
-					            
+					           
 					            data:serDataBoy
-					        },
-					        {
-					            name: '女',
-					            type: 'map',
-					            mapType: 'china',
-					            itemStyle:{
-					                normal:{ areaColor: '#dec313',label:{show:true}},
-					                emphasis:{label:{show:true}}
-					            },
-					            data:serDataGril
 					        }
+					        
 					    ]
 					};
                     

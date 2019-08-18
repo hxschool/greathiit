@@ -58,7 +58,7 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentRegion(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentRegion(@Param("year")String year);
 	/**
 	 * 学院
 	 * @param startDate

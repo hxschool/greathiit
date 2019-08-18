@@ -22,7 +22,6 @@
 		a.edu AS "edu",
 		a.native_place AS "nativePlace",
 		a.student_length AS "studentLength",
-		a.student_number AS "studentNumber",
 		a.father_works AS  "fatherWorks",
 		a.father_phone AS  "fatherPhone",
 		a.mother_works AS  "motherWorks",
@@ -32,6 +31,8 @@
 		a.face AS  "face",
 		a.start_date AS  "startDate",		
 		a.over_date AS  "overDate",	
+		a.student_number AS "studentNumber",
+		a.status AS "status",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -59,8 +60,67 @@
 			<include refid="studentColumns"/>
 		FROM student a
 		<include refid="studentJoins"/>
-		WHERE a.student_number = #{studentNumber}
+		WHERE a.del_flag = 0 and a.student_number = #{studentNumber}
 	</select>
+	
+		
+	<select id="getStudentByIdCard" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		WHERE a.del_flag = 0 and a.id_card = #{idCard}
+	</select>
+	
+	
+	
+	<select id="tracked" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = 0
+			and ( a.clazz_id is null or a.clazz_id ='')
+			<if test="classno != null and classno != ''">
+				AND a.clazz_id = #{classno}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length = #{studentLength}
+			</if>
+			
+			<if test="edu != null and edu != ''">
+				AND a.edu = #{edu}
+			</if>
+			
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+			
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
+			</if>
+			
+
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	
 	
 	<select id="findList" resultType="Student">
 		SELECT 
@@ -75,9 +135,24 @@
 					<if test="dbName == 'mssql'">'%'+#{name}+'%'</if>
 					<if test="dbName == 'mysql'">concat('%',#{name},'%')</if>
 			</if>
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number=#{exaNumber}
+			</if>
+			
+				<if test="edu != null and edu != ''">
+				AND a.edu=#{edu}
+			</if>
+			
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length=#{studentLength}
+			</if>
 			
 			<if test="studentNumber != null and studentNumber != ''">
 				AND a.student_number=#{studentNumber}
+			</if>
+			
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card=#{idCard}
 			</if>
 			
 			<if test="clazz != null and clazz.id!=null ">
@@ -145,6 +220,7 @@
 			native_place,
 			student_length,
 			student_number,
+			status,
 			create_by,
 			create_date,
 			update_by,
@@ -172,6 +248,7 @@
 			#{nativePlace},
 			#{studentLength},
 			#{studentNumber},
+			#{status},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -212,6 +289,7 @@
 			native_place = #{nativePlace},
 			student_length = #{studentLength},
 			student_number = #{studentNumber},
+			status = #{status},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

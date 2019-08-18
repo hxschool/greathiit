@@ -5,9 +5,15 @@
 	<title>学生信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
-		$(document).ready(function() {
-			
-		});
+	$(document).ready(function() {
+	    $('#element_id').cxSelect({ 
+			  url: '${ctx}/sys/office/treeClassLink',
+			  selects: ['department', 'specialty','grade',"clazz"], 
+			  jsonName: 'name',
+			  jsonValue: 'value',
+			  jsonSub: 'sub'
+			});
+})
 		function page(n,s){
 			$("#pageNo").val(n);
 			$("#pageSize").val(s);
@@ -25,8 +31,59 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
+			<li>
+			<label>考试号：</label>
+				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			<li><label>学号：</label>
+				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
 			<li><label>姓名：</label>
-				<form:input path="name" htmlEscape="false" maxlength="255" class="input-medium"/>
+				<form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+			<li><label>身份证号码：</label>
+				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
+			</li>
+			<li class="clearfix"></li>
+
+			<div id="element_id">
+			<li><label>所属学院：</label> <select class="department input-medium" style="width:175px"
+				name="department"><option>请选择</option></select></li>
+
+			<li><label>所属专业：</label> <select id="specialty"
+				class="specialty input-medium" style="width:175px" name="specialty"><option>请选择</option></select>
+			</li>
+			<li><label> 年级：</label> <select id="grade"
+				class="grade input-medium" style="width:175px"><option>请选择</option></select></li>
+			<li><label>选择班级：</label> <select id="clazz"
+				class="clazz input-medium" name="clazz" style="width:175px"><option>请选择</option></select>
+			</li>
+			</div>
+		
+		<li class="clearfix"></li>
+
+			<li><label>学历：</label>
+				
+				<form:select path="edu" class="input-medium " style="width:175px">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_edu')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
+			</li>
+			<li><label>学制：</label>
+						<form:select path="studentLength" class="input-medium " style="width:175px">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_school_system')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
+			</li>
+			
+			<li><label>状态：</label>
+						<form:select path="status" class="input-medium " style="width:175px">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('student_status')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
@@ -70,13 +127,13 @@
 					<fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/>
 				</td>
 				<td>
-					${student.gender}
+					${fns:getDictLabel(student.gender,'sex','')}
 				</td>
 				<td>
-					${student.nation}
+					${fns:getDictLabel(student.nation,'nation','')}
 				</td>
 				<td>
-					${student.political}
+					${fns:getDictLabel(student.political,'political','')}
 				</td>
 				<td>
 					${student.address}
@@ -86,13 +143,13 @@
 				</td>
 
 				<td>
-					${student.edu}
+					${fns:getDictLabel(student.edu,'student_edu','')}
 				</td>
 				<td>
 					${student.nativePlace}
 				</td>
 				<td>
-					${student.studentLength}
+					${fns:getDictLabel(student.studentLength,'student_school_system','')}
 				</td>
 				
 				<shiro:hasPermission name="student:student:edit"><td>

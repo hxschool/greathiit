@@ -22,6 +22,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生信息Service
@@ -93,4 +94,11 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		super.delete(student);
 	}
 	
+	public Student getStudentByIdCard(String idCard) {
+		return studentDao.getStudentByIdCard(idCard);
+	}
+	public List<Student> tracked(Student student){
+		return studentDao.tracked(student);
+	}
+
 }

@@ -30,6 +30,9 @@ public class OfficeService extends TreeService<OfficeDao, Office> {
 	public List<Office> findYear(){
 		return officeDao.findYear();
 	}
+	public List<Office> findByOfficeNameLike(String name) {
+		return officeDao.findByOfficeNameLike(name);
+	}
 	public Office getOfficeByName(String name) {
 		return officeDao.getOfficeByName(name);
 	}

@@ -143,6 +143,17 @@
 		#{parentIds}
 		ORDER BY a.code
 	</select>
+	
+	
+		<select id="findByOfficeNameLike" resultType="Office">
+		SELECT
+		<include refid="officeColumns" />
+		FROM sys_office a
+		<include refid="officeJoins" />
+		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.name LIKE
+		CONCAT(CONCAT('%', #{name}), '%')
+		ORDER BY a.code
+	</select>
 
 	<insert id="insert">
 		INSERT INTO sys_office(

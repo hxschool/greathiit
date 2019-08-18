@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.student.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.thinkgem.jeesite.common.persistence.CrudDao;
@@ -17,4 +19,6 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 @MyBatisDao
 public interface StudentDao extends CrudDao<Student> {
 	public Student getStudentByStudentNumber(@Param("studentNumber")String studentNumber);
+	public Student getStudentByIdCard(@Param("idCard")String idCard);
+	public List<Student> tracked(Student student);
 }

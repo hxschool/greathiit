@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,7 @@ import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +50,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.file.FileResponse;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
@@ -125,17 +130,16 @@ public class UcStudentController extends BaseController {
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("region")
-	public String region(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentRegion(beginDate, endDate);
-				
+	public String region(String year,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentRegion(year);
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentRegion";
 	}
 	
 	@RequestMapping("region.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxRegion(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentRegion(beginDate, endDate);
+	public List<Map<String,Object>> ajaxRegion(String year,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentRegion(year);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
@@ -236,19 +240,70 @@ public class UcStudentController extends BaseController {
 	
     @RequestMapping(value = "export", method=RequestMethod.POST)
     public String exportFile(UcStudent student, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
-		try {
+    	String action = request.getParameter("action");
+		if(org.springframework.util.StringUtils.isEmpty(action)) {
+			action = "";
+		}
+		try {	
             String fileName = "学籍信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
     		new ExportExcel("学籍信息", UcStudent.class).setDataList(ucStudentService.findByParentIdsLike(student)).write(response, fileName).dispose();
     		return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出学籍信息失败！失败信息："+e.getMessage());
 		}
-		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
+		return "redirect:"+Global.getAdminPath()+"/uc/student/"+action+"?repage";
     }
 
+    
+    @RequestMapping(value = "toStudent", method=RequestMethod.POST)
+    public String toStudent(UcStudent student, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+    	String action = request.getParameter("action");
+		if(org.springframework.util.StringUtils.isEmpty(action)) {
+			action = "";
+		}
+		try {	
+            String fileName = "学生信息"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+            List<UcStudent> students = ucStudentService.findByParentIdsLike(student);
+            List<Student> sts = new ArrayList<Student>();
+            for(UcStudent us:students) {
+            	Student st = new Student();
+
+            	BeanUtils.copyProperties(us, st);
+            	st.setName(us.getUsername());
+            	
+            	if(!org.springframework.util.StringUtils.isEmpty(us.getBirthday())) {
+            		String birthday = us.getBirthday();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                    Date date = sdf.parse(birthday);
+                    st.setBirthday(date);
+            	}
+            	st.setPhone(us.getPhone());
+            	st.setAddress(us.getHomeAddress());
+            	st.setNation(DictUtils.getDictValue(us.getNation(), "nation", "未知"));
+            	st.setPolitical(DictUtils.getDictValue(us.getPolitical(), "political", "未知"));
+            	st.setClassno(us.getClassNumber());
+            	st.setStudentLength(us.getSchoolSystem());
+            	sts.add(st);
+            }
+    		new ExportExcel("学生信息", Student.class).setDataList(sts).write(response, fileName).dispose();
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出学生信息失败！失败信息："+e.getMessage());
+		}
+		return "redirect:"+Global.getAdminPath()+"/uc/student/"+action+"?repage";
+    }
+    
     @RequestMapping(value = "view")
     public String view() {
     	return "modules/uc/student/ucStudentView";
+    }
+    
+    public static void main(String[] args) throws ParseException {
+    	String birthday = "19991020";
+    	  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+          Date date = sdf.parse(birthday);
+         
+
     }
 	/**
 	 * 导入用户数据
@@ -328,137 +383,7 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
     }
 
-	@RequestMapping(value = "face")
-	public String face() {
-		return "modules/student/studentFace";
-	}
-	@RequestMapping(value = "upload")
-	public String upload(MultipartFile file, RedirectAttributes redirectAttributes) {
 	
-		int successNum = 0;
-		int failureNum = 0;
-		StringBuilder failureMsg = new StringBuilder();
-		try {
-			
-			String name = file.getName();
-			String fix =  name.substring(name.lastIndexOf("."), name.length());
-			File oldFile = File.createTempFile(name.substring(0,name.lastIndexOf(".")),fix);
-			FileUtils.copyInputStreamToFile(file.getInputStream(), oldFile);
-			ZipEntry zipEntry = null;
-			ZipFile zipFile = new ZipFile(oldFile); 
-			ZipInputStream zipInputStream = new ZipInputStream( new FileInputStream(oldFile)); 
-			while ((zipEntry = zipInputStream.getNextEntry()) != null) {
-	            if(!zipEntry.isDirectory()){ 
-	            	  String filename = zipEntry.getName();
-	                  String prefix  =	 filename.substring(0,filename.lastIndexOf("."));
-	                  String idCard = prefix;
-	                  UcStudent ucStudent = ucStudentService.findByIdCard(idCard);
-	                  if(org.springframework.util.StringUtils.isEmpty(ucStudent)) {
-	                	  failureMsg.append("身份信息异常,身份证号不正确" + idCard);
-	                	  failureNum ++ ;
-	                  }else {
-	                	  String suffix = filename.substring(filename.lastIndexOf("."), filename.length());
-		                  File tempFile = File.createTempFile(prefix,suffix);
-		                  FileUtils.copyInputStreamToFile(zipFile.getInputStream(zipEntry), tempFile);
-		                  String str = HttpClientUtil.upload(Global.FILE_SERVER_UPLOAD_URL,filename, tempFile);
-		                  if(!org.springframework.util.StringUtils.isEmpty(str)) {
-		                      Gson gson = new Gson();
-		                      FileResponse fileResponse = gson.fromJson(str, FileResponse.class);
-		                      if(fileResponse.getStatus().equals("00000000")) {
-		                    	  User user = systemService.getUserByLoginName(idCard);
-				                  user.setPhone(fileResponse.getUrl());
-				                  systemService.saveUser(user);
-				                  successNum ++;
-		                      }else {
-		                    	  failureMsg.append("连接文件服务器异常,请联系管理员");
-			                	  failureNum ++ ;
-		                      }
-		                  }else{
-		                	  failureMsg.append("连接文件服务器异常,请联系管理员");
-		                	  failureNum ++ ;
-		                  }
-		                 
-	                  }
-	            }
-	        }
-			if (failureNum>0){
-				failureMsg.insert(0, "，失败 "+failureNum+" 条头像信息，导入信息如下：");
-			}
-			addMessage(redirectAttributes, "已成功导入 "+successNum+" 条信息"+failureMsg);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return "redirect:"+Global.getAdminPath()+"/uc/student/face?repage";
-	}
-
-	
-	@RequiresPermissions("uc:ucStudent:edit")
-	@RequestMapping(value = "zhengming")
-	public String zhengming(UcStudent ucStudent,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
-		
-
-		
-		UcStudent entity = ucStudentService.get(ucStudent);
-		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
-			String id = entity.getDepartmentId();
-			String filename = null;
-			if(!org.springframework.util.StringUtils.isEmpty(id)) {
-				filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+id+".docx");  
-			}else {
-				String departmentName = entity.getDepartmentName();
-				Office office = officeService.getOfficeByName(departmentName);
-				if(!org.springframework.util.StringUtils.isEmpty(office)) {
-					filename = request.getSession().getServletContext().getRealPath("/resources/zhengming/"+office.getId()+".docx");  
-				}
-			}
-			if(!org.springframework.util.StringUtils.isEmpty(filename)) {
-				String startDate = entity.getStartDate();
-				String yyyy = StringUtils.left(startDate, 4);
-				String mm = StringUtils.substring(startDate, 4,6);
-				response.setContentType("application/msword;charset=utf-8");
-		       
-				response.setHeader("Content-Disposition", "attachment;filename=".concat(new String(entity.getUsername().getBytes("gbk"),"ISO-8859-1")).concat(".docx"));  
-				OutputStream os = response.getOutputStream();
-				FileInputStream is = new FileInputStream(filename);
-				 Map<String, String> map = new HashMap<String, String>();
-			    map.put("${name}", entity.getUsername());
-			    map.put("${idcard}", entity.getIdCard());
-		        map.put("${yyyy}",yyyy);
-		        map.put("${mm}", mm);
-		        map.put("${zy}", entity.getMajorName());
-		        map.put("${n}",DictUtils.getDictLabel(entity.getSchoolSystem(), "student_school_system", ""));
-		        String edu = DictUtils.getDictLabel(entity.getEdu(), "student_edu", "");
-		        if(!org.springframework.util.StringUtils.isEmpty(edu)) {
-		        	edu = StringUtils.left(edu, 1);
-		        }
-		        map.put("${edu}",edu);
-		        map.put("${date}",DateUtils.getDate("yyyy年MM月dd日"));
-				DocWriter.searchAndReplace(is, os, map);
-				
-			}else {
-				addMessage(redirectAttributes, "学生数据异常,获取学院信息失败");
-			}
-			
-		}
-		
-		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
-	}
-	
-	//批量生成证明
-	@RequestMapping(value = "batchCompress")
-	public String batchCompress( String ids,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String action = request.getParameter("action");
-		if(!org.springframework.util.StringUtils.isEmpty(action)) {
-			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
-				String[] arrayIds = ids.split(",");
-				
-			}
-			addMessage(redirectAttributes, "批量操作成功");
-			return "redirect:"+Global.getAdminPath()+"/uc/student/?action="+action+"&repage";
-		}
-		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
-	}
 	
 	
 	
@@ -480,16 +405,7 @@ public class UcStudentController extends BaseController {
 		addMessage(redirectAttributes, "停用学生数据成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
-	@RequiresPermissions("uc:ucStudent:fenban")
-	@RequestMapping("fenban")
-	public String fenban(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<UcStudent> list = ucStudentService.fenban(ucStudent);
-		Page<UcStudent> page = new Page<UcStudent>(request, response); 
-		ucStudent.setPage(page);
-		page.setList(list);
-		model.addAttribute("page", page);
-		return "modules/uc/student/studentFenban";
-	}
+
 	
 	
 	@RequestMapping(value = "batchCls")

@@ -647,13 +647,13 @@ public class StudentController extends BaseController {
 					map.put("${edu}", edu);
 					map.put("${date}", DateUtils.getDate("yyyy年MM月dd日"));
 					DocWriter.searchAndReplace(is, os, map);
-
-				} else {
-					addMessage(redirectAttributes, "学生数据异常,获取学院信息失败");
-				}
+					return "redirect:" + Global.getAdminPath() + "/student/student/?repage";
+				} 
+				
 			}
+			
 		}
-
+		addMessage(redirectAttributes, "学生数据异常,获取学院信息失败");
 		return "redirect:" + Global.getAdminPath() + "/student/student/?repage";
 	}
 

@@ -21,7 +21,7 @@
         	return false;
         }
 	function showModal(url,name){
-		layer.open({
+		var index = layer.open({
 			 title:name,
 		     type: 2,
 		     area: ['560px','560px'],
@@ -39,6 +39,7 @@
 		              
 		     }
 		 });
+		layer.full(index);
 	}
 	
 	</script>
@@ -178,8 +179,7 @@
 						<a  href="javascript:void(0);" onclick="showModal('${ctx}/student/studentCourse/wechat?student.studentNumber=${student.studentNumber}','${student.name}')">成绩信息</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="student:student:info">
-						<a href="${ctx}/student/student/info?id=${student.id}">个人信息</a>
-						<a  href="javascript:void(0);" onclick="showModal('${ctx}/student/student/info?id=${student.id}','${student.name}')">成绩信息</a>
+						<a  href="javascript:void(0);" onclick="showModal('${ctx}/student/student/info?id=${student.id}','${student.name}')">个人信息</a>
 					</shiro:hasPermission>
 					
 					<shiro:hasPermission name="student:student:prove">

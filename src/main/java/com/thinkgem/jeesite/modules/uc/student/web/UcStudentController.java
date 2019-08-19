@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.uc.student.web;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,6 +38,8 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
+import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
@@ -53,7 +56,8 @@ public class UcStudentController extends BaseController {
 
 	@Autowired
 	private UcStudentService ucStudentService;
-	
+	@Autowired
+	private StudentStatusLogService studentStatusLogService;
 	@ModelAttribute
 	public UcStudent get(@RequestParam(required=false) String id) {
 		UcStudent entity = null;
@@ -188,12 +192,37 @@ public class UcStudentController extends BaseController {
 
 	@RequiresPermissions("uc:ucStudent:edit")
 	@RequestMapping(value = "save")
-	public String save(UcStudent ucStudent,HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
-		if (!beanValidator(model, ucStudent)){
-			return form(ucStudent, model);
+	public String save(UcStudent us,HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) throws ParseException {
+		
+		if (!beanValidator(model, us)){
+			return form(us, model);
 		}
-		ucStudentService.save(ucStudent);
-		LogUtils.saveLog(request, ucStudent, null, "学籍异动");
+		ucStudentService.save(us);
+		
+		Student student = new Student();
+		BeanUtils.copyProperties(us, student);
+    	student.setName(us.getUsername());
+    	
+    	if(!org.springframework.util.StringUtils.isEmpty(us.getBirthday())) {
+    		String birthday = us.getBirthday();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+            Date date = sdf.parse(birthday);
+            student.setBirthday(date);
+    	}
+    	student.setPhone(us.getPhone());
+    	student.setAddress(us.getHomeAddress());
+    	student.setNation(DictUtils.getDictValue(us.getNation(), "nation", "未知"));
+    	student.setPolitical(DictUtils.getDictValue(us.getPolitical(), "political", "未知"));
+    	student.setClassno(us.getClassNumber());
+    	student.setStudentLength(us.getSchoolSystem());
+    	
+		StudentStatusLog studentStatusLog = new StudentStatusLog();
+		studentStatusLog.setLogType("1");
+		studentStatusLog.setStudent(student);
+		studentStatusLog.setStatus(us.getStatus());
+		studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(request.getParameter("action"), "student_uc_status", "") + "->" + DictUtils.getDictLabel(us.getStatus(), "student_uc_status", ""));
+		studentStatusLogService.save(studentStatusLog);
+		
 		addMessage(redirectAttributes, "保存学生基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}

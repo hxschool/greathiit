@@ -36,8 +36,8 @@
 			<td>政治面貌:</td><td>${fns:getDictLabel(student.political,'political','')}</td>
 		</tr>
 		<tr align=center>
-			<td>专业:</td><td>${zhuanye }</td>
-			<td>出生年月:</td><td><fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/></td>
+			
+			<td >出生年月:</td><td colspan="3"><fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/></td>
 		</tr>
 		<tr align=center>
 			<td>籍贯:</td><td>${student.nativePlace}</td>
@@ -49,9 +49,106 @@
 		<tr align=center>
 			<td>电子信箱:</td><td colspan="4">${student.mail}</td>
 		</tr>
+		
 		<tr align=center>
-			<td colspan="5">成绩信息</td>
+			<td colspan="5">学籍信息</td>
 		</tr>
+		<tr align=center>
+			<td>学校名称:</td><td>哈尔滨信息工程学院</td>
+			<td>学籍状态:</td><td colspan="2">${fns:getDictLabel(student.status,'student_status','')}</td>
+		</tr>
+		
+		<tr align=center>
+			<td>专业:</td><td>${student.clazz.parent.name }</td>
+			<td>生源省市:</td><td colspan="2"></td>
+		</tr>
+		<tr align=center>
+			<td>层次:</td><td>${fns:getDictLabel(student.edu,'student_edu','')}</td>
+			<td>学历类别:</td><td colspan="2">普通高等教育</td>
+		</tr>
+		<tr align=center>
+			<td>学制:</td><td>${fns:getDictLabel(student.studentLength,'student_school_system','')}</td>
+			<td>学习形式:</td><td colspan="2">普通全日制</td>
+		</tr>
+		<!-- <tr align=center>
+			<td>分校:</td><td></td>
+			<td>当前所以在级:</td><td colspan="2">普通全日制</td>
+		</tr> -->
+		<tr align=center>
+			<td>系:</td><td>${student.clazz.parent.parent.name }</td>
+			<td>入学日期:</td><td colspan="2">${student.startDate }</td>
+		</tr>
+		<tr align=center>
+			<td>班号:</td><td>${student.clazz.name }</td>
+			<td>预计毕业日期:</td><td colspan="2">${student.overDate }</td>
+		</tr>
+		<tr align=center>
+			<td>学号:</td>
+			<td colspan="4">${student.studentNumber }</td>
+		</tr>
+
+
+		
+		<tr align=center>
+			<td colspan="5">学籍注册日志</td>
+		</tr>
+
+		<tr>
+			<td colspan="5">
+
+				<table class="table">
+
+
+					<tbody>
+						<tr>
+							<td>操作人</td>
+							<td>操作类型</td>
+							<td>创建时间</td>
+							<td>过程描述</td>
+						</tr>
+						<c:forEach items="${studentUcList}" var="studentUcList">
+							<tr>
+								<td>${studentUcList.createBy}</td>
+								<td>${fns:getDictLabel(studentUcList.status,'student_uc_status','')}</td>
+								<td><fmt:formatDate value="${studentUcList.createDate}"
+										pattern="yyyy-MM-dd HH:mm:ss" /></td>
+								<td>${studentUcList.description }</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+
+
+		<tr align=center>
+			<td colspan="5">学籍注册日志</td>
+		</tr>
+		<tr>
+			<td colspan="5">
+
+				<table class="table">
+					<tbody>
+						<tr>
+							<td>操作人</td>
+							<td>操作类型</td>
+							<td>创建时间</td>
+							<td>过程描述</td>
+						</tr>
+						<c:forEach items="${studentList}" var="studentUcList">
+							<tr>
+								<td>${studentUcList.createBy}</td>
+								<td>${fns:getDictLabel(studentUcList.status,'student_status','')}</td>
+								<td><fmt:formatDate value="${studentUcList.createDate}"
+										pattern="yyyy-MM-dd HH:mm:ss" /></td>
+								<td>${studentUcList.description }</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</td>
+		</tr>
+
 		<!-- <tr align=center>
 			<td colspan="5" style="height:100px"></td>
 		</tr>
@@ -69,7 +166,7 @@
 		</tr>
 		<tr align=center>
 			<td colspan="5">项目经验</td>
-		</tr> -->
+		</tr> 
 		<tr>
 			<td colspan="5" >
 			<table class="table">
@@ -101,6 +198,8 @@
 		</table>
 			</td>
 		</tr>
+		
+		-->
 	</table>
 </body>
 </html>

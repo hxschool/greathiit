@@ -36,8 +36,6 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	@Autowired
 	private StudentDao studentDao;
 	@Autowired
-	private StudentCourseDao studentCourseDao;
-	@Autowired
 	private SystemService systemService;
 	@Autowired
 	private OfficeDao officeDao;

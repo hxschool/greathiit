@@ -44,6 +44,7 @@
 	<form:form id="inputForm" modelAttribute="ucStudent"
 		action="${ctx}/uc/student/save" method="post" class="form-horizontal">
 		<form:hidden path="id" />
+		<input type="hidden" name="action" value="${ucStudent}"/>
 		<sys:message content="${message}" />
 
 

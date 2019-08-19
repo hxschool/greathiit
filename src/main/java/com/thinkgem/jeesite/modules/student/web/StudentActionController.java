@@ -23,11 +23,14 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 
 
@@ -42,6 +45,8 @@ public class StudentActionController extends BaseController {
 
 	@Autowired
 	private StudentService studentService;
+	@Autowired
+	private StudentStatusLogService studentStatusLogService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -92,6 +97,7 @@ public class StudentActionController extends BaseController {
 				for(String id:arrayIds) {
 					Student student = studentService.get(id);
 					if(!org.springframework.util.StringUtils.isEmpty(student)) {
+						String status = student.getStatus();
 						student.setStatus(action);
 						if(!org.springframework.util.StringUtils.isEmpty(student.getDescription())) {
 							description = student.getDescription()  + "\n" + description;
@@ -119,7 +125,12 @@ public class StudentActionController extends BaseController {
 								systemService.saveUser(user);
 							}
 						}
-						LogUtils.saveLog(request, student, null, "学籍异动");
+						StudentStatusLog studentStatusLog = new StudentStatusLog();
+						studentStatusLog.setLogType("2");
+						studentStatusLog.setStudent(student);
+						studentStatusLog.setStatus(action);
+						studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(status, "student_status", "") + "->" + DictUtils.getDictLabel(action, "student_status", ""));
+						studentStatusLogService.save(studentStatusLog);
 					}
 				}
 			}

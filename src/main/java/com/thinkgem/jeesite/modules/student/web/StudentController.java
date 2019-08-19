@@ -64,10 +64,12 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentActivity;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.entity.StudentItem;
+import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
 import com.thinkgem.jeesite.modules.student.service.StudentActivityService;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
 import com.thinkgem.jeesite.modules.student.service.StudentItemService;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
+import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -76,7 +78,6 @@ import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生信息Controller
@@ -107,6 +108,8 @@ public class StudentController extends BaseController {
 	private OfficeService officeService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private StudentStatusLogService studentStatusLogService;
 
 	@ModelAttribute
 	public Student get(@RequestParam(required = false) String id, Model model) {
@@ -688,17 +691,30 @@ public class StudentController extends BaseController {
 	public String info(Student student, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 		student = studentService.get(student);
 		Office cls = student.getClazz();
-		String zhuanye = "未设置相关信息";
 		if(!org.springframework.util.StringUtils.isEmpty(cls)) {
 			cls = officeService.get(cls);
-			zhuanye = officeService.get(cls.getParentId()).getName();
+			Office office = officeService.get(cls.getParentId());
+			cls.setParent(office);
+			Office company = officeService.get(office.getParentId());
+			cls.getParent().setParent(company);
 		}
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudent(student);
-		List<StudentCourse> studentCourses = studentCourseService.findByParentIdsLike(studentCourse);
-		model.addAttribute("zhuanye", zhuanye);
+		StudentStatusLog studentStatusLog = new StudentStatusLog();
+		studentStatusLog.setStudent(student);
+		List<StudentStatusLog> studentStatusLogs = studentStatusLogService.findByParentIdsLike(studentStatusLog);
+		List<StudentStatusLog> studentUcList = new ArrayList<StudentStatusLog>();
+		List<StudentStatusLog> studentList = new ArrayList<StudentStatusLog>();
+		for(StudentStatusLog ssl:studentStatusLogs) {
+			if(ssl.getLogType().equals("1")) {
+				studentUcList.add(ssl);
+			}else {
+				studentList.add(ssl);
+			}
+		}
+		model.addAttribute("studentUcList", studentUcList);
+		model.addAttribute("studentList", studentList);
 		model.addAttribute("student", student);
-		model.addAttribute("studentCourses", studentCourses);
 		return "modules/student/studentInfo";
 	} 
 	

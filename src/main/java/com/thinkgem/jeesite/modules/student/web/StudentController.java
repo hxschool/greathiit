@@ -599,9 +599,9 @@ public class StudentController extends BaseController {
 		return "redirect:" + Global.getAdminPath() + "/student/student/face?repage";
 	}
 	//证明
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:prove")
 	@RequestMapping(value = "prove")
-	public String zhengming(Student student, HttpServletRequest request, HttpServletResponse response,
+	public String prove(Student student, HttpServletRequest request, HttpServletResponse response,
 			RedirectAttributes redirectAttributes) throws IOException {
 
 		Student entity = studentService.get(student);
@@ -684,7 +684,6 @@ public class StudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/student/student/tracked?repage";
 	}
 	
-	// 批量生成证明
 	@RequestMapping(value = "info")
 	public String info(Student student, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {
 		student = studentService.get(student);

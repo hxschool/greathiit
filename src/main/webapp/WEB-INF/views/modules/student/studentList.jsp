@@ -20,6 +20,27 @@
 			$("#searchForm").submit();
         	return false;
         }
+	function showModal(url,name){
+		layer.open({
+			 title:name,
+		     type: 2,
+		     area: ['560px','560px'],
+		     shade: 0.3,
+		     shadeClose: false,//默认开启遮罩关闭
+		     resize: false,//默认重设大小是否
+		     maxmin: true,//默认最大最小化按钮
+		     moveType: 1,//默认拖拽模式，0或者1
+		     content: url, 
+		     btn: ['确定','关闭'],
+		     yes: function (index) {
+		    	 layer.close(index)
+		     },
+		     cancel: function(){
+		              
+		     }
+		 });
+	}
+	
 	</script>
 </head>
 <body>
@@ -154,11 +175,17 @@
 				
 				<shiro:hasPermission name="student:student:edit"><td>
 					<shiro:hasPermission name="student:student:chengji">
-						<a href="${ctx}/student/studentCourse/wechat?student.studentNumber=${student.studentNumber}">成绩信息</a>
+						<a  href="javascript:void(0);" onclick="showModal('${ctx}/student/studentCourse/wechat?student.studentNumber=${student.studentNumber}','${student.name}')">成绩信息</a>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="student:student:info">
 						<a href="${ctx}/student/student/info?id=${student.id}">个人信息</a>
+						<a  href="javascript:void(0);" onclick="showModal('${ctx}/student/student/info?id=${student.id}','${student.name}')">成绩信息</a>
 					</shiro:hasPermission>
+					
+					<shiro:hasPermission name="student:student:prove">
+						<a href="${ctx}/student/student/prove?id=${student.id}">在校证明</a>
+					</shiro:hasPermission>
+					
     				<a href="${ctx}/student/student/form?id=${student.id}">修改</a>
 					<a href="${ctx}/student/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>

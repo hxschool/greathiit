@@ -14,15 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
-import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 学生信息Service
@@ -34,6 +35,8 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 public class StudentService extends CrudService<StudentDao, Student> {
 	@Autowired
 	private StudentDao studentDao;
+	@Autowired
+	private StudentCourseDao studentCourseDao;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -97,8 +100,17 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	public Student getStudentByIdCard(String idCard) {
 		return studentDao.getStudentByIdCard(idCard);
 	}
-	public List<Student> tracked(Student student){
-		return studentDao.tracked(student);
+	public Page<Student> trackedPage(Page<Student> page,Student student){
+		student.setPage(page);
+		page.setList(studentDao.tracked(student));
+		return page;
+	}
+	
+	public Page<Student> completePage(Page<Student> page,Student student){
+		List<Student> students = studentDao.complete(student);
+		student.setPage(page);
+		page.setList(students);
+		return page;
 	}
 
 }

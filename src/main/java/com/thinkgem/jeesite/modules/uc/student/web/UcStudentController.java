@@ -3,26 +3,16 @@
  */
 package com.thinkgem.jeesite.modules.uc.student.web;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipInputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,24 +27,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
-import com.google.gson.Gson;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.DocWriter;
-import com.thinkgem.jeesite.common.utils.HttpClientUtil;
 import com.thinkgem.jeesite.common.utils.IdcardValidator;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
-import com.thinkgem.jeesite.modules.file.FileResponse;
 import com.thinkgem.jeesite.modules.student.entity.Student;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
-import com.thinkgem.jeesite.modules.sys.entity.User;
-import com.thinkgem.jeesite.modules.sys.service.OfficeService;
-import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
@@ -71,10 +53,6 @@ public class UcStudentController extends BaseController {
 
 	@Autowired
 	private UcStudentService ucStudentService;
-	@Autowired
-	private SystemService systemService;
-	@Autowired
-	private OfficeService officeService;
 	
 	@ModelAttribute
 	public UcStudent get(@RequestParam(required=false) String id) {
@@ -102,8 +80,6 @@ public class UcStudentController extends BaseController {
 	public List<Map<String,Object>> ajaxGroup(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
 		return ucStudentService.studentGroup(beginDate, endDate);
 	}
-	
-
 	
 	
 	@RequestMapping("year.json")
@@ -194,9 +170,7 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/ucStudentList";
 	}
 	
-	
-
-	
+	//成绩
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping(value = "result")
 	public String result(UcStudent ucStudent, HttpServletRequest request, HttpServletResponse response, Model model) {
@@ -297,14 +271,7 @@ public class UcStudentController extends BaseController {
     public String view() {
     	return "modules/uc/student/ucStudentView";
     }
-    
-    public static void main(String[] args) throws ParseException {
-    	String birthday = "19991020";
-    	  SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-          Date date = sdf.parse(birthday);
-         
 
-    }
 	/**
 	 * 导入用户数据
 	 * @param file
@@ -382,12 +349,6 @@ public class UcStudentController extends BaseController {
 		}
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
     }
-
-	
-	
-	
-	
-	
 	
 	
 	@RequiresPermissions("uc:student:operation")
@@ -405,30 +366,5 @@ public class UcStudentController extends BaseController {
 		addMessage(redirectAttributes, "停用学生数据成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
-
-	
-	
-	@RequestMapping(value = "batchCls")
-	public String batchCls( String ids,String description,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		String action = request.getParameter("action");
-		if(!org.springframework.util.StringUtils.isEmpty(action)) {
-			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
-				String[] arrayIds = ids.split(",");
-				for(String id:arrayIds) {
-					UcStudent ucStudent = ucStudentService.get(id);
-					if(!org.springframework.util.StringUtils.isEmpty(ucStudent)) {
-						ucStudent.setClassNumber(description);
-						ucStudentService.save(ucStudent);
-					}
-				}
-			}
-			addMessage(redirectAttributes, "批量操作成功");
-			return "redirect:"+Global.getAdminPath()+"/uc/student/fenban?repage";
-		}
-		return "redirect:"+Global.getAdminPath()+"/uc/student/fenban?repage";
-	}
-	
-	
-	
 
 }

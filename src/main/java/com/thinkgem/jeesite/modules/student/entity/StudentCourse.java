@@ -82,7 +82,10 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	
 	@ExcelField(title="学号", type=0, align=2, sort=0)
 	public String getStudentNumber() {
-		return student.getStudentNumber();
+		if(student!=null) {
+			return student.getStudentNumber();
+		}
+		return null;
 	}
 	
 	public void setStudentNumber(String studentNumber) {

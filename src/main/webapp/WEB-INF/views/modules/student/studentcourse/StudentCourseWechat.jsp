@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-<title>查课表</title>
+<title>成绩单</title>
 <link rel="stylesheet"
 	href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
@@ -48,14 +48,14 @@ border: none;
 					<a class="navbar-brand" href="#" style="color: #fff;">哈尔滨信息工程学院</a>
 				</div>
 				<div>
-					<ul class="nav navbar-nav ">
+					<!-- <ul class="nav navbar-nav ">
 						<li class="active"><select class="form-control"
 							style="margin-top: 8px;" onchange="getMyCourseCard(this.options[this.options.selectedIndex].value)">
 								
 						</select></li>
 
 
-					</ul>
+					</ul> -->
 					
 
 				</div>
@@ -67,9 +67,9 @@ border: none;
 			
 			<thead>
 				<tr class="top">
-					<td colspan="3" >
+					<td colspan="4" >
 						<div class="title">成绩单</div>
-						<div class="message">姓名：${fns:getUser().name}  学号：${fns:getUser().no}</div>
+						<div class="message">姓名：${student.name}  学号：${student.studentNumber}</div>
 					</td>
 				</tr>
 			</thead>

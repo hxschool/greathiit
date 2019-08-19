@@ -20,14 +20,34 @@
 			$("#searchForm").submit();
         	return false;
         }
+	
+		function showComplete(name,studentNumber){
+			layer.open({
+				 title:name,
+			     type: 2,
+			     area: ['560px','560px'],
+			     shade: 0.3,
+			     shadeClose: false,//默认开启遮罩关闭
+			     resize: false,//默认重设大小是否
+			     maxmin: true,//默认最大最小化按钮
+			     moveType: 1,//默认拖拽模式，0或者1
+			     content: "${ctx}/student/studentCourse/wechat?student.studentNumber="+studentNumber, 
+			     btn: ['确定','关闭'],
+			     yes: function (index) {
+			    	 layer.close(index)
+			     },
+			     cancel: function(){
+			              
+			     }
+			 });
+		}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/student/student/">学生信息列表</a></li>
-		<shiro:hasPermission name="student:student:edit"><li><a href="${ctx}/student/student/form">学生信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/student/complete/">毕业生管理</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/complete/?op=search" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -78,13 +98,7 @@
 						</form:select>
 			</li>
 			
-			<li><label>状态：</label>
-						<form:select path="status" class="input-medium " style="width:175px">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_status')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
+			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -106,8 +120,7 @@
 				<th>学历</th>
 				<th>户口所在地</th>
 				<th>学制</th>
-				
-				<shiro:hasPermission name="student:student:edit"><th>操作</th></shiro:hasPermission>
+				<th>成绩</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -151,25 +164,17 @@
 				<td>
 					${fns:getDictLabel(student.studentLength,'student_school_system','')}
 				</td>
-				
-				<shiro:hasPermission name="student:student:edit"><td>
-					<shiro:hasPermission name="student:student:chengji">
-						<a href="${ctx}/student/studentCourse/wechat?student.studentNumber=${student.studentNumber}">成绩信息</a>
-					</shiro:hasPermission>
+					<td>
+					<a  href="javascript:void(0);" onclick="showComplete('${student.name}','${student.studentNumber}')">成绩信息</a>
 					<shiro:hasPermission name="student:student:info">
 						<a href="${ctx}/student/student/info?id=${student.id}">个人信息</a>
 					</shiro:hasPermission>
-    				<a href="${ctx}/student/student/form?id=${student.id}">修改</a>
-					<a href="${ctx}/student/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
+				</td>
+				
 			</tr>
 		</c:forEach>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
-	
-	
-	
-	
 </body>
 </html>

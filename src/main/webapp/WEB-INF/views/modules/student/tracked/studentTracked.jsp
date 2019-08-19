@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>学生信息管理</title>
+	<title>设置分班</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	$(document).ready(function() {
@@ -20,14 +20,66 @@
 			$("#searchForm").submit();
         	return false;
         }
+	
+	function getIds(){
+		var id = document.getElementsByName("ids");// 获取全选复选框
+		var ids = "";
+		for (var i = 0; i < id.length; i++) {
+			if (id[i].checked) {
+				ids += id[i].value + ",";
+			}
+		}
+		ids = ids.substring(0, ids.length - 1);
+		return ids;
+	}
+	
+	function batchAction(action){
+		var num = $("input[type='checkbox']:checked").length;
+		if (num == 0) {
+			  layer.alert('请选择你要操作的数据', {
+				    skin: 'layui-layer-lan'
+				    ,closeBtn: 0
+				    ,anim: 4 //动画类型
+				  });
+			return;
+		} 
+		
+			layer.open({
+			     type: 2,
+			     area: ['560px','560px'],
+			     shade: 0.3,
+			     shadeClose: false,//默认开启遮罩关闭
+			     resize: false,//默认重设大小是否
+			     maxmin: true,//默认最大最小化按钮
+			     moveType: 1,//默认拖拽模式，0或者1
+			     content: "${ctx}/system/clazz", 
+			     btn: ['确定','关闭'],
+			     yes: function (index) {
+			         //获取选择的row,并加载到页面
+			         var text = window["layui-layer-iframe" + index].callbackdata();
+			         if(text){
+					    $("#description").val(text);
+					    $("#searchForm").attr("action","${ctx}/student/student/batchCls?ids=" + getIds());
+						$("#searchForm").submit();
+						 $("#description").val("");
+			             layer.close(index)
+			         }else{
+			             layer.msg('请选择班级', {icon: 0});
+			         }
+			     },
+			     cancel: function(){
+			              
+			     }
+			 });
+	}
 	</script>
 </head>
 <body>
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/student/student/">学生信息列表</a></li>
-		<shiro:hasPermission name="student:student:edit"><li><a href="${ctx}/student/student/form">学生信息添加</a></li></shiro:hasPermission>
+		<li class="active"><a href="${ctx}/student/student/">分班管理</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/tracked" method="post" class="breadcrumb form-search">
+		<input id="description" name="description" type="text" />
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
@@ -93,6 +145,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				<th>考试号</th>
 				<th>学号</th>
 				<th>姓名</th>
@@ -113,6 +166,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="student">
 			<tr>
+				<td><input type="checkbox" name="ids" value="${student.id}" onclick="selectSingle()"/></td> 
 				<td>${student.exaNumber}</td>
 				<td>
 					${student.studentNumber}
@@ -153,23 +207,21 @@
 				</td>
 				
 				<shiro:hasPermission name="student:student:edit"><td>
-					<shiro:hasPermission name="student:student:chengji">
-						<a href="${ctx}/student/studentCourse/wechat?student.studentNumber=${student.studentNumber}">成绩信息</a>
-					</shiro:hasPermission>
-					<shiro:hasPermission name="student:student:info">
-						<a href="${ctx}/student/student/info?id=${student.id}">个人信息</a>
-					</shiro:hasPermission>
     				<a href="${ctx}/student/student/form?id=${student.id}">修改</a>
 					<a href="${ctx}/student/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
 				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>
+		<tfoot><tr>
+			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="14"> 
+			
+			<a href="#" onclick="batchAction(${param.action})" class="btn btn-primary">分班</a>
+			 未设置班级信息,或者班级信息异常数据可以进行手动分班
+			</th>
+			</tr>
+		</tfoot>
 	</table>
 	<div class="pagination">${page}</div>
-	
-	
-	
-	
 </body>
 </html>

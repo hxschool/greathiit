@@ -21,4 +21,6 @@ public interface StudentDao extends CrudDao<Student> {
 	public Student getStudentByStudentNumber(@Param("studentNumber")String studentNumber);
 	public Student getStudentByIdCard(@Param("idCard")String idCard);
 	public List<Student> tracked(Student student);
+	public List<Student> complete(Student student);
+	
 }

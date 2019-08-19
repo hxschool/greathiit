@@ -33,6 +33,7 @@
 		a.over_date AS  "overDate",	
 		a.student_number AS "studentNumber",
 		a.status AS "status",
+		a.description as "description",
 		a.create_by AS "createBy.id",
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
@@ -110,6 +111,49 @@
 			
 
 		</where>
+		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="complete" resultType="Student">
+		SELECT 
+			<include refid="studentColumns"/>
+		FROM student a
+		<include refid="studentJoins"/>
+		<where>
+			a.del_flag = 0
+			and a.status=10
+			<if test="classno != null and classno != ''">
+				AND a.clazz_id = #{classno}
+			</if>
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
+			</if>
+			<if test="idCard != null and idCard != ''">
+				AND a.id_card = #{idCard}
+			</if>
+			
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length = #{studentLength}
+			</if>
+			
+			<if test="edu != null and edu != ''">
+				AND a.edu = #{edu}
+			</if>
+			
+			<if test="exaNumber != null and exaNumber != ''">
+				AND a.exa_number = #{exaNumber}
+			</if>
+
+		</where>
+		
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
 				ORDER BY ${page.orderBy}
@@ -128,7 +172,7 @@
 		FROM student a
 		<include refid="studentJoins"/>
 		<where>
-			a.del_flag = #{DEL_FLAG_NORMAL}
+			a.del_flag = 0
 			<if test="name != null and name != ''">
 				AND a.name LIKE 
 					<if test="dbName == 'oracle'">'%'||#{name}||'%'</if>
@@ -157,6 +201,9 @@
 			
 			<if test="clazz != null and clazz.id!=null ">
 				and a.clazz_id = #{clazz.id}
+			</if>
+			<if test="status != null and status != ''">
+				AND a.status = #{status}
 			</if>
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
 				
@@ -221,6 +268,7 @@
 			student_length,
 			student_number,
 			status,
+			description,
 			create_by,
 			create_date,
 			update_by,
@@ -249,6 +297,7 @@
 			#{studentLength},
 			#{studentNumber},
 			#{status},
+			#{description},
 			#{createBy.id},
 			#{createDate},
 			#{updateBy.id},
@@ -290,6 +339,7 @@
 			student_length = #{studentLength},
 			student_number = #{studentNumber},
 			status = #{status},
+			description = #{description},
 			update_by = #{updateBy.id},
 			update_date = #{updateDate},
 			remarks = #{remarks}

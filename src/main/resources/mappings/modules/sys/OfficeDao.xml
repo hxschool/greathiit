@@ -150,7 +150,7 @@
 		<include refid="officeColumns" />
 		FROM sys_office a
 		<include refid="officeJoins" />
-		WHERE a.del_flag = #{DEL_FLAG_NORMAL} AND a.name LIKE
+		WHERE a.del_flag = 0 AND a.name LIKE
 		CONCAT(CONCAT('%', #{name}), '%')
 		ORDER BY a.code
 	</select>

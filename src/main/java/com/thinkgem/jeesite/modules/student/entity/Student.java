@@ -78,6 +78,8 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private List<String> clazzNumbers;//数组查询添加
 	
 	private String status;
+	private String description;
+	//
 	public Student() {
 		super();
 	}
@@ -358,6 +360,14 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

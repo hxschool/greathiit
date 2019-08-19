@@ -40,6 +40,7 @@ import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourseExt;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
+import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -65,6 +66,8 @@ public class StudentCourseController extends BaseController {
 	@Autowired
 	private CourseService courseService;
 	@Autowired
+	private StudentService studentService;
+	@Autowired
 	private SysConfigService sysConfigService;
 	private SysConfig config;
 
@@ -84,10 +87,16 @@ public class StudentCourseController extends BaseController {
 	
 	@RequestMapping(value = "wechat")
 	public String wechat(StudentCourse studentCourse, Model model) {
-		User user = UserUtils.getUser();
-		Student student = new Student();
-		student.setStudentNumber(user.getNo());
+		Student student = studentCourse.getStudent();
+		if(org.springframework.util.StringUtils.isEmpty(student)) {
+			User user = UserUtils.getUser();
+			student = studentService.getStudentByStudentNumber(user.getNo());
+		}
+		if(org.springframework.util.StringUtils.isEmpty(student.getId())) {
+			student = studentService.getStudentByStudentNumber(student.getStudentNumber());
+		}
 		studentCourse.setStudent(student);
+		model.addAttribute("student", student);
 		model.addAttribute("studentCourses", studentCourseService.findByParentIdsLike(studentCourse));
 		return "modules/student/studentcourse/StudentCourseWechat";
 	}

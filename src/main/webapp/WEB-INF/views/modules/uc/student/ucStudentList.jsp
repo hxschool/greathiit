@@ -222,7 +222,7 @@
 		<shiro:hasPermission name="uc:ucStudent:add"><li><a href="${ctx}/uc/student/form">学籍添加</a></li></shiro:hasPermission>
 	
 	</ul>
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/?action=search" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

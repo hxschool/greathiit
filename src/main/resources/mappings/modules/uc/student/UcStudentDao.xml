@@ -434,6 +434,17 @@
 		group by left(region_code,2),region_name
 	</select>
 	
+	<select id="studentGengerRegion" resultType="map">
+		select  count(gender) as TOTAL,gender as LABEL,replace(replace(region_name,'市',''),'省','') as NAME from uc_student where del_flag=0
+		
+		<if test="year!=null and year!=''">
+		and left(start_date,4)=#{year}
+		</if>
+		
+		 group by gender,left(region_code,2),region_name
+	</select>
+	
+	
 	<select id="studentEdu" resultType="map">
 		select  count(edu) as TOTAL,edu as NAME  from uc_student  where del_flag=0 group by edu
 	</select>

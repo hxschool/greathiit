@@ -119,7 +119,7 @@ public class UcStudentController extends BaseController {
 	@RequestMapping("region.json")
 	@ResponseBody
 	public List<Map<String,Object>> ajaxRegion(String year,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentRegion(year);
+		return ucStudentService.studentGengerRegion(year);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")

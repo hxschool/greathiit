@@ -72,7 +72,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 		User user = new User();
 		String password = StringUtils.right(ucStudent.getIdCard().toLowerCase(), 6);
 		user.setNo(ucStudent.getStudentNumber());
-		user.setName(ucStudent.getUsername());
+		user.setName(ucStudent.getName());
 		user.setLoginName(ucStudent.getIdCard());
 		user.setMobile(ucStudent.getPhone());
 		user.setPhone(ucStudent.getPhone());
@@ -107,7 +107,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 				&& org.springframework.util.StringUtils
 						.isEmpty(studentDao.getStudentByStudentNumber(ucStudent.getStudentNumber()))) {
 			Student student = new Student();
-			student.setName(ucStudent.getUsername());
+			student.setName(ucStudent.getName());
 			student.setIdCard(ucStudent.getIdCard());
 			Date birthday = DateUtils.parseDate(IdcardUtils.getBirthByIdCard(ucStudent.getIdCard()));
 			student.setBirthday(birthday);
@@ -117,7 +117,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 			student.setPhone(ucStudent.getPhone());
 			student.setAddress(ucStudent.getAddressee());
 			student.setEdu(ucStudent.getEdu());
-			student.setStudentLength(ucStudent.getSchoolSystem());
+			student.setStudentLength(ucStudent.getStudentLength());
 			student.setClazz(cls);
 			student.setStudentNumber(ucStudent.getStudentNumber());
 			studentDao.insert(student);

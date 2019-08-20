@@ -94,7 +94,7 @@ public class TradeStrategy {
 								us.setExaNumber(entity.getExaNumber());
 								us.setLocation(entity.getLocation());
 								//us.setStudentNumber();
-								us.setUsername(entity.getUsername());
+								us.setName(entity.getUsername());
 								us.setGender(entity.getGender());
 								us.setBirthday(entity.getBirthday());
 								us.setIdCard(entity.getIdCard());
@@ -106,15 +106,10 @@ public class TradeStrategy {
 								us.setMajorCode(entity.getMajor().getId());
 								us.setMajorId(entity.getMajor().getId());
 								us.setMajorName(entity.getMajor().getName());
-								//us.setClassNumber
-								//us.setEdu(entity.getLeven());
-								//us.setSchoolSystem();
+		
 								us.setLearning("注册学籍");
 								us.setStartDate("");
-								//us.setCurrentLevel
-								//us.setOverDate
 								us.setStatus("00");
-								//us.setRegionCode();
 								us.setRegionName(entity.getProvince());
 							}
 							

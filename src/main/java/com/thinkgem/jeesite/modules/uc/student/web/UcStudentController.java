@@ -201,8 +201,6 @@ public class UcStudentController extends BaseController {
 		
 		Student student = new Student();
 		BeanUtils.copyProperties(us, student);
-    	student.setName(us.getUsername());
-    	
     	if(!org.springframework.util.StringUtils.isEmpty(us.getBirthday())) {
     		String birthday = us.getBirthday();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -214,7 +212,7 @@ public class UcStudentController extends BaseController {
     	student.setNation(DictUtils.getDictValue(us.getNation(), "nation", "未知"));
     	student.setPolitical(DictUtils.getDictValue(us.getPolitical(), "political", "未知"));
     	student.setClassno(us.getClassNumber());
-    	student.setStudentLength(us.getSchoolSystem());
+    	
     	
 		StudentStatusLog studentStatusLog = new StudentStatusLog();
 		studentStatusLog.setLogType("1");
@@ -272,7 +270,7 @@ public class UcStudentController extends BaseController {
             	Student st = new Student();
 
             	BeanUtils.copyProperties(us, st);
-            	st.setName(us.getUsername());
+            	st.setName(us.getName());
             	
             	if(!org.springframework.util.StringUtils.isEmpty(us.getBirthday())) {
             		String birthday = us.getBirthday();
@@ -285,7 +283,7 @@ public class UcStudentController extends BaseController {
             	st.setNation(DictUtils.getDictValue(us.getNation(), "nation", "未知"));
             	st.setPolitical(DictUtils.getDictValue(us.getPolitical(), "political", "未知"));
             	st.setClassno(us.getClassNumber());
-            	st.setStudentLength(us.getSchoolSystem());
+            	st.setStudentLength(us.getStudentLength());
             	sts.add(st);
             }
     		new ExportExcel("学生信息", Student.class).setDataList(sts).write(response, fileName).dispose();
@@ -319,12 +317,12 @@ public class UcStudentController extends BaseController {
 			List<UcStudent> list = ei.getDataList(UcStudent.class);
 			for (UcStudent student : list){
 				if(org.springframework.util.StringUtils.isEmpty(student.getIdCard())) {
-					failureMsg.append("<br/>姓名 "+student.getUsername()+" 信息不合法,身份证信息为空");
+					failureMsg.append("<br/>姓名 "+student.getName()+" 信息不合法,身份证信息为空");
 					failureNum++;
 				}
 				if (!org.springframework.util.StringUtils.isEmpty(student.getIdCard())
 						&& !IdcardValidator.validate18Idcard(student.getIdCard())) {
-					failureMsg.append("<br/>姓名 " + student.getUsername() + " 信息不合法,身份证信息不合法");
+					failureMsg.append("<br/>姓名 " + student.getName() + " 信息不合法,身份证信息不合法");
 					failureNum++;
 				}
 				try{
@@ -334,18 +332,18 @@ public class UcStudentController extends BaseController {
 						ucStudentService.saveUser(student);
 						successNum++;
 					}else{
-						failureMsg.append("<br/>姓名 "+student.getUsername()+" 已存在,学号重复.学号信息:"+student.getStudentNumber()+"; ");
+						failureMsg.append("<br/>姓名 "+student.getName()+" 已存在,学号重复.学号信息:"+student.getStudentNumber()+"; ");
 						failureNum++;
 					}
 				}catch(ConstraintViolationException ex){
-					failureMsg.append("<br/>姓名 "+student.getUsername()+" 导入失败：");
+					failureMsg.append("<br/>姓名 "+student.getName()+" 导入失败：");
 					List<String> messageList = BeanValidators.extractPropertyAndMessageAsList(ex, ": ");
 					for (String message : messageList){
 						failureMsg.append(message+"; ");
 						failureNum++;
 					}
 				}catch (Exception ex) {
-					failureMsg.append("<br/>姓名 "+student.getUsername()+" 导入失败："+ex.getMessage());
+					failureMsg.append("<br/>姓名 "+student.getName()+" 导入失败："+ex.getMessage());
 				}
 			}
 			if (failureNum>0){

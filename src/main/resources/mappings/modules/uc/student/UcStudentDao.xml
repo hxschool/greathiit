@@ -7,7 +7,7 @@
 		a.exa_number AS "exaNumber",
 		a.location AS "location",
 		a.student_number AS "studentNumber",
-		a.username AS "username",
+		a.name AS "name",
 		a.gender AS "gender",
 		a.birthday AS "birthday",
 		a.id_card AS "idCard",
@@ -21,7 +21,7 @@
 		a.major_name AS "majorName",
 		a.class_number AS "classNumber",
 		a.edu AS "edu",
-		a.school_system AS "schoolSystem",
+		a.student_length AS "studentLength",
 		a.learning AS "learning",
 		a.start_date AS "startDate",
 		a.current_level AS "currentLevel",
@@ -59,7 +59,7 @@
 		SELECT
 		a.student_number AS "studentNumber"
 		FROM uc_student a
-		WHERE a.username=#{username} and a.id_card=#{idCard}
+		WHERE a.name=#{name} and a.id_card=#{idCard}
 	</select>
 	
 	<select id="findBystudentNumber" resultType="UcStudent">
@@ -81,7 +81,7 @@
 		SELECT
 		<include refid="ucStudentColumns"/>
 		FROM uc_student a
-		WHERE a.username=#{username} and a.id_card=#{idCard} and a.student_number=#{number}
+		WHERE a.name=#{name} and a.id_card=#{idCard} and a.student_number=#{number}
 	</select>
 	
 	
@@ -126,15 +126,15 @@
 			<if test="studentNumber != null and studentNumber != ''">
 				AND a.student_number = #{studentNumber}
 			</if>
-			<if test="username != null and username != ''">
-				AND a.username = #{username}
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
 			</if>
 			<if test="idCard != null and idCard != ''">
 				AND a.id_card = #{idCard}
 			</if>
 			
-			<if test="schoolSystem != null and schoolSystem != ''">
-				AND a.school_system = #{schoolSystem}
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length = #{studentLength}
 			</if>
 			
 			<if test="edu != null and edu != ''">
@@ -175,15 +175,15 @@
 			<if test="studentNumber != null and studentNumber != ''">
 				AND a.student_number = #{studentNumber}
 			</if>
-			<if test="username != null and username != ''">
-				AND a.username = #{username}
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
 			</if>
 			<if test="idCard != null and idCard != ''">
 				AND a.id_card = #{idCard}
 			</if>
 			
-			<if test="schoolSystem != null and schoolSystem != ''">
-				AND a.school_system = #{schoolSystem}
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length = #{studentLength}
 			</if>
 			
 			<if test="edu != null and edu != ''">
@@ -223,15 +223,15 @@
 			<if test="studentNumber != null and studentNumber != ''">
 				AND a.student_number = #{studentNumber}
 			</if>
-			<if test="username != null and username != ''">
-				AND a.username = #{username}
+			<if test="name != null and name != ''">
+				AND a.name = #{name}
 			</if>
 			<if test="idCard != null and idCard != ''">
 				AND a.id_card = #{idCard}
 			</if>
 			
-			<if test="schoolSystem != null and schoolSystem != ''">
-				AND a.school_system = #{schoolSystem}
+			<if test="studentLength != null and studentLength != ''">
+				AND a.student_length = #{studentLength}
 			</if>
 			
 			<if test="edu != null and edu != ''">
@@ -284,7 +284,7 @@
 			exa_number,
 			location,
 			student_number,
-			username,
+			name,
 			gender,
 			birthday,
 			id_card,
@@ -298,7 +298,7 @@
 			major_name,
 			class_number,
 			edu,
-			school_system,
+			student_length,
 			learning,
 			start_date,
 			current_level,
@@ -319,7 +319,7 @@
 			#{exaNumber},
 			#{location},
 			#{studentNumber},
-			#{username},
+			#{name},
 			#{gender},
 			#{birthday},
 			#{idCard},
@@ -333,7 +333,7 @@
 			#{majorName},
 			#{classNumber},
 			#{edu},
-			#{schoolSystem},
+			#{studentLength},
 			#{learning},
 			#{startDate},
 			#{currentLevel},
@@ -357,7 +357,7 @@
 			exa_number = #{exaNumber},
 			location = #{location},
 			student_number = #{studentNumber},
-			username = #{username},
+			name = #{name},
 			gender = #{gender},
 			birthday = #{birthday},
 			id_card = #{idCard},
@@ -371,7 +371,7 @@
 			major_name = #{majorName},
 			class_number = #{classNumber},
 			edu = #{edu},
-			school_system = #{schoolSystem},
+			student_length = #{studentLength},
 			learning = #{learning},
 			start_date = #{startDate},
 			current_level = #{currentLevel},

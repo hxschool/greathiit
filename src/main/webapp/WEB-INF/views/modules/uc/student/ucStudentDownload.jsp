@@ -47,7 +47,7 @@
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
 			<li><label>学号：</label> <form:input path="studentNumber"
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
-			<li><label>真实姓名：</label> <form:input path="username"
+			<li><label>真实姓名：</label> <form:input path="name"
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
 			<li><label>身份证号码：</label> <form:input path="idCard"
 					htmlEscape="false" maxlength="18" class="input-medium" /></li>
@@ -62,7 +62,7 @@
 					<form:options items="${fns:getDictList('student_edu')}"
 						itemLabel="label" itemValue="value" htmlEscape="false" />
 				</form:select></li>
-			<li><label>学制：</label> <form:select path="schoolSystem"
+			<li><label>学制：</label> <form:select path="studentLength"
 					class="input-medium " style="width:175px;">
 					<option value="">请选择</option>
 					<form:options items="${fns:getDictList('student_school_system')}"

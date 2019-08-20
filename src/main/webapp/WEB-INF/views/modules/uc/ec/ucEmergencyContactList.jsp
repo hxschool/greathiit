@@ -31,7 +31,7 @@
 			</li>
 			
 				<li><label>姓名：</label>
-				<form:input path="ucStudent.username" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:input path="ucStudent.name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>是否显示：</label>
 				<form:select path="showFlag" class="input-medium">
@@ -87,7 +87,7 @@
 				</a>
 				</td>
 				<td>
-					${ucEmergencyContact.ucStudent.username}
+					${ucEmergencyContact.ucStudent.name}
 				</td>
 				<td>
 					${fns:getDictLabel(ucEmergencyContact.ucStudent.gender, 'sex', '')}

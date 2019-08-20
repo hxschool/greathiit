@@ -84,7 +84,7 @@
 				<div class="control-group">
 					<label class="control-label">真实姓名：</label>
 					<div class="controls">
-						<form:input path="username" htmlEscape="false" maxlength="64"
+						<form:input path="name" htmlEscape="false" maxlength="64"
 							class="input-xlarge required" />
 						<span class="help-inline"><font color="red">*</font> </span>
 					</div>
@@ -241,7 +241,7 @@
 					<div class="controls">
 
 
-						<form:select path="schoolSystem" class="input-medium">
+						<form:select path="studentLength" class="input-medium">
 							<form:option value="" label="请选择" />
 							<form:option value="2" label="2" />
 							<form:option value="3" label="3" />

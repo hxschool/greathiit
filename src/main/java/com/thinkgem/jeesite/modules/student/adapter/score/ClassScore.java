@@ -24,7 +24,7 @@ public class ClassScore extends AbsStudentScoreAdapter<UcStudent> {
 			studentNumberCell.setCellStyle(style);
 			studentNumberCell.setCellValue(student.getStudentNumber());
 			Cell nameCell = studentRow.createCell(1);
-			nameCell.setCellValue(student.getUsername());
+			nameCell.setCellValue(student.getName());
 			
 			nameCell.setCellStyle(style);
 			for (int j = 2; j < 9; j++) {

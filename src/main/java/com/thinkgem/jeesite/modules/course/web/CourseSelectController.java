@@ -358,7 +358,7 @@ public class CourseSelectController extends BaseController {
 			if (!org.springframework.util.StringUtils.isEmpty(student)
 					&& !org.springframework.util.StringUtils.isEmpty(student.getStudentNumber())) {
 				UcStudent uc = new UcStudent();
-				uc.setUsername(student.getName());
+				uc.setName(student.getName());
 				uc.setStudentNumber(student.getStudentNumber());
 				if (org.springframework.util.StringUtils.isEmpty(uc)) {
 					failureMsg.append("<br/>学号 " + student.getStudentNumber() + " 教务处数据未查找到当前学号数据; ");

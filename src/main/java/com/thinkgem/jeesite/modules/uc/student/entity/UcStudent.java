@@ -24,7 +24,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 	@ExcelField(title="学号", align=2, sort=3)
 	private String studentNumber;		// 学号
 	@ExcelField(title="真实姓名", align=2, sort=4)
-	private String username;		// 真实姓名
+	private String name;		// 真实姓名
 	@ExcelField(title="性别", align=2, sort=5,dictType="sex")
 	private String gender;		// 性别
 	@ExcelField(title="出生日期", align=2, sort=6)
@@ -52,7 +52,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 	@ExcelField(title="学历", align=2, sort=17,dictType="student_edu")
 	private String edu;		// 学历
 	@ExcelField(title="学制", align=2, sort=18,dictType="student_school_system")
-	private String schoolSystem;		// 学制
+	private String studentLength;		// 学制
 	@ExcelField(title="学习形式", align=2, sort=19,dictType="student_learning")
 	private String learning;		// 学习形式
 	@ExcelField(title="入学日期", align=2, sort=20)
@@ -122,18 +122,20 @@ public class UcStudent extends DataEntity<UcStudent> {
 	}
 	
 	@Length(min=1, max=64, message="真实姓名长度必须介于 1 和 64 之间")
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
+
 	
 	@Length(min=1, max=64, message="性别长度必须介于 1 和 64 之间")
 	public String getGender() {
 		return gender;
 	}
+
 
 	public void setGender(String gender) {
 		this.gender = gender;
@@ -248,12 +250,12 @@ public class UcStudent extends DataEntity<UcStudent> {
 	}
 	
 	@Length(min=0, max=64, message="学制长度必须介于 0 和 64 之间")
-	public String getSchoolSystem() {
-		return schoolSystem;
+	public String getStudentLength() {
+		return studentLength;
 	}
 
-	public void setSchoolSystem(String schoolSystem) {
-		this.schoolSystem = schoolSystem;
+	public void setStudentLength(String studentLength) {
+		this.studentLength = studentLength;
 	}
 	
 	@Length(min=0, max=64, message="学习形式长度必须介于 0 和 64 之间")

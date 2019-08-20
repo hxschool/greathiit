@@ -62,7 +62,7 @@ public class DemoController {
 			try {
 
 				String no = ucStudent.getStudentNumber();
-				String name = ucStudent.getUsername();
+				String name = ucStudent.getName();
 				loginname = ucStudent.getIdCard();
 				String password = "000000";
 				if (loginname.length() > 6) {

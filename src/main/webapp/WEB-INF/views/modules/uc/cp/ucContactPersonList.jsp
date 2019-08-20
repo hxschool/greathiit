@@ -30,7 +30,7 @@
 				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>姓名：</label>
-				<form:input path="ucStudent.username" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:input path="ucStudent.name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li class="clearfix"></li>
 			
@@ -77,7 +77,7 @@
 				</td>
 				
 				<td>
-					${ucContactPerson.ucStudent.username}
+					${ucContactPerson.ucStudent.name}
 				</td>
 				<td>
 					${fns:getDictLabel(ucContactPerson.ucStudent.gender, 'sex', '')}

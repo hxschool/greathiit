@@ -100,7 +100,7 @@
 				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>真实姓名：</label>
-				<form:input path="username" htmlEscape="false" maxlength="64" class="input-medium"/>
+				<form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>身份证号码：</label>
 				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
@@ -120,7 +120,7 @@
 						</form:select>
 			</li>
 			<li><label>学制：</label>
-						<form:select path="schoolSystem" class="input-medium ">
+						<form:select path="studentLength" class="input-medium ">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_school_system')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
@@ -185,7 +185,7 @@
 					${ucStudent.studentNumber}
 				</a></td>
 				<td>
-					${ucStudent.username}
+					${ucStudent.name}
 				</td>
 				<td>
 					${fns:getDictValue(ucStudent.gender, 'sex', '男')}
@@ -215,7 +215,7 @@
 					${fns:getDictLabel(ucStudent.edu,'student_edu','')}
 				</td>
 				<td>
-					${fns:getDictLabel(ucStudent.schoolSystem,'student_school_system','')}
+					${fns:getDictLabel(ucStudent.studentLength,'student_school_system','')}
 				</td>
 				<td>
 					${fns:getDictLabel(ucStudent.learning,'student_learning','')}

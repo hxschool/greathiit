@@ -79,7 +79,7 @@
 		<li class="active"><a href="${ctx}/student/student/">分班管理</a></li>
 	</ul>
 	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/tracked" method="post" class="breadcrumb form-search">
-		<input id="description" name="description" type="text" />
+		<input id="description" name="description" type="hidden" />
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">

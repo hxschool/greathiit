@@ -11,10 +11,32 @@
 			padding:0;
 		}
 		td{
-			width:160px;
+			width:180px;
 			height:30px;
 			font-size:20px;
 		}		
+		table.gridtable {
+			font-family: verdana,arial,sans-serif;
+			font-size:11px;
+			color:#333333;
+			border-width: 1px;
+			border-color: #666666;
+			border-collapse: collapse;
+		}
+		table.gridtable th {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #666666;
+			background-color: #dedede;
+		}
+		table.gridtable td {
+			border-width: 1px;
+			padding: 8px;
+			border-style: solid;
+			border-color: #666666;
+			background-color: #ffffff;
+		}
 	</style>
 </head>
 <body>
@@ -23,12 +45,12 @@
 			<td colspan="5">基本信息</td>
 		</tr>
 		<tr align=center>
-			<td>姓名:</td><td>${student.name }</td>
-			<td>性别:</td><td>${fns:getDictLabel(student.gender,'sex','')}</td>
+			<td>姓名:</td><td colspan="3">${student.name }</td>
+			
 			<td rowspan="5">	<img src="${student.face}" class="img-rounded"></td>
 		</tr>
 		<tr align=center>
-			<td>毕业院校:</td><td>哈尔滨信息工程学院</td>
+			<td>性别:</td><td>${fns:getDictLabel(student.gender,'sex','')}</td>
 			<td>民族:</td><td>${fns:getDictLabel(student.nation,'nation','')}</td>
 		</tr>
 		<tr align=center>
@@ -60,7 +82,7 @@
 		
 		<tr align=center>
 			<td>专业:</td><td>${student.clazz.parent.name }</td>
-			<td>生源省市:</td><td colspan="2"></td>
+			<td>生源省市:</td><td colspan="2">${fns:getProvinceByIdCard(student.idCard)}</td>
 		</tr>
 		<tr align=center>
 			<td>层次:</td><td>${fns:getDictLabel(student.edu,'student_edu','')}</td>
@@ -79,7 +101,8 @@
 			<td>入学日期:</td><td colspan="2">${student.startDate }</td>
 		</tr>
 		<tr align=center>
-			<td>班号:</td><td>${student.clazz.name }</td>
+			<td>班号:</td><td>${student.clazz.name }
+			</td>
 			<td>预计毕业日期:</td><td colspan="2">${student.overDate }</td>
 		</tr>
 		<tr align=center>
@@ -96,15 +119,14 @@
 		<tr>
 			<td colspan="5">
 
-				<table class="table">
+				<table class="gridtable" style="width:100%">
 
 
-					<tbody>
 						<tr>
-							<td>操作人</td>
-							<td>操作类型</td>
-							<td>创建时间</td>
-							<td>过程描述</td>
+							<th>操作人</th>
+							<th>操作类型</th>
+							<th>创建时间</th>
+							<th>过程描述</th>
 						</tr>
 						<c:forEach items="${studentUcList}" var="studentUcList">
 							<tr>
@@ -115,7 +137,7 @@
 								<td>${studentUcList.description }</td>
 							</tr>
 						</c:forEach>
-					</tbody>
+					
 				</table>
 			</td>
 		</tr>
@@ -127,13 +149,12 @@
 		<tr>
 			<td colspan="5">
 
-				<table class="table">
-					<tbody>
+				<table class="gridtable" style="width:100%">
 						<tr>
-							<td>操作人</td>
-							<td>操作类型</td>
-							<td>创建时间</td>
-							<td>过程描述</td>
+							<th>操作人</th>
+							<th>操作类型</th>
+							<th>创建时间</th>
+							<th>过程描述</th>
 						</tr>
 						<c:forEach items="${studentList}" var="studentUcList">
 							<tr>
@@ -144,7 +165,6 @@
 								<td>${studentUcList.description }</td>
 							</tr>
 						</c:forEach>
-					</tbody>
 				</table>
 			</td>
 		</tr>

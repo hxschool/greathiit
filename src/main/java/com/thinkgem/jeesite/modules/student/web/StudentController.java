@@ -697,6 +697,7 @@ public class StudentController extends BaseController {
 			cls.setParent(office);
 			Office company = officeService.get(office.getParentId());
 			cls.getParent().setParent(company);
+			student.setClazz(cls);
 		}
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudent(student);

@@ -120,6 +120,16 @@
     <function-signature>java.lang.Object getCache(java.lang.String, java.lang.Object)</function-signature>
     <example>${fns:getCache(cacheName, defaultValue)}</example>  
   </function>
+  
+  
+  <!-- DictUtils -->
+  <function>
+    <description>获取身份证号对应的身份</description>
+    <name>getProvinceByIdCard</name>
+    <function-class>com.thinkgem.jeesite.common.utils.IdcardUtils</function-class>
+    <function-signature>java.lang.String getProvinceByIdCard(java.lang.String)</function-signature>
+    <example>${fns:getProvinceByIdCard(value)}</example>  
+  </function>
 	
   <!-- DictUtils -->
   <function>

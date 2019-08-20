@@ -71,11 +71,10 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	@ExcelField(title="微信", align=2, sort=20)
 	private String  wechat;//父亲职业
 	private String  face;//相片
-	@ExcelField(title="生源所在地", align=2, sort=21)
-	private String location;	
-	@ExcelField(title="入学日期", align=2, sort=22)
+
+	@ExcelField(title="入学日期", align=2, sort=21)
 	private String startDate;		// 入学日期
-	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=23)
+	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
 	private String overDate;		// 结业日期(预计毕业日期)
 	private List<String> clazzNumbers;//数组查询添加
 	
@@ -372,13 +371,6 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 		this.description = description;
 	}
 
-	public String getLocation() {
-		return location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
 
 	@Override
 	public int compareTo(Student student) {

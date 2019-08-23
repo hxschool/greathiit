@@ -140,7 +140,9 @@
 			<c:forEach items="${list}" var="f">
 				<tr>
 					<td>${f.name }</td>
-					<td><a  class="btn btn-primary" href="/resources/selectcourse/${f.name}">点击下载</a></td>
+					<td><a  class="btn btn-primary" href="/download/selectcourse/${f.name}">点击下载</a>
+					<a  class="btn btn-danger" href="/course/course/delete_select_course_export_file?filename=${f.name}">点击删除</a>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>

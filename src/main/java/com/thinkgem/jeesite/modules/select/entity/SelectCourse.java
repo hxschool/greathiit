@@ -6,13 +6,19 @@ package com.thinkgem.jeesite.modules.select.entity;
 import java.math.BigInteger;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.util.StringUtils;
 
+import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.CourseUtil;
+import com.thinkgem.jeesite.common.utils.SpringContextHolder;
 import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.course.entity.Course;
+import com.thinkgem.jeesite.modules.course.entity.CourseSchedule;
+import com.thinkgem.jeesite.modules.course.service.CourseScheduleService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
@@ -114,7 +120,6 @@ public class SelectCourse extends DataEntity<SelectCourse>  implements Comparabl
 		}
 		return "";
 	}
-	
 	@ExcelField(title="任课教师", align=2, sort=6)
 	public String getTeachername() {
 		if(!StringUtils.isEmpty(course)) {
@@ -127,8 +132,32 @@ public class SelectCourse extends DataEntity<SelectCourse>  implements Comparabl
 		}
 		return "";
 	}
+	@ExcelField(title="课程类型", align=2, sort=7)
+	public String getEduName() {
+		if(com.thinkgem.jeesite.common.utils.StringUtils.left(course.getCursName(), 1).equals("G")) {
+			return "高职课程";
+		}else {
+			return "本科课程";
+		}
+	}
+	@ExcelField(title="上课地点", align=2, sort=8)
+	public String getCourseScheduleName() {
+		CourseScheduleService courseScheduleService = SpringContextHolder.getBean(CourseScheduleService.class);
+		CourseSchedule courseSchedule = new CourseSchedule();
+		courseSchedule.setCourseId(course.getId());
+		courseSchedule.setTimeAdd(course.getCursYearTerm());
+		List<CourseSchedule> courseSchedules = courseScheduleService.findByParentIdsLike(courseSchedule);
+		if(!CollectionUtils.isEmpty(courseSchedules)) {
+			CourseSchedule cs = courseSchedules.get(0);
+			String timeAdd = cs.getTimeAdd();
+			return CourseUtil.getTimeAddDetail(timeAdd);
+		}
+		return "";
+	}
 	
-	@ExcelField(title="备注", align=2, sort=7)
+
+	
+	@ExcelField(title="备注", align=2, sort=9)
 	public String getRemarks() {
 		return "";
 	}

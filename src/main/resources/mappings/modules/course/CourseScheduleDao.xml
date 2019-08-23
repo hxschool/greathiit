@@ -162,7 +162,7 @@
 				AND a.tips = #{tips}
 			</if>
 			<if test="timeAdd != null and timeAdd != ''">
-				AND a.time_add like #{timeAdd}
+				AND a.time_add like CONCAT(CONCAT('%', #{timeAdd}), '%')
 			</if>
 			<if test="courseId != null and courseId != ''">
 				AND a.course_id = #{courseId}

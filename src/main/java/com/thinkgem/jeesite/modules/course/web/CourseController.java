@@ -802,8 +802,8 @@ public class CourseController extends BaseController {
 	
 	@RequestMapping("selectCourseView")
 	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes,Model model) throws FileNotFoundException, IOException {
-		File directory = new File(request.getSession().getServletContext().getRealPath("/resources/selectcourse"));
-		Collection<File> list = FileUtils.listFiles(directory, FileFilterUtils.suffixFileFilter("xls"), null);
+		File directory = new File(request.getSession().getServletContext().getRealPath("/download/selectcourse"));
+		Collection<File> list = FileUtils.listFiles(directory, FileFilterUtils.suffixFileFilter("xlsx"), null);
 		model.addAttribute("list",list);
 		return "modules/course/selectCourseView";
 	}
@@ -818,16 +818,26 @@ public class CourseController extends BaseController {
 			}
 			cursName = selectCourse.getCourse().getCursName();
 		}
-		String filename = StringEscapeUtils.unescapeHtml4( termYear + cursName + "公共选课学生名单.xls");
+		String filename = StringEscapeUtils.unescapeHtml4( termYear + cursName + "公共选课学生名单.xlsx");
 		
 		
-		String modelPath = request.getSession().getServletContext().getRealPath("/resources/selectcourse/");
+		String modelPath = request.getSession().getServletContext().getRealPath("/download/selectcourse/");
 		File file = new File(modelPath,filename);
 		if(file.exists()) {
 			addMessage(redirectAttributes, "操作失败,请等待系统处理相关数据或者直接下载生成的课程数据");
 			return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 		}
 		courseService.selectCourse(file, selectCourse);
+		addMessage(redirectAttributes, "操作导出成功,请等待系统处理相关数据");
+		return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
+	}
+	
+	@RequestMapping("delete_select_course_export_file")
+	public String selectCourse(String filename,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes) throws Exception {
+		
+		String modelPath = request.getSession().getServletContext().getRealPath("/download/selectcourse/");
+		File file = new File(modelPath,filename);
+		file.delete();
 		addMessage(redirectAttributes, "操作导出成功,请等待系统处理相关数据");
 		return "redirect:" + adminPath + "/course/course/selectCourseView?repage";
 	}

@@ -509,7 +509,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			file.createNewFile();
 		}
 		List<SelectCourse> selectCourses = selectCourseDao.findList(selectCourse);
-		ExportExcel exportExcel = new ExportExcel("学生数据", SelectCourse.class);
+		ExportExcel exportExcel = new ExportExcel("选课报考数据", SelectCourse.class);
 		exportExcel.setDataList(selectCourses);
 
 		FileOutputStream os = new FileOutputStream(file);

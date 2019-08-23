@@ -177,6 +177,14 @@ public class CourseUtil {
 		//getTimeAdd(timeAdd)
 		return getTimeAdd(timeAdd).concat(" ").concat(zhou(xq)).concat(" ").concat(jiaoxuelou(school)).concat(jiaoshi(school)).concat("教室").concat(jie($j));
 	}
+	
+	public static String getTimeAddDetail(String timeAdd) {
+		String school = GetTimeCol(timeAdd).get("school");
+		String $j = GetTimeCol(timeAdd).get("jie");
+		String xq = GetTimeCol(timeAdd).get("zhou");
+		//getTimeAdd(timeAdd)
+		return zhou(xq).concat(" ").concat(jiaoxuelou(school)).concat(jiaoshi(school)).concat("教室").concat(jie($j));
+	}
 
 	public static void main(String[] args) {
 		int calendarYear = 2019;

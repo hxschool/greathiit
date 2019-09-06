@@ -24,6 +24,7 @@
 				/static/** = anon
 				/wp-content/** = anon
 				/userfiles/** = anon
+				/download/** = anon
 				${adminPath}/cas = cas
 				${adminPath}/login = authc
 				${adminPath}/logout = logout

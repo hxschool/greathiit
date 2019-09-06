@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +81,7 @@ import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
+import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 
 /**
  * 学生信息Controller
@@ -325,9 +329,6 @@ public class StudentController extends BaseController {
 			sysConfig.setTermYear(termYear);
 
 		}
-		if (org.springframework.util.StringUtils.isEmpty(sysConfig)) {
-			sysConfig = sysConfigService.getModule(Global.SYSCONFIG_RESULT);
-		}
 		String studentNumber = student.getStudentNumber();
 		if (org.springframework.util.StringUtils.isEmpty(studentNumber)) {
 			User user = UserUtils.getUser();
@@ -336,11 +337,71 @@ public class StudentController extends BaseController {
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudentNumber(studentNumber);
 		// zhaojunfei
-		// studentCourse.setTermYear(sysConfig.getTermYear());
+		if(!org.springframework.util.StringUtils.isEmpty(sysConfig)&&!org.springframework.util.StringUtils.isEmpty(sysConfig.getTermYear())) {
+			studentCourse.setTermYear(sysConfig.getTermYear());
+		}
+		
 		model.addAttribute("config", sysConfig);
 		model.addAttribute("studentCourses", studentCourseService.findByParentIdsLike(studentCourse));
 		return "modules/student/studentcourse/StudentCourseGrade";
 	}
+	
+    @RequestMapping(value = "Student_Course_Grade_Export")
+    public String Student_Course_Grade_Export(Student student, String termYear ,HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes) {
+		try {
+			SysConfig sysConfig = null;
+			if (!org.springframework.util.StringUtils.isEmpty(termYear)) {
+				sysConfig = new SysConfig();
+				sysConfig.setTermYear(termYear);
+
+			}
+			String studentNumber = student.getStudentNumber();
+			if (org.springframework.util.StringUtils.isEmpty(studentNumber)) {
+				User user = UserUtils.getUser();
+				studentNumber = user.getNo();
+			}
+			StudentCourse studentCourse = new StudentCourse();
+			studentCourse.setStudentNumber(studentNumber);
+			if(!org.springframework.util.StringUtils.isEmpty(sysConfig)&&!org.springframework.util.StringUtils.isEmpty(sysConfig.getTermYear())) {
+				studentCourse.setTermYear(sysConfig.getTermYear());
+			}
+			List<StudentCourse> lists = studentCourseService.findByParentIdsLike(studentCourse);
+            String fileName = "学生数据"+DateUtils.getDate("yyyyMMddHHmmss")+".xlsx";
+    		ExportExcel exportExcel = new ExportExcel();
+    		
+    		String[] ss = {"课程编号","学号","姓名","课程名称","学分","绩点","成绩","授课教师"};
+    		
+    		List<String> headerList = Arrays.asList(ss);
+    		exportExcel.init("学生成绩", headerList);
+    		for(StudentCourse sc:lists) {
+    			Course c = sc.getCourse();
+    			Student st = sc.getStudent();
+    			Teacher ct = c.getTeacher();
+    			Row row = exportExcel.addRow();
+    			Cell courseNumberCell = row.createCell(0);
+    			courseNumberCell.setCellValue(c.getCursNum());
+    			Cell studentNumberCell = row.createCell(1);
+    			studentNumberCell.setCellValue(st.getStudentNumber());
+    			Cell studentNameCell = row.createCell(2);
+    			studentNameCell.setCellValue(st.getName());
+    			Cell courseNameCell = row.createCell(3);
+    			courseNameCell.setCellValue(c.getCursName());
+    			Cell courseCreditCell = row.createCell(4);
+    			courseCreditCell.setCellValue(sc.getCredit());
+    			Cell coursePointCell = row.createCell(5);
+    			coursePointCell.setCellValue(sc.getPoint());
+    			Cell courseEvaValueCell = row.createCell(6);
+    			courseEvaValueCell.setCellValue(sc.getEvaValue());
+    			Cell courseTeacherNameCell = row.createCell(7);
+    			courseTeacherNameCell.setCellValue(ct.getTchrName());
+    		}
+    		exportExcel.write(response, fileName);
+    		return null;
+		} catch (Exception e) {
+			addMessage(redirectAttributes, "导出学生成绩失败！失败信息："+e.getMessage());
+		}
+		return "redirect:" + adminPath + "/student/student/Student_Course_Grade?repage";
+    }
 
 	// 获奖记录 30 /student/student/Student_Award
 	@RequiresPermissions("student:student:edit")
@@ -430,10 +491,41 @@ public class StudentController extends BaseController {
 			}
 			
 			if (!org.apache.commons.collections.CollectionUtils.isEmpty(clazzNumbers)) {
-				
 				student.setClazzNumbers(clazzNumbers);
 			}
 		}
+		List<Office> ofs = null;
+		String primaryPersonId = request.getParameter("primaryPersonId");
+		if(!org.springframework.util.StringUtils.isEmpty(primaryPersonId)) {
+			Office op = new Office();
+			op.setDeputyPerson(systemService.getCasByLoginName(primaryPersonId));
+			ofs = officeService.findList(op);
+			
+		}
+		String deputyPersonId = request.getParameter("deputyPersonId");
+		if(!org.springframework.util.StringUtils.isEmpty(deputyPersonId)) {
+			Office op = new Office();
+			User u = new User();
+			u.setNo(deputyPersonId);
+			
+			op.setDeputyPerson(systemService.getCasByLoginName(deputyPersonId));
+			ofs = officeService.findList(op);	
+		}
+		
+		if(!org.springframework.util.StringUtils.isEmpty(ofs)) {
+			List<String> clazzNumbers = new ArrayList<String>();
+			if(ofs.size()==0) {
+				clazzNumbers.add("99999999");
+				student.setClazzNumbers(clazzNumbers);
+			}else {
+				
+				for (Office cls : ofs) {
+					clazzNumbers.add(cls.getId());
+				}
+				student.setClazzNumbers(clazzNumbers);
+			}
+		}
+		
 		Page<Student> page = studentService.findPage(new Page<Student>(request, response), student);
 		model.addAttribute("page", page);
 		return "modules/student/studentList";
@@ -510,7 +602,7 @@ public class StudentController extends BaseController {
 		try {
 			String fileName = "学籍信息" + DateUtils.getDate("yyyyMMddHHmmss") + ".xlsx";
 			Page<Student> page = studentService.findPage(new Page<Student>(request, response, -1), stduent);
-			new ExportExcel("学籍信息", User.class).setDataList(page.getList()).write(response, fileName).dispose();
+			new ExportExcel("学籍信息", Student.class).setDataList(page.getList()).write(response, fileName).dispose();
 			return null;
 		} catch (Exception e) {
 			addMessage(redirectAttributes, "导出学籍信息失败！失败信息：" + e.getMessage());

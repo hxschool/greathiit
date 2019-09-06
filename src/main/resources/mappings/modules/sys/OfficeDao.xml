@@ -83,6 +83,13 @@
 		<if test="grade!=null and grade!=''">
 			and a.grade=#{grade}
 		</if>
+		
+		<if test="primaryPerson!=null and primaryPerson!='' and primaryPerson.id!=null and primaryPerson.id!=''">
+			and a.primary_person=#{primaryPerson.id}
+		</if>
+		<if test="deputyPerson!=null and deputyPerson!='' and deputyPerson.id!=null and deputyPerson.id!=''">
+			and a.deputy_person=#{deputyPerson.id}
+		</if>
 		<if test="year!=null and year!=''">
 			and left(a.id,4)=#{year}
 		</if>

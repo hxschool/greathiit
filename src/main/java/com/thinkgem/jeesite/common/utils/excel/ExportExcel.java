@@ -36,7 +36,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.thinkgem.jeesite.common.utils.Encodes;
 import com.thinkgem.jeesite.common.utils.Reflections;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
@@ -245,6 +244,7 @@ public class ExportExcel {
 			sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
 					titleRow.getRowNum(), titleRow.getRowNum(), headerList.size()-1));
 		}
+		setHeader(headerList);
 	}
 	
 	public void setHeader(List<String> headerList) {

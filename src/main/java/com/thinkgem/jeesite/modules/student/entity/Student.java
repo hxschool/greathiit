@@ -53,10 +53,11 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String nativePlace;		// 户口所在地
 	@ExcelField(title="学制", align=2, sort=11,dictType="student_school_system")
 	private String studentLength;		// 学制
+	@ExcelField(title="班号", align=2, sort=9)
 	private Office clazz;		// 班级编号
 	@ExcelField(title="学号", align=2, sort=2)
 	private String studentNumber;//返回json处理~
-	@ExcelField(title="班号", align=2, sort=9,fieldType=OfficeType.class)
+
 	private String classno;//返回json处理~
 	@ExcelField(title="父亲职业", align=2, sort=15)
 	private String  fatherWorks;//父亲职业
@@ -266,7 +267,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	public void setStudentNumber(String studentNumber) {
 		this.studentNumber = studentNumber;
 	}
-
+	
 	public String getClassno() {
 		return classno;
 	}

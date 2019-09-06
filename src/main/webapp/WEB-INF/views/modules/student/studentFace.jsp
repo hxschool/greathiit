@@ -6,17 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#btnExport").click(function() {
-				top.$.jBox.confirm("确认要导出学籍数据吗？", "系统提示", function(v, h, f) {
-					if (v == "ok") {
-						$("#searchForm").attr("action", "${ctx}/student/student/export");
-						$("#searchForm").submit();
-					}
-				}, {
-					buttonsFocus : 1
-				});
-				top.$('.jbox-body .jbox-icon').css('top', '55px');
-			});
+			
 			$("#btnImport").click(function() {
 				$.jBox($("#importBox").html(), {
 					title : "导入数据",
@@ -51,7 +41,7 @@
 			
 			
 			<input
-				id="btnImport" class="btn btn-primary" type="button" value="相片导入" /></li>
+				id="btnImport" class="btn btn-primary" type="button" value="像片导入" /></li>
 			<li class="clearfix"></li>
 		</ul>
 	</div>
@@ -59,7 +49,7 @@
 		
 		<fieldset>
 			<legend>使用说明</legend>
-			请使用zip压缩进行图片压缩.相片已身份证号命名.
+			请使用zip压缩进行像片压缩.相片已身份证号命名.
 		</fieldset>
 		</div>
 </body>

@@ -803,6 +803,9 @@ public class CourseController extends BaseController {
 	@RequestMapping("selectCourseView")
 	public String selectCourseView(SelectCourse selectCourse,HttpServletRequest request,HttpServletResponse response,RedirectAttributes redirectAttributes,Model model) throws FileNotFoundException, IOException {
 		File directory = new File(request.getSession().getServletContext().getRealPath("/download/selectcourse"));
+		if(!directory.isDirectory()) {
+			directory.mkdirs();
+		}
 		Collection<File> list = FileUtils.listFiles(directory, FileFilterUtils.suffixFileFilter("xlsx"), null);
 		model.addAttribute("list",list);
 		return "modules/course/selectCourseView";

@@ -44,7 +44,16 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     		return null;
     	}
     }
-    
+    public static String zero(String s) {
+		if (s==null) {
+			return null;
+		}
+		if (s.indexOf(".") > 0) {
+			s = s.replaceAll("0+?$", "");// 去掉多余的0
+			s = s.replaceAll("[.]$", "");// 如最后一位是.则去掉
+		}
+		return s;
+    }
     /**
      * 转换为字节数组
      * @param str

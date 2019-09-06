@@ -151,7 +151,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="tchrName!=null and tchrName!=''">
-				and a.tchr_name = #{tchrName}
+				and a.tchr_name LIKE CONCAT('%',#{tchrName},'%') 
 			</if>
 			<if test="tchrGender!=null and tchrGender!=''">
 				and a.tchr_gender = #{tchrGender}

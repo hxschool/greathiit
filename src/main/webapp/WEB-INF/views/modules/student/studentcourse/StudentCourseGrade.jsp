@@ -33,7 +33,6 @@
 </head>
 <body>
 
-	<div class="content">
 		<div class="container">
 			
 				<div class="row">
@@ -58,6 +57,7 @@
 										&nbsp;&nbsp;<input id="btnSubmit" class="btn" style="margin-top: 0px;" type="submit" value="查询"/>
 										&nbsp;&nbsp;<button id="btnPrint"  class="btn" style="margin-top: 0px;" type="button">打印成绩单</button>
 										<a href="/chengji/view" class="btn" style="margin-top: 0px;" target="_blank">查看成绩单</a>
+										<a href="${ctx}/student/student/Student_Course_Grade_Export" class="btn" style="margin-top: 0px;" target="_blank">导出成绩单</a>
 									</div>
 									</form>
 									<div class="div-tchr-basic-inf">
@@ -67,6 +67,8 @@
 											<thead>
 												<tr>
 													<th style="width: 60px">课程编号</th>
+													<th>学号</th>
+													<th>姓名</th>
 													<th>课程名称</th>
 													<th>学分</th>
 													<th>绩点</th>
@@ -77,7 +79,9 @@
 											<tbody>
 												<c:forEach items="${studentCourses}" var="studentCourse" >
 												<tr>
-													<td style="width: 60px">${studentCourse.course.id}</td>
+													<td style="width: 60px">${studentCourse.course.cursNum}</td>
+													<td>${studentCourse.student.studentNumber}</td>
+													<td>${studentCourse.student.name}</td>
 													<td>${studentCourse.course.cursName}</td>
 													<td>${studentCourse.credit}</td>
 													<td>${studentCourse.point}</td>
@@ -96,10 +100,10 @@
 				</div>
 			
 		</div>
-	</div>
+	
 	<script>
 		$(function() {
-			$(".container").css("min-height",
+			$(".container-fluid").css("min-height",
 					$(document).height() - 90 - 88 - 41 + "px");//container的最小高度为“浏览器当前窗口文档的高度-header高度-footer高度”
 		});
 

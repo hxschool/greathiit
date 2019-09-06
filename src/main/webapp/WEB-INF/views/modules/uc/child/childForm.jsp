@@ -122,7 +122,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">主负责人:</label>
+			<label class="control-label">班主任:</label>
 			<div class="controls">
 				<sys:treeselect id="primaryPerson" name="primaryPerson.id"
 					value="${office.primaryPerson.id}"
@@ -133,7 +133,7 @@
 			</div>
 		</div>
 		<div class="control-group">
-			<label class="control-label">副负责人:</label>
+			<label class="control-label">导员:</label>
 			<div class="controls">
 				<sys:treeselect id="deputyPerson" name="deputyPerson.id"
 					value="${office.deputyPerson.id}"
@@ -143,44 +143,7 @@
 					notAllowSelectParent="true" />
 			</div>
 		</div>
-		<!-- 
-		<div class="control-group">
-			<label class="control-label">联系地址:</label>
-			<div class="controls">
-				<form:input path="address" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">邮政编码:</label>
-			<div class="controls">
-				<form:input path="zipCode" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">负责人:</label>
-			<div class="controls">
-				<form:input path="master" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">电话:</label>
-			<div class="controls">
-				<form:input path="phone" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">传真:</label>
-			<div class="controls">
-				<form:input path="fax" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		<div class="control-group">
-			<label class="control-label">邮箱:</label>
-			<div class="controls">
-				<form:input path="email" htmlEscape="false" maxlength="50" />
-			</div>
-		</div>
-		 -->
+		
 		<div class="control-group">
 			<label class="control-label">备注:</label>
 			<div class="controls">

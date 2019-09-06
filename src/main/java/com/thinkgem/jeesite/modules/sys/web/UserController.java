@@ -430,7 +430,6 @@ public class UserController extends BaseController {
 		Integer ret = systemService.getCurrentTeacherNumber();
 		return (ret + 1);
 	}
-	
     
 //	@InitBinder
 //	public void initBinder(WebDataBinder b) {

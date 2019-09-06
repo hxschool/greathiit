@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
+import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 import com.thinkgem.jeesite.modules.course.entity.Course;
 
@@ -49,7 +50,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 
 	//@ExcelField(title="学分", type=0, align=2, sort=6)
 	public String getCredit() {
-		return credit;
+		return StringUtils.zero(credit);
 	}
 
 	public void setCredit(String credit) {
@@ -73,7 +74,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	}
 	@ExcelField(title="平时成绩", type=0, align=2, sort=2)
 	public String getClassEvaValue() {
-		return classEvaValue;
+		return StringUtils.zero(classEvaValue);
 	}
 
 	public void setClassEvaValue(String classEvaValue) {
@@ -105,7 +106,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	
 	//@ExcelField(title="综合成绩", type=0, align=2, sort=5)
 	public String getEvaValue() {
-		return evaValue;
+		return StringUtils.zero(evaValue);
 	}
 
 	public void setEvaValue(String evaValue) {
@@ -121,7 +122,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	}
 	@ExcelField(title="期末成绩", type=0, align=2, sort=3)
 	public String getFinEvaValue() {
-		return finEvaValue;
+		return StringUtils.zero(finEvaValue);
 	}
 
 	public void setFinEvaValue(String finEvaValue) {
@@ -130,7 +131,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	
 	//@ExcelField(title="期中成绩", type=0, align=2, sort=3)
 	public String getMidEvaValue() {
-		return midEvaValue;
+		return StringUtils.zero(midEvaValue);
 	}
 
 	public void setMidEvaValue(String midEvaValue) {
@@ -196,7 +197,7 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	}
 	//@ExcelField(title="绩点", type=0, align=2, sort=7)
 	public String getPoint() {
-		return point;
+		return StringUtils.zero(point);
 	}
 
 	public void setPoint(String point) {

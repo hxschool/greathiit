@@ -4,6 +4,7 @@
 package com.thinkgem.jeesite.modules.student.web;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -141,6 +142,7 @@ public class StudentCourseController extends BaseController {
 			user.setClazz(clazz);
 			users = systemService.findUser(user);
 		}
+		
 		if(!CollectionUtils.isEmpty(users)) {
 			for(User u :users) {
 				if (!org.springframework.util.StringUtils.isEmpty(u.getNo()) && u.getNo().length() != 4) {

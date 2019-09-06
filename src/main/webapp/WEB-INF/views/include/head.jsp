@@ -24,6 +24,8 @@
 <script src="${ctxStatic}/jquery-select/jquery.cxselect.js"  type="text/javascript"></script>
 <script src="${ctxStatic}/layer/layer.js"  type="text/javascript"></script>
 <script src="${ctxStatic}/common/checkboxAll.js"  type="text/javascript"></script>
+<link rel="stylesheet" href="${ctxStatic}/jquery-ui/jquery-ui.css">
+<script src="${ctxStatic}/jquery-ui/jquery-ui.js"></script>
 <link rel="stylesheet" href="${ctxStatic}/bootstrap/2.3.1/css_default/bootstrap-table-expandable.css"/>
 <script type="text/javascript" src="${ctxStatic}/bootstrap/2.3.1/js/bootstrap-table-expandable.js"></script>
 <script type="text/javascript">var ctx = '${ctx}', ctxStatic='${ctxStatic}';</script>

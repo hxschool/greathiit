@@ -6,6 +6,31 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	$(document).ready(function() {
+		
+		$("#btnExport").click(function() {
+			top.$.jBox.confirm("确认要导出学生数据吗？", "系统提示", function(v, h, f) {
+				if (v == "ok") {
+					$("#searchForm").attr("action", "${ctx}/student/student/export");
+					$("#searchForm").submit();
+				}
+			}, {
+				buttonsFocus : 1
+			});
+			top.$('.jbox-body .jbox-icon').css('top', '55px');
+		});
+		
+		
+		$("#btnImport").click(function() {
+			$.jBox($("#importBox").html(), {
+				title : "导入数据",
+				buttons : {
+					"关闭" : true
+				},
+				bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+			});
+		});
+		
+		
 	    $('#element_id').cxSelect({ 
 			  url: '${ctx}/sys/office/treeClassLink',
 			  selects: ['department', 'specialty','grade',"clazz"], 
@@ -83,7 +108,17 @@
 			</div>
 		
 		<li class="clearfix"></li>
+	<li><label>班主任：</label>
+				  
 
+
+<input id="primaryPerson"  class="input-medium ">
+<input type="hidden" id="primaryPersonId" name="primaryPersonId"  class="input-medium ">
+			</li>
+				<li><label>导员：</label>
+				<input id="deputyPerson"  class="input-medium">
+				<input type="hidden" id="deputyPersonId" name="deputyPersonId"  class="input-medium ">
+			</li>
 			<li><label>学历：</label>
 				
 				<form:select path="edu" class="input-medium " style="width:175px">
@@ -92,13 +127,7 @@
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
-			<li><label>学制：</label>
-						<form:select path="studentLength" class="input-medium " style="width:175px">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_school_system')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
+			
 			
 			<li><label>状态：</label>
 						<form:select path="status" class="input-medium " style="width:175px">
@@ -107,7 +136,13 @@
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			
+			<input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
+				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+				<shiro:hasPermission name="student:student:export"></shiro:hasPermission>
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -197,6 +232,65 @@
 	
 	
 	
-	
+<script>
+  $( function() {
+	  // url : '${ctx}/teacher/teacher/ajaxTeacher',
+	  $("#primaryPerson").autocomplete({
+		    source: function (request, response){
+		  	  $.ajax({  
+		          url:  '${ctx}/teacher/teacher/ajaxTeacher',
+		          dataType: "json",  
+		          data:{  
+		              tchrName: request.term  
+		          },  
+		          success: function( data ) {  
+		              response( $.map( data, function( item ) {  
+		                  return {  
+		                  	value:item.teacherNumber,  
+		                    label:item.tchrName
+		                  }  
+		              }));  
+		          }  
+		      });  
+		  	},
+		    select: function(event, ui){
+		    	console.log(ui.item.label)
+		    	console.log(ui.item.value)
+		        $("#primaryPerson").val( ui.item.label );
+		        $("#primaryPersonId").val( ui.item.value );
+		        
+		        // 必须阻止事件的默认行为，否则autocomplete默认会把ui.item.value设为输入框的value值
+		        event.preventDefault();     
+		    }
+		});
+	  
+	  $("#deputyPerson").autocomplete({
+		    source: function (request, response){
+		  	  $.ajax({  
+		          url:  '${ctx}/teacher/teacher/ajaxTeacher',
+		          dataType: "json",  
+		          data:{  
+		              tchrName: request.term  
+		          },  
+		          success: function( data ) {  
+		              response( $.map( data, function( item ) {  
+		                  return {  
+		                  	value:item.teacherNumber,  
+		                    label:item.tchrName
+		                  }  
+		              }));  
+		          }  
+		      });  
+		  	},
+		    select: function(event, ui){
+		    	console.log(ui.item.label)
+		    	console.log(ui.item.value)
+		        $("#deputyPerson").val( ui.item.label );
+		        $("#deputyPersonId").val( ui.item.value );
+		        event.preventDefault();     
+		    }
+		});
+  });
+  </script>	
 </body>
 </html>

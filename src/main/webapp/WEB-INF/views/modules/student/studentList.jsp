@@ -70,6 +70,18 @@
 	</script>
 </head>
 <body>
+		<div id="importBox" class="hide">
+		<form id="importForm" action="${ctx}/student/student/import" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " /> <a
+				href="${ctx}/student/student/import/template">下载模板</a>
+		</form>
+	</div>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/student/student/">学生信息列表</a></li>
 		<shiro:hasPermission name="student:student:edit"><li><a href="${ctx}/student/student/form">学生信息添加</a></li></shiro:hasPermission>

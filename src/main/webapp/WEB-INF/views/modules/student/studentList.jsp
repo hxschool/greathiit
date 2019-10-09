@@ -149,11 +149,11 @@
 						</form:select>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
-			
+			<shiro:hasPermission name="student:student:export">
 			<input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
-				<shiro:hasPermission name="student:student:export"></shiro:hasPermission>
+				</shiro:hasPermission>
 			</li>
 			<li class="clearfix"></li>
 		</ul>

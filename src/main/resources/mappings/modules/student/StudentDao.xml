@@ -205,6 +205,12 @@
 			<if test="status != null and status != ''">
 				AND a.status = #{status}
 			</if>
+			
+			<if test="year != null and year != ''">
+				
+				and left(start_date,4)=#{year}
+			</if>
+			
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
 				
 				and a.clazz_id IN 

@@ -12,7 +12,6 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
-import com.thinkgem.jeesite.common.utils.excel.fieldtype.OfficeType;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 
 /**
@@ -78,6 +77,8 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
 	private String overDate;		// 结业日期(预计毕业日期)
 	private List<String> clazzNumbers;//数组查询添加
+	
+	private String year;
 	
 	private String status;
 	private String description;
@@ -372,6 +373,14 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 		this.description = description;
 	}
 
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
+	}
 
 	@Override
 	public int compareTo(Student student) {

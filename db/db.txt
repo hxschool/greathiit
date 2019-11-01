@@ -14,7 +14,7 @@ grant execute on greathiit.* to greathiit@'%';
 
 CREATE TABLE uc_student  ( 
 	id             	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	exa_number     	varchar(64) COMMENT '考试号'  NOT NULL,
+	exa_number     	varchar(64) COMMENT '考生号'  NOT NULL,
 	location       	varchar(64) COMMENT '生源所在地'  NULL,
 	student_number 	varchar(64) NOT NULL,
 	username       	varchar(64) COMMENT '真实姓名'  NOT NULL,
@@ -730,7 +730,7 @@ select * from uc_student_bak limit 1
 
 CREATE TABLE  recruit_student   ( 
 	id             	int(11) UNSIGNED AUTO_INCREMENT COMMENT '学生id'  NOT NULL,
-	exa_number     	varchar(64) COMMENT '考试号'  NOT NULL,
+	exa_number     	varchar(64) COMMENT '考生号'  NOT NULL,
     middle_school  	varchar(64) COMMENT '毕业中学名称	'  NULL,
 	location       	varchar(64) COMMENT '生源所在地'  NULL,
 	notice_number       	varchar(64) COMMENT '录取通知书编号'  NULL,

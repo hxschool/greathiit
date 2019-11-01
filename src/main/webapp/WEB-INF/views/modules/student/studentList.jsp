@@ -32,8 +32,8 @@
 		
 		
 	    $('#element_id').cxSelect({ 
-			  url: '${ctx}/sys/office/treeClassLink',
-			  selects: ['department', 'specialty','grade',"clazz"], 
+			  url: '${ctx}/sys/office/treeLink',
+			  selects: ['department', 'specialty',"clazz"], 
 			  jsonName: 'name',
 			  jsonValue: 'value',
 			  jsonSub: 'sub'
@@ -104,7 +104,9 @@
 				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
 			</li>
 			<li class="clearfix"></li>
-
+				<li><label>年级：</label>
+				<form:input path="year" htmlEscape="false" maxlength="18" class="input-medium"/>
+			</li>
 			<div id="element_id">
 			<li><label>所属学院：</label> <select class="department input-medium" style="width:175px"
 				name="department"><option>请选择</option></select></li>
@@ -112,8 +114,7 @@
 			<li><label>所属专业：</label> <select id="specialty"
 				class="specialty input-medium" style="width:175px" name="specialty"><option>请选择</option></select>
 			</li>
-			<li><label> 年级：</label> <select id="grade"
-				class="grade input-medium" style="width:175px"><option>请选择</option></select></li>
+			
 			<li><label>选择班级：</label> <select id="clazz"
 				class="clazz input-medium" name="clazz" style="width:175px"><option>请选择</option></select>
 			</li>
@@ -190,7 +191,8 @@
 					${student.name}
 				</a></td>
 				<td>
-					${fns:abbr(student.idCard,13)}
+					
+					<a  href="javascript:void(0);" onclick="js_method('${student.idCard}')">${fn:substring(student.idCard, 0, 10)}****${fn:substring(student.idCard, 14,18)}</a>
 				</td>
 				<td>
 					<fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/>
@@ -303,6 +305,9 @@
 		    }
 		});
   });
+  function js_method(idcard){
+	  layer.msg(idcard)
+  }
   </script>	
 </body>
 </html>

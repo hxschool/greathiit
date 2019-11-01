@@ -48,7 +48,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-		<li><label>考试号：</label>
+		<li><label>考生号：</label>
 				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>学号：</label>

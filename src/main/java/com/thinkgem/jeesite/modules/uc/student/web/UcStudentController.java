@@ -72,8 +72,8 @@ public class UcStudentController extends BaseController {
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("group")
-	public String group(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentGroup(beginDate, endDate);
+	public String group(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentGroup(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentGroup";
@@ -81,21 +81,21 @@ public class UcStudentController extends BaseController {
 	
 	@RequestMapping("group.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxGroup(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentGroup(beginDate, endDate);
+	public List<Map<String,Object>> ajaxGroup(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentGroup(ucStudent);
 	}
 	
 	
 	@RequestMapping("year.json")
 	@ResponseBody
-	public List<Map<String,Object>> year(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
+	public List<Map<String,Object>> year(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		return ucStudentService.studentUser();
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("sex")
-	public String sex(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentSex(beginDate, endDate);
+	public String sex(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentSex(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentSex";
@@ -103,43 +103,43 @@ public class UcStudentController extends BaseController {
 	
 	@RequestMapping("sex.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxSex(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentSex(beginDate, endDate);
+	public List<Map<String,Object>> ajaxSex(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentSex(ucStudent);
 	}
 	
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("region")
-	public String region(String year,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentRegion(year);
+	public String region(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentRegion(ucStudent);
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentRegion";
 	}
 	
 	@RequestMapping("region.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxRegion(String year,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentGengerRegion(year);
+	public List<Map<String,Object>> ajaxRegion(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentGengerRegion(ucStudent);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("edu")
-	public String edu(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentEdu(beginDate, endDate);	
+	public String edu(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentEdu(ucStudent);	
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentEdu";
 	}
 	
 	@RequestMapping("edu.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxEdu(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentEdu(beginDate, endDate);
+	public List<Map<String,Object>> ajaxEdu(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentEdu(ucStudent);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("major")
-	public String major(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentMajor(beginDate, endDate);
+	public String major(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentMajor(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentMajor";
@@ -147,14 +147,14 @@ public class UcStudentController extends BaseController {
 	
 	@RequestMapping("major.json")
 	@ResponseBody
-	public List<Map<String,Object>>  ajaxMajor(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentMajor(beginDate, endDate);
+	public List<Map<String,Object>>  ajaxMajor(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentMajor(ucStudent);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("department")
-	public String department(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		List<Map<String,Object>> list = ucStudentService.studentDepartment(beginDate, endDate);
+	public String department(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		List<Map<String,Object>> list = ucStudentService.studentDepartment(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentDepartment";
@@ -162,8 +162,8 @@ public class UcStudentController extends BaseController {
 	
 	@RequestMapping("department.json")
 	@ResponseBody
-	public List<Map<String,Object>> ajaxDepartment(Date beginDate,Date endDate,HttpServletRequest request, HttpServletResponse response,Model model) {
-		return ucStudentService.studentDepartment(beginDate, endDate);
+	public List<Map<String,Object>> ajaxDepartment(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		return ucStudentService.studentDepartment(ucStudent);
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")

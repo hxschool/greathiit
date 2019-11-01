@@ -186,7 +186,7 @@
 			<input type="checkbox"
 						name="allcheckbox" id="allcheckbox">
 						</th>
-				<th>考试号</th>
+				<th>考生号</th>
 				<th>姓名</th>
 				<th>性别</th>
 				

@@ -44,23 +44,23 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentGroup(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentGroup(UcStudent ucStudent);
 	/**
 	 * 男女占比
 	 * @param startDate
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentSex(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentSex(UcStudent ucStudent);
 	/**
 	 * 全国招生情况
 	 * @param startDate
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentRegion(@Param("year")String year);
+	public List<Map<String,Object>> studentRegion(UcStudent ucStudent);
 	
-	public List<Map<String,Object>> studentGengerRegion(@Param("year")String year);
+	public List<Map<String,Object>> studentGengerRegion(UcStudent ucStudent);
 	
 	/**
 	 * 学院
@@ -68,21 +68,21 @@ public interface UcStudentDao extends CrudDao<UcStudent> {
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentDepartment(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentDepartment(UcStudent ucStudent);
 	/**
 	 * 专业
 	 * @param startDate
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentMajor(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentMajor(UcStudent ucStudent);
 	/**
 	 * 学历
 	 * @param startDate
 	 * @param endDate
 	 * @return
 	 */
-	public List<Map<String,Object>> studentEdu(@Param("startDate")Date startDate,@Param("endDate")Date endDate);
+	public List<Map<String,Object>> studentEdu(UcStudent ucStudent);
 	/**
 	 * 学生信息表用户信息不全,缺少2017和2018数据.直接读取用户数据表数据
 	 * @return

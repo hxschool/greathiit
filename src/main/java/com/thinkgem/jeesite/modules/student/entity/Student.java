@@ -23,8 +23,8 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 public class Student extends DataEntity<Student> implements Comparable<Student> {
 	
 	private static final long serialVersionUID = 1L;
-	@ExcelField(title="考试号", align=2, sort=1)
-	private String exaNumber;		// 考试号
+	@ExcelField(title="考生号", align=2, sort=1)
+	private String exaNumber;		// 考生号
 	@ExcelField(title="真实姓名", align=2, sort=3)
 	private String name;		// 姓名
 	@ExcelField(title="身份证号码", align=2, sort=4)

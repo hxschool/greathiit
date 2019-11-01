@@ -7,22 +7,21 @@
 	
 </head>
 <body>
-	<!-- <ul class="nav nav-tabs">
-		<li><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
-		<li class="active"><a href="${ctx}/uc/ucStudent/sex">性别统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/region">全国招生统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
-	</ul> -->
-	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/" method="post" class="breadcrumb form-search">
+	 <ul class="nav nav-tabs">
+		<li><a href="${ctx}/uc/student/group">招生统计</a></li>
+		<li class="active"><a href="${ctx}/uc/student/sex">性别统计</a></li>
+		<li><a href="${ctx}/uc/student/region">全国招生统计</a></li>
+		<li><a href="${ctx}/uc/student/department">学院统计</a></li>
+		<li><a href="${ctx}/uc/student/major"> 专业统计</a></li>
+		<li><a href="${ctx}/uc/student/edu">学历统计</a></li>
+	</ul>
+	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/sex" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
-			<label>日期范围：&nbsp;</label><input id="beginDate" name="beginDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>
-			<label>&nbsp;--&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><input id="endDate" name="endDate" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${log.endDate}" pattern="yyyy-MM-dd"/>" onclick="WdatePicker({dateFmt:'yyyy-MM-dd',isShowClear:false});"/>&nbsp;&nbsp;
-			&nbsp;<label for="exception"><input id="exception" name="exception" type="checkbox"${log.exception eq '1'?' checked':''} value="1"/>只查询异常信息</label>
+			<label>录取年份：&nbsp;</label><input id="year" name="year" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
+				value="${ucStudent.year}" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+			
 			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+			<button type="reset" class="btn btn-default ">重置</button>
 		</div>
 	</form:form>
 	<sys:message content="${message}"/>
@@ -40,10 +39,14 @@
 		    }); 
 			</c:forEach> 
         // 基于准备好的dom，初始化echarts实例
-        			var myChart = echarts.init(document.getElementById('main'));
+        			var myChart = echarts.init(document.getElementById('main'),'westeros');
 		
         // 指定图表的配置项和数据
 					option = {
+							title : {
+								text : '性别统计',
+								x : 'right'
+							},
     tooltip: {
         trigger: 'item',
         formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -55,9 +58,9 @@
         y: 'center',
         feature : {
             mark : {show: true},
-            magicType : {
-                show: true,
-                type: ['pie', 'funnel']
+	            magicType : {
+	        	show: true,
+	           	type: ['pie', 'funnel']
             },
             dataView : {show: true, readOnly: false},
             restore : {show: true},
@@ -102,11 +105,10 @@
 					// 使用刚指定的配置项和数据显示图表。
 					myChart.setOption(option);
 					
-					myChart.on("dblclick", function (param){               
-			                alert(param.dataIndex);
-			                alert(param.value);
+					myChart.on("dblclick", function (param){
+							console.log(param);
+			                layer.msg(param.name + ":" + param.value); 
 			            });
-
 
 				</script>
 </body>

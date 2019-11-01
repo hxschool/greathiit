@@ -17,8 +17,8 @@ import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
 public class UcStudent extends DataEntity<UcStudent> {
 	
 	private static final long serialVersionUID = 1L;
-	@ExcelField(title="考试号", align=2, sort=1)
-	private String exaNumber;		// 考试号
+	@ExcelField(title="考生号", align=2, sort=1)
+	private String exaNumber;		// 考生号
 	@ExcelField(title="生源所在地", align=2, sort=2)
 	private String location;		// 生源所在地
 	@ExcelField(title="学号", align=2, sort=3)
@@ -86,6 +86,9 @@ public class UcStudent extends DataEntity<UcStudent> {
 	
 	private String description;//修改状态描述信息
 	
+	
+	private String year;
+	
 	public UcStudent() {
 		super();
 	}
@@ -94,7 +97,7 @@ public class UcStudent extends DataEntity<UcStudent> {
 		super(id);
 	}
 
-	@Length(min=1, max=64, message="考试号长度必须介于 1 和 64 之间")
+	@Length(min=1, max=64, message="考生号长度必须介于 1 和 64 之间")
 	public String getExaNumber() {
 		return exaNumber;
 	}
@@ -448,6 +451,14 @@ public class UcStudent extends DataEntity<UcStudent> {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getYear() {
+		return year;
+	}
+
+	public void setYear(String year) {
+		this.year = year;
 	}
 	
 	

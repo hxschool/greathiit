@@ -277,8 +277,6 @@ public class ImportExcel {
 		try{
 			Cell cell = row.getCell(column);
 			if (cell != null){
-				val = cell.getStringCellValue();
-				/*
 				if (cell.getCellType() == Cell.CELL_TYPE_NUMERIC){
 					val = cell.getNumericCellValue();
 					
@@ -302,7 +300,6 @@ public class ImportExcel {
 				}else if (cell.getCellType() == Cell.CELL_TYPE_ERROR){
 					val = cell.getErrorCellValue();
 				}
-				*/
 			}
 		}catch (Exception e) {
 			return val;

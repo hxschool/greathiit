@@ -33,7 +33,7 @@
 		<ul class="ul-form">
 			
 			
-			<li><label>考试号：</label>
+			<li><label>考生号：</label>
 				<form:input path="ksh" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>姓名：</label>

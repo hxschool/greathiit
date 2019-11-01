@@ -59,7 +59,7 @@
 		<div id="myTabContent" class="tab-content">
 			<div class="tab-pane fade in active" id="bulletin">
 				<div class="control-group">
-					<label class="control-label">考试号：</label>
+					<label class="control-label">考生号：</label>
 					<div class="controls">
 						<form:input path="exaNumber" htmlEscape="false" maxlength="64"
 							class="input-xlarge required" />

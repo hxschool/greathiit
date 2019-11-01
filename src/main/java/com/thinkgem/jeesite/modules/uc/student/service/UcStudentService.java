@@ -140,33 +140,33 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 		super.delete(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentGroup(Date startDate,Date endDate){
-		return ucStudentDao.studentGroup(startDate, endDate);
+	public List<Map<String,Object>> studentGroup(UcStudent ucStudent){
+		return ucStudentDao.studentGroup(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentSex(Date startDate,Date endDate){
-		return ucStudentDao.studentSex(startDate, endDate);
+	public List<Map<String,Object>> studentSex(UcStudent ucStudent){
+		return ucStudentDao.studentSex(ucStudent);
 	}
 	
 	
-	public List<Map<String,Object>> studentRegion(String year){
-		return ucStudentDao.studentRegion(year);
+	public List<Map<String,Object>> studentRegion(UcStudent ucStudent){
+		return ucStudentDao.studentRegion(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentGengerRegion(String year){
-		return ucStudentDao.studentGengerRegion(year);
+	public List<Map<String,Object>> studentGengerRegion(UcStudent ucStudent){
+		return ucStudentDao.studentGengerRegion(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentEdu(Date startDate,Date endDate){
-		return ucStudentDao.studentEdu(startDate, endDate);
+	public List<Map<String,Object>> studentEdu(UcStudent ucStudent){
+		return ucStudentDao.studentEdu(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentDepartment(Date startDate,Date endDate){
-		return ucStudentDao.studentDepartment(startDate, endDate);
+	public List<Map<String,Object>> studentDepartment(UcStudent ucStudent){
+		return ucStudentDao.studentDepartment(ucStudent);
 	}
 	
-	public List<Map<String,Object>> studentMajor(Date startDate,Date endDate){
-		return ucStudentDao.studentMajor(startDate, endDate);
+	public List<Map<String,Object>> studentMajor(UcStudent ucStudent){
+		return ucStudentDao.studentMajor(ucStudent);
 	}
 	
 	public List<Map<String,Object>> studentUser(){

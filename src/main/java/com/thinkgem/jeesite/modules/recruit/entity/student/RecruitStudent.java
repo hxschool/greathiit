@@ -17,7 +17,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 public class RecruitStudent extends DataEntity<RecruitStudent> {
 	
 	private static final long serialVersionUID = 1L;
-	private String exaNumber;		// 考试号
+	private String exaNumber;		// 考生号
 	private String middleSchool;		// 毕业中学名称
 	private String location;		// 生源所在地
 	private String noticeNumber;		// 录取通知书编号
@@ -55,8 +55,8 @@ public class RecruitStudent extends DataEntity<RecruitStudent> {
 		super(id);
 	}
 
-	@Length(min=1, max=64, message="考试号长度必须介于 1 和 64 之间")
-	@ExcelField(title="考试号", align=2, sort=1)
+	@Length(min=1, max=64, message="考生号长度必须介于 1 和 64 之间")
+	@ExcelField(title="考生号", align=2, sort=1)
 	public String getExaNumber() {
 		return exaNumber;
 	}

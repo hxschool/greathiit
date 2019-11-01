@@ -121,7 +121,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th>考试号</th>
+				<th>考生号</th>
 				<th>学号</th>
 				<th>真实姓名</th>
 				<th>数学</th>

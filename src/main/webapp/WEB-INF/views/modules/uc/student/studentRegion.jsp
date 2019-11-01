@@ -4,42 +4,47 @@
 <head>
 	<title>数据统计</title>
 	<meta name="decorator" content="default"/>
+	<script src="${ctxStatic}/echart/echarts-all.js" type="text/javascript"></script>
 </head>
 <body>
-	<!-- 
+	
 	
 	<ul class="nav nav-tabs">
-		<li><a href="${ctx}/uc/ucStudent/group">招生统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/sex">性别统计</a></li>
-		<li   class="active"><a href="${ctx}/uc/ucStudent/region">全国招生统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/department">学院统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/major"> 专业统计</a></li>
-		<li><a href="${ctx}/uc/ucStudent/edu">学历统计</a></li>
+		<li><a href="${ctx}/uc/student/group">招生统计</a></li>
+		<li><a href="${ctx}/uc/student/sex">性别统计</a></li>
+		<li   class="active"><a href="${ctx}/uc/student/region">全国招生统计</a></li>
+		<li><a href="${ctx}/uc/student/department">学院统计</a></li>
+		<li><a href="${ctx}/uc/student/major"> 专业统计</a></li>
+		<li><a href="${ctx}/uc/student/edu">学历统计</a></li>
 	</ul>
-	 -->
+	 
 	<form:form id="searchForm" modelAttribute="ucStudent" action="${ctx}/uc/student/region" method="post" class="breadcrumb form-search">
 		<div style="margin-top:8px;">
-			<label>选择年份：&nbsp;</label><input id="year" name="year" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
-				value="<fmt:formatDate value="${log.beginDate}" pattern="yyyy"/>" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
+			<label>录取年份：&nbsp;</label><input id="year" name="year" type="text" readonly="readonly" maxlength="20" class="input-mini Wdate"
+				value="${ucStudent.year}" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
 			
 			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+			<button type="reset" class="btn btn-default ">重置</button>
 		</div>
 	</form:form>
 	<sys:message content="${message}"/>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 1024px;height:530px;margin:0 auto; "></div>
 	<div class="container-fluid">
+		<c:set var="sum" value="0" />
 		<table id="contentTable"
 			class="table table-striped table-bordered table-hover ">
 			<thead>
 				<tr>
 					<th width="20px;">序号</th>
 					<th>省份名称</th>
-					<th>录取数量</th>
+					<th>录取人数</th>
 				</tr>
 			</thead>
 			<tbody>
+				
 				<c:forEach items="${list}" var="item" varStatus="status">
+				 	<c:set var="sum" value="${sum+item.TOTAL}"/>
 					<tr>
 
 						<td>${status.index +1}</td>
@@ -48,6 +53,13 @@
 					</tr>
 				</c:forEach>
 			</tbody>
+			<tfoot>
+				<tr>
+
+						<td colspan="2">录取总人数</td>
+						<td>${sum}</td>
+					</tr>
+			</tfoot>
 		</table>
 	</div>
 	<script type="text/javascript">
@@ -68,7 +80,7 @@
         // 指定图表的配置项和数据
 					option = {
 					    title : {
-					        text: '行政区招生统计',
+					        text: '${ucStudent.year}行政区招生统计',
 					        x:'center'
 					    },
 					    tooltip : {

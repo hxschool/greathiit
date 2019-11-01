@@ -179,7 +179,7 @@
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			<li>
-			<label>考试号：</label>
+			<label>考生号：</label>
 				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>学号：</label>
@@ -244,7 +244,7 @@
 							name="student:student:action">
 				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				</shiro:hasPermission>
-				<th>考试号</th>
+				<th>考生号</th>
 				<th>学号</th>
 				<th>姓名</th>
 				<th>身份证号</th>

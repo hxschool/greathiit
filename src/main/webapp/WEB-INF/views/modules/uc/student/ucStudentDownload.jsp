@@ -43,16 +43,15 @@
 		action="${ctx}/uc/student/download" method="post"
 		class="breadcrumb form-search">
 		<ul class="ul-form">
-			<li><label>考试号：</label> <form:input path="exaNumber"
+			<li><label>考生号：</label> <form:input path="exaNumber"
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
-			<li><label>学号：</label> <form:input path="studentNumber"
-					htmlEscape="false" maxlength="64" class="input-medium" /></li>
+			
 			<li><label>真实姓名：</label> <form:input path="name"
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
 			<li><label>身份证号码：</label> <form:input path="idCard"
 					htmlEscape="false" maxlength="18" class="input-medium" /></li>
 			<li class="clearfix"></li>
-			<li><label>年级：</label> <form:input path="currentLevel"
+			<li><label>入学年级：</label> <form:input path="currentLevel"
 					htmlEscape="false" maxlength="18" class="input-medium" /></li>
 
 

@@ -226,7 +226,7 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-		<li><label>考试号：</label>
+		<li><label>考生号：</label>
 				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
 			<li><label>学号：</label>
@@ -322,7 +322,7 @@
 		<fmt:formatDate pattern="yyyy-MM-dd" value="${date1}" />	
 				</td>
 				<td>
-					${fns:abbr(ucStudent.idCard,13)}
+					${fn:substring(ucStudent.idCard, 0, 10)}****${fn:substring(ucStudent.idCard, 14,18)}
 				</td>
 				
 				<td>
@@ -370,7 +370,7 @@
 					<table class="table table-bordered">
 							<thead>
 								<tr>
-
+									<th>身份证号</th>
 									<th>录取学院</th>
 									<th>录取专业</th>
 									<th>数学</th>
@@ -385,6 +385,7 @@
 							</thead>
 							<tbody>
 								<tr>
+									<td>${ucStudent.idCard}</td>
 									<td>${ucStudent.departmentName}</td>
 									<td>${ucStudent.majorName}</td>
 									<td>${fn:substring(ucStudent.shuxue, 0, fn:indexOf(ucStudent.shuxue,"."))}</td>

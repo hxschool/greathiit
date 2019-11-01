@@ -88,7 +88,7 @@ public class RsScoreBillController extends BaseController {
 					}
 					RsScoreBill entity = rsScoreBillService.getByKsh(scoreBill.getKsh());
 					if(!org.springframework.util.StringUtils.isEmpty(entity)) {
-						failureMsg.append("<br/>考试号: "+scoreBill.getKsh()+" 姓名:" + scoreBill.getXm() + "已存在.");
+						failureMsg.append("<br/>考生号: "+scoreBill.getKsh()+" 姓名:" + scoreBill.getXm() + "已存在.");
 						continue;
 					}
 					scoreBill.setTermYear(config.getTermYear());
@@ -103,7 +103,7 @@ public class RsScoreBillController extends BaseController {
 						failureNum++;
 					}
 				}catch (Exception ex) {
-					failureMsg.append("<br/>考试号: "+scoreBill.getKsh()+" 导入失败："+ex.getMessage());
+					failureMsg.append("<br/>考生号: "+scoreBill.getKsh()+" 导入失败："+ex.getMessage());
 				}
 			}
 			

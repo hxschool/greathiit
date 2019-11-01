@@ -20,7 +20,12 @@
 <script src="${ctxStatic}/common/mustache.min.js" type="text/javascript"></script>
 <link href="${ctxStatic}/common/jeesite.css" type="text/css" rel="stylesheet" />
 <script src="${ctxStatic}/common/jeesite.js" type="text/javascript"></script>
-<script src="${ctxStatic}/echart/echarts-all.js" type="text/javascript"></script>
+
+
+<script src="${ctxStatic}/echart/echarts.min.js" type="text/javascript"></script>
+<script src="${ctxStatic}/echart/theme/roma.js" type="text/javascript"></script>
+<script src="${ctxStatic}/echart/theme/shine.js" type="text/javascript"></script>
+ <script src="${ctxStatic}/echart/theme/westeros.js" type="text/javascript"></script>
 <script src="${ctxStatic}/jquery-select/jquery.cxselect.js"  type="text/javascript"></script>
 <script src="${ctxStatic}/layer/layer.js"  type="text/javascript"></script>
 <script src="${ctxStatic}/common/checkboxAll.js"  type="text/javascript"></script>

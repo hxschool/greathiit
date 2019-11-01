@@ -17,7 +17,7 @@ public class SimpleStudent{
 	
 	private String leven;		// 层次(本科/高职单招)
 	private String province;		// 省份
-	private String exaNumber;		// 考试号
+	private String exaNumber;		// 考生号
 	private String username;		// 真实姓名
 	private String idCard;		// 身份证号码
 	private String majorname;		// 专业编码

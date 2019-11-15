@@ -66,11 +66,13 @@
 					<h5 class="modal-title">修改短期目标</h5>
 				</div>
 				<div class="modal-body">
-					<form action="Student_Portfolio_Goal_updateShortGoal" method="post"
+					<form action="Student_Portfolio_Goal_Save" method="post"
 						class="form-add">
 						<textarea name="shortGoal" class="textarea-modal">${student.shortGoal}</textarea>
 						<div class="div-btn">
+									<shiro:hasPermission name="student:student:edit">
 									<input type="submit" value="提交" class="btn">
+									</shiro:hasPermission>
 								</div>
 					</form>
 				</div>
@@ -90,11 +92,13 @@
 					<h5 class="modal-title">修改中期目标</h5>
 				</div>
 				<div class="modal-body">
-					<form action="Student_Portfolio_Goal_updateMidGoal" method="post"
+					<form action="Student_Portfolio_Goal_Save" method="post"
 						class="form-add">
 						<textarea name="midGoal" class="textarea-modal">${student.midGoal}</textarea>
 						<div class="div-btn">
+									<shiro:hasPermission name="student:student:edit">
 									<input type="submit" value="提交" class="btn">
+									</shiro:hasPermission>
 								</div>
 					</form>
 				</div>
@@ -114,11 +118,13 @@
 					<h5 class="modal-title">修改长期目标</h5>
 				</div>
 				<div class="modal-body">
-					<form action="Student_Portfolio_Goal_updateLongGoal" method="post"
+					<form action="Student_Portfolio_Goal_Save" method="post"
 						class="form-add">
 						<textarea name="longGoal" class="textarea-modal">${student.longGoal}</textarea>
 						<div class="div-btn">
+									<shiro:hasPermission name="student:student:edit">
 									<input type="submit" value="提交" class="btn">
+									</shiro:hasPermission>
 								</div>
 					</form>
 				</div>

@@ -72,7 +72,9 @@
 											<th>主办单位</th>
 											<th>职责描述</th>
 											<th>状态</th>
+											<shiro:hasPermission name="student:student:edit">
 											<th>操作</th>
+											</shiro:hasPermission>
 										</tr>
 									</thead>
 									<tbody>
@@ -86,8 +88,10 @@
 												<td>
 												${item.actState==1?'已审核':'未审核'}
 												</td>
+												<shiro:hasPermission name="student:student:edit">
 												<td><a onclick="return confirm('确认删除？')"
 													href="Student_Portfolio_Activity_deleteActivity?actId=${item.id}">删除</a></td>
+													</shiro:hasPermission>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -106,7 +110,9 @@
 											<th>主办单位</th>
 											<th>职责描述</th>
 											<th>状态</th>
+											<shiro:hasPermission name="student:student:edit">
 											<th>操作</th>
+											</shiro:hasPermission>
 										</tr>
 									</thead>
 									<tbody>
@@ -120,8 +126,10 @@
 												<td>
 												${item.actState==1?'已审核':'未审核'}
 												</td>
+												<shiro:hasPermission name="student:student:edit">
 												<td><a onclick="return confirm('确认删除？')"
 													href="Student_Portfolio_Activity_deleteActivity?actId=${item.id}">删除</a></td>
+													</shiro:hasPermission>
 											</tr>
 										</c:forEach>
 									</tbody>
@@ -141,7 +149,9 @@
 											<th>主办单位</th>
 											<th>职责描述</th>
 											<th>状态</th>
+											<shiro:hasPermission name="student:student:edit">
 											<th>操作</th>
+											</shiro:hasPermission>
 										</tr>
 									</thead>
 									<tbody>
@@ -155,8 +165,10 @@
 												<td>
 												${item.actState==1?'已审核':'未审核'}
 												</td>
+												<shiro:hasPermission name="student:student:edit">
 												<td><a onclick="return confirm('确认删除？')"
 													href="Student_Portfolio_Activity_deleteActivity?actId=${item.id}">删除</a></td>
+													</shiro:hasPermission>
 											</tr>
 										</c:forEach>
 										
@@ -228,7 +240,9 @@
 								class="hidden">
 						</div>
 						<div class="div-btn">
+							<shiro:hasPermission name="student:student:edit">
 							<input type="submit" value="提交" class="btn">
+							</shiro:hasPermission>
 						</div>
 					</form>
 				</div>

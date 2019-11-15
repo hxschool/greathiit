@@ -25,15 +25,15 @@
 						<tbody>
 							<tr>
 								<td>学号</td>
-								<td>${student.student.no}</td>
+								<td>${student.studentNumber}</td>
 								<td>姓名</td>
 								<td>${student.name}</td>
 								<td class="img-stu" rowspan=4><img
-									src="stuImg/${student.student.no}.jpg" /></td>
+									src="stuImg/${student.studentNumber}.jpg" /></td>
 							</tr>
 							<tr>
 								<td>性别</td>
-								<td>${student.gender}</td>
+								<td>${fns:getDictLabel(student.gender, 'sex', '')}</td>
 								<td>生日</td>
 								<td><fmt:formatDate value="${student.birthday}" /></td>
 							</tr>
@@ -41,20 +41,20 @@
 								<td>籍贯</td>
 								<td>${student.nativePlace}</td>
 								<td>民族</td>
-								<td>${student.nation}</td>
+								<td> ${fns:getDictLabel(student.nation, 'nation', '')}</td>
 							</tr>
 							<tr>
 								<td>院系</td>
 								<td>
-									<!-- zhaojunfei -->
+									哈尔滨信息工程学院
 								</td>
 								<td>班级</td>
-								<td>${fn:substring(student.student.no, 0, 4)}</td>
+								<td>${fn:substring(student.studentNumber, 0, 4)}</td>
 							</tr>
 							<tr>
 								<td>入学日期</td>
 								<td>
-									<!-- zhaojunfei -->入学日期
+									<!-- zhaojunfei -->${student.startDate}
 								</td>
 								<td>学制</td>
 								<td colspan=2>${student.studentLength}</td>

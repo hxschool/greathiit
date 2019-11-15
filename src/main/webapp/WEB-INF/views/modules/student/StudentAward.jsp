@@ -60,7 +60,7 @@
 											<th>审核状态</th>
 											<th>得分</th>
 											<th>操作</th>
-											<th>操作</th>
+											
 										</tr>
 									</thead>
 									<tbody>
@@ -73,10 +73,14 @@
 												<td>${item.itemName}</td>
 												<td>${item.itemState}</td>
 												<td>${item.itemScore}</td>
-												<td><a onclick="return confirm('确认删除？')"
-													href="Student_Portfolio_Activity_deleteItem?itemId=${item.id}">删除</a></td>
-												<td><a
-													href="Student_Award_Info?itemId=${item.id}">详情</a></td>
+												<td>
+												<a
+													href="Student_Award_Info?itemId=${item.id}">详情</a>
+													<shiro:hasPermission name="student:student:edit">
+													<a onclick="return confirm('确认删除？')"
+													href="Student_Portfolio_Activity_deleteItem?itemId=${item.id}">删除</a>
+													</shiro:hasPermission>
+													</td>
 											</tr>
 										 </c:forEach>
 									</tbody>

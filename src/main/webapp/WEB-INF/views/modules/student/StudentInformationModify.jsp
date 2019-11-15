@@ -53,7 +53,7 @@
 									<div class="control-group">
 										<label class="control-label">学&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号&nbsp;:&nbsp;</label>
 										<div class="controls"><input type="text" name="s.stuSchNum"
-											id="stuSchNum" value="${student.student.no}"
+											id="stuSchNum" value="${student.studentNumber}"
 											disabled="disabled"><!-- <label class="lable-modify" data-toggle="modal"
 									data-target="#myModal">修改密码</label> -->
 									</div>
@@ -110,7 +110,7 @@
 									<div class="control-group">
 										<label class="control-label">生&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;日&nbsp;:&nbsp;</label> 
 										<div class="controls"><input type="date" name="birthday"
-											id="stuBirthday" value='<fmt:formatDate value="${student.birthday}" />'>       
+											id="stuBirthday" value='${student.birthday}'>     
 									</div>
 									</div>
 									<div class="control-group">
@@ -142,7 +142,9 @@
 								</div>
 									<div class="control-group">
 									<div class="controls">
+										<shiro:hasPermission name="student:student:edit">
 										<input type="submit" class="btn" value="提  交" />
+										</shiro:hasPermission>
 									</div>
 								</div>
 								</form>

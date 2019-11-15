@@ -43,7 +43,9 @@
 		<div class="form-actions">
 		<input type="hidden" id="ajax_total"> 
 		<input type="hidden" id="ajax_studentNumber" value="1"> 
+			<shiro:hasPermission name="teacher:teacher:edit">
 			<input id="btnSubmit" class="btn btn-primary" type="submit" value="保 存"/>
+			</shiro:hasPermission>
 			<input id="btnCancel" class="btn" type="button" value="返 回" onclick="history.go(-1)"/>
 			<span id="studentMessage" style="color:red"></span>
 		</div>

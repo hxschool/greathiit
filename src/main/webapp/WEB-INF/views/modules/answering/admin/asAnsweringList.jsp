@@ -53,7 +53,9 @@
 	</div>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/answering/admin/asAnswering/">答辩抽签列表</a></li>
+		<shiro:hasPermission name="teacher:teacher:edit">
 		<li><a href="${ctx}/answering/admin/asAnswering/form">答辩抽签添加</a></li>
+		</shiro:hasPermission>
 	</ul>
 	<form:form id="searchForm" modelAttribute="asAnswering" action="${ctx}/answering/admin/asAnswering/" method="post" class="breadcrumb form-search">
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -92,12 +94,15 @@
 				<td>
 					${asAnswering.remarks}
 				</td>
+				
 				<td>
 					
 					<a class="button  button-tiny" href="${ctx}/answering/admin/asAnsweringStudent/list?asAnsweringId=${asAnswering.id}">查看队列详情</a>
+    				<shiro:hasPermission name="teacher:teacher:edit">
     				<a class="button  button-highlight button-tiny" href="${ctx}/answering/admin/asAnswering/form?id=${asAnswering.id}">修改</a>
 					<a class="button  button-caution button-tiny" href="${ctx}/answering/admin/asAnswering/delete?id=${asAnswering.id}" onclick="return confirmx('确认要删除该答辩抽签吗？', this.href)">删除</a>
 					<a href="javascript:void(0)" id="${asAnswering.id}" class="btnImport button  button-primary button-tiny">导入学生数据</a>
+					</shiro:hasPermission>
 				</td>
 			</tr>
 		</c:forEach>

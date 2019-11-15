@@ -156,8 +156,10 @@
 							</div>
 							<div class="control-group">
 								<div class="controls">
+									<shiro:hasPermission name="teacher:teacher:edit">
 									<input type="submit" class="btn" value="提  交"
 										onclick="return check(this.form)" />
+										</shiro:hasPermission>
 								</div>
 							</div>
 						</form>
@@ -173,7 +175,9 @@
 										<th>学校</th>
 										<th>学位</th>
 										<th>时间</th>
+										<shiro:hasPermission name="teacher:teacher:edit">
 										<th>操作</th>
+										</shiro:hasPermission>
 									</tr>
 								</thead>
 								<tbody id="tbody-exp">
@@ -183,8 +187,10 @@
 											<td>${e.tchrSchool }</td>
 											<td>${e.tchrPosition }</td>
 											<td>${e.tchrTime }</td>
+											<shiro:hasPermission name="teacher:teacher:edit">
 											<td><a
 												href="Teacher_Information_Modify_deleteExpById?expId=${e.id}">删除</a></td>
+												</shiro:hasPermission>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -233,7 +239,9 @@
 									</div>
 								</div>
 								<div class="div-btn">
+									<shiro:hasPermission name="teacher:teacher:edit">
 									<input type="submit" value="提交" class="btn">
+									</shiro:hasPermission>
 								</div>
 							</form>
 						</div>
@@ -271,7 +279,9 @@
 									</div>
 								</div>
 								<div class="div-btn">
+									<shiro:hasPermission name="teacher:teacher:edit">
 									<input type="submit" value="提交" class="btn">
+									</shiro:hasPermission>
 								</div>
 							</form>
 						</div>

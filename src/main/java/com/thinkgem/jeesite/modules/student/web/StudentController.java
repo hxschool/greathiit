@@ -162,7 +162,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 编辑个人资料 30 /student/student/Student_Information_Modify
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Information_Modify")
 	public String Student_Information_Modify(HttpServletRequest request, HttpServletResponse response, Model model) {
 
@@ -213,7 +213,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 实践活动 20 /student/student/Student_Portfolio_Activity
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Portfolio_Activity")
 	public String Student_Portfolio_Activity(HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
@@ -230,7 +230,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 规划目标 10 /student/student/Student_Portfolio_Goal
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Portfolio_Goal")
 	public String Student_Portfolio_Goal(HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
@@ -239,18 +239,30 @@ public class StudentController extends BaseController {
 		return "modules/student/StudentPortfolioGoal";
 	}
 
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Portfolio_Goal_Save")
 	public String Student_Portfolio_Goal_Save(HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
 		Student student = studentService.getStudentByStudentNumber(user.getNo());
+		String shortGoal = request.getParameter("shortGoal");
+		if(!org.springframework.util.StringUtils.isEmpty(shortGoal)) {
+			student.setShortGoal(shortGoal);
+		}
+		String midGoal = request.getParameter("midGoal");
+		if(!org.springframework.util.StringUtils.isEmpty(midGoal)) {
+			student.setMidGoal(midGoal);
+		}
+		String longGoal = request.getParameter("longGoal");
+		if(!org.springframework.util.StringUtils.isEmpty(longGoal)) {
+			student.setLongGoal(longGoal);
+		}
 		studentService.save(student);
 		model.addAttribute("student", student);
 		return "redirect:" + Global.getAdminPath() + "/student/student/Student_Portfolio_Goal?repage";
 	}
 
 	// 课程成绩 40 /student/student/Student_Performance
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Performance")
 	public String Student_Performance(StudentCourse studentCourse, HttpServletRequest request,
 			HttpServletResponse response, Model model) {
@@ -267,7 +279,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 课程表
-	@RequestMapping("Student_Class_Schedule_Card ")
+	@RequestMapping("Student_Class_Schedule_Card")
 	public String Student_Class_Schedule_Card(Student student, HttpServletRequest request, HttpServletResponse response,
 			Model model) throws Exception {
 		User user = UserUtils.getUser();
@@ -404,7 +416,7 @@ public class StudentController extends BaseController {
     }
 
 	// 获奖记录 30 /student/student/Student_Award
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Award")
 	public String Student_Award(HttpServletRequest request, HttpServletResponse response, Model model) {
 		User user = UserUtils.getUser();
@@ -416,7 +428,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 获奖记录 30 /student/student/Student_Award
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("Student_Award_Info")
 	public String Student_Award_Info(@RequestParam(value = "itemId", required = false) String itemId,
 			HttpServletRequest request, HttpServletResponse response, Model model) {

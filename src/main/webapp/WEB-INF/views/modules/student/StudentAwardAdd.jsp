@@ -123,7 +123,9 @@
 									</div>
 									<div class="control-group" id="div-uploads"></div>
 									<div class="div-btn">
+										<shiro:hasPermission name="student:student:edit">
 										<input type="submit" value="提交" class="btn">
+										</shiro:hasPermission>
 									</div>
 								</form>
 							</div>

@@ -56,26 +56,40 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private Office clazz;		// 班级编号
 	@ExcelField(title="学号", align=2, sort=2)
 	private String studentNumber;//返回json处理~
-
+	private String health;
+	private String height;		// 身高
+	private String weight;		// 体重
+	private String  dormNumber;		// 寝室号
+	private String location;		// 家庭地址
+	private String master;		// 班主任
+	private String instructor;		// 导员
+	
 	private String classno;//返回json处理~
-	@ExcelField(title="父亲职业", align=2, sort=15)
+	@ExcelField(title="父亲姓名", align=2, sort=15)
+	private String  fatherName;//父亲职业
+	@ExcelField(title="父亲职业", align=2, sort=16)
 	private String  fatherWorks;//父亲职业
-	@ExcelField(title="父亲联系方式", align=2, sort=16)
+	@ExcelField(title="父亲联系方式", align=2, sort=17)
 	private String  fatherPhone;//父亲职业
-	@ExcelField(title="母亲职业", align=2, sort=17)
+	@ExcelField(title="母亲姓名", align=2, sort=18)
+	private String  motherName;//母亲姓名
+	@ExcelField(title="母亲职业", align=2, sort=19)
 	private String  motherWorks;//母亲职业
-	@ExcelField(title="母亲联系方式", align=2, sort=18)
+	@ExcelField(title="母亲联系方式", align=2, sort=20)
 	private String  motherPhone;//父亲职业
-	@ExcelField(title="QQ", align=2, sort=19)
+	@ExcelField(title="QQ", align=2, sort=21)
 	private String  qq;//父亲职业
-	@ExcelField(title="微信", align=2, sort=20)
+	@ExcelField(title="微信", align=2, sort=22)
 	private String  wechat;//父亲职业
 	private String  face;//相片
 
-	@ExcelField(title="入学日期", align=2, sort=21)
+	@ExcelField(title="入学日期", align=2, sort=23)
 	private String startDate;		// 入学日期
-	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=22)
+	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=24)
 	private String overDate;		// 结业日期(预计毕业日期)
+	
+
+	
 	private List<String> clazzNumbers;//数组查询添加
 	
 	private String year;
@@ -380,6 +394,78 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setYear(String year) {
 		this.year = year;
+	}
+
+	public String getHeight() {
+		return height;
+	}
+
+	public void setHeight(String height) {
+		this.height = height;
+	}
+
+	public String getWeight() {
+		return weight;
+	}
+
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+
+	public String getDormNumber() {
+		return dormNumber;
+	}
+
+	public void setDormNumber(String dormNumber) {
+		this.dormNumber = dormNumber;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getMaster() {
+		return master;
+	}
+
+	public void setMaster(String master) {
+		this.master = master;
+	}
+
+	public String getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(String instructor) {
+		this.instructor = instructor;
+	}
+
+	public String getHealth() {
+		return health;
+	}
+
+	public void setHealth(String health) {
+		this.health = health;
+	}
+
+	public String getFatherName() {
+		return fatherName;
+	}
+
+	public void setFatherName(String fatherName) {
+		this.fatherName = fatherName;
+	}
+
+	public String getMotherName() {
+		return motherName;
+	}
+
+	public void setMotherName(String motherName) {
+		this.motherName = motherName;
 	}
 
 	@Override

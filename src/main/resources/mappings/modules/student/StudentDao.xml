@@ -4,6 +4,9 @@
     
 	<sql id="studentColumns">
 		a.exa_number AS "exaNumber",
+		a.xy AS "xy",
+		a.zy AS "zy",
+		a.year AS "year",
 		a.id AS "id",
 		a.name AS "name",
 		a.id_card AS "idCard",
@@ -217,7 +220,7 @@
 			
 			<if test="year != null and year != ''">
 				
-				and left(start_date,4)=#{year}
+				and year=#{year}
 			</if>
 			
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
@@ -263,6 +266,9 @@
 	<insert id="insert">
 		INSERT INTO student(
 			id,
+			xy,
+			zy,
+			year,
 			clazz_id,
 			name,
 			id_card,
@@ -304,6 +310,9 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{xy},
+			#{zy},
+			#{year},
 			#{clazz.id},
 			#{name},
 			#{idCard},
@@ -349,6 +358,9 @@
 	<update id="update">
 		UPDATE student SET 	
 			exa_number = #{exaNumber},
+			xy = #{xy},
+			zy = #{zy},
+			year = #{year},
 			father_name =#{fatherName},
 			father_works =#{fatherWorks},
 			father_phone =#{fatherPhone},

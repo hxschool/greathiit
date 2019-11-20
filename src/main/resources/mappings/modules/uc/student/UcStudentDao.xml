@@ -246,6 +246,10 @@
 				AND a.status = #{status}
 			</if>
 			
+			<if test="learning != null and learning != ''">
+				AND a.learning = #{learning}
+			</if>
+			
 			<if test="currentLevel != null and currentLevel != ''">
 				AND a.current_level = #{currentLevel}
 			</if>

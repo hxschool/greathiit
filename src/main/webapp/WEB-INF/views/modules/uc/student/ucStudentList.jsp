@@ -261,9 +261,9 @@
 			</li>
 			
 			<li><label>状态：</label>
-						<form:select path="status" class="input-medium " style="width:175px">
+						<form:select path="learning" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_uc_status')}"
+							<form:options items="${fns:getDictList('student_learning')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
@@ -347,7 +347,7 @@
 
 
 				<td>
-					${fns:getDictLabel(ucStudent.status,'student_uc_status','')}
+					${fns:getDictLabel(ucStudent.learning,'student_learning','')}
 					
 					<c:if test="${ucStudent.description!=null}">
 					              <p class="text-warning">${ucStudent.description}</p>

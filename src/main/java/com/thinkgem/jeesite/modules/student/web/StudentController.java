@@ -562,9 +562,7 @@ public class StudentController extends BaseController {
 				try {
 					Student entity = studentService.getStudentByStudentNumber(student.getStudentNumber());
 					if (org.springframework.util.StringUtils.isEmpty(entity)) {
-						User user = new User();
-						user.setPassword(SystemService.entryptPassword("123456"));
-						BeanValidators.validateWithException(validator, user);
+						
 						studentService.saveUser(student);
 						successNum++;
 					} else {

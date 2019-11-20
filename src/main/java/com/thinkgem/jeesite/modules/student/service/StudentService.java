@@ -14,10 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
-import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
-import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
@@ -55,35 +53,55 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		return super.findPage(page, student);
 	}
 	@Transactional(readOnly = false)
-	public void saveUser(Student student) {
-		save(student);
-		User user = new User();
-		String password = StringUtils.right(student.getIdCard().toLowerCase(), 6);
-		user.setNo(student.getStudentNumber());
-		user.setName(student.getName());
-		user.setLoginName(student.getIdCard());
-		user.setMobile(student.getPhone());
-		user.setPhone(student.getPhone());
-		user.setPassword(SystemService.entryptPassword(password));
-		Role role = new Role("99");
-		List<Role> rs = new ArrayList<Role>();
-		rs.add(role);
-		user.setRole(role);
-		user.setRoleList(rs);
-		user.setLoginFlag("1");
-		user.setUserType("99");
-		String clazz = student.getClassno();		
-		Office cls = officeDao.getOfficeByName(clazz);
-		user.setClazz(cls);
-		User u = UserUtils.get("1");
-		user.setCreateBy(u);
-		user.setCreateDate(new Date());
-		user.setDelFlag("0");
-		user.setUpdateBy(u);
-		user.setUpdateDate(new Date());
-		user.setRemarks("黑龙江省招生办导入学生信息");
-		systemService.saveUser(user);
-		super.save(student);
+	public void saveUser(Student student) throws Exception {
+		try {
+			logger.info("准备导入数据~");
+			User user = new User();
+			String password = StringUtils.right(student.getIdCard().toLowerCase(), 6);
+			user.setNo(student.getStudentNumber());
+			user.setName(student.getName());
+			user.setLoginName(student.getIdCard());
+			user.setMobile(student.getPhone());
+			user.setPhone(student.getPhone());
+			user.setPassword(SystemService.entryptPassword(password));
+			Role role = new Role("99");
+			List<Role> rs = new ArrayList<Role>();
+			rs.add(role);
+			user.setRole(role);
+			user.setRoleList(rs);
+			user.setLoginFlag("1");
+			user.setUserType("99");		
+			Office cls = student.getClazz();
+			user.setClazz(cls);
+			if(!org.springframework.util.StringUtils.isEmpty(cls)) {
+				Office zy = officeDao.get(cls.getParent());
+				user.setOffice(zy);
+				if(!org.springframework.util.StringUtils.isEmpty(zy)) {
+					Office xy = officeDao.get(zy.getParent());
+					user.setCompany(xy);
+				}
+			}
+			if(org.springframework.util.StringUtils.isEmpty(user.getCompany())) {
+				Office company = new Office();
+				company.setId("1");
+				user.setCompany(company);
+			}
+			User u = UserUtils.get("1");
+			user.setCreateBy(u);
+			user.setCreateDate(new Date());
+			user.setDelFlag("0");
+			user.setUpdateBy(u);
+			user.setUpdateDate(new Date());
+			user.setRemarks("黑龙江省招生办导入学生信息");
+			systemService.saveUser(user);
+			super.save(student);
+		}catch (Exception e) {
+			logger.error("导入错误:["+e+"]");
+			
+			throw e;
+		}
+		
+
 	}
 	@Transactional(readOnly = false)
 	public void save(Student student) {

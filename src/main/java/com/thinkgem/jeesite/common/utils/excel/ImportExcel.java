@@ -304,10 +304,21 @@ public class ImportExcel {
 		}catch (Exception e) {
 			return val;
 		}
-		
-		return val;
+		String[] str = val.toString().split("\\.");
+		 if (str.length > 1) {
+	            String str1 = str[1];
+	            int m = Integer.parseInt(str1);
+	            if (m == 0) {
+	                return (Object)str[0];
+	            }
+		 }
+		 return val;
 	}
-	
+	public static void main(String[] args) {
+		DecimalFormat df = new DecimalFormat("0.00");  
+		float str = 1.00f;
+		System.out.println(df.format(str));
+	}
 	/**
 	 * 获取导入数据列表
 	 * @param cls 导入对象类型

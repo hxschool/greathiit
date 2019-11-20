@@ -43,13 +43,14 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String height;		// 身高
 	private String weight;		// 体重
 	private String  dormNumber;		// 寝室号
-	@ExcelField(title="生源所在地", align=2, sort=19)
+	@ExcelField(title="生源所在地", align=2, sort=18)
 	private String location;		// 家庭地址
-	@ExcelField(title="联系电话", align=2, sort=21)
+	@ExcelField(title="联系电话", align=2, sort=20)
 	private String phone;		// 联系电话
+	@ExcelField(title="家庭地址", align=2, sort=21)
 	private String address;		// 联系地址
 	private String nativePlace;		// 户口所在地
-	
+	@ExcelField(title="email", align=2, sort=22)
 	private String mail;		// email
 	
 	@ExcelField(title="学院", align=2, sort=8)
@@ -67,13 +68,13 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String studentLength;		// 学制
 	
 	private String master;		// 班主任
-	@ExcelField(title="导员", align=2, sort=14)
+	@ExcelField(title="导员", align=2, sort=13)
 	private String instructor;		// 导员
 	private String edu;		// 学历
 
-	@ExcelField(title="入学日期", align=2, sort=23)
+	@ExcelField(title="入学日期", align=2, sort=25)
 	private String startDate;		// 入学日期
-	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=24)
+	@ExcelField(title="结业日期(预计毕业日期)", align=2, sort=26)
 	private String overDate;		// 结业日期(预计毕业日期)
 	
 	private String longGoal;		// 长期目标
@@ -84,18 +85,18 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	
 	private String classno;//返回json处理~
 	private String  fatherName;//父亲职业
-	@ExcelField(title="父亲职业", align=2, sort=15)
+	@ExcelField(title="父亲职业", align=2, sort=14)
 	private String  fatherWorks;//父亲职业
-	@ExcelField(title="父亲联系方式", align=2, sort=16)
+	@ExcelField(title="父亲联系方式", align=2, sort=15)
 	private String  fatherPhone;//父亲职业
 	private String  motherName;//母亲姓名
-	@ExcelField(title="母亲职业", align=2, sort=17)
+	@ExcelField(title="母亲职业", align=2, sort=16)
 	private String  motherWorks;//母亲职业
-	@ExcelField(title="母亲联系方式", align=2, sort=18)
+	@ExcelField(title="母亲联系方式", align=2, sort=17)
 	private String  motherPhone;//父亲职业
-	@ExcelField(title="QQ", align=2, sort=20)
+	@ExcelField(title="QQ", align=2, sort=23)
 	private String  qq;
-	@ExcelField(title="微信", align=2, sort=22)
+	@ExcelField(title="微信", align=2, sort=24)
 	private String  wechat;
 	private String  face;//相片
 

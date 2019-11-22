@@ -3,6 +3,8 @@
  */
 package com.thinkgem.jeesite.modules.student.entity;
 
+import java.util.Comparator;
+
 import org.hibernate.validator.constraints.Length;
 
 import com.thinkgem.jeesite.common.persistence.DataEntity;
@@ -12,16 +14,16 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
  * @author 变动进度表
  * @version 2019-08-19
  */
-public class StudentStatusLog extends DataEntity<StudentStatusLog> {
+public class StudentStatusLog extends DataEntity<StudentStatusLog>  {
 	
 	private static final long serialVersionUID = 1L;
 	private String module;
-	private Student student;		// 用户号
+	private String moduleId;		// 表ID
 	private String before;			//操作之前状态
 	private String status;		// 当前状态
 	private String description;		// 操作过程
 	
-
+	private Student student;
 
 	public String getBefore() {
 		return before;
@@ -47,12 +49,13 @@ public class StudentStatusLog extends DataEntity<StudentStatusLog> {
 		super(id);
 	}
 
-	public Student getStudent() {
-		return student;
+
+	public String getModuleId() {
+		return moduleId;
 	}
 
-	public void setStudent(Student student) {
-		this.student = student;
+	public void setModuleId(String moduleId) {
+		this.moduleId = moduleId;
 	}
 
 	@Length(min=0, max=10, message="状态长度必须介于 0 和 10 之间")
@@ -71,5 +74,12 @@ public class StudentStatusLog extends DataEntity<StudentStatusLog> {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 }

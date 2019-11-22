@@ -804,7 +804,7 @@ public class StudentController extends BaseController {
 		StudentCourse studentCourse = new StudentCourse();
 		studentCourse.setStudent(student);
 		StudentStatusLog studentStatusLog = new StudentStatusLog();
-		studentStatusLog.setStudent(student);
+		studentStatusLog.setModuleId(student.getId());
 		List<StudentStatusLog> studentStatusLogs = studentStatusLogService.findByParentIdsLike(studentStatusLog);
 		for(StudentStatusLog ss:studentStatusLogs) {
 			ss.setCreateBy(systemService.getUser(studentStatusLog.getCreateBy()));

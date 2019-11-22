@@ -3,6 +3,10 @@
  */
 package com.thinkgem.jeesite.modules.student.web;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -13,14 +17,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.persistence.Page;
-import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.web.BaseController;
+import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
+import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
+import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
 /**
  * 变动进度表Controller
@@ -33,7 +42,10 @@ public class StudentStatusLogController extends BaseController {
 
 	@Autowired
 	private StudentStatusLogService studentStatusLogService;
-	
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private UcStudentService ucStudentService;
 	@ModelAttribute
 	public StudentStatusLog get(@RequestParam(required=false) String id) {
 		StudentStatusLog entity = null;
@@ -49,9 +61,37 @@ public class StudentStatusLogController extends BaseController {
 	@RequiresPermissions("student:studentStatusLog:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentStatusLog studentStatusLog, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<StudentStatusLog> page = studentStatusLogService.findPage(new Page<StudentStatusLog>(request, response), studentStatusLog); 
+		Page<StudentStatusLog> page = new Page<StudentStatusLog>(request, response); 
+		studentStatusLog.setPage(page);
+		List<StudentStatusLog> list = studentStatusLogService.findByParentIdsLike(studentStatusLog);
+		for(StudentStatusLog log : list) {
+			String moduleId = log.getModuleId();
+			if(log.getModule().equals("student")) {
+				log.setStudent(studentService.get(moduleId));
+			}else {
+				Student student = new Student();
+				UcStudent ucStudent = ucStudentService.get(moduleId);
+				student.setStudentNumber(ucStudent.getStudentNumber());
+				student.setName(ucStudent.getName());
+				log.setStudent(student);
+			}
+		}
+		page.setList(list);
 		model.addAttribute("page", page);
 		return "modules/student/studentStatusLogList";
+	}
+	@RequestMapping(value = "listData")
+	@ResponseBody
+	public List<StudentStatusLog> listData(StudentStatusLog studentStatusLog) {
+		List<StudentStatusLog> list = studentStatusLogService.findByParentIdsLike(studentStatusLog);
+		Collections.sort(list, new Comparator<StudentStatusLog>() {
+			@Override
+			public int compare(StudentStatusLog o1, StudentStatusLog o2) {
+				int flag = o1.getCreateDate().compareTo(o2.getCreateDate());
+				return flag;
+			}
+		});
+		return list;
 	}
 
 	@RequiresPermissions("student:studentStatusLog:view")

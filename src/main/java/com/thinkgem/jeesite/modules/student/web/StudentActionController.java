@@ -46,8 +46,6 @@ public class StudentActionController extends BaseController {
 	@Autowired
 	private StudentService studentService;
 	@Autowired
-	private StudentStatusLogService studentStatusLogService;
-	@Autowired
 	private SystemService systemService;
 	@Autowired
 	private OfficeDao officeDao;

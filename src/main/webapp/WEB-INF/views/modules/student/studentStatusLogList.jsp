@@ -14,6 +14,28 @@
 		$("#searchForm").submit();
 		return false;
 	}
+
+	function showMessage(module,moduleId){
+		$.ajax({
+		    type: 'post',
+		    url: '${ctx}/student/studentStatusLog/listData',
+		    contentType: 'application/json;charset=utf-8',
+		    data:{"module":module, "moduleId":moduleId },
+		    success: function (data) { //返回json结果
+		        for(ll in data){
+		    		console.log(ll);
+		    	}
+		        layer.open({
+					  type: 1,
+					  skin: 'layui-layer-rim', //加上边框
+					  area: ['420px', '240px'], //宽高
+					  content: 'html内容'
+					});
+		    }
+		});
+		
+		
+	}
 </script>
 </head>
 <body>
@@ -71,14 +93,22 @@
 				<tr>
 					<td>${studentStatusLog.module=="uc_student"?"(省)学籍信息":"(校)学籍信息"}</td>
 					<td>${studentStatusLog.student.studentNumber}</td>
-					<td>${studentStatusLog.student.name}</td>
+					<td><a href="javascript:void(0)" onclick="showMessage('${studentStatusLog.module}','${studentStatusLog.moduleId}')">${studentStatusLog.student.name}</a></td>
 					<td>${studentStatusLog.createBy.name} </td>
 					<td>
-					<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
-					${fns:getDictLabel(studentStatusLog.before,studentStatusLog.module.concat('_status'),'')} ->
-					</c:if>
-					
-					${fns:getDictLabel(studentStatusLog.status,studentStatusLog.module.concat('_status'),'')}</td>
+						<c:if test="${studentStatusLog.module=='student'}">
+							<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
+								${fns:getDictLabel(studentStatusLog.before,'student_status','')} ->
+							</c:if>
+								${fns:getDictLabel(studentStatusLog.status,'student_status','')}
+						</c:if>
+						<c:if test="${studentStatusLog.module=='uc_student'}">
+							<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
+							${fns:getDictLabel(studentStatusLog.before,'student_learning','')} ->
+							</c:if>
+							${fns:getDictLabel(studentStatusLog.status,'student_learning','')}
+						</c:if>
+					</td>
 					
 					<td>${studentStatusLog.description }</td>
 					<td><fmt:formatDate value="${studentStatusLog.createDate}"

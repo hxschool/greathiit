@@ -38,8 +38,10 @@
         	return false;
         }
 		
-		function batchAction1(action){
-			layer.prompt({title: "${fns:getDictLabel(param.action,'student_status','')}", formType: 2}, function(text, index){
+		
+		
+		function batchAction(action){
+			layer.prompt({title: "${fns:getDictLabel(param.action,'student_learning','')}", formType: 2}, function(text, index){
 				$("#action").val(action);
 				$("#description").val(text);
 				var id = document.getElementsByName("ids");// 获取全选复选框
@@ -66,139 +68,6 @@
 			}
 			ids = ids.substring(0, ids.length - 1);
 			return ids;
-		}
-		
-		function batchAction(action){
-			var num = $("input[type='checkbox']:checked").length;
-			if (num == 0) {
-				  layer.alert('请选择你要操作的数据', {
-					    skin: 'layui-layer-lan'
-					    ,closeBtn: 0
-					    ,anim: 4 //动画类型
-					  });
-				return;
-			} 
-			$("#action").val(action);
-			if(action==1||action==12){
-				$("#action").val("1");
-				layer.confirm('您确定修改当前学生信息为在籍?', {
-				  btn: ['确定','取消'] 
-				}, function(text, index){
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					$("#searchForm").submit();
-					layer.close(index);
-				});
-				return;
-			}
-			//选择专业
-			if(action==2){
-				layer.open({
-				     type: 2,
-				     area: ['560px','560px'],
-				     shade: 0.3,
-				     shadeClose: false,//默认开启遮罩关闭
-				     resize: false,//默认重设大小是否
-				     maxmin: true,//默认最大最小化按钮
-				     moveType: 1,//默认拖拽模式，0或者1
-				     content: "${ctx}/system/major", 
-				     btn: ['确定','关闭'],
-				     yes: function (index) {
-				         //获取选择的row,并加载到页面
-				         var text = window["layui-layer-iframe" + index].callbackdata();
-				         if(text){
-						    $("#description").val(text);
-						    $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-							$("#searchForm").submit();
-				             layer.close(index)
-				         }else{
-				             layer.msg('请选择专业', {icon: 0});
-				         }
-				     },
-				     cancel: function(){
-				              
-				     }
-				 });
-			}
-			
-			if(action==3||action==4||action==5||action==6){
-				layer.open({
-				     type: 2,
-				     area: ['560px','560px'],
-				     shade: 0.3,
-				     shadeClose: false,//默认开启遮罩关闭
-				     resize: false,//默认重设大小是否
-				     maxmin: true,//默认最大最小化按钮
-				     moveType: 1,//默认拖拽模式，0或者1
-				     content: "${ctx}/system/clazz", 
-				     btn: ['确定','关闭'],
-				     yes: function (index) {
-				         //获取选择的row,并加载到页面
-				         var text = window["layui-layer-iframe" + index].callbackdata();
-				         if(text){
-						    $("#description").val(text);
-						    $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-							$("#searchForm").submit();
-				             layer.close(index)
-				         }else{
-				             layer.msg('请选择班级', {icon: 0});
-				         }
-				     },
-				     cancel: function(){
-				              
-				     }
-				 });
-			}
-			if(action==7){
-				layer.prompt({
-					  formType: 0,
-					  title: '请输入学校名称',
-					}, function(text, index, elem){
-					  $("#description").val(text);
-				      $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					  $("#searchForm").submit();
-					  layer.close(index);
-					});
-			}
-			
-			if(action==8||action==11||action==99||action==14){
-				var title = "请输入保留学籍原因";
-				if(action==8){
-					title = "请输入休学原因";
-				}else if(action==11){
-					title = "请输入暂缓注册原因";
-				}else if(action==14){
-					title = "请输入保留学籍原因";
-				}else if(action==99){
-					title = "请输入学籍注销原因";
-				}
-				layer.prompt({
-					  formType: 2,
-					  title: title,
-					}, function(text, index, elem){
-					  $("#description").val(text);
-				      $("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					  $("#searchForm").submit();
-					  layer.close(index);
-					});
-			}
-			if(action==9){
-				layer.confirm("是否将当前学生设置已结业", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					$("#searchForm").submit();
-			    })
-			}
-			if(action==10){
-				layer.confirm("是否将当前学生设置已毕业", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					$("#searchForm").submit();
-			    })
-			}
-			if(action==13){
-				layer.confirm("是否将当前信息设置成预计毕业生,如设置预计毕业生数据将通知离校系统", {btn: ['确定', '取消'], title: "提示信息"}, function () {
-					$("#searchForm").attr("action","${ctx}/uc/student/batchAction?ids=" + getIds());
-					$("#searchForm").submit();
-			    })
-			}
 		}
 	</script>
 </head>
@@ -260,7 +129,7 @@
 						</form:select>
 			</li>
 			
-			<li><label>状态：</label>
+			<li><label>学籍状态：</label>
 						<form:select path="learning" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_learning')}"
@@ -300,7 +169,7 @@
 				<th>学制</th>
 				<th>学习形式</th>
 				<th>入学日期</th>
-				<th>状态</th>
+				
 				
 				<shiro:hasPermission name="uc:ucStudent:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -344,16 +213,6 @@
 				<td>
 					${ucStudent.startDate}
 				</td>
-
-
-				<td>
-					${fns:getDictLabel(ucStudent.learning,'student_learning','')}
-					
-					<c:if test="${ucStudent.description!=null}">
-					              <p class="text-warning">${ucStudent.description}</p>
-					</c:if>
-				</td> 
-				
 
 			
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
@@ -404,7 +263,7 @@
 		</c:forEach>
 		</tbody>
 				<shiro:hasPermission
-							name="uc:ucStudent:operation">
+							name="uc:student:operation">
 		<tfoot><tr>
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
 			
@@ -413,7 +272,7 @@
 			
 			<shiro:hasPermission
 							name="uc:student:batch">
-				<a href="#" onclick="batchAction(${param.action})" class="btn btn-primary">${fns:getDictLabel(param.action,'student_status','')}</a>
+				<a href="#" onclick="batchAction(${param.action})" class="btn btn-success">${fns:getDictLabel(param.action,'student_learning','')}</a>
 				</shiro:hasPermission>
 			</c:if>
 			</th>

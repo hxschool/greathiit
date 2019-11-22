@@ -5,14 +5,12 @@
 	<sql id="studentStatusLogColumns">
 		a.id AS "id",
 		a.module AS "module",
-		b.student_number AS "student.studentNumber",
-		b.name AS "student.name",
+		a.module_id AS "moduleId",
 		a.before AS "before",
 		a.status AS "status",
 		a.description AS "description",
 		u.id AS "createBy.id",
 		u.name AS "createBy.name",
-		
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -21,7 +19,6 @@
 	</sql>
 	
 	<sql id="studentStatusLogJoins">
-		LEFT JOIN student b on a.student_number=b.student_number
 		JOIN sys_user u ON u.id = a.create_by
 	</sql>
     
@@ -42,6 +39,9 @@
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			<if test="module!=null and module!=''">
 				AND a.module=#{module}
+			</if>
+			<if test="moduleId!=null and moduleId!=''">
+				AND a.moduleId=#{moduleId}
 			</if>
 			<if test="status!=null and status!=''">
 				and a.status=#{status}
@@ -80,9 +80,9 @@
 		INSERT INTO student_status_log(
 			id,
 			module,
-			student_number,
-			status,
-			before,
+			module_id,
+			`status`,
+			`before`,
 			description,
 			create_by,
 			create_date,
@@ -93,7 +93,7 @@
 		) VALUES (
 			#{id},
 			#{module},
-			#{studentNumber},
+			#{moduleId},
 			#{status},
 			#{before},
 			#{description},
@@ -108,7 +108,7 @@
 	
 	<update id="update">
 		UPDATE student_status_log SET 	
-			student_number = #{studentNumber},
+			module_id = #{moduleId},
 			module = #{module},
 			before = #{before},
 			status = #{status},

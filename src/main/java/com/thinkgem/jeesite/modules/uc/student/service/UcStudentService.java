@@ -146,13 +146,14 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 		super.save(student);
 		
 		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
-			String before = entity.getStatus();
-			String status = student.getStatus();
+			String before = entity.getLearning();
+			String status = student.getLearning();
 			StudentStatusLog studentStatusLog = new StudentStatusLog();
 			studentStatusLog.setModule("uc_student");
+			studentStatusLog.setModuleId(entity.getId());
 			studentStatusLog.setBefore(before);
 			studentStatusLog.setStatus(status);
-			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_status", "学籍状态") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_status", "学籍状态"));
+			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_learning", "") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_learning", ""));
 			studentStatusLogService.save(studentStatusLog);
 		}
 		

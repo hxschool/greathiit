@@ -212,15 +212,7 @@ public class UcStudentController extends BaseController {
     	student.setNation(DictUtils.getDictValue(us.getNation(), "nation", "未知"));
     	student.setPolitical(DictUtils.getDictValue(us.getPolitical(), "political", "未知"));
     	student.setClassno(us.getClassNumber());
-    	
-    	
-		StudentStatusLog studentStatusLog = new StudentStatusLog();
-		studentStatusLog.setModule("student");
-		studentStatusLog.setStudent(student);
-		studentStatusLog.setStatus(us.getStatus());
-		studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(request.getParameter("action"), "uc_student_status", "") + "->" + DictUtils.getDictLabel(us.getStatus(), "uc_student_status", ""));
-		studentStatusLogService.save(studentStatusLog);
-		
+
 		addMessage(redirectAttributes, "保存学生基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
@@ -378,7 +370,6 @@ public class UcStudentController extends BaseController {
     }
 	
 	
-	@RequiresPermissions("uc:student:operation")
 	@RequestMapping(value = "deleteList")
 	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
 		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
@@ -394,4 +385,20 @@ public class UcStudentController extends BaseController {
 		return "redirect:"+Global.getAdminPath()+"/uc/student/?repage";
 	}
 
+	@RequestMapping(value = "batchAction")
+	public String batch(String ids, String description, HttpServletRequest request,
+			RedirectAttributes redirectAttributes) {
+		String action = request.getParameter("action");
+		if(!org.springframework.util.StringUtils.isEmpty(action)) {
+			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+				String[] arrayIds = ids.split(",");
+				for(String id:arrayIds) {
+					UcStudent ucStudent = ucStudentService.get(id);
+					ucStudent.setLearning(action);
+					ucStudentService.save(ucStudent);
+				}
+			}
+		}
+		return "ok";
+	}
 }

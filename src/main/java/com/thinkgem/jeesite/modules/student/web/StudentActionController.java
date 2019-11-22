@@ -125,12 +125,6 @@ public class StudentActionController extends BaseController {
 								systemService.saveUser(user);
 							}
 						}
-						StudentStatusLog studentStatusLog = new StudentStatusLog();
-						studentStatusLog.setLogType("2");
-						studentStatusLog.setStudent(student);
-						studentStatusLog.setStatus(action);
-						studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(status, "student_status", "") + "->" + DictUtils.getDictLabel(action, "student_status", ""));
-						studentStatusLogService.save(studentStatusLog);
 					}
 				}
 			}

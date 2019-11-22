@@ -141,7 +141,7 @@
 					<label class="control-label">状态：</label>
 					<div class="controls">
 							<form:select path="status" class="input-xlarge ">
-							<form:options items="${fns:getDictList('student_uc_status')}"
+							<form:options items="${fns:getDictList('uc_student_status')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 							</form:select>
 					</div>

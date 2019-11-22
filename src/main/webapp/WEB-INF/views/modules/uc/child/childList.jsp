@@ -18,6 +18,7 @@
 	<table class="table table-striped table-bordered table-hover">
 		<thead>
 			<tr>
+				<th>${label}代码</th>
 				<th>${label}名称</th>
 				<c:if test="param.grade==4">
 					<th>班级人数(男)</th>
@@ -34,6 +35,7 @@
 		<tbody>
 			<c:forEach items="${list}" var="office">
 				<tr>
+					<td>${office.id}</td>
 					<td>${office.name}</td>
 					<c:if test="param.grade==4">
 						<td>${office.male}</td>

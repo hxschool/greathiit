@@ -172,10 +172,8 @@
 				<th>民族</th>
 				<th>政治面貌</th>
 				<th>联系地址</th>
-				<th>email</th>
 				<th>学历</th>
 				<th>户口所在地</th>
-				<th>学制</th>
 				
 				<shiro:hasPermission name="student:student:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
@@ -209,18 +207,12 @@
 				<td>
 					${student.address}
 				</td>
-				<td>
-					${student.mail}
-				</td>
 
 				<td>
 					${fns:getDictLabel(student.edu,'student_edu','')}
 				</td>
 				<td>
 					${student.nativePlace}
-				</td>
-				<td>
-					${fns:getDictLabel(student.studentLength,'student_school_system','')}
 				</td>
 				
 				<shiro:hasPermission name="student:student:edit"><td>

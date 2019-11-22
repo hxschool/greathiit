@@ -128,14 +128,16 @@
 							<th>创建时间</th>
 							<th>过程描述</th>
 						</tr>
-						<c:forEach items="${studentUcList}" var="studentUcList">
+						<c:forEach items="${studentStatusLogs}" var="ss">
+							<c:if test="${ss.module=='uc_student'}">
 							<tr>
-								<td>${studentUcList.createBy}</td>
-								<td>${fns:getDictLabel(studentUcList.status,'student_uc_status','')}</td>
-								<td><fmt:formatDate value="${studentUcList.createDate}"
+								<td>${ss.createBy}</td>
+								<td>${fns:getDictLabel(ss.status,'student_uc_status','')}</td>
+								<td><fmt:formatDate value="${ss.createDate}"
 										pattern="yyyy-MM-dd HH:mm:ss" /></td>
-								<td>${studentUcList.description }</td>
+								<td>${ss.description }</td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					
 				</table>
@@ -144,7 +146,7 @@
 
 
 		<tr align=center>
-			<td colspan="5">学籍注册日志</td>
+			<td colspan="5">学籍操作日志</td>
 		</tr>
 		<tr>
 			<td colspan="5">
@@ -156,14 +158,16 @@
 							<th>创建时间</th>
 							<th>过程描述</th>
 						</tr>
-						<c:forEach items="${studentList}" var="studentUcList">
+						<c:forEach items="${studentStatusLogs}" var="ss">
+							<c:if test="${ss.module=='student'}">
 							<tr>
-								<td>${studentUcList.createBy}</td>
-								<td>${fns:getDictLabel(studentUcList.status,'student_status','')}</td>
-								<td><fmt:formatDate value="${studentUcList.createDate}"
+								<td>${ss.createBy.name}</td>
+								<td>${fns:getDictLabel(ss.status,'student_status','')}</td>
+								<td><fmt:formatDate value="${ss.createDate}"
 										pattern="yyyy-MM-dd HH:mm:ss" /></td>
-								<td>${studentUcList.description }</td>
+								<td>${ss.description }</td>
 							</tr>
+							</c:if>
 						</c:forEach>
 				</table>
 			</td>

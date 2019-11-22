@@ -215,10 +215,10 @@ public class UcStudentController extends BaseController {
     	
     	
 		StudentStatusLog studentStatusLog = new StudentStatusLog();
-		studentStatusLog.setLogType("1");
+		studentStatusLog.setModule("student");
 		studentStatusLog.setStudent(student);
 		studentStatusLog.setStatus(us.getStatus());
-		studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(request.getParameter("action"), "student_uc_status", "") + "->" + DictUtils.getDictLabel(us.getStatus(), "student_uc_status", ""));
+		studentStatusLog.setDescription("学籍状态:" + DictUtils.getDictLabel(request.getParameter("action"), "uc_student_status", "") + "->" + DictUtils.getDictLabel(us.getStatus(), "uc_student_status", ""));
 		studentStatusLogService.save(studentStatusLog);
 		
 		addMessage(redirectAttributes, "保存学生基本信息成功");

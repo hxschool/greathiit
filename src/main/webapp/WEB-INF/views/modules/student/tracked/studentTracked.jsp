@@ -6,6 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	$(document).ready(function() {
+		/*
 	    $('#element_id').cxSelect({ 
 			  url: '${ctx}/sys/office/treeLink',
 			  selects: ['department', 'specialty',"clazz"], 
@@ -13,6 +14,7 @@
 			  jsonValue: 'value',
 			  jsonSub: 'sub'
 			});
+		*/
 })
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -83,35 +85,19 @@
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
-			<li>
-			<label>考生号：</label>
-				<form:input path="exaNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
-			</li>
+			
+			
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>身份证号码：</label>
-				<form:input path="idCard" htmlEscape="false" maxlength="18" class="input-medium"/>
+			<li><label>性别：</label>
+				
+				<form:select path="gender" class="input-medium " style="width:175px">
+							<option value="">请选择</option>
+							<form:options items="${fns:getDictList('sex')}"
+								itemLabel="label" itemValue="value" htmlEscape="false" />
+						</form:select>
 			</li>
-			<li class="clearfix"></li>
-			<li><label>年级：</label>
-				<form:input path="year" htmlEscape="false" maxlength="18" class="input-medium"/>
-			</li>
-			<div id="element_id">
-			<li><label>所属学院：</label> <select class="department input-medium" style="width:175px"
-				name="department"><option>请选择</option></select></li>
-
-			<li><label>所属专业：</label> <select id="specialty"
-				class="specialty input-medium" style="width:175px" name="specialty"><option>请选择</option></select>
-			</li>
-			
-			<li><label>选择班级：</label> <select id="clazz"
-				class="clazz input-medium" name="clazz" style="width:175px"><option>请选择</option></select>
-			</li>
-			</div>
-		
-		<li class="clearfix"></li>
-
 			<li><label>学历：</label>
 				
 				<form:select path="edu" class="input-medium " style="width:175px">
@@ -120,21 +106,9 @@
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
-			<li><label>学制：</label>
-						<form:select path="studentLength" class="input-medium " style="width:175px">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_school_system')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
 			
-			<li><label>状态：</label>
-						<form:select path="status" class="input-medium " style="width:175px">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_status')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
+			
+			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
@@ -143,71 +117,36 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
-				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
-				<th>考生号</th>
-				<th>学号</th>
-				<th>姓名</th>
-				<th>身份证号</th>
-				<th>生日</th>
-				<th>性别</th>
-				<th>民族</th>
-				<th>政治面貌</th>
-				<th>联系地址</th>
-				<th>email</th>
-				<th>学历</th>
-				<th>户口所在地</th>
-				<th>学制</th>
+				<th width="20px;"><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				
-				<shiro:hasPermission name="student:student:edit"><th>操作</th></shiro:hasPermission>
+				<th width="80px;">学号</th>
+				<th>姓名</th>
+				
+				<th>性别</th>
+				<th>学历</th>
+				
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="student">
 			<tr>
 				<td><input type="checkbox" name="ids" value="${student.id}" onclick="selectSingle()"/></td> 
-				<td>${student.exaNumber}</td>
+				
 				<td>
 					${student.studentNumber}
 				</td>
 				<td><a href="${ctx}/student/student/form?id=${student.id}">
 					${student.name}
 				</a></td>
-				<td>
-					${fns:abbr(student.idCard,13)}
-				</td>
-				<td>
-					<fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/>
-				</td>
+				
 				<td>
 					${fns:getDictLabel(student.gender,'sex','')}
 				</td>
-				<td>
-					${fns:getDictLabel(student.nation,'nation','')}
-				</td>
-				<td>
-					${fns:getDictLabel(student.political,'political','')}
-				</td>
-				<td>
-					${student.address}
-				</td>
-				<td>
-					${student.mail}
-				</td>
-
+				
 				<td>
 					${fns:getDictLabel(student.edu,'student_edu','')}
 				</td>
-				<td>
-					${student.nativePlace}
-				</td>
-				<td>
-					${fns:getDictLabel(student.studentLength,'student_school_system','')}
-				</td>
 				
-				<shiro:hasPermission name="student:student:edit"><td>
-    				<a href="${ctx}/student/student/form?id=${student.id}">修改</a>
-					<a href="${ctx}/student/student/delete?id=${student.id}" onclick="return confirmx('确认要删除该学生信息吗？', this.href)">删除</a>
-				</td></shiro:hasPermission>
 			</tr>
 		</c:forEach>
 		</tbody>

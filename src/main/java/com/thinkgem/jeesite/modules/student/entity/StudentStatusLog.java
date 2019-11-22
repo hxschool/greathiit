@@ -15,17 +15,28 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class StudentStatusLog extends DataEntity<StudentStatusLog> {
 	
 	private static final long serialVersionUID = 1L;
-	private String logType;
+	private String module;
 	private Student student;		// 用户号
-	private String status;		// 状态
+	private String before;			//操作之前状态
+	private String status;		// 当前状态
 	private String description;		// 操作过程
 	
-	public String getLogType() {
-		return logType;
+
+
+	public String getBefore() {
+		return before;
 	}
 
-	public void setLogType(String logType) {
-		this.logType = logType;
+	public void setBefore(String before) {
+		this.before = before;
+	}
+
+	public String getModule() {
+		return module;
+	}
+
+	public void setModule(String module) {
+		this.module = module;
 	}
 
 	public StudentStatusLog() {

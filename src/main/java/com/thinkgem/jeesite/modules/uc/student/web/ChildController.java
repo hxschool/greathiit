@@ -121,7 +121,7 @@ public class ChildController extends BaseController {
 	@RequiresPermissions("uc:child:view")
 	@RequestMapping(value = {"list"})
 	public String list(Office office, Model model) {
-		model.addAttribute("label",DictUtils.getDictLabel(office.getType(), "sys_office_type", ""));
+		model.addAttribute("label",DictUtils.getDictLabel(office.getGrade(), "sys_office_label", ""));
         model.addAttribute("list", officeService.findList(office));
 		return "modules/uc/child/childList";
 	}

@@ -4,12 +4,15 @@
     
 	<sql id="studentStatusLogColumns">
 		a.id AS "id",
-		a.log_type AS "logType",
+		a.module AS "module",
 		b.student_number AS "student.studentNumber",
 		b.name AS "student.name",
+		a.before AS "before",
 		a.status AS "status",
 		a.description AS "description",
-		a.create_by AS "createBy.id",
+		u.id AS "createBy.id",
+		u.name AS "createBy.name",
+		
 		a.create_date AS "createDate",
 		a.update_by AS "updateBy.id",
 		a.update_date AS "updateDate",
@@ -19,6 +22,7 @@
 	
 	<sql id="studentStatusLogJoins">
 		LEFT JOIN student b on a.student_number=b.student_number
+		JOIN sys_user u ON u.id = a.create_by
 	</sql>
     
 	<select id="get" resultType="StudentStatusLog">
@@ -36,6 +40,13 @@
 		<include refid="studentStatusLogJoins"/>
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
+			<if test="module!=null and module!=''">
+				AND a.module=#{module}
+			</if>
+			<if test="status!=null and status!=''">
+				and a.status=#{status}
+			</if>
+			
 		</where>
 		<choose>
 			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
@@ -68,8 +79,10 @@
 	<insert id="insert">
 		INSERT INTO student_status_log(
 			id,
+			module,
 			student_number,
 			status,
+			before,
 			description,
 			create_by,
 			create_date,
@@ -79,8 +92,10 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{module},
 			#{studentNumber},
 			#{status},
+			#{before},
 			#{description},
 			#{createBy.id},
 			#{createDate},
@@ -94,6 +109,8 @@
 	<update id="update">
 		UPDATE student_status_log SET 	
 			student_number = #{studentNumber},
+			module = #{module},
+			before = #{before},
 			status = #{status},
 			description = #{description},
 			update_by = #{updateBy.id},

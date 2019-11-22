@@ -19,11 +19,14 @@ import com.thinkgem.jeesite.common.utils.IdcardUtils;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
+import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
@@ -38,6 +41,8 @@ import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private StudentStatusLogService studentStatusLogService;
 	@Autowired
 	private UcStudentDao ucStudentDao;
 	@Autowired
@@ -130,9 +135,27 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 	}
 	
 	@Transactional(readOnly = false)
-	public void save(UcStudent ucStudent) {
+	public void save(UcStudent student) {
+		
+		UcStudent entity = null;
+		if (!org.springframework.util.StringUtils.isEmpty(student)
+				&& !org.springframework.util.StringUtils.isEmpty(student.getId())) {
+			entity = get(student);
+		}
 		//如果数据停用,是否通知修改系统用户信息为不可用
-		super.save(ucStudent);
+		super.save(student);
+		
+		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
+			String before = entity.getStatus();
+			String status = student.getStatus();
+			StudentStatusLog studentStatusLog = new StudentStatusLog();
+			studentStatusLog.setModule("uc_student");
+			studentStatusLog.setBefore(before);
+			studentStatusLog.setStatus(status);
+			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_status", "学籍状态") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_status", "学籍状态"));
+			studentStatusLogService.save(studentStatusLog);
+		}
+		
 	}
 	
 	@Transactional(readOnly = false)

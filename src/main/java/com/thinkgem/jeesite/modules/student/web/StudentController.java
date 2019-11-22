@@ -652,7 +652,7 @@ public class StudentController extends BaseController {
 		StringBuilder failureMsg = new StringBuilder();
 		try {
 
-			String name = file.getName();
+			String name = file.getOriginalFilename();
 			String fix = name.substring(name.lastIndexOf("."), name.length());
 			File oldFile = File.createTempFile(name.substring(0, name.lastIndexOf(".")), fix);
 			FileUtils.copyInputStreamToFile(file.getInputStream(), oldFile);
@@ -670,9 +670,9 @@ public class StudentController extends BaseController {
 						failureNum++;
 					} else {
 						String suffix = filename.substring(filename.lastIndexOf("."), filename.length());
-						File tempFile = File.createTempFile(prefix, suffix);
+						File tempFile = File.createTempFile(student.getStudentNumber(), suffix);
 						FileUtils.copyInputStreamToFile(zipFile.getInputStream(zipEntry), tempFile);
-						String str = HttpClientUtil.upload(Global.FILE_SERVER_UPLOAD_URL, filename, tempFile);
+						String str = HttpClientUtil.upload(Global.FILE_SERVER_UPLOAD_URL, student.getStudentNumber(), tempFile);
 						if (!org.springframework.util.StringUtils.isEmpty(str)) {
 							Gson gson = new Gson();
 							FileResponse fileResponse = gson.fromJson(str, FileResponse.class);
@@ -763,7 +763,7 @@ public class StudentController extends BaseController {
 	}
 
 	// 分班
-	@RequiresPermissions("student:student:edit")
+	@RequiresPermissions("student:student:view")
 	@RequestMapping("tracked")
 	public String tracked(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
 		Page<Student> page = studentService.trackedPage(new Page<Student>(request, response),student);
@@ -806,17 +806,11 @@ public class StudentController extends BaseController {
 		StudentStatusLog studentStatusLog = new StudentStatusLog();
 		studentStatusLog.setStudent(student);
 		List<StudentStatusLog> studentStatusLogs = studentStatusLogService.findByParentIdsLike(studentStatusLog);
-		List<StudentStatusLog> studentUcList = new ArrayList<StudentStatusLog>();
-		List<StudentStatusLog> studentList = new ArrayList<StudentStatusLog>();
-		for(StudentStatusLog ssl:studentStatusLogs) {
-			if(ssl.getLogType().equals("1")) {
-				studentUcList.add(ssl);
-			}else {
-				studentList.add(ssl);
-			}
+		for(StudentStatusLog ss:studentStatusLogs) {
+			ss.setCreateBy(systemService.getUser(studentStatusLog.getCreateBy()));
 		}
-		model.addAttribute("studentUcList", studentUcList);
-		model.addAttribute("studentList", studentList);
+		model.addAttribute("studentStatusLogs", studentStatusLogs);
+		
 		model.addAttribute("student", student);
 		return "modules/student/studentInfo";
 	} 

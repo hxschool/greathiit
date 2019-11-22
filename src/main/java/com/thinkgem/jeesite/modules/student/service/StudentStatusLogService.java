@@ -28,10 +28,7 @@ public class StudentStatusLogService extends CrudService<StudentStatusLogDao, St
 		return super.findPage(page, studentStatusLog);
 	}
 	
-	@Transactional(readOnly = false)
-	public void save(StudentStatusLog studentStatusLog) {
-		super.save(studentStatusLog);
-	}
+	
 	
 	@Transactional(readOnly = false)
 	public void delete(StudentStatusLog studentStatusLog) {

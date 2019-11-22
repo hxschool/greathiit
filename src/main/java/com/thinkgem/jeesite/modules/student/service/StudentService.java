@@ -16,11 +16,13 @@ import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
+import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 
 /**
@@ -33,6 +35,8 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 public class StudentService extends CrudService<StudentDao, Student> {
 	@Autowired
 	private StudentDao studentDao;
+	@Autowired
+	private StudentStatusLogService studentStatusLogService;
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -105,7 +109,23 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	}
 	@Transactional(readOnly = false)
 	public void save(Student student) {
+		Student entity = null;
+		if (!org.springframework.util.StringUtils.isEmpty(student)
+				&& !org.springframework.util.StringUtils.isEmpty(student.getId())) {
+			entity = get(student);
+		}
 		super.save(student);
+		
+		if(!org.springframework.util.StringUtils.isEmpty(entity)) {
+			String before = entity.getStatus();
+			String status = student.getStatus();
+			StudentStatusLog studentStatusLog = new StudentStatusLog();
+			studentStatusLog.setModule("student");
+			studentStatusLog.setBefore(before);
+			studentStatusLog.setStatus(status);
+			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_status", "学籍状态") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_status", "学籍状态"));
+			studentStatusLogService.save(studentStatusLog);
+		}
 	}
 	
 	@Transactional(readOnly = false)

@@ -19,9 +19,7 @@
 <body>
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/student/studentStatusLog/">变动进度表列表</a></li>
-		<shiro:hasPermission name="student:studentStatusLog:edit">
-			<li><a href="${ctx}/student/studentStatusLog/form">变动进度表添加</a></li>
-		</shiro:hasPermission>
+
 	</ul>
 	<form:form id="searchForm" modelAttribute="studentStatusLog"
 		action="${ctx}/student/studentStatusLog/" method="post"
@@ -30,8 +28,19 @@
 		<input id="pageSize" name="pageSize" type="hidden"
 			value="${page.pageSize}" />
 		<ul class="ul-form">
-			<li><label>操作类型：</label> <form:input path="status"
-					htmlEscape="false" maxlength="50" class="input-medium" /></li>
+
+			<li><label>模块：</label><select path="module"
+					class="input-medium " style="width:175px" onchange="findtemplate(this.options[this.options.selectedIndex].value);">
+					<option >请选择</option>
+					<option value="uc_student" <c:if test="${param.module=='uc_student' }"> selected </c:if> >(省)学籍信息</option>
+					<option value="student"  <c:if test="${param.module=='student' }"> selected </c:if>>(校)学籍信息</option>
+				</select></li>
+			<li><label>状态：</label> <form:select path="status"
+					class="input-medium " style="width:175px">
+					<option value="">请选择</option>
+					<form:options items="${fns:getDictList('student_status')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select></li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /></li>
 			<li class="clearfix"></li>
@@ -43,10 +52,13 @@
 		<thead>
 			<tr>
 				<td>操作模型</td>
+				<td>学号</td>
+				<td>姓名</td>
 				<td>操作人</td>
 				<td>操作类型</td>
-				<td>创建时间</td>
+				
 				<td>过程描述</td>
+				<td>操作时间</td>
 				<th>更新时间</th>
 				<th>备注</th>
 				<shiro:hasPermission name="student:studentStatusLog:edit">
@@ -57,21 +69,20 @@
 		<tbody>
 			<c:forEach items="${page.list}" var="studentStatusLog">
 				<tr>
-					<td>${studentStatusLog.logType=="1"?"学籍信息":"学生信息"}</td>
-					<td>${studentStatusLog.createBy}</td>
+					<td>${studentStatusLog.module=="uc_student"?"(省)学籍信息":"(校)学籍信息"}</td>
+					<td>${studentStatusLog.student.studentNumber}</td>
+					<td>${studentStatusLog.student.name}</td>
+					<td>${studentStatusLog.createBy.name} </td>
 					<td>
-					<c:if test="${studentStatusLog.logType=='1'}">
-					${fns:getDictLabel(studentStatusLog.status,'student_uc_status','')}
-					</c:if>
-					<c:if test="${studentStatusLog.logType=='2'}">
-					${fns:getDictLabel(studentStatusLog.status,'student_status','')}
+					<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
+					${fns:getDictLabel(studentStatusLog.before,studentStatusLog.module.concat('_status'),'')} ->
 					</c:if>
 					
+					${fns:getDictLabel(studentStatusLog.status,studentStatusLog.module.concat('_status'),'')}</td>
 					
-					</td>
+					<td>${studentStatusLog.description }</td>
 					<td><fmt:formatDate value="${studentStatusLog.createDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
-					<td>${studentStatusLog.description }</td>
 					<td><fmt:formatDate value="${studentStatusLog.updateDate}"
 							pattern="yyyy-MM-dd HH:mm:ss" /></td>
 					<td>${studentStatusLog.remarks}</td>
@@ -87,5 +98,39 @@
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
+
+	<script type="text/javascript">
+
+	function findtemplate(value) {
+		value = value + "_status";
+	    $.ajax({
+	        type : "post",
+	        async : false,
+	        url : "${ctx}/sys/dict/listData",
+	        data : {
+	            'type' : value
+	        },
+	        dataType : "json",
+	        success : function(msg) {
+	            $("#status").empty();
+	            if (msg.length > 0) {
+	                for (var i = 0; i < msg.length; i++) {
+	                        var partId = msg[i].value;
+	                        var partName = msg[i].label;
+	                        var $option = $("<option>").attr({
+	                            "value" : partId
+	                        }).text(partName);
+	                        $("#status").append($option);
+	                }
+	                $("#status").change();
+
+	            }
+	        },
+	        error : function(json) {
+	            $.jBox.alert("网络异常！");
+	        }
+	    });
+	}
+	</script>
 </body>
 </html>

@@ -38,10 +38,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String nation;		// 民族
 	@ExcelField(title="政治面貌", align=2, sort=7,dictType="political")
 	private String political;		// 政治面貌
-	
-	private String health;
-	private String height;		// 身高
-	private String weight;		// 体重
+
 	private String  dormNumber;		// 寝室号
 	@ExcelField(title="生源所在地", align=2, sort=18)
 	private String location;		// 家庭地址
@@ -401,21 +398,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 		this.year = year;
 	}
 
-	public String getHeight() {
-		return height;
-	}
 
-	public void setHeight(String height) {
-		this.height = height;
-	}
-
-	public String getWeight() {
-		return weight;
-	}
-
-	public void setWeight(String weight) {
-		this.weight = weight;
-	}
 
 	public String getDormNumber() {
 		return dormNumber;
@@ -449,13 +432,6 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 		this.instructor = instructor;
 	}
 
-	public String getHealth() {
-		return health;
-	}
-
-	public void setHealth(String health) {
-		this.health = health;
-	}
 
 	public String getFatherName() {
 		return fatherName;

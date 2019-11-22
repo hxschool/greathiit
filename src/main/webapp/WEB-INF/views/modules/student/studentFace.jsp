@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <html>
 <head>
-	<title>统招数据管理</title>
+	<title>相片管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -16,7 +16,19 @@
 					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
 				});
 			});
+			$("#lookFace").click(function() {
+				var studentNumber = $("#studentNumber").val();
+				layer.open({
+					  type: 2,
+					  title:false,
+					  shadeClose: true,
+					  shade: 0.8,
+					  area: ['250px', '350px'],
+					  content: "http://photo.greathiit.com/get/"+studentNumber //iframe的url
+				}); 
+			});
 		});
+		
 	</script>
 	
 </head>
@@ -35,15 +47,23 @@
 	<div class="container-fluid">
 	<div class="breadcrumb form-search">
 		
+		<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/" method="post" class="breadcrumb form-search">
+		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
+		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			
 			<li class="btns">
 			
-			
-			<input
-				id="btnImport" class="btn btn-primary" type="button" value="像片导入" /></li>
+				<li><label>学号：</label>
+				<form:input path="studentNumber" htmlEscape="false" maxlength="64" class="input-medium"/>
+			</li>
+				<li class="btns"><a id="lookFace" class="btn btn-primary" >获取相片</a> <input
+				id="btnImport" class="btn btn-primary" type="button" value="像片导入" />
+				
+			</li>
 			<li class="clearfix"></li>
 		</ul>
+		</form:form>
 	</div>
 	<sys:message content="${message}"/>
 		

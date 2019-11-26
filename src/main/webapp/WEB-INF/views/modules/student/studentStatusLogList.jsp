@@ -4,6 +4,12 @@
 <head>
 <title>学籍异动</title>
 <meta name="decorator" content="default" />
+<style type="text/css">
+.layui-layer-content{
+margin-top:20px;
+padding-left: 20px;
+}
+</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -16,20 +22,20 @@
 	}
 
 	function showMessage(module,moduleId){
+		var text = "";
 		$.ajax({
 		    type: 'post',
 		    url: '${ctx}/student/studentStatusLog/listData',
-		    contentType: 'application/json;charset=utf-8',
 		    data:{"module":module, "moduleId":moduleId },
-		    success: function (data) { //返回json结果
-		        for(ll in data){
-		    		console.log(ll);
-		    	}
+		    success: function (data) {
+		        for(var i=0;i<data.length;i++){
+		        	text = text + "序号:["+i+"] "  + data[i].description + "<br>";
+		        }
 		        layer.open({
 					  type: 1,
 					  skin: 'layui-layer-rim', //加上边框
 					  area: ['420px', '240px'], //宽高
-					  content: 'html内容'
+					  content:text
 					});
 		    }
 		});
@@ -97,10 +103,24 @@
 					<td>${studentStatusLog.createBy.name} </td>
 					<td>
 						<c:if test="${studentStatusLog.module=='student'}">
-							<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
-								${fns:getDictLabel(studentStatusLog.before,'student_status','')} ->
-							</c:if>
+						
+						
+							<c:choose>
+								<c:when test="${studentStatusLog.action=='tracked' }">
+								<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
+									${studentStatusLog.before }-->
+								</c:if>
+									${studentStatusLog.status }
+								</c:when>
+							<c:otherwise>
+								<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">
+									${fns:getDictLabel(studentStatusLog.before,'student_status','')} -->
+								</c:if>
 								${fns:getDictLabel(studentStatusLog.status,'student_status','')}
+							</c:otherwise>
+						
+							</c:choose>
+						
 						</c:if>
 						<c:if test="${studentStatusLog.module=='uc_student'}">
 							<c:if test="${studentStatusLog.before!=null and studentStatusLog.before!=''}">

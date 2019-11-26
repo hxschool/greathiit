@@ -762,33 +762,6 @@ public class StudentController extends BaseController {
 		return "redirect:" + Global.getAdminPath() + "/student/student/?repage";
 	}
 
-	// 分班
-	@RequiresPermissions("student:student:view")
-	@RequestMapping("tracked")
-	public String tracked(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		Page<Student> page = studentService.trackedPage(new Page<Student>(request, response),student);
-		model.addAttribute("page", page);
-		return "modules/student/tracked/studentTracked";
-	}
-
-	
-	@RequestMapping(value = "batchCls")
-	public String batchCls( String ids,String description,HttpServletRequest request, RedirectAttributes redirectAttributes) {
-			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
-				String[] arrayIds = ids.split(",");
-				for(String id:arrayIds) {
-					Student student = studentService.get(id);
-					if(!org.springframework.util.StringUtils.isEmpty(student)) {
-						Office cls = officeService.get(description);
-						student.setClazz(cls);
-						student.setRemarks(Student.tracked);
-						studentService.save(student);
-					}
-				}
-			}
-			addMessage(redirectAttributes, "批量操作成功");
-		return "redirect:"+Global.getAdminPath()+"/student/student/tracked?repage";
-	}
 	
 	@RequestMapping(value = "info")
 	public String info(Student student, HttpServletRequest request, RedirectAttributes redirectAttributes, Model model) {

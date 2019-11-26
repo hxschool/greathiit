@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.thinkgem.jeesite.common.persistence.DataEntity;
 import com.thinkgem.jeesite.common.utils.excel.annotation.ExcelField;
+import com.thinkgem.jeesite.modules.student.export.StudentAction;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 
 /**
@@ -20,7 +21,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
  * @version 2017-12-13
  */
 public class Student extends DataEntity<Student> implements Comparable<Student> {
-	public final static String tracked = "分班操作";
+	
 	private static final long serialVersionUID = 1L;
 	@ExcelField(title="考生号", align=2, sort=1)
 	private String exaNumber;		// 考生号
@@ -100,10 +101,13 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	
 	private List<String> clazzNumbers;//数组查询添加
 	
+	private String isClass;
 	
 	
 	private String status;
 	private String description;
+	//操作类型
+	private StudentAction studentAction; 
 	//
 	public Student() {
 		super();
@@ -471,6 +475,24 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setClazz(Office clazz) {
 		this.clazz = clazz;
+	}
+
+
+
+	public String getIsClass() {
+		return isClass;
+	}
+
+	public void setIsClass(String isClass) {
+		this.isClass = isClass;
+	}
+
+	public StudentAction getStudentAction() {
+		return studentAction;
+	}
+
+	public void setStudentAction(StudentAction studentAction) {
+		this.studentAction = studentAction;
 	}
 
 	@Override

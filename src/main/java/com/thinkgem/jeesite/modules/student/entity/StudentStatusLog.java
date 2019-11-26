@@ -17,6 +17,7 @@ import com.thinkgem.jeesite.common.persistence.DataEntity;
 public class StudentStatusLog extends DataEntity<StudentStatusLog>  {
 	
 	private static final long serialVersionUID = 1L;
+	private String action;
 	private String module;
 	private String moduleId;		// 表ID
 	private String before;			//操作之前状态
@@ -24,6 +25,14 @@ public class StudentStatusLog extends DataEntity<StudentStatusLog>  {
 	private String description;		// 操作过程
 	
 	private Student student;
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
 
 	public String getBefore() {
 		return before;

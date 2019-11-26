@@ -15,6 +15,29 @@
 			  jsonSub: 'sub'
 			});
 		*/
+		
+		$("#btnExport").click(function() {
+			top.$.jBox.confirm("确认要导出数据吗？", "系统提示", function(v, h, f) {
+				if (v == "ok") {
+					$("#searchForm").attr("action", "${ctx}/student/tracked/export");
+					$("#searchForm").submit();
+				}
+			}, {
+				buttonsFocus : 1
+			});
+			top.$('.jbox-body .jbox-icon').css('top', '55px');
+		});
+		
+		
+		$("#btnImport").click(function() {
+			$.jBox($("#importBox").html(), {
+				title : "导入数据",
+				buttons : {
+					"关闭" : true
+				},
+				bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
+			});
+		});
 })
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -61,7 +84,7 @@
 			         var text = window["layui-layer-iframe" + index].callbackdata();
 			         if(text){
 					    $("#description").val(text);
-					    $("#searchForm").attr("action","${ctx}/student/student/batchCls?ids=" + getIds());
+					    $("#searchForm").attr("action","${ctx}/student/tracked/batchCls?ids=" + getIds());
 						$("#searchForm").submit();
 						 $("#description").val("");
 			             layer.close(index)
@@ -77,15 +100,40 @@
 	</script>
 </head>
 <body>
+
+<div id="importBox" class="hide">
+		<form id="importForm" action="${ctx}/student/tracked/import" method="post"
+			enctype="multipart/form-data" class="form-search"
+			style="padding-left: 20px; text-align: center;"
+			onsubmit="loading('正在导入，请稍等...');">
+			<br /> <input id="uploadFile" name="file" type="file"
+				style="width: 330px" /><br />
+			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+				type="submit" value="   导    入   " /> <a
+				href="${ctx}/student/tracked/import/template">下载模板</a>
+		</form>
+	</div>
+
 	<ul class="nav nav-tabs">
-		<li class="active"><a href="${ctx}/student/student/">分班管理</a></li>
+		<li class="active"><a href="${ctx}/student/tracked/">分班管理</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/student/tracked" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/tracked" method="post" class="breadcrumb form-search">
 		<input id="description" name="description" type="hidden" />
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
 		<input id="pageSize" name="pageSize" type="hidden" value="${page.pageSize}"/>
 		<ul class="ul-form">
 			
+			<li><label>是否分班：</label>
+				<form:select path="isClass" class="input-medium " style="width:175px">
+							<option value="">请选择</option>
+							<option value="0" <c:if test="${student.isClass=='0'}"> selected </c:if> >未分班</option>
+							<option value="1" <c:if test="${student.isClass=='1'}"> selected </c:if> >已分班</option>
+						</form:select>
+			</li>
+			
+			<li><label>班号：</label>
+				<form:input path="classno" htmlEscape="false" maxlength="64" placeholder="20180101"  class="input-medium"/>
+			</li>
 			
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
@@ -100,7 +148,7 @@
 			</li>
 			<li><label>学历：</label>
 				
-				<form:select path="edu" class="input-medium " style="width:175px">
+						<form:select path="edu" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('student_edu')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
@@ -109,7 +157,12 @@
 			
 			
 			
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			
+			<input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
+				id="btnImport" class="btn btn-primary" type="button" value="导入" />
+			</li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>
@@ -118,7 +171,7 @@
 		<thead>
 			<tr>
 				<th width="20px;"><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
-				
+				<th width="80px;">班级</th>
 				<th width="80px;">学号</th>
 				<th>姓名</th>
 				
@@ -131,7 +184,9 @@
 		<c:forEach items="${page.list}" var="student">
 			<tr>
 				<td><input type="checkbox" name="ids" value="${student.id}" onclick="selectSingle()"/></td> 
-				
+				<td>
+					${student.clazz.name}
+				</td>
 				<td>
 					${student.studentNumber}
 				</td>

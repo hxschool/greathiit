@@ -781,6 +781,7 @@ public class StudentController extends BaseController {
 					if(!org.springframework.util.StringUtils.isEmpty(student)) {
 						Office cls = officeService.get(description);
 						student.setClazz(cls);
+						student.setRemarks(Student.tracked);
 						studentService.save(student);
 					}
 				}

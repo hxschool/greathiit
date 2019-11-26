@@ -154,6 +154,7 @@ public class UcStudentService extends CrudService<UcStudentDao, UcStudent> {
 			studentStatusLog.setBefore(before);
 			studentStatusLog.setStatus(status);
 			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_learning", "") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_learning", ""));
+			studentStatusLog.setRemarks(student.getRemarks());
 			studentStatusLogService.save(studentStatusLog);
 		}
 		

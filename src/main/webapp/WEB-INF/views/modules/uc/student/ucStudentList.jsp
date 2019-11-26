@@ -41,7 +41,7 @@
 		
 		
 		function batchAction(action){
-			layer.prompt({title: "${fns:getDictLabel(param.action,'student_learning','')}", formType: 2}, function(text, index){
+			layer.prompt({title: "操作备注", formType: 2}, function(text, index){
 				$("#action").val(action);
 				$("#description").val(text);
 				var id = document.getElementsByName("ids");// 获取全选复选框
@@ -144,7 +144,7 @@
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
 				
-				<input type="hidden" name="action" id="action"/>
+				<input type="hidden" name="action" id="action" value="1"/>
 				<input type="hidden" name="description" id="description"/>
 			</li>
 			<li class="clearfix"></li>
@@ -167,7 +167,7 @@
 				<th>专业名称</th>
 				<th>学历</th>
 				<th>学制</th>
-				<th>学习形式</th>
+				<th>学籍状态</th>
 				<th>入学日期</th>
 				
 				
@@ -268,11 +268,14 @@
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
 			
 			<a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a>
-			<c:if test="${param.action!=null and param.action!=1 }">
+			<c:if test="${param.action!=null and param.action!=''}">
 			
 			<shiro:hasPermission
 							name="uc:student:batch">
-				<a href="#" onclick="batchAction(${param.action})" class="btn btn-success">${fns:getDictLabel(param.action,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(1)" class="btn ">${fns:getDictLabel(1,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(2)" class="btn btn-info">${fns:getDictLabel(2,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(3)" class="btn btn-success">${fns:getDictLabel(3,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(4)" class="btn btn-danger">${fns:getDictLabel(4,'student_learning','')}</a>
 				</shiro:hasPermission>
 			</c:if>
 			</th>

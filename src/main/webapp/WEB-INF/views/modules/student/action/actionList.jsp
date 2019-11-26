@@ -314,9 +314,9 @@
 		<tfoot><tr>
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
 			
-			<c:if test="${param.action!=null and param.action!='' and param.action!=1 }">
+			
 				<a href="#" onclick="batchAction(${param.action})" class="btn btn-small btn-info">${fns:getDictLabel(param.action,'student_status','')}</a>
-			</c:if>
+			
 			</th>
 			</tr>
 		</tfoot>

@@ -38,10 +38,7 @@ import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
-import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
-import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 import com.thinkgem.jeesite.modules.uc.student.service.UcStudentService;
 
@@ -56,8 +53,6 @@ public class UcStudentController extends BaseController {
 
 	@Autowired
 	private UcStudentService ucStudentService;
-	@Autowired
-	private StudentStatusLogService studentStatusLogService;
 	@ModelAttribute
 	public UcStudent get(@RequestParam(required=false) String id) {
 		UcStudent entity = null;
@@ -386,19 +381,34 @@ public class UcStudentController extends BaseController {
 	}
 
 	@RequestMapping(value = "batchAction")
-	public String batch(String ids, String description, HttpServletRequest request,
-			RedirectAttributes redirectAttributes) {
+	public String batch(String ids, String description,UcStudent ucStudent,HttpServletRequest request,
+			RedirectAttributes redirectAttributes,Model model) {
 		String action = request.getParameter("action");
+		StringBuilder sb = new  StringBuilder();
 		if(!org.springframework.util.StringUtils.isEmpty(action)) {
 			if(!org.springframework.util.StringUtils.isEmpty(ids)) {
 				String[] arrayIds = ids.split(",");
 				for(String id:arrayIds) {
-					UcStudent ucStudent = ucStudentService.get(id);
-					ucStudent.setLearning(action);
-					ucStudentService.save(ucStudent);
+					UcStudent entity = ucStudentService.get(id);
+					
+					if (!org.springframework.util.StringUtils.isEmpty(entity)
+							) {
+						if(entity.getLearning().equals(action)) {
+							sb.append("姓名:" + entity.getName() + "操作失败,失败原因。操作前操作后状态一直.取消操作");
+							continue;
+						}
+						entity.setLearning(action);
+						entity.setRemarks(description);
+						ucStudentService.save(entity);
+					}
+					
 				}
 			}
 		}
-		return "ok";
+		if(org.springframework.util.StringUtils.isEmpty(sb.toString())) {
+			model.addAttribute("message","操作成功");
+		}
+		model.addAttribute("message",sb.toString());
+		return "redirect:"+Global.getAdminPath()+"/uc/student/"+action+"?repage&action=1";
 	}
 }

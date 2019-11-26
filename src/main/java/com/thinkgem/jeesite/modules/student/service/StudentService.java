@@ -21,6 +21,7 @@ import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.Role;
 import com.thinkgem.jeesite.modules.sys.entity.User;
+import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -121,9 +122,23 @@ public class StudentService extends CrudService<StudentDao, Student> {
 			String status = student.getStatus();
 			StudentStatusLog studentStatusLog = new StudentStatusLog();
 			studentStatusLog.setModule("student");
-			studentStatusLog.setBefore(before);
-			studentStatusLog.setStatus(status);
-			studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_status", "学籍状态") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_status", "学籍状态"));
+			studentStatusLog.setModuleId(entity.getId());
+			if(student.getRemarks().equals(Student.tracked)) {
+				Office clazz = entity.getClazz();
+				if(!org.springframework.util.StringUtils.isEmpty(clazz)) {
+					studentStatusLog.setBefore(clazz.getName());
+				}
+				clazz = student.getClazz();
+				if(!org.springframework.util.StringUtils.isEmpty(clazz)) {
+					studentStatusLog.setStatus(clazz.getName());
+				}
+				studentStatusLog.setDescription("分班操作");
+			}else {
+				studentStatusLog.setBefore(before);
+				studentStatusLog.setStatus(status);
+				studentStatusLog.setDescription("操作前状态:" + DictUtils.getDictLabel(before, "student_status", "学籍状态") + ",操作后状态:" + DictUtils.getDictLabel(status, "student_status", "学籍状态"));
+			}
+			
 			studentStatusLogService.save(studentStatusLog);
 		}
 	}

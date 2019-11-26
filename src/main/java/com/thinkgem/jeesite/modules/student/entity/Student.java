@@ -20,7 +20,7 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
  * @version 2017-12-13
  */
 public class Student extends DataEntity<Student> implements Comparable<Student> {
-	
+	public final static String tracked = "分班操作";
 	private static final long serialVersionUID = 1L;
 	@ExcelField(title="考生号", align=2, sort=1)
 	private String exaNumber;		// 考生号

@@ -23,15 +23,11 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
-import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
-import com.thinkgem.jeesite.modules.student.service.StudentStatusLogService;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
-import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.sys.utils.LogUtils;
 
 
 /**

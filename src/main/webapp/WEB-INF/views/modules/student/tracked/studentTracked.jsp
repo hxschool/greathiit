@@ -146,15 +146,6 @@
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
-			<li><label>学历：</label>
-				
-						<form:select path="edu" class="input-medium " style="width:175px">
-							<option value="">请选择</option>
-							<form:options items="${fns:getDictList('student_edu')}"
-								itemLabel="label" itemValue="value" htmlEscape="false" />
-						</form:select>
-			</li>
-			
 			
 			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>

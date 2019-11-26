@@ -150,9 +150,9 @@
 		#{parentIds}
 		ORDER BY a.code
 	</select>
-	
-	
-		<select id="findByOfficeNameLike" resultType="Office">
+
+
+	<select id="findByOfficeNameLike" resultType="Office">
 		SELECT
 		<include refid="officeColumns" />
 		FROM sys_office a

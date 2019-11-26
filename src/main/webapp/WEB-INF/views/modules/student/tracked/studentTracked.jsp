@@ -15,7 +15,12 @@
 			  jsonSub: 'sub'
 			});
 		*/
-		
+		var ret = $("#isClass").val();
+		if(ret==1){
+			$("#cls").show();	
+		}else{
+			$("#cls").hide();	
+		}
 		$("#btnExport").click(function() {
 			top.$.jBox.confirm("确认要导出数据吗？", "系统提示", function(v, h, f) {
 				if (v == "ok") {
@@ -97,6 +102,14 @@
 			     }
 			 });
 	}
+	function showClass(val){
+		$("#cls").hide();
+		if(val==1){
+			$("#cls").show();	
+		}else{
+			$("#cls").hide();
+		}
+	}
 	</script>
 </head>
 <body>
@@ -124,15 +137,15 @@
 		<ul class="ul-form">
 			
 			<li><label>是否分班：</label>
-				<form:select path="isClass" class="input-medium " style="width:175px">
+				<form:select path="isClass"  onchange="showClass(this.options[this.options.selectedIndex].value);"  class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<option value="0" <c:if test="${student.isClass=='0'}"> selected </c:if> >未分班</option>
 							<option value="1" <c:if test="${student.isClass=='1'}"> selected </c:if> >已分班</option>
 						</form:select>
 			</li>
 			
-			<li><label>班号：</label>
-				<form:input path="classno" htmlEscape="false" maxlength="64" placeholder="20180101"  class="input-medium"/>
+			<li id="cls"><label>班级：</label>
+				<form:input path="clazz.name" htmlEscape="false" maxlength="64" placeholder="20180101"  class="input-medium"/>
 			</li>
 			
 			<li><label>姓名：</label>

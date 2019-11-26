@@ -91,13 +91,17 @@
 		<include refid="studentJoins"/>
 		<where>
 			a.del_flag = 0
-			<if test="isClass==0">
+			<if test="isClass=='0'">
 				and ( a.clazz_id is null or a.clazz_id ='')
 			</if>
-			
-			<if test="classno != null and classno != ''">
-				AND a.clazz_id = #{classno}
+			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
+				and a.clazz_id IN 
+				<foreach item="st" collection="clazzNumbers" index="idx" open="(" separator="," close=")">
+					#{st}
+				</foreach>
+				
 			</if>
+			
 			<if test="name != null and name != ''">
 				AND a.name = #{name}
 			</if>

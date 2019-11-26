@@ -73,6 +73,19 @@ public class StudentTrackedController extends BaseController {
 	@RequiresPermissions("student:student:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
+		if(!org.springframework.util.StringUtils.isEmpty(student.getClazz())) {
+			String clsName = student.getClazz().getName();
+			if(!org.springframework.util.StringUtils.isEmpty(clsName)) {
+				List<Office> offices = officeService.findByOfficeNameLike(clsName);
+				List<String> clazzNumbers = new ArrayList<String>();
+				for(Office cls : offices) {
+					clazzNumbers.add(cls.getId());
+				}
+				student.setClazzNumbers(clazzNumbers);
+			}
+		}
+		
+		
 		Page<Student> page = studentService.trackedPage(new Page<Student>(request, response),student);
 		model.addAttribute("page", page);
 		return "modules/student/tracked/studentTracked";

@@ -18,6 +18,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -458,6 +459,15 @@ public class ExportExcel {
 			int colunm = 0;
 			Row row = this.addRow();
 			StringBuilder sb = new StringBuilder();
+			if(CollectionUtils.isEmpty(annotationList)) {
+				if(e instanceof Map) {
+					Map<String,Object> map = (Map)e;
+					Long total = (Long)map.get("TOTAL");
+					String name = (String)map.get("NAME");
+					this.addCell(row, 0, name, 2, String.class);
+					this.addCell(row, 1, total, 2, Long.class);
+				}
+			}
 			for (Object[] os : annotationList){
 				ExcelField ef = (ExcelField)os[0];
 				Object val = null;

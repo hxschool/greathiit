@@ -91,7 +91,7 @@
 		<include refid="studentJoins"/>
 		<where>
 			a.del_flag = 0
-			<if test="isClass=='0'">
+			<if test="isClass==0">
 				and ( a.clazz_id is null or a.clazz_id ='')
 			</if>
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">

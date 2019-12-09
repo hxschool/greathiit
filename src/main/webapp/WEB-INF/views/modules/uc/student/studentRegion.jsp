@@ -5,6 +5,22 @@
 	<title>数据统计</title>
 	<meta name="decorator" content="default"/>
 	<script src="${ctxStatic}/echart/echarts-all.js" type="text/javascript"></script>
+		<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$("#btnExport").click(function() {
+			top.$.jBox.confirm("确认要导出据吗？", "系统提示", function(v, h, f) {
+				if (v == "ok") {
+					$("#searchForm").attr("action", "${ctx}/uc/student/regionExport");
+					$("#searchForm").submit();
+				}
+			}, {
+				buttonsFocus : 1
+			});
+			top.$('.jbox-body .jbox-icon').css('top', '55px');
+		});
+	})
+	</script>
 </head>
 <body>
 	
@@ -24,6 +40,8 @@
 				value="${ucStudent.year}" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
 			
 			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+			<input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" />&nbsp;&nbsp;
 			<button type="reset" class="btn btn-default ">重置</button>
 		</div>
 	</form:form>

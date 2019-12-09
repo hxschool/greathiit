@@ -4,7 +4,22 @@
 <head>
 	<title>数据统计</title>
 	<meta name="decorator" content="default"/>
-	
+	<script type="text/javascript">
+	$(document).ready(function() {
+		
+		$("#btnExport").click(function() {
+			top.$.jBox.confirm("确认要导出据吗？", "系统提示", function(v, h, f) {
+				if (v == "ok") {
+					$("#searchForm").attr("action", "${ctx}/uc/student/departmentExport");
+					$("#searchForm").submit();
+				}
+			}, {
+				buttonsFocus : 1
+			});
+			top.$('.jbox-body .jbox-icon').css('top', '55px');
+		});
+	})
+	</script>
 </head>
 <body>
 	
@@ -24,12 +39,46 @@
 				value="${ucStudent.year}" onclick="WdatePicker({dateFmt:'yyyy',isShowClear:false});"/>
 			
 			&nbsp;&nbsp;&nbsp;<input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>&nbsp;&nbsp;
+			<input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" />&nbsp;&nbsp;
+				<button type="reset" class="btn btn-default ">重置</button>
 		</div>
 	</form:form>
 	<sys:message content="${message}"/>
 	<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
     <div id="main" style="width: 800px;height:600px;margin:0 auto; "></div>
-    
+    <div class="container-fluid">
+		<c:set var="sum" value="0" />
+		<table id="contentTable"
+			class="table table-striped table-bordered table-hover ">
+			<thead>
+				<tr>
+					<th width="20px;">序号</th>
+					<th>学院名称</th>
+					<th>录取人数</th>
+				</tr>
+			</thead>
+			<tbody>
+				
+				<c:forEach items="${list}" var="item" varStatus="status">
+				 	<c:set var="sum" value="${sum+item.TOTAL}"/>
+					<tr>
+
+						<td>${status.index +1}</td>
+						<td>${item.NAME}</td>
+						<td>${item.TOTAL}</td>
+					</tr>
+				</c:forEach>
+			</tbody>
+			<tfoot>
+				<tr>
+
+						<td colspan="2">录取总人数</td>
+						<td>${sum}</td>
+					</tr>
+			</tfoot>
+		</table>
+	</div>
     <script type="text/javascript">
 		    var xAxData = [];
 		    var serData = [];  

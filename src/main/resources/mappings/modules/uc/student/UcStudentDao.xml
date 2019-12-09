@@ -472,7 +472,7 @@
 	</select>
 	
 	<select id="studentDepartment" resultType="map">
-		select  count(department_name)  as TOTAL,department_name  as NAME  from uc_student  where del_flag=0
+		select  count(department_name)  as TOTAL,case department_name when '' then '未知学院' else department_name end as NAME  from uc_student  where del_flag=0
 		and department_name!='' and department_name!='2015'
 		<if test="year!=null and year!=''">
 		and left(start_date,4)=#{year}

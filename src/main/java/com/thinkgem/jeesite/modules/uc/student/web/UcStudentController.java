@@ -3,6 +3,7 @@
  */
 package com.thinkgem.jeesite.modules.uc.student.web;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,14 +65,30 @@ public class UcStudentController extends BaseController {
 		}
 		return entity;
 	}
+	//招生统计
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("group")
 	public String group(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentGroup(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentGroup";
+	}
+	
+	@RequestMapping("groupExport")
+	public String groupExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentGroup(ucStudent);
+			String fileName = "招生统计";
+			String[] headers  = {"招生数量","招生时间"};
+			ExportExcel exportExcel = new ExportExcel("招生统计", headers);
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/group?repage";
 	}
 	
 	@RequestMapping("group.json")
@@ -87,13 +104,29 @@ public class UcStudentController extends BaseController {
 		return ucStudentService.studentUser();
 	}
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("sex")
 	public String sex(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentSex(ucStudent);
 				
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentSex";
+	}
+	
+	@RequestMapping("sexExport")
+	public String sexExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentSex(ucStudent);
+			String fileName = "性别统计";
+			String[] headers  = {"性别统计","招生数量"};
+			ExportExcel exportExcel = new ExportExcel(fileName, headers);
+			
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/sex?repage";
 	}
 	
 	@RequestMapping("sex.json")
@@ -103,12 +136,27 @@ public class UcStudentController extends BaseController {
 	}
 	
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("region")
 	public String region(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentRegion(ucStudent);
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentRegion";
+	}
+	
+	@RequestMapping("regionExport")
+	public String regionExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentRegion(ucStudent);
+			String fileName = "行政区统计";
+			String[] headers  = {fileName,"招生数量"};
+			ExportExcel exportExcel = new ExportExcel(fileName, headers);
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/region?repage";
 	}
 	
 	@RequestMapping("region.json")
@@ -117,12 +165,27 @@ public class UcStudentController extends BaseController {
 		return ucStudentService.studentGengerRegion(ucStudent);
 	}
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("edu")
 	public String edu(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentEdu(ucStudent);	
 		model.addAttribute("list", list);
 		return "modules/uc/student/studentEdu";
+	}
+	
+	@RequestMapping("eduExport")
+	public String eduExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentEdu(ucStudent);
+			String fileName = "学历统计";
+			String[] headers  = {fileName,"招生数量"};
+			ExportExcel exportExcel = new ExportExcel(fileName, headers);
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/edu?repage";
 	}
 	
 	@RequestMapping("edu.json")
@@ -131,7 +194,6 @@ public class UcStudentController extends BaseController {
 		return ucStudentService.studentEdu(ucStudent);
 	}
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("major")
 	public String major(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentMajor(ucStudent);
@@ -140,13 +202,28 @@ public class UcStudentController extends BaseController {
 		return "modules/uc/student/studentMajor";
 	}
 	
+	@RequestMapping("majorExport")
+	public String majorExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentMajor(ucStudent);
+			String fileName = "专业统计";
+			String[] headers  = {fileName,"招生数量"};
+			ExportExcel exportExcel = new ExportExcel(fileName, headers);
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/major?repage";
+	}
+	
 	@RequestMapping("major.json")
 	@ResponseBody
 	public List<Map<String,Object>>  ajaxMajor(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		return ucStudentService.studentMajor(ucStudent);
 	}
 	
-	@RequiresPermissions("uc:ucStudent:view")
 	@RequestMapping("department")
 	public String department(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		List<Map<String,Object>> list = ucStudentService.studentDepartment(ucStudent);
@@ -159,6 +236,23 @@ public class UcStudentController extends BaseController {
 	@ResponseBody
 	public List<Map<String,Object>> ajaxDepartment(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
 		return ucStudentService.studentDepartment(ucStudent);
+	}
+	
+	
+	@RequestMapping("departmentExport")
+	public String departmentExcel(UcStudent ucStudent,HttpServletRequest request, HttpServletResponse response,Model model) {
+		try {
+			List<Map<String,Object>> list = ucStudentService.studentDepartment(ucStudent);
+			String fileName = "学院统计";
+			String[] headers  = {fileName,"招生数量"};
+			ExportExcel exportExcel = new ExportExcel(fileName, headers);
+			exportExcel.setDataList(list).write(response, fileName+".xlsx").dispose();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return "redirect:" + adminPath + "/uc/student/department?repage";
 	}
 	
 	@RequiresPermissions("uc:ucStudent:view")

@@ -26,6 +26,22 @@
 					bottomText : "导入文件不能超过5M，仅允许导入“xls”或“xlsx”格式文件！"
 				});
 			});
+			
+			$("#btnExportAll").click(function(){
+				top.$.jBox.confirm("确认要导出全部数据吗？","系统提示",function(v,h,f){
+					if(v=="ok"){
+						$("#pageSize").val(2000);
+						$("#searchForm").attr("action","${ctx}/course/courseEducational/export");
+						$("#searchForm").submit();
+						$("#pageSize").val(120);
+						$("#searchForm").attr("action","${ctx}/course/courseEducational/");
+						
+					}
+				},{buttonsFocus:1});
+				top.$('.jbox-body .jbox-icon').css('top','55px');
+			});
+			
+			
 		});
 		function page(n,s){
 			$("#pageNo").val(n);
@@ -63,7 +79,12 @@
 				<form:input path="cursName" htmlEscape="false" maxlength="255" class="input-medium"/>
 			</li>
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>  <input
-				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
+				id="btnExport" class="btn btn-primary" type="button" value="导出" /> 
+				
+				
+			<input id="btnExportAll" class="btn btn-primary" type="button" value="导出全部"/>
+				
+				<input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" /></li>
 			<li class="clearfix"></li>
 		</ul>

@@ -108,15 +108,15 @@
 				<form:input path="year" htmlEscape="false" maxlength="18" class="input-medium"/>
 			</li>
 			<div id="element_id">
-			<li><label>所属学院：</label> <select class="department input-medium" style="width:175px"
-				name="department"><option>请选择</option></select></li>
+			<li><label>所属学院：</label> <select class="department input-medium" style="width:175px" 
+				name="department" data-value="${param.department}"><option>请选择</option></select></li>
 
 			<li><label>所属专业：</label> <select id="specialty"
-				class="specialty input-medium" style="width:175px" name="specialty"><option>请选择</option></select>
+				class="specialty input-medium" style="width:175px" name="specialty" data-value="${param.specialty}"><option>请选择</option></select>
 			</li>
 			
 			<li><label>选择班级：</label> <select id="clazz"
-				class="clazz input-medium" name="clazz" style="width:175px"><option>请选择</option></select>
+				class="clazz input-medium" name="clazz" style="width:175px" data-value="${param.clazz}"><option>请选择</option></select>
 			</li>
 			</div>
 		

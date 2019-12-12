@@ -215,7 +215,7 @@
 				AND a.id_card=#{idCard}
 			</if>
 			
-			<if test="clazz != null and clazz.id!=null ">
+			<if test="clazz != null and clazz.id!='' ">
 				and a.clazz_id = #{clazz.id}
 			</if>
 			<if test="status != null and status != ''">

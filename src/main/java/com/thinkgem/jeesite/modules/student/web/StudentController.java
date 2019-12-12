@@ -478,13 +478,16 @@ public class StudentController extends BaseController {
 		
 		if (!org.springframework.util.StringUtils.isEmpty(request.getParameter("search"))) {
 			if (org.springframework.util.StringUtils.isEmpty(request.getParameter("clazz"))) {
-				String grade = request.getParameter("grade");
+				String specialty = request.getParameter("specialty");
 				List<String> clazzNumbers = new ArrayList<String>();
 				List<Office> clsList = null;
-				if (org.springframework.util.StringUtils.isEmpty(grade)) {
-					String specialty = request.getParameter("specialty");
-					if (!org.springframework.util.StringUtils.isEmpty(specialty)) {
-						List<Office> offices = officeService.findByOfficeNameLike(specialty);
+				if (!org.springframework.util.StringUtils.isEmpty(specialty)) {
+					clsList = officeService.findByParentId(specialty);
+				}
+				if (org.springframework.util.StringUtils.isEmpty(specialty)) {
+					String department = request.getParameter("department");
+					if (!org.springframework.util.StringUtils.isEmpty(department)) {
+						List<Office> offices = officeService.findByParentId(department);
 						clsList = new ArrayList();
 						for (Office office : offices) {
 							if (office.getGrade().equals("3")) {
@@ -493,10 +496,6 @@ public class StudentController extends BaseController {
 							}
 						}
 					}
-				} else {
-					Office office = new Office();
-					office.setYear(grade);
-					clsList = officeService.findList(office);
 				}
 				if (!org.apache.commons.collections.CollectionUtils.isEmpty(clsList)) {
 					for (Office cls : clsList) {

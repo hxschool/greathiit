@@ -263,6 +263,19 @@ public class UserUtils {
 		}
 		return officeList;
 	}
+	
+	public static Office getParentOffice(String officeId) {
+		Office office = (Office)getCache("CACHE_OFFICE_PARENT:"+officeId);
+		Office entity = (Office)getCache("CACHE_OFFICE_OFFICE:"+officeId);
+		if(entity==null) {
+			entity = officeDao.get(officeId);
+			putCache("CACHE_OFFICE_OFFICE:", entity);
+			office = officeDao.get(entity.getParent());
+			putCache("CACHE_OFFICE_PARENT:"+officeId, office);
+		}
+		
+		return office;
+	}
 
 	/**
 	 * 获取当前用户有权限访问的部门

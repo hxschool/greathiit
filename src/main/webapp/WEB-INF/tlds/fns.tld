@@ -112,6 +112,14 @@
     <example>${fns:getOffice(id)}</example>  
   </function> 
   
+     <function>
+    <description>获取对象值</description>
+    <name>getParentOffice</name>
+    <function-class>com.thinkgem.jeesite.modules.sys.utils.UserUtils</function-class>
+    <function-signature>com.thinkgem.jeesite.modules.sys.entity.Office getParentOffice(java.lang.String)</function-signature>
+    <example>${fns:getParentOffice(id)}</example>  
+  </function>
+  
   
   <function>
     <description>获取当前用户缓存</description>

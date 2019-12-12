@@ -167,19 +167,22 @@
 				<th>学号</th>
 				<th>姓名</th>
 				<th>身份证号</th>
-				<th>生日</th>
-				<th>性别</th>
-				<th>民族</th>
+				<th>院系</th>
+				<th>专业</th>
+				<th>班级</th>
+				<th>导员</th>
 				<th>政治面貌</th>
 				<th>联系地址</th>
 				<th>学历</th>
-				<th>户口所在地</th>
-				
+				<th>学籍状态</th>
 				<shiro:hasPermission name="student:student:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
 		<tbody>
 		<c:forEach items="${page.list}" var="student">
+			<c:set var="banji" scope="session" value="${student.clazz}"/>
+			<c:set var="zhuanye" scope="session" value="${fns:getParentOffice(banji.id)}"/>
+			<c:set var="xueyuan" scope="session" value="${fns:getParentOffice(zhuanye.id)}"/>
 			<tr>
 				<td>${student.exaNumber}</td>
 				<td>
@@ -193,14 +196,21 @@
 					<a  href="javascript:void(0);" onclick="js_method('${student.idCard}')">${fn:substring(student.idCard, 0, 10)}****${fn:substring(student.idCard, 14,18)}</a>
 				</td>
 				<td>
-					<fmt:formatDate value="${student.birthday}" pattern="yyyy年MM月dd"/>
+					${xueyuan.name}
 				</td>
 				<td>
-					${fns:getDictLabel(student.gender,'sex','')}
+					
+					${zhuanye.name}
 				</td>
 				<td>
-					${fns:getDictLabel(student.nation,'nation','')}
+					${banji.name}
 				</td>
+				
+				<td>
+					${student.clazz.deputyPerson}
+				</td>
+				
+				
 				<td>
 					${fns:getDictLabel(student.political,'political','')}
 				</td>
@@ -212,7 +222,7 @@
 					${fns:getDictLabel(student.edu,'student_edu','')}
 				</td>
 				<td>
-					${student.nativePlace}
+					${fns:getDictLabel(student.status,'student_status','')}
 				</td>
 				
 				<shiro:hasPermission name="student:student:edit"><td>

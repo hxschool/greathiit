@@ -505,6 +505,6 @@ public class UcStudentController extends BaseController {
 			model.addAttribute("message","操作成功");
 		}
 		model.addAttribute("message",sb.toString());
-		return "redirect:"+Global.getAdminPath()+"/uc/student/"+action+"?repage&action=1";
+		return "redirect:"+Global.getAdminPath()+"/uc/student/list?repage&action="+action;
 	}
 }

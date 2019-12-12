@@ -475,71 +475,74 @@ public class StudentController extends BaseController {
 	@RequiresPermissions("student:student:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if (org.springframework.util.StringUtils.isEmpty(request.getParameter("clazz"))) {
-			String grade = request.getParameter("grade");
-			List<String> clazzNumbers = new ArrayList<String>();
-			List<Office> clsList = null;
-			if (org.springframework.util.StringUtils.isEmpty(grade)) {
-				String specialty = request.getParameter("specialty");
-				if (!org.springframework.util.StringUtils.isEmpty(specialty)) {
-					List<Office> offices = officeService.findByOfficeNameLike(specialty);
-					clsList = new ArrayList();
-					for (Office office : offices) {
-						if (office.getGrade().equals("3")) {
-							List<Office> ofs = officeService.findByParentId(office.getId());
-							clsList.addAll(ofs);
+		
+		if (!org.springframework.util.StringUtils.isEmpty(request.getParameter("search"))) {
+			if (org.springframework.util.StringUtils.isEmpty(request.getParameter("clazz"))) {
+				String grade = request.getParameter("grade");
+				List<String> clazzNumbers = new ArrayList<String>();
+				List<Office> clsList = null;
+				if (org.springframework.util.StringUtils.isEmpty(grade)) {
+					String specialty = request.getParameter("specialty");
+					if (!org.springframework.util.StringUtils.isEmpty(specialty)) {
+						List<Office> offices = officeService.findByOfficeNameLike(specialty);
+						clsList = new ArrayList();
+						for (Office office : offices) {
+							if (office.getGrade().equals("3")) {
+								List<Office> ofs = officeService.findByParentId(office.getId());
+								clsList.addAll(ofs);
+							}
 						}
 					}
+				} else {
+					Office office = new Office();
+					office.setYear(grade);
+					clsList = officeService.findList(office);
 				}
-			} else {
-				Office office = new Office();
-				office.setYear(grade);
-				clsList = officeService.findList(office);
-			}
-			if (!org.apache.commons.collections.CollectionUtils.isEmpty(clsList)) {
-				for (Office cls : clsList) {
-					clazzNumbers.add(cls.getId());
+				if (!org.apache.commons.collections.CollectionUtils.isEmpty(clsList)) {
+					for (Office cls : clsList) {
+						clazzNumbers.add(cls.getId());
+					}
 				}
-			}
-			
-			if (!org.apache.commons.collections.CollectionUtils.isEmpty(clazzNumbers)) {
-				student.setClazzNumbers(clazzNumbers);
-			}
-		}
-		List<Office> ofs = null;
-		String primaryPersonId = request.getParameter("primaryPersonId");
-		if(!org.springframework.util.StringUtils.isEmpty(primaryPersonId)) {
-			Office op = new Office();
-			op.setDeputyPerson(systemService.getCasByLoginName(primaryPersonId));
-			ofs = officeService.findList(op);
-			
-		}
-		String deputyPersonId = request.getParameter("deputyPersonId");
-		if(!org.springframework.util.StringUtils.isEmpty(deputyPersonId)) {
-			Office op = new Office();
-			User u = new User();
-			u.setNo(deputyPersonId);
-			
-			op.setDeputyPerson(systemService.getCasByLoginName(deputyPersonId));
-			ofs = officeService.findList(op);	
-		}
-		
-		if(!org.springframework.util.StringUtils.isEmpty(ofs)) {
-			List<String> clazzNumbers = new ArrayList<String>();
-			if(ofs.size()==0) {
-				clazzNumbers.add("99999999");
-				student.setClazzNumbers(clazzNumbers);
-			}else {
 				
-				for (Office cls : ofs) {
-					clazzNumbers.add(cls.getId());
+				if (!org.apache.commons.collections.CollectionUtils.isEmpty(clazzNumbers)) {
+					student.setClazzNumbers(clazzNumbers);
 				}
-				student.setClazzNumbers(clazzNumbers);
 			}
+			List<Office> ofs = null;
+			String primaryPersonId = request.getParameter("primaryPersonId");
+			if(!org.springframework.util.StringUtils.isEmpty(primaryPersonId)) {
+				Office op = new Office();
+				op.setDeputyPerson(systemService.getCasByLoginName(primaryPersonId));
+				ofs = officeService.findList(op);
+				
+			}
+			String deputyPersonId = request.getParameter("deputyPersonId");
+			if(!org.springframework.util.StringUtils.isEmpty(deputyPersonId)) {
+				Office op = new Office();
+				User u = new User();
+				u.setNo(deputyPersonId);
+				
+				op.setDeputyPerson(systemService.getCasByLoginName(deputyPersonId));
+				ofs = officeService.findList(op);	
+			}
+			
+			if(!org.springframework.util.StringUtils.isEmpty(ofs)) {
+				List<String> clazzNumbers = new ArrayList<String>();
+				if(ofs.size()==0) {
+					clazzNumbers.add("99999999");
+					student.setClazzNumbers(clazzNumbers);
+				}else {
+					
+					for (Office cls : ofs) {
+						clazzNumbers.add(cls.getId());
+					}
+					student.setClazzNumbers(clazzNumbers);
+				}
+			}
+			
+			Page<Student> page = studentService.findPage(new Page<Student>(request, response), student);
+			model.addAttribute("page", page);
 		}
-		
-		Page<Student> page = studentService.findPage(new Page<Student>(request, response), student);
-		model.addAttribute("page", page);
 		return "modules/student/studentList";
 	}
 

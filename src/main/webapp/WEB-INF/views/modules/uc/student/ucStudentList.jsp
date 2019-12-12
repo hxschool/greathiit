@@ -139,12 +139,12 @@
 			
 			<li class="clearfix"></li>
 			
-			<li class="btns"><label></label><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<li class="btns"><label></label><input id="btnSubmit" class="btn btn-primary" type="submit" name="search" value="查询"/>
 			<input
 				id="btnExport" class="btn btn-primary" type="button" value="导出" /> <input
 				id="btnImport" class="btn btn-primary" type="button" value="导入" />
 				
-				<input type="hidden" name="action" id="action" value="1"/>
+				<input type="hidden" name="action" id="action" value="${param.action}"/>
 				<input type="hidden" name="description" id="description"/>
 			</li>
 			<li class="clearfix"></li>
@@ -155,7 +155,7 @@
 		<thead>
 			<tr>
 					<shiro:hasPermission
-							name="uc:ucStudent:operation">
+							name="uc:student:operation">
 				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				</shiro:hasPermission>
 				<th>真实姓名</th>
@@ -178,7 +178,7 @@
 		<c:forEach items="${page.list}" var="ucStudent">
 			<tr>
 				<shiro:hasPermission
-							name="uc:ucStudent:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
+							name="uc:student:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
 
 				<td>
 					${ucStudent.name}
@@ -218,7 +218,7 @@
 				<shiro:hasPermission name="uc:ucStudent:edit"><td>
     				<a class="btn btn btn-info" href="${ctx}/uc/student/form?id=${ucStudent.id}">修改</a>
     				
-    				<shiro:hasPermission name="uc:ucStudent:tingyong">
+    				<shiro:hasPermission name="uc:student:tingyong">
 					<a class="btn btn-small btn-danger" href="${ctx}/uc/student/delete?id=${ucStudent.id}" onclick="return confirmx('确认要删除该学籍信息吗？', this.href)">停用</a>
 					</shiro:hasPermission>
 				</td></shiro:hasPermission>
@@ -267,15 +267,15 @@
 		<tfoot><tr>
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="15"> 
 			
-			<a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a>
-			<c:if test="${param.action!=null and param.action!=''}">
+			<!-- <a href="#" onclick="batchBox('${ctx}/uc/student/deleteList')" class="btn btn-primary">批量停用</a> -->
 			
-			<shiro:hasPermission
+			<c:if test="${param.action!=null and param.action!=1 }">
+				<shiro:hasPermission
 							name="uc:student:batch">
-				<a href="#" onclick="batchAction(1)" class="btn ">${fns:getDictLabel(1,'student_learning','')}</a>
+				<!-- <a href="#" onclick="batchAction(1)" class="btn ">${fns:getDictLabel(1,'student_learning','')}</a> -->
 				<a href="#" onclick="batchAction(2)" class="btn btn-info">${fns:getDictLabel(2,'student_learning','')}</a>
-				<a href="#" onclick="batchAction(3)" class="btn btn-success">${fns:getDictLabel(3,'student_learning','')}</a>
-				<a href="#" onclick="batchAction(4)" class="btn btn-danger">${fns:getDictLabel(4,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(7)" class="btn btn-success">${fns:getDictLabel(7,'student_learning','')}</a>
+				<a href="#" onclick="batchAction(8)" class="btn btn-danger">${fns:getDictLabel(8,'student_learning','')}</a>
 				</shiro:hasPermission>
 			</c:if>
 			</th>

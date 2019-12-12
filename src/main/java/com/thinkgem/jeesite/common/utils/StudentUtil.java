@@ -3,6 +3,9 @@ package com.thinkgem.jeesite.common.utils;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.thinkgem.jeesite.modules.course.entity.Course;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
@@ -11,9 +14,36 @@ import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 
 public class StudentUtil {
+	private static Logger logger = LoggerFactory.getLogger(StudentUtil.class);
 	private static OfficeService officeService = SpringContextHolder.getBean(OfficeService.class);
 	private static SelectCourseService selectCourseService = SpringContextHolder.getBean(SelectCourseService.class);
-	private static String[] majors = {"01","02","03","04","05","06","07"};
+	private static String[] majors = {"01","02","03","04","05","06","07","08"};
+	
+	public static Office getClassNo(String major,String classNo) {
+		Office office = officeService.getOfficeByName(major);
+		Office clazz = officeService.get(classNo);
+		if(!org.springframework.util.StringUtils.isEmpty(office)) {
+			if(org.springframework.util.StringUtils.isEmpty(clazz)) {
+				//判断是否包含中文
+				if(RegexUtils.isContainChinese(classNo)) {
+					String number = RegexUtils.removeChinese(classNo);
+					if (number.length() == 4) {
+						String year = "20" + StringUtils.left(number, 2);
+						String classNumber = StringUtils.right(number, 2);
+						return createClasses(year,office.getId(),classNumber);
+					}
+					
+				}else {
+					String year = "20" + StringUtils.left(classNo, 2);
+					String classNumber = StringUtils.right(classNo, 2);
+					return createClasses(year,office.getId(),classNumber);
+				}
+			}
+		}
+		logger.error("信息异常不合法专业:{},classid:{}",major,classNo);
+		
+		return clazz;
+	}
 	
 	public static String  assignClasses(String majorId,String classNo) {
 		String year = DateUtils.getDate("yyyy");

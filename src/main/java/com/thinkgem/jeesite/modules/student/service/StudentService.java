@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
 import com.thinkgem.jeesite.common.utils.StringUtils;
+import com.thinkgem.jeesite.common.utils.StudentUtil;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentStatusLog;
@@ -62,13 +63,13 @@ public class StudentService extends CrudService<StudentDao, Student> {
 		try {
 			logger.info("准备导入数据~");
 			User user = new User();
-			String password = StringUtils.right(student.getIdCard().toLowerCase(), 6);
+			
 			user.setNo(student.getStudentNumber());
 			user.setName(student.getName());
 			user.setLoginName(student.getIdCard());
 			user.setMobile(student.getPhone());
 			user.setPhone(student.getPhone());
-			user.setPassword(SystemService.entryptPassword(password));
+			user.setPassword(SystemService.entryptPassword("888888"));
 			Role role = new Role("99");
 			List<Role> rs = new ArrayList<Role>();
 			rs.add(role);
@@ -99,6 +100,11 @@ public class StudentService extends CrudService<StudentDao, Student> {
 			user.setUpdateDate(new Date());
 			user.setRemarks("黑龙江省招生办导入学生信息");
 			systemService.saveUser(user);
+			if(!org.springframework.util.StringUtils.isEmpty(student.getClazz())) {
+				Office clazz = StudentUtil.getClassNo(student.getZy(),student.getClazz().getName());
+				student.setClazz(clazz);
+			}
+			
 			super.save(student);
 		}catch (Exception e) {
 			logger.error("导入错误:["+e+"]");

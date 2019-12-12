@@ -172,7 +172,7 @@
 	<ul class="nav nav-tabs">
 		<li class="active"><a href="${ctx}/student/action/">${fns:getDictLabel(param.action,'student_status','学生信息')}</a></li>
 	</ul>
-	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/action/?op=search" method="post" class="breadcrumb form-search">
+	<form:form id="searchForm" modelAttribute="student" action="${ctx}/student/action/" method="post" class="breadcrumb form-search">
 		<input id="action" name="action" type="hidden" value="${param.action}"/>
 		<input type="hidden" name="description" id="description"/>
 		<input id="pageNo" name="pageNo" type="hidden" value="${page.pageNo}"/>
@@ -232,7 +232,7 @@
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
 			</li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/></li>
+			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" name="search" value="查询"/></li>
 			<li class="clearfix"></li>
 		</ul>
 	</form:form>

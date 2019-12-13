@@ -178,7 +178,7 @@
 		<c:forEach items="${page.list}" var="ucStudent">
 			<tr>
 				<shiro:hasPermission
-							name="uc:student:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" onclick="selectSingle()"/></td>  </shiro:hasPermission>
+							name="uc:student:operation"><td><input type="checkbox" name="ids" value="${ucStudent.id}" /></td>  </shiro:hasPermission>
 
 				<td>
 					${ucStudent.name}

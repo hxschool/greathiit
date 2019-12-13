@@ -116,6 +116,7 @@ public class StudentService extends CrudService<StudentDao, Student> {
 	}
 	@Transactional(readOnly = false)
 	public void save(Student student) {
+		
 		Student entity = null;
 		if (!org.springframework.util.StringUtils.isEmpty(student)
 				&& !org.springframework.util.StringUtils.isEmpty(student.getId())) {

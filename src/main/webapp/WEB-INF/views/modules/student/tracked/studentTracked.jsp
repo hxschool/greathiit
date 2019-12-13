@@ -176,9 +176,9 @@
 			<tr>
 				<th width="20px;"><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				<th width="80px;">班级</th>
-				<th>原班级</th>
+				<th width="80px;">原班级</th>
 				<th width="80px;">学号</th>
-				<th>姓名</th>
+				<th width="80px;">姓名</th>
 				
 				
 				<th>学历</th>

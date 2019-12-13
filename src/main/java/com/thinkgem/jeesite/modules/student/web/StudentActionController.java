@@ -23,6 +23,7 @@ import com.thinkgem.jeesite.common.utils.StringUtils;
 import com.thinkgem.jeesite.common.utils.excel.ExportExcel;
 import com.thinkgem.jeesite.common.web.BaseController;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.student.export.StudentAction;
 import com.thinkgem.jeesite.modules.student.service.StudentService;
 import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
@@ -95,33 +96,39 @@ public class StudentActionController extends BaseController {
 						if(!org.springframework.util.StringUtils.isEmpty(student.getDescription())) {
 							description = student.getDescription()  + "\n" + description;
 						}
+						student.setStudentAction(StudentAction.student);
 						student.setDescription(description);
 						studentService.save(student);
-						User user = systemService.getUserByLoginName(student.getIdCard());
-						if(!org.springframework.util.StringUtils.isEmpty(user)) {
-							boolean ret = false;
-							if(action.equals("2")) {
-								Office  office = officeDao.get(description);
-								if(!org.springframework.util.StringUtils.isEmpty(office)) {
-									user.setOffice(office);
-									ret = true;
+						if(!org.springframework.util.StringUtils.isEmpty(student.getIdCard())) {
+							User user = systemService.getUserByLoginName(student.getIdCard());
+							if(!org.springframework.util.StringUtils.isEmpty(user)) {
+								boolean ret = false;
+								if(action.equals("2")) {
+									Office  office = officeDao.get(description);
+									if(!org.springframework.util.StringUtils.isEmpty(office)) {
+										user.setOffice(office);
+										ret = true;
+									}
 								}
-							}
-							if(action.equals("3")||action.equals("4")||action.equals("5")||action.equals("6")) {
-								Office  clazz = officeDao.get(description);
-								if(!org.springframework.util.StringUtils.isEmpty(clazz)) {
-									user.setClazz(clazz);
-									ret = true;
+								if(action.equals("3")||action.equals("4")||action.equals("5")||action.equals("6")) {
+									Office  clazz = officeDao.get(description);
+									if(!org.springframework.util.StringUtils.isEmpty(clazz)) {
+										user.setClazz(clazz);
+										ret = true;
+									}
 								}
-							}
-							if(ret) {
-								systemService.saveUser(user);
+								if(ret) {
+									systemService.saveUser(user);
+								}
 							}
 						}
 					}
 				}
 			}
 			addMessage(redirectAttributes, "操作成功");
+			if(!org.springframework.util.StringUtils.isEmpty(request.getParameter("module"))&&request.getParameter("module").equals("student")) {
+				return "redirect:"+Global.getAdminPath()+"/student/student/?search=all&repage";
+			}
 			return "redirect:"+Global.getAdminPath()+"/student/action/?op=search&action="+action+"&repage";
 		}
 		return "redirect:"+Global.getAdminPath()+"/student/action/?repage";

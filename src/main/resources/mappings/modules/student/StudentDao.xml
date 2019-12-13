@@ -49,6 +49,7 @@
 		a.update_date AS "updateDate",
 		a.remarks AS "remarks",
 		a.del_flag AS "delFlag",
+		a.clazz_name as "clazzName",
 		cl.id as "clazz.id",
 		cl.name as "clazz.name"
 	</sql>
@@ -91,9 +92,7 @@
 		<include refid="studentJoins"/>
 		<where>
 			a.del_flag = 0
-			<if test="isClass==0">
-				and ( a.clazz_id is null or a.clazz_id ='')
-			</if>
+			
 			<if test="clazzNumbers != null and clazzNumbers.size>0 ">
 				and a.clazz_id IN 
 				<foreach item="st" collection="clazzNumbers" index="idx" open="(" separator="," close=")">
@@ -270,6 +269,7 @@
 	<insert id="insert">
 		INSERT INTO student(
 			id,
+			clazz_name,
 			exa_number,
 			location,
 			xy,
@@ -317,6 +317,7 @@
 			del_flag
 		) VALUES (
 			#{id},
+			#{clazzName},
 			#{exaNumber},
 			#{location},
 			#{xy},
@@ -368,6 +369,7 @@
 	<update id="update">
 		UPDATE student SET 	
 			exa_number = #{exaNumber},
+			clazz_name = #{clazzName},
 			xy = #{xy},
 			zy = #{zy},
 			year = #{year},

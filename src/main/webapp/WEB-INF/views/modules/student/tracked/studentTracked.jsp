@@ -151,14 +151,14 @@
 			<li><label>姓名：</label>
 				<form:input path="name" htmlEscape="false" maxlength="64" class="input-medium"/>
 			</li>
-			<li><label>性别：</label>
+			<!-- <li><label>性别：</label>
 				
 				<form:select path="gender" class="input-medium " style="width:175px">
 							<option value="">请选择</option>
 							<form:options items="${fns:getDictList('sex')}"
 								itemLabel="label" itemValue="value" htmlEscape="false" />
 						</form:select>
-			</li>
+			</li> -->
 			
 			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" name="search" value="查询"/>
@@ -176,10 +176,11 @@
 			<tr>
 				<th width="20px;"><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				<th width="80px;">班级</th>
+				<th>原班级</th>
 				<th width="80px;">学号</th>
 				<th>姓名</th>
 				
-				<th>性别</th>
+				
 				<th>学历</th>
 				
 			</tr>
@@ -192,15 +193,14 @@
 					${student.clazz.name}
 				</td>
 				<td>
+					${student.clazzName}
+				</td>
+				<td>
 					${student.studentNumber}
 				</td>
 				<td><a href="${ctx}/student/student/form?id=${student.id}">
 					${student.name}
 				</a></td>
-				
-				<td>
-					${fns:getDictLabel(student.gender,'sex','')}
-				</td>
 				
 				<td>
 					${fns:getDictLabel(student.edu,'student_edu','')}

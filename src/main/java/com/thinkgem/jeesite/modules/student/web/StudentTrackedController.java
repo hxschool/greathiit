@@ -99,6 +99,10 @@ public class StudentTrackedController extends BaseController {
 				for(String id:arrayIds) {
 					Student student = studentService.get(id);
 					if(!org.springframework.util.StringUtils.isEmpty(student)) {
+						Office oldClazz = student.getClazz();
+						if(!org.springframework.util.StringUtils.isEmpty(oldClazz)) {
+							student.setClazzName(oldClazz.getName());
+						}
 						Office cls = officeService.get(description);
 						student.setClazz(cls);
 						student.setStudentAction(StudentAction.tracked);

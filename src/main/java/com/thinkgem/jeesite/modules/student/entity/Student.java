@@ -58,6 +58,8 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	private String zy;		// 专业
 	@ExcelField(title="年级", align=2, sort=10)
 	private String year;//年级
+	//原
+	private String clazzName;
 	
 	@ExcelField(title="班级", align=2, sort=11)
 	private Office clazz;		// 班级编号
@@ -493,6 +495,14 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 
 	public void setStudentAction(StudentAction studentAction) {
 		this.studentAction = studentAction;
+	}
+
+	public String getClazzName() {
+		return clazzName;
+	}
+
+	public void setClazzName(String clazzName) {
+		this.clazzName = clazzName;
 	}
 
 	@Override

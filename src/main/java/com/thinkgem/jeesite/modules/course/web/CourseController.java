@@ -170,6 +170,11 @@ public class CourseController extends BaseController {
 	@RequiresPermissions("course:course:view")
 	@RequestMapping(value = "form")
 	public String form(Course course, Model model) {
+		if(!StringUtils.isEmpty(course.getCursProperty())&&course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+			config = new SysConfig();
+			config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
+			course.setCursYearTerm(config.getTermYear());
+		}
 		model.addAttribute("course", course);
 		return "modules/course/courseForm";
 	}

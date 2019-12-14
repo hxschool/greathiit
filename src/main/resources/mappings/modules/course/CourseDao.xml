@@ -29,6 +29,9 @@
 		a.curs_face AS "cursFace",
 		t.teacher_number AS "teacher.teacherNumber",
 		t.tchr_name as "teacher.tchrName",
+		m.curs_content AS "courseTeachingMode.cursContent",
+		m.period AS "courseTeachingMode.period",
+		m.teac_method as "courseTeachingMode.teacMethod",
 		
 		a.exam_time as "examTime",
 		a.propositioner as "propositioner",
@@ -47,6 +50,7 @@
 	
 	<sql id="courseJoins">
 	LEFT JOIN teacher t on a.teacher_number=t.teacher_number
+	LEFT JOIN Course_Teaching_Mode m on a.id=m.course_id
 	</sql>
     
 	<select id="get" resultType="Course">

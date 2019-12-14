@@ -121,7 +121,7 @@ public class Course extends DataEntity<Course> {
 	}
 
 	@Length(min=1, max=255, message="课程编号长度必须介于 1 和 255 之间")
-	@ExcelField(title="课程编码",  align=2, sort=3)
+	@ExcelField(title="课程编码",  align=2, sort=1)
 	public String getCursNum() {
 		return cursNum;
 	}
@@ -131,7 +131,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=1, max=255, message="课程名称长度必须介于 1 和 255 之间")
-	@ExcelField(title="课程名称",  align=2, sort=4)
+	@ExcelField(title="课程名称",  align=2, sort=2)
 	public String getCursName() {
 		return cursName;
 	}
@@ -158,7 +158,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="学时长度必须介于 0 和 255 之间")
-	@ExcelField(title="学时",  align=2, sort=6)
+	@ExcelField(title="学时",  align=2, sort=4)
 	public String getCursClassHour() {
 		return cursClassHour;
 	}
@@ -176,7 +176,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="学期长度必须介于 0 和 255 之间")
-	@ExcelField(title="学期",  align=2, sort=1)
+	@ExcelField(title="学期",  align=2, sort=6)
 	public String getCursYearTerm() {
 		return cursYearTerm;
 	}
@@ -222,7 +222,7 @@ public class Course extends DataEntity<Course> {
 	}
 	
 	@Length(min=0, max=255, message="课程性质长度必须介于 0 和 255 之间")
-	@ExcelField(title="课程性质",  align=2, sort=2,dictType="course_property")
+	@ExcelField(title="课程性质",  align=2, sort=7,dictType="course_property")
 	public String getCursProperty() {
 		return cursProperty;
 	}
@@ -233,7 +233,7 @@ public class Course extends DataEntity<Course> {
 	
 
 	@Length(min=0, max=255, message="课程类型长度必须介于 0 和 255 之间")
-	@ExcelField(title="课程类型",  align=2, sort=7,dictType="course_curs_type")
+	@ExcelField(title="课程类型",  align=2, sort=8,dictType="course_curs_type")
 	public String getCursType() {
 		return cursType;
 	}
@@ -242,7 +242,7 @@ public class Course extends DataEntity<Course> {
 		this.cursType = cursType;
 	}
 	
-	@ExcelField(title="考核形式",  align=2, sort=8,dictType="course_curs_form")
+	@ExcelField(title="考核形式",  align=2, sort=9,dictType="course_curs_form")
 	public String getCursForm() {
 		return cursForm;
 	}
@@ -252,7 +252,7 @@ public class Course extends DataEntity<Course> {
 	public void setCursForm(String cursForm) {
 		this.cursForm = cursForm;
 	}
-	@ExcelField(title="教师姓名", align=2, sort=9,fieldType=TeacherType.class)
+	@ExcelField(title="教师姓名", align=2, sort=3,fieldType=TeacherType.class)
 	public Teacher getTeacher() {
 		return teacher;
 	}
@@ -308,7 +308,7 @@ public class Course extends DataEntity<Course> {
 	public void setCursEduNum(String cursEduNum) {
 		this.cursEduNum = cursEduNum;
 	}
-	@ExcelField(title="班额上限",  align=2, sort=11)
+	@ExcelField(title="班额上限",  align=2, sort=12)
 	public Integer getUpperLimit() {
 		return upperLimit;
 	}
@@ -316,7 +316,7 @@ public class Course extends DataEntity<Course> {
 	public void setUpperLimit(Integer upperLimit) {
 		this.upperLimit = upperLimit;
 	}
-	@ExcelField(title="班额下限",  align=2, sort=12)
+	@ExcelField(title="班额下限",  align=2, sort=11)
 	public Integer getLowerLimit() {
 		return lowerLimit;
 	}

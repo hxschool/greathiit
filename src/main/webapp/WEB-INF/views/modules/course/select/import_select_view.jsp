@@ -36,8 +36,8 @@
 
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
-			<br /> <input id="btnImportSubmit" class="btn btn-primary"
-				type="submit" value="   导    入   " /> <a
+			<br /> <input id="btnImportSubmit" class="button button-primary button-rounded button-small"
+				type="submit" value="   导    入   " /> <a class="button button-action button-rounded button-small"
 				href="${pageContext.request.contextPath}/resources/course/import_select_download.xlsx">下载模板</a>
 		</form>
 	</div>
@@ -46,7 +46,11 @@
 		<ul class="ul-form">
 			
 			<li class="btns"> <input
-				id="btnImport" class="btn btn-primary" type="button" value="导入选课数据" /></li>
+				id="btnImport" class="button button-primary button-rounded button-small" type="button" value="导入选课" />
+				
+				<a
+				href="${pageContext.request.contextPath}/resources/course/import_select_download.xlsx" class="button button-action button-rounded button-small">下载模板</a>
+				</li>
 			<li class="clearfix"></li>
 		</ul>
 	</div>

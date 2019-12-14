@@ -32,7 +32,7 @@
 			onsubmit="loading('正在导入，请稍等...');">
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
-			<br /> <input id="btnImportSubmit" class="btn btn-primary"
+			<br /> <input id="btnImportSubmit" class="button button-primary button-rounded button-small"
 				type="submit" value="   导    入   " /> <a
 				href="${ctx}/course/course/import/template">下载模板</a>
 		</form>
@@ -61,11 +61,11 @@
 							<c:if test="${config.termYear==termYear.key}"> selected="selected" </c:if>>${termYear.key}</option>
 					</c:forEach>
 			</select></li>
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<li class="btns"><input id="btnSubmit" class="button button-primary button-rounded button-small" type="submit" value="查询"/>
 			
-			<a class="btn btn-primary"
+			<a class="button button-primary button-rounded button-small"
 				href="${ctx}/course/course/import/template">下载模板</a> <input
-				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
+				id="btnImport" class="button button-primary button-rounded button-small" type="button" value="课程导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -74,18 +74,20 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+			
+				
+				
 				<th>课程编号</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
 				<th>开设学期</th>
 				<th>学时</th>
 				<th>学分</th>
-				
 				<th>课程性质</th>
+				<th>考核形式</th>
 				
 				<th>课程类型</th>
 				<th>课程简介</th>
-				<th>备注</th>
 				<th>查看</th>
 			</tr>
 		</thead>
@@ -96,13 +98,13 @@
 					${course.cursNum}
 				</a></td>
 				<td>
-					${course.cursName}
+					${course.courseTeachingMode} - ${course.cursName}
 				</td>
 				<td>
 					${course.teacher.tchrName}
 				</td>
 		
-			<td>
+				<td>
 					${course.cursYearTerm}
 				</td>
 				<td>
@@ -114,31 +116,32 @@
 				
 				<td>
 					
-					${fns:getDictLabel(course.cursProperty, 'course_property', '暂无信息')}
+					${fns:getDictLabel(course.cursProperty, 'course_property', '')}
 				</td>
+					<td>
+					
+					${fns:getDictLabel(course.cursProperty, 'course_curs_form', '')}
+				</td>
+				
 
 				<td>
 					
-					${fns:getDictLabel(course.cursType, 'course_curs_type', '暂无信息')}
+					${fns:getDictLabel(course.cursType, 'course_curs_type', '')}
 				</td>
 	
 				<td>
 					<a href="javacript:void(0);" title="${course.cursIntro }">${fns:abbr(course.cursIntro,10)}</a>
 				</td>
 				<td>
-					${fns:abbr(course.remarks,10)}
-				</td>
-				<td>
-				
 					
-    				<a  class="btn btn-primary" href="${ctx}/course/select/student?id=${course.id}" style="width:68px;">查看(${fnc:countStudents(course.id)})</a>
-					<a class="btn btn-primary" href="${ctx}/course/course/form?cursProperty=50&id=${course.id}">修改</a>
-
-    				<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
+    				<a class="button button-primary button-rounded button-small" href="${ctx}/course/select/student?id=${course.id}">查看(${fnc:countStudents(course.id)})</a>
+					<a class="button button-primary button-rounded button-small" href="${ctx}/course/course/form?cursProperty=50&id=${course.id}">修改</a>
+    				<a  class="button button-action button-rounded button-small" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
     				<shiro:hasPermission name="student:studentCourse:export">
-    					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
+    					<a  class="button button-action button-rounded button-small" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
     				</shiro:hasPermission>
-    				<a  class="btn btn-success" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
+    				<a  class="button button-action button-rounded button-small" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
+    				
     				
 				</td>
 			</tr>

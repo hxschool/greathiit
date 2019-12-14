@@ -402,14 +402,14 @@ public class CourseSelectController extends BaseController {
 					String curs_credit = selectCourse[4];// 学分
 					String curs_year_term = selectCourse[5];// 学期
 					String curs_property = DictUtils.getDictValue(selectCourse[6], "course_property", "公共选修课");// 课程性质
-					String teac_method = DictUtils.getDictValue(selectCourse[7], "teac_method", "面授");// 授课类型/课程类型
-					String remark = selectCourse[8];
-					String curs_face = selectCourse[9];// 面向学生
+					String curs_type = DictUtils.getDictValue(selectCourse[7], "course_curs_type", "课程类型");// 课程性质
+					String cursForm = DictUtils.getDictValue(selectCourse[8], "course_curs_form", "考核形式");// 考核形式
+					
+					String teac_method = DictUtils.getDictValue(selectCourse[9], "teac_method", "面授");// 授课类型/课程类型
 					String lower_limit = selectCourse[10];// 下限
 					String upper_limit = selectCourse[11];// 上限
-
+					String remark = selectCourse[12];// 面向学生
 					User user = systemService.isExisUser("", "", tchr_name, null, null);
-
 					Teacher teacher = new Teacher();
 					teacher.setTeacherNumber(user.getNo());
 					Course course = new Course();
@@ -424,6 +424,8 @@ public class CourseSelectController extends BaseController {
 					course.setCursCredit(curs_credit);
 					course.setCursYearTerm(curs_year_term);
 					course.setCursProperty(curs_property);
+					
+					
 
 					int upperLimit = 0, lowerLimit = 0;
 					if (!StringUtils.isEmpty(lower_limit) && !lower_limit.equals("无")) {
@@ -434,12 +436,10 @@ public class CourseSelectController extends BaseController {
 					}
 					course.setLowerLimit(lowerLimit);
 					course.setUpperLimit(upperLimit);
-					course.setCursFace(CourseUtil.grade(curs_face));
+					course.setCursFace(CourseUtil.grade(remark));
 					course.setCursStatus(Course.PAIKE_STATUS_YI_PAIKE);
-					String curs_type = "考查";
-					course.setCursType(DictUtils.getDictValue(curs_type, "course_curs_type", "考查"));
-					String cursForm = "其他";
-					course.setCursForm(DictUtils.getDictValue(cursForm, "course_curs_form", "其他"));
+					course.setCursType(curs_type);
+					course.setCursForm(cursForm);
 					course.setCursIntro(remark);
 					course.setRemarks(remark);
 					
@@ -450,11 +450,11 @@ public class CourseSelectController extends BaseController {
 					courseTeachingModeService.save(courseTeachingMode);
 					
 					
-					if(!StringUtils.isEmpty(selectCourse[7])) {
-						String method = selectCourse[7].trim();
+					if(!StringUtils.isEmpty(selectCourse[9])) {
+						String method = selectCourse[9].trim();
 						if(method.equals("面授")) {
-							String time = selectCourse[12];
-							String address = selectCourse[13];
+							String time = selectCourse[13];
+							String address = selectCourse[14];
 							if(!StringUtils.isEmpty(time)&&!StringUtils.isEmpty(address)) {
 								//周一，5-6节
 								String ss[] = time.split("，");

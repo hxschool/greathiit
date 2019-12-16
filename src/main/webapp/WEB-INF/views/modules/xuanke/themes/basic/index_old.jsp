@@ -284,6 +284,7 @@ function showRemark(title,remark){
 		  content: "<div style='margin:10px;'>"+remark+"</div>" //iframe的url
 		}); 
 }
+
 function countTime() {
     //获取当前时间
     var date = new Date();
@@ -291,6 +292,7 @@ function countTime() {
     //设置截止时间
     var endDate = new Date("${fns:getDictLabel('end', 'select_course_end', '')}");
     var end = endDate.getTime();
+    alert(end);
     //时间差
     var leftTime = end-now;
     //定义变量 d,h,m,s保存倒计时的时间

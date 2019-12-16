@@ -245,7 +245,6 @@ public class ExportExcel {
 			sheet.addMergedRegion(new CellRangeAddress(titleRow.getRowNum(),
 					titleRow.getRowNum(), titleRow.getRowNum(), headerList.size()-1));
 		}
-		setHeader(headerList);
 	}
 	
 	public void setHeader(List<String> headerList) {

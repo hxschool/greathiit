@@ -379,7 +379,8 @@ public class CourseSelectController extends BaseController {
 	
 
     @RequestMapping(value = "import_select_view")
-	public String viewSelect() {
+	public String viewSelect(Model model, RedirectAttributes redirectAttributes) {
+    	
 		return "modules/course/select/import_select_view";
 	}
 	@RequestMapping(value = "import_select")
@@ -521,7 +522,7 @@ public class CourseSelectController extends BaseController {
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			addMessage(model, "导入失败！失败信息："+ex.getMessage());
+			addMessage(redirectAttributes, "导入失败！失败信息："+ex.getMessage());
 		}
 		return "redirect:" + adminPath + "/course/select/import_select_view?repage";
 	}

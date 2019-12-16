@@ -52,25 +52,28 @@
 				</div>
 				
 				<script>
+				
 				function countTime() {
 				    //获取当前时间
 				    var date = new Date();
 				    var now = date.getTime();
 				    //设置截止时间
-				    //var endDate = new Date("${fns:getDictLabel('end', 'select_course_end', '')}");
-				    var endDate = new Date("${config.endDate}");;
-			
+				    var endDate = new Date("${config.endDate}");
+				    var startDate = new Date("${config.startDate}");
 				    var end = endDate.getTime();
 				    //时间差
+				   
 				    var leftTime = end-now;
 				    //定义变量 d,h,m,s保存倒计时的时间
 				    var d='0',h='0',m='0',s='0';
+				    <c:if test="${config.status==0}">
 				    if (leftTime>=0) {
 				        d = Math.floor(leftTime/1000/60/60/24);
 				        h = Math.floor(leftTime/1000/60/60%24);
 				        m = Math.floor(leftTime/1000/60%60);
 				        s = Math.floor(leftTime/1000%60);                   
 				    }
+				    </c:if>
 				    //将倒计时赋值到div中
 				    document.getElementById("_d").innerHTML = d+"天";
 				    document.getElementById("_h").innerHTML = h+"时";

@@ -136,11 +136,25 @@
 					
     				<a class="button button-primary button-rounded button-small" href="${ctx}/course/select/student?id=${course.id}">查看(${fnc:countStudents(course.id)})</a>
 					<a class="button button-primary button-rounded button-small" href="${ctx}/course/course/form?cursProperty=50&id=${course.id}">修改</a>
-    				<a  class="button button-action button-rounded button-small" href="${ctx}/course/select/export?course.id=${course.id}">导出</a>
-    				<shiro:hasPermission name="student:studentCourse:export">
-    					<a  class="button button-action button-rounded button-small" href="${ctx}/student/studentCourse/export/student?id=${course.id}">导出学生信息</a>
-    				</shiro:hasPermission>
-    				<a  class="button button-action button-rounded button-small" href="${ctx}/course/select/studentCourse?id=${course.id}">导出成绩单</a>
+    				
+    				
+    				
+    				<div class="btn-group ">
+						    <button type="button" class="btn btn-default dropdown-toggle " data-toggle="dropdown">导出
+						        <span class="caret"></span>
+						    </button>
+							<ul class="dropdown-menu" role="menu">
+								<li>
+								<a  href="${ctx}/course/select/export?course.id=${course.id}">导出签到表</a>
+								</li>
+								<shiro:hasPermission name="student:studentCourse:export">
+									<li><a href="${ctx}/student/studentCourse/export/student?id=${course.id}">学生信息</a>
+									</li>
+								</shiro:hasPermission>
+								<li><a href="${ctx}/course/select/studentCourse?id=${course.id}">成绩单</a>
+								</li>
+							</ul>
+						</div>
     				
     				
 				</td>

@@ -385,6 +385,7 @@ public class StudentController extends BaseController {
     		
     		List<String> headerList = Arrays.asList(ss);
     		exportExcel.init("学生成绩", headerList);
+    		exportExcel.setHeader(headerList);
     		for(StudentCourse sc:lists) {
     			Course c = sc.getCourse();
     			Student st = sc.getStudent();

@@ -61,7 +61,7 @@ import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
- * 课程基本信息Controller
+ * 选课相关
  * @author 赵俊飞
  * @version 2017-12-13
  */
@@ -452,7 +452,7 @@ public class CourseSelectController extends BaseController {
 					
 					if(!StringUtils.isEmpty(selectCourse[9])) {
 						String method = selectCourse[9].trim();
-						if(method.equals("面授")) {
+						if(method.equals("面授")||method.equals("课堂讲授")) {
 							String time = selectCourse[13];
 							String address = selectCourse[14];
 							if(!StringUtils.isEmpty(time)&&!StringUtils.isEmpty(address)) {
@@ -482,6 +482,15 @@ public class CourseSelectController extends BaseController {
 									String room = address.substring(1);
 									String time_add = curs_year_term.concat(school).concat(room).concat("01").concat(jie).concat(xq);
 									CourseSchedule courseSchedule = courseScheduleService.getByAddTime(time_add);
+									if(org.springframework.util.StringUtils.isEmpty(courseSchedule)) {
+										courseSchedule = new CourseSchedule();
+										courseSchedule.setScLock("2");
+										courseSchedule.setCourseClass("00000000");
+										courseSchedule.setCourseId(courseId);
+										courseSchedule.setTimeAdd(time_add);
+										courseSchedule.setTips(remark);
+										courseScheduleService.save(courseSchedule);
+									}
 									if(!org.springframework.util.StringUtils.isEmpty(courseSchedule)&&courseSchedule.getScLock().equals("1")) {
 										courseSchedule.setScLock("2");
 										courseSchedule.setCourseClass("00000000");

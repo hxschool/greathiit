@@ -26,6 +26,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th style="text-align:center;" width="20px">序号</th>
 				<th>专业</th>
 				<th>班级</th>
 				<th>学号</th>
@@ -35,10 +36,14 @@
 			</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${list}" var="selectCourse">
-					<c:set var="clazz" value="${fns:getOffice(selectCourse.student.no)}"/>
+		<c:forEach items="${list}" var="selectCourse" varStatus="row">
+					<c:set var="clazz" value="${fns:getOffice(selectCourse.student.studentNumber)}"/>
 					
 			<tr>
+				<td style="text-align:center;">
+				
+					${row.index+1 }
+				</td>
 				<td>
 				
 					${clazz.parent }
@@ -47,7 +52,7 @@
 					${clazz }
 				</td>
 				<td>
-					${selectCourse.student.no}
+					${selectCourse.student.studentNumber}
 				</td>
 				<td>
 					${selectCourse.student.name}

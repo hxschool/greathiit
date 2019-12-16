@@ -85,7 +85,6 @@
 				<th>学分</th>
 				<th>课程性质</th>
 				<th>考核形式</th>
-				
 				<th>课程类型</th>
 				<th>课程简介</th>
 				<th>查看</th>
@@ -98,7 +97,10 @@
 					${course.cursNum}
 				</a></td>
 				<td>
-					${course.courseTeachingMode} - ${course.cursName}
+					<c:if test="${course.courseTeachingMode!=null}">
+						${fns:getDictLabel(course.courseTeachingMode.teacMethod, 'teac_method', '')} -
+					</c:if>
+					 ${course.cursName}
 				</td>
 				<td>
 					${course.teacher.tchrName}
@@ -113,9 +115,7 @@
 				<td>
 					${course.cursCredit}
 				</td>
-				
 				<td>
-					
 					${fns:getDictLabel(course.cursProperty, 'course_property', '')}
 				</td>
 					<td>

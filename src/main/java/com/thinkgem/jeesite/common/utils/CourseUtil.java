@@ -58,17 +58,17 @@ public class CourseUtil {
 	}
 	public static String jieValue(String $j)
 	{
-	        if($j.equals("1-2节"))
+	        if($j.equals("1-2节")||$j.equals("1-2"))
 	                return "1";
-	        if($j.equals("3-4节"))
+	        if($j.equals("3-4节")||$j.equals("3-4"))
 	                return "2";
-	        if($j.equals("5-6节"))
+	        if($j.equals("5-6节")||$j.equals("5-6"))
 	                return "3";
-	        if($j.equals("7-8节"))
+	        if($j.equals("7-8节")||$j.equals("7-8"))
 	                return "4";
-	        if($j.equals("9-10节"))
+	        if($j.equals("9-10节")||$j.equals("9-10"))
 	                return "5";
-	        if($j.equals("11-12节"))
+	        if($j.equals("11-12节")||$j.equals("11-12"))
                 return "6";
 			return $j;
 	}

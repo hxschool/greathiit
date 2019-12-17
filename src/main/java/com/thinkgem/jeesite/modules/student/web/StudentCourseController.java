@@ -4,7 +4,6 @@
 package com.thinkgem.jeesite.modules.student.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -307,21 +306,35 @@ public class StudentCourseController extends BaseController {
     		List<StudentCourse> list = Lists.newArrayList(); list.add(new StudentCourse());
     		ExportExcel exportExcel = new ExportExcel();
     		List<String> headerList = exportExcel.getHeaders(StudentCourse.class);
-    		exportExcel.init("成绩数据",headerList);
-    		Row row = exportExcel.addRow();
-    		Cell cell = row.createCell(0);
-    		cell.setCellValue("学期");
-    		
-    		Cell clazzCell = row.createCell(2);
-    		clazzCell.setCellValue("课程名称");
-    		
-    		Cell courseIdLabelCell = row.createCell(4);
-    		courseIdLabelCell.setCellValue("课程编码");
-    		
-    		
-    		Cell teacherLabelCell = row.createCell(6);
-    		teacherLabelCell.setCellValue("任课教师");
-    		exportExcel.setHeader(headerList);
+    		exportExcel.init("成绩数据", headerList);
+			Row row = exportExcel.addRow();
+			Cell cell = row.createCell(0);
+			cell.setCellValue("学期");
+			Cell xueqiCell = row.createCell(1);
+			xueqiCell.setCellValue(config.getTermYear());
+
+			Cell clazzCell = row.createCell(2);
+			clazzCell.setCellValue("课程名称");
+			Cell courseCell = row.createCell(3);
+			courseCell.setCellValue("");
+
+			Cell courseIdLabelCell = row.createCell(4);
+			courseIdLabelCell.setCellValue("课程编码");
+			Cell courseIdValueCell = row.createCell(5);
+			courseIdValueCell.setCellValue("");
+			Row row1 = exportExcel.addRow();
+			
+			Cell teacherLabelCell = row1.createCell(0);
+			teacherLabelCell.setCellValue("任课教师");
+			Cell teacherValueCell = row1.createCell(1);
+			teacherValueCell.setCellValue("");
+			
+			Cell statusLabelCell = row1.createCell(2);
+			statusLabelCell.setCellValue("考核状态(注)");
+			Cell statusRemarkLabelCell = row1.createCell(3);
+			statusRemarkLabelCell.setCellValue("重修、缓考、未选修、旷考、违纪");
+			
+			exportExcel.setHeader(headerList);
     		
     		exportExcel.setDataList(list).write(response, fileName).dispose();
     		return null;

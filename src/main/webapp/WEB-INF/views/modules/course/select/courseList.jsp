@@ -26,15 +26,15 @@
 </head>
 <body>
 <div id="importBox" class="hide">
-		<form id="importForm" action="${ctx}/course/course/import" method="post"
+		<form id="importForm" action="${ctx}/student/studentCourse/import" method="post"
 			enctype="multipart/form-data" class="form-search"
 			style="padding-left: 20px; text-align: center;"
 			onsubmit="loading('正在导入，请稍等...');">
 			<br /> <input id="uploadFile" name="file" type="file"
 				style="width: 330px" /><br />
 			<br /> <input id="btnImportSubmit" class="button button-primary button-rounded button-small"
-				type="submit" value="   导    入   " /> <a
-				href="${ctx}/course/course/import/template">下载模板</a>
+				type="submit" value="   导    入   " /> <a class="button  button-rounded button-small"
+				href="${ctx}/student/studentCourse/import/template">下载模板</a>
 		</form>
 	</div>
 	<ul class="nav nav-tabs">
@@ -62,10 +62,8 @@
 					</c:forEach>
 			</select></li>
 			<li class="btns"><input id="btnSubmit" class="button button-primary button-rounded button-small" type="submit" value="查询"/>
-			
-			<a class="button button-primary button-rounded button-small"
-				href="${ctx}/course/course/import/template">下载模板</a> <input
-				id="btnImport" class="button button-primary button-rounded button-small" type="button" value="课程导入" />
+			<input
+				id="btnImport" class="button button-primary button-rounded button-small" type="button" value="成绩导入" />
 			</li>
 			<li class="clearfix"></li>
 		</ul>
@@ -145,10 +143,10 @@
 						    </button>
 							<ul class="dropdown-menu" role="menu">
 								<li>
-								<a  href="${ctx}/course/select/export?course.id=${course.id}">导出签到表</a>
+								<a  href="${ctx}/course/select/export?course.id=${course.id}">签到表</a>
 								</li>
 								<shiro:hasPermission name="student:studentCourse:export">
-									<li><a href="${ctx}/student/studentCourse/export/student?id=${course.id}">学生信息</a>
+									<li><a href="${ctx}/student/studentCourse/export/student?id=${course.id}">成绩信息</a>
 									</li>
 								</shiro:hasPermission>
 								<li><a href="${ctx}/course/select/studentCourse?id=${course.id}">成绩单</a>

@@ -6,7 +6,6 @@ package com.thinkgem.jeesite.modules.student.service;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,12 +43,9 @@ import com.thinkgem.jeesite.modules.student.dao.StudentCourseDao;
 import com.thinkgem.jeesite.modules.student.dao.StudentDao;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
-import com.thinkgem.jeesite.modules.sys.dao.OfficeDao;
 import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
-import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.dao.TeacherClassDao;
 import com.thinkgem.jeesite.modules.teacher.entity.TeacherClass;
-import com.thinkgem.jeesite.modules.uc.student.dao.UcStudentDao;
 
 /**
  * 学生成绩Service
@@ -65,25 +61,40 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 	private static Map<String,String> fivePointMap = new HashMap<String,String>();
 	static {
 		fiveMap.put("优秀优秀","优秀");
+		fiveMap.put("优优","优秀");
 		fiveMap.put("优秀良好","优秀");
+		fiveMap.put("优良","优秀");
 		fiveMap.put("优秀中等","中等");
+		fiveMap.put("优中","中等");
 		fiveMap.put("优秀及格","中等");
+		fiveMap.put("优及格","中等");
 
 		fiveMap.put("良好优秀","良好");
+		fiveMap.put("好优","良好");
 		fiveMap.put("良好良好","良好");
+		fiveMap.put("良良","良好");
 		fiveMap.put("良好中等","良好");
+		fiveMap.put("良中","良好");
 		fiveMap.put("良好及格","及格");
+		fiveMap.put("良及格","及格");
 
 		fiveMap.put("中等优秀","良好");
+		fiveMap.put("中优","良好");
 		fiveMap.put("中等良好","中等");
+		fiveMap.put("中良","中等");
 		fiveMap.put("中等中等","中等");
+		fiveMap.put("中中","中等");
 		fiveMap.put("中等及格","及格");
+		fiveMap.put("中及格","及格");
 
 		fiveMap.put("及格优秀","中等");
+		fiveMap.put("及格优","中等");
 		fiveMap.put("及格良好","中等");
+		fiveMap.put("及格良","中等");
 		fiveMap.put("及格中等","及格");
+		fiveMap.put("及格中","及格");
 		fiveMap.put("及格及格","及格");
-
+		
 		fivePointMap.put("优秀", "3.5");
 		fivePointMap.put("良好", "2.5");
 		fivePointMap.put("中等", "1.5");

@@ -73,7 +73,7 @@ public class StudentTrackedController extends BaseController {
 	@RequiresPermissions("student:student:view")
 	@RequestMapping(value = { "list", "" })
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if(!org.springframework.util.StringUtils.isEmpty(request.getParameter("search"))) {
+		if (!org.springframework.util.StringUtils.isEmpty(request.getMethod())&&!request.getMethod().equals("GET")) {
 			if(!org.springframework.util.StringUtils.isEmpty(student.getClazz())) {
 				String clsName = student.getClazz().getName();
 				if(!org.springframework.util.StringUtils.isEmpty(clsName)) {

@@ -61,7 +61,7 @@ public class StudentActionController extends BaseController {
 	@RequiresPermissions("student:student:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
-		if (!org.springframework.util.StringUtils.isEmpty(request.getParameter("search"))) {
+		if (!org.springframework.util.StringUtils.isEmpty(request.getMethod())&&!request.getMethod().equals("GET")) {
 				Page<Student> page = studentService.findPage(new Page<Student>(request, response), student); 
 				model.addAttribute("page", page);
 		}

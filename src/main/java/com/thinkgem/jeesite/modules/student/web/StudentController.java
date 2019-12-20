@@ -477,7 +477,7 @@ public class StudentController extends BaseController {
 	@RequestMapping(value = { "list", "" })
 	public String list(Student student, HttpServletRequest request, HttpServletResponse response, Model model) {
 		
-		if (!org.springframework.util.StringUtils.isEmpty(request.getParameter("search"))) {
+		if (!org.springframework.util.StringUtils.isEmpty(request.getMethod())&&!request.getMethod().equals("GET")) {
 			if (org.springframework.util.StringUtils.isEmpty(request.getParameter("clazz"))) {
 				String specialty = request.getParameter("specialty");
 				List<String> clazzNumbers = new ArrayList<String>();

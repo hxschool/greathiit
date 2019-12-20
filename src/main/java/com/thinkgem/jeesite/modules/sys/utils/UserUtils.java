@@ -270,8 +270,10 @@ public class UserUtils {
 		if(entity==null) {
 			entity = officeDao.get(officeId);
 			putCache("CACHE_OFFICE_OFFICE:", entity);
-			office = officeDao.get(entity.getParent());
-			putCache("CACHE_OFFICE_PARENT:"+officeId, office);
+			if(!StringUtils.isEmpty(entity)) {
+				office = officeDao.get(entity.getParent());
+				putCache("CACHE_OFFICE_PARENT:"+officeId, office);
+			}
 		}
 		
 		return office;

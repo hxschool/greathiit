@@ -363,26 +363,22 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							studentCourse.setClassEvaValue(String.valueOf(Double.valueOf(classEvaValue).intValue()));
 							studentCourse.setFinEvaValue(String.valueOf(Double.valueOf(finEvaValue).intValue()));
 	
-							String evaValue =
-									String.valueOf(new BigDecimal(classEvaValue).multiply(new BigDecimal(courseCompositionRules.getClazzPer())).add(new BigDecimal(finEvaValue).multiply(new BigDecimal(courseCompositionRules.getFinalExamper()))).intValue());	
-									
-//									String.valueOf(Double.valueOf(Double
-//									.valueOf((Double.parseDouble(classEvaValue)
-//											* Double.parseDouble(courseCompositionRules.getClazzPer())
-//											+ Double.parseDouble(finEvaValue)
-//													* Double.parseDouble(courseCompositionRules.getFinalExamper()))).intValue())
-//									.intValue());
+								
+							Double dd = new BigDecimal(classEvaValue).multiply(new BigDecimal(courseCompositionRules.getClazzPer())).add(new BigDecimal(finEvaValue).multiply(new BigDecimal(courseCompositionRules.getFinalExamper()))).doubleValue();
+							
+							Integer retValue = new Double(Math.ceil(dd)).intValue();
+
 							String point = "0";
 							studentCourse.setCredit("0");
-							if(Integer.valueOf(evaValue)>=60) {
+							if(dd>=60) {
 								studentCourse.setCredit(course.getCursCredit());
-								if(Integer.valueOf(evaValue)>60) {
-								point = String.format("%.1f",((Double.valueOf(evaValue) - Double.valueOf(coursePoint.getPercentage()))
+								if(dd>60) {
+								point = String.format("%.1f",((dd - Double.valueOf(coursePoint.getPercentage()))
 										* Double.valueOf(coursePoint.getPoint())));
 								}
 							}
 							studentCourse.setPoint(point);
-							studentCourse.setEvaValue(evaValue);
+							studentCourse.setEvaValue(String.valueOf(retValue));
 						}
 						
 						

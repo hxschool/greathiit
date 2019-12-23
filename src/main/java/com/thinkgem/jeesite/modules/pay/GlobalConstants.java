@@ -8,4 +8,6 @@ public class GlobalConstants {
     public static final String Global_INIT		= "00";//初始值
     public static final String Global_SUC			= "20";//成功
     public static final String Global_FAL			= "30";//失败
+   
+    
 }

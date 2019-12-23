@@ -32,7 +32,7 @@ public class Global {
 	public final static String SYSCONFIG_EXPORT= "export";//选课
 
 	public final static String FILE_SERVER_UPLOAD_URL = "http://photo.greathiit.com/upload";
-	
+	 public static final String SELECT_WHITE_LIST_DICT = "white_list_dict";
 	public static List<String> weeks = new ArrayList();
 	static {
 		for(int i=1;i<=20;i++) {

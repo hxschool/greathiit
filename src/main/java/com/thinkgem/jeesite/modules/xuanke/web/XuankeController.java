@@ -46,10 +46,12 @@ import com.thinkgem.jeesite.modules.pay.GlobalConstants;
 import com.thinkgem.jeesite.modules.select.entity.SelectCourse;
 import com.thinkgem.jeesite.modules.select.service.SelectCourseService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
+import com.thinkgem.jeesite.modules.sys.entity.Dict;
 import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.SysConfig;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.entity.UserOperationLog;
+import com.thinkgem.jeesite.modules.sys.service.DictService;
 import com.thinkgem.jeesite.modules.sys.service.OfficeService;
 import com.thinkgem.jeesite.modules.sys.service.SysConfigService;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
@@ -59,6 +61,8 @@ import com.thinkgem.jeesite.modules.sys.web.TreeLink;
 @Controller
 @RequestMapping(value = "xuanke")
 public class XuankeController extends BaseController {
+	@Autowired
+	private DictService dictService;
 	@Autowired
 	private CourseService courseService;
 	@Autowired
@@ -188,6 +192,21 @@ public class XuankeController extends BaseController {
 					}
 					String year = null;
 					boolean ret = true;
+					
+					//白名单
+					Dict  white_list_dict = new Dict();
+					white_list_dict.setType(Global.SELECT_WHITE_LIST_DICT);
+					List<Dict> dicts = dictService.findByParentIdsLike(white_list_dict);
+					
+					if(!CollectionUtils.isEmpty(dicts)) {
+						for(Dict dict:dicts) {
+							if(dict.getValue().equals(studentNumber)) {
+								ret = false;
+								break;
+							}
+						}
+					}
+					
 					if (studentNumber.length() == 10 || studentNumber.length() == 12) {// 本科
 						year = studentNumber.substring(2, 4);
 						if (!c.getCursNum().substring(0, 1).toUpperCase().equals(benke)) {
@@ -209,7 +228,7 @@ public class XuankeController extends BaseController {
 							year = bjn;
 						}
 					}
-					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year)&&ret) {
+					if (!CollectionUtils.isEmpty(grade) && !grade.contains(year) && ret) {
 						it.remove();
 					}
 				}

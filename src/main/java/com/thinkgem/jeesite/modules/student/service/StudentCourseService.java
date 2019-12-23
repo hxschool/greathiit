@@ -366,7 +366,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 								
 							Double dd = new BigDecimal(classEvaValue).multiply(new BigDecimal(courseCompositionRules.getClazzPer())).add(new BigDecimal(finEvaValue).multiply(new BigDecimal(courseCompositionRules.getFinalExamper()))).doubleValue();
 							
-							Integer retValue = new Double(Math.ceil(dd)).intValue();
+							Integer retValue =  new Long(Math.round(dd)).intValue(); //new Double(Math.ceil(dd)).intValue();
 
 							String point = "0";
 							studentCourse.setCredit("0");

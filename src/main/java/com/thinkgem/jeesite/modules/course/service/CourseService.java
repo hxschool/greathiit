@@ -8,8 +8,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -176,7 +178,16 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				SelectCourse selectCourse = new SelectCourse();
 				selectCourse.setCourse(course);
 				List<SelectCourse> list = selectCourseDao.findList(selectCourse);
-				Collections.sort(list);
+				Collections.sort(list, new Comparator<SelectCourse>() {
+
+					@Override
+					public int compare(SelectCourse o1, SelectCourse o2) {
+						BigInteger a = new BigInteger(o1.getStudent().getStudentNumber());
+						BigInteger b = new BigInteger(o2.getStudent().getStudentNumber());
+						return a.compareTo(b);
+					}
+					
+				});
 				int rowIndex = 14;
 				CellStyle style = POIUtils.formatCell(wb);
 
@@ -200,7 +211,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				int p11f = 0;
 				int p11g = 0;
 				int p11h = 0;
-				Collections.sort(list);
 				for (SelectCourse sc : list) {
 					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
@@ -354,7 +364,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						Student entity = new Student();
 						entity.setClazz(cls);
 						List<Student> list = studentDao.findList(entity);
-
+						
 						int rowIndex = 14;
 						CellStyle style = POIUtils.formatCell(wb);
 
@@ -378,7 +388,16 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						int p11f = 0;
 						int p11g = 0;
 						int p11h = 0;
-						Collections.sort(list);
+						Collections.sort(list, new Comparator<Student>() {
+
+							@Override
+							public int compare(Student o1, Student o2) {
+								BigInteger a = new BigInteger(o1.getStudentNumber());
+								BigInteger b = new BigInteger(o2.getStudentNumber());
+								return a.compareTo(b);
+							}
+							
+						});
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
 							studentRow.setHeight((short) 290);// 目的是想把行高设置成25px

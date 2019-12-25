@@ -508,7 +508,7 @@ public class Student extends DataEntity<Student> implements Comparable<Student> 
 	@Override
 	public int compareTo(Student student) {
 		BigInteger a = new BigInteger(student.getStudentNumber());
-		BigInteger b = new BigInteger(this.getStudentNumber());
+		BigInteger b = new BigInteger(getStudentNumber());
 		return a.compareTo(b);
 	}
 }

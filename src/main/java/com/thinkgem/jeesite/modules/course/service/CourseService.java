@@ -112,7 +112,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream(file));
 			HSSFWorkbook wb = new HSSFWorkbook(fs);
 			HSSFSheet sheet = wb.getSheetAt(0);
-
+			
 			CellStyle cellCourseNameStyle = wb.createCellStyle();
 			cellCourseNameStyle.setFont(POIUtils.getFont(wb));
 			cellCourseNameStyle.setAlignment(CellStyle.ALIGN_CENTER);
@@ -127,8 +127,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			String  title = StringEscapeUtils.unescapeHtml4(course.getCursEduNum().concat("  ").concat(course.getCursName()).replace("★", "") );
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
-				HSSFPrintSetup printSetup = sheet.getPrintSetup();  
-				printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
+				
+				
 				Row r = clazzSheet.getRow(1);
 				if(!StringUtils.isEmpty(r)) {
 					r.setHeight((short) 10);// 目的是想把行高设置成25px
@@ -302,6 +302,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				setCell(clazzSheet, 10, 5, p11f);
 				setCell(clazzSheet, 10, 6, p11g);
 				setCell(clazzSheet, 10, 7, p11h);
+				HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();  
+				printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
 			} else {
 				CourseClass courseClass = new CourseClass();
 				courseClass.setCourse(course);
@@ -313,7 +315,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					Office school = officeDao.get(major.getParent());
 					if (!StringUtils.isEmpty(clazz)) {
 						HSSFSheet clazzSheet = wb.createSheet(clazz.getName());
-
+						
 						Footer footer = clazzSheet.getFooter();
 						footer.setLeft(
 								"任课教师 ：          命题教师：              评分教师：                                                               \n"
@@ -507,7 +509,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						setCell(clazzSheet, 10, 5, p11f);
 						setCell(clazzSheet, 10, 6, p11g);
 						setCell(clazzSheet, 10, 7, p11h);
-
+						HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();  
+						printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
 					}
 
 				}

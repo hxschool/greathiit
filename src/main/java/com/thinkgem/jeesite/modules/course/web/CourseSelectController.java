@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -369,6 +370,7 @@ public class CourseSelectController extends BaseController {
 				}
 			}
 		}
+		Collections.sort(ll);
 		addMessage(redirectAttributes, "失败"+failureNum+" 条"+failureMsg);
 		AbsStudentScoreAdapter<UcStudent> classScore = new ClassScore();
 		classScore.setList(list);

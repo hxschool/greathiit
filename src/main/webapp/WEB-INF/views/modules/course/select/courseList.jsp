@@ -149,7 +149,7 @@
 									<li><a href="${ctx}/student/studentCourse/export/student?id=${course.id}">成绩信息</a>
 									</li>
 								</shiro:hasPermission>
-								<li><a href="${ctx}/course/select/studentCourse?id=${course.id}">成绩单</a>
+								<li><a href="${ctx}/course/course/exportStudentCourse?id=${course.id}">成绩单</a>
 								</li>
 							</ul>
 						</div>

@@ -8,12 +8,12 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
@@ -125,7 +125,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			String  title = StringEscapeUtils.unescapeHtml4(course.getCursEduNum().concat("  ").concat(course.getCursName()).replace("★", "") );
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
-				
+				HSSFPrintSetup printSetup = sheet.getPrintSetup();  
+				printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
 				Row r = clazzSheet.getRow(1);
 				if(!StringUtils.isEmpty(r)) {
 					r.setHeight((short) 10);// 目的是想把行高设置成25px

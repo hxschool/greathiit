@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.poi.hssf.usermodel.HSSFBorderFormatting;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -26,6 +27,8 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -128,6 +131,13 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				
+				CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
+				CellRangeAddress cj = new CellRangeAddress(12, 13, 7, 0);
+				CellRangeAddress jd = new CellRangeAddress(12, 13, 8, 0);
+				
+				POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);
+				POIUtils.pullCellRangeAddress(cj, clazzSheet, wb);
+				POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
 				
 				Row r = clazzSheet.getRow(1);
 				if(!StringUtils.isEmpty(r)) {
@@ -316,6 +326,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					if (!StringUtils.isEmpty(clazz)) {
 						HSSFSheet clazzSheet = wb.createSheet(clazz.getName());
 						
+						
+						
 						Footer footer = clazzSheet.getFooter();
 						footer.setLeft(
 								"任课教师 ：          命题教师：              评分教师：                                                               \n"
@@ -402,6 +414,15 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						});
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
+							
+							CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
+							CellRangeAddress cj = new CellRangeAddress(12, 13, 7, 0);
+							CellRangeAddress jd = new CellRangeAddress(12, 13, 8, 0);
+							
+							POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);
+							POIUtils.pullCellRangeAddress(cj, clazzSheet, wb);
+							POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
+							
 							studentRow.setHeight((short) 290);// 目的是想把行高设置成25px
 
 							Cell studentNumberCell = studentRow.createCell(0);

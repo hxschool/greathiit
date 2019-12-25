@@ -2,11 +2,11 @@ package com.thinkgem.jeesite.common.utils;
 
 import java.util.Iterator;
 
+import org.apache.poi.hssf.usermodel.HSSFBorderFormatting;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -14,8 +14,10 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.util.Region;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import org.springframework.util.StringUtils;
 
 public class POIUtils {
@@ -60,6 +62,7 @@ public class POIUtils {
 	public static void copyCellStyle(HSSFCellStyle fromStyle,
 			HSSFCellStyle toStyle) {
 		toStyle.setAlignment(fromStyle.getAlignment());
+		toStyle.setVerticalAlignment(fromStyle.getVerticalAlignment());
 		//边框和边框颜色
 		toStyle.setBorderBottom(fromStyle.getBorderBottom());
 		toStyle.setBorderLeft(fromStyle.getBorderLeft());
@@ -81,8 +84,11 @@ public class POIUtils {
 		toStyle.setIndention(fromStyle.getIndention());//首行缩进
 		toStyle.setLocked(fromStyle.getLocked());
 		toStyle.setRotation(fromStyle.getRotation());//旋转
-		toStyle.setVerticalAlignment(fromStyle.getVerticalAlignment());
 		toStyle.setWrapText(fromStyle.getWrapText());
+				
+	}
+	
+	public static void copy() {
 		
 	}
 	/**
@@ -121,10 +127,24 @@ public class POIUtils {
 	*/
 	public static void mergerRegion(HSSFSheet fromSheet, HSSFSheet toSheet) {
 	   int sheetMergerCount = fromSheet.getNumMergedRegions();
+	   Workbook wb = toSheet.getWorkbook();
 	   for (int i = 0; i < sheetMergerCount; i++) {
-	    Region mergedRegionAt = fromSheet.getMergedRegionAt(i);
+		CellRangeAddress mergedRegionAt = fromSheet.getMergedRegion(i);
 	    toSheet.addMergedRegion(mergedRegionAt);
 	   }
+	}
+	
+	public static void pullCellRangeAddress( CellRangeAddress region, Sheet sheet,
+			Workbook workbook) {
+		
+		RegionUtil.setBorderTop(HSSFBorderFormatting.BORDER_THIN, region, sheet, workbook);
+		RegionUtil.setBorderRight(HSSFBorderFormatting.BORDER_THIN, region, sheet, workbook);
+		RegionUtil.setBorderBottom(HSSFBorderFormatting.BORDER_THIN, region, sheet, workbook);
+		RegionUtil.setBorderLeft(HSSFBorderFormatting.BORDER_THIN, region, sheet, workbook);
+		RegionUtil.setTopBorderColor(0, region, sheet, workbook);
+		RegionUtil.setLeftBorderColor(0, region, sheet, workbook);
+		RegionUtil.setBottomBorderColor(0, region, sheet, workbook);
+		RegionUtil.setRightBorderColor(0, region, sheet, workbook);
 	}
 	/**
 	 * 复制单元格
@@ -136,7 +156,7 @@ public class POIUtils {
 	 */
 	public static void copyCell(HSSFWorkbook wb,HSSFCell srcCell, HSSFCell distCell,
 			boolean copyValueFlag) {
-		HSSFCellStyle newstyle=wb.createCellStyle();
+		HSSFCellStyle newstyle = wb.createCellStyle();
 		copyCellStyle(srcCell.getCellStyle(), newstyle);
 		//distCell.setEncoding(srcCell.getEncoding());
 		//样式

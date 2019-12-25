@@ -176,7 +176,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				SelectCourse selectCourse = new SelectCourse();
 				selectCourse.setCourse(course);
 				List<SelectCourse> list = selectCourseDao.findList(selectCourse);
-
+				Collections.sort(list);
 				int rowIndex = 14;
 				CellStyle style = POIUtils.formatCell(wb);
 

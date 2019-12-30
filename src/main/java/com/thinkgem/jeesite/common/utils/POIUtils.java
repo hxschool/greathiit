@@ -36,12 +36,52 @@ public class POIUtils {
 //			copyCellStyle(fromStyle,toStyle);
 //		}
 //	}
+	
+	public static CellStyle formatCell(HSSFWorkbook wb,String fontName,int fontSize) {
+		CellStyle style = wb.createCellStyle();
+		HSSFFont hssfFont = wb.createFont();
+		hssfFont.setFontName(fontName);
+		hssfFont.setFontHeightInPoints((short)fontSize);
+		style.setFont(hssfFont);
+
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		style.setAlignment(CellStyle.ALIGN_CENTER);// 水平居中
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		return style;
+	}
+	
 	public static CellStyle formatCell(HSSFWorkbook wb) {
 		CellStyle style = wb.createCellStyle();
 		HSSFFont hssfFont = wb.createFont();
 		hssfFont.setFontName("宋体");
 		style.setFont(hssfFont);
 
+		style.setBorderBottom(CellStyle.BORDER_THIN);
+		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderLeft(CellStyle.BORDER_THIN);
+		style.setLeftBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderRight(CellStyle.BORDER_THIN);
+		style.setRightBorderColor(IndexedColors.BLACK.getIndex());
+		style.setBorderTop(CellStyle.BORDER_THIN);
+		style.setTopBorderColor(IndexedColors.BLACK.getIndex());
+		style.setAlignment(CellStyle.ALIGN_CENTER);// 水平居中
+		style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		return style;
+	}
+	
+	public static CellStyle formatCell(HSSFWorkbook wb, int fontSize) {
+		CellStyle style = wb.createCellStyle();
+		HSSFFont hssfFont = wb.createFont();
+		hssfFont.setFontName("宋体");
+		hssfFont.setFontHeightInPoints((short)fontSize);
+		style.setFont(hssfFont);
 		style.setBorderBottom(CellStyle.BORDER_THIN);
 		style.setBottomBorderColor(IndexedColors.BLACK.getIndex());
 		style.setBorderLeft(CellStyle.BORDER_THIN);
@@ -80,6 +120,7 @@ public class POIUtils {
 		toStyle.setDataFormat(fromStyle.getDataFormat());
 		toStyle.setFillPattern(fromStyle.getFillPattern());
 //		toStyle.setFont(fromStyle.getFont(null));
+		
 		toStyle.setHidden(fromStyle.getHidden());
 		toStyle.setIndention(fromStyle.getIndention());//首行缩进
 		toStyle.setLocked(fromStyle.getLocked());
@@ -103,8 +144,13 @@ public class POIUtils {
 		mergerRegion(fromSheet, toSheet);
 		for (Iterator rowIt = fromSheet.rowIterator(); rowIt.hasNext();) {
 			HSSFRow tmpRow = (HSSFRow) rowIt.next();
+			
+			
+			
 			HSSFRow newRow = toSheet.createRow(tmpRow.getRowNum());
 			copyRow(wb,tmpRow,newRow,copyValueFlag);
+			
+			
 		}
 	}
 	/**
@@ -113,10 +159,16 @@ public class POIUtils {
 	 * @param toRow
 	 */
 	public static void copyRow(HSSFWorkbook wb,HSSFRow fromRow,HSSFRow toRow,boolean copyValueFlag){
+
+		toRow.setHeight(fromRow.getHeight());
+		int cellNumber = 0;
 		for (Iterator cellIt = fromRow.cellIterator(); cellIt.hasNext();) {
 			HSSFCell tmpCell = (HSSFCell) cellIt.next();
 			HSSFCell newCell = toRow.createCell(tmpCell.getCellNum());
 			copyCell(wb,tmpCell, newCell, copyValueFlag);
+			int cellWidth = fromRow.getSheet().getColumnWidth(cellNumber);
+			toRow.getSheet().setColumnWidth(cellNumber, cellWidth);
+			cellNumber ++;
 		}
 	}
 	/**
@@ -156,9 +208,12 @@ public class POIUtils {
 	 */
 	public static void copyCell(HSSFWorkbook wb,HSSFCell srcCell, HSSFCell distCell,
 			boolean copyValueFlag) {
-		HSSFCellStyle newstyle = wb.createCellStyle();
-		copyCellStyle(srcCell.getCellStyle(), newstyle);
-		//distCell.setEncoding(srcCell.getEncoding());
+		
+		
+		HSSFCellStyle newstyle = srcCell.getCellStyle();
+		
+		//copyCellStyle(srcCell.getCellStyle(), newstyle);
+		
 		//样式
 		distCell.setCellStyle(newstyle);
 		//评论
@@ -225,7 +280,7 @@ public class POIUtils {
 
 	public static Font getFont(Workbook wb) {
 		Font font = wb.createFont();
-		font.setFontHeightInPoints((short) 20);
+		font.setFontHeightInPoints((short) 16);
 		font.setFontName("黑体");
 		font.setUnderline(Font.U_SINGLE); // 下划线
 		return font;

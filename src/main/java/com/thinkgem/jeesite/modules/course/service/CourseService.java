@@ -15,7 +15,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.poi.hssf.usermodel.HSSFBorderFormatting;
 import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -28,7 +27,6 @@ import org.apache.poi.ss.usermodel.Footer;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.ss.util.RegionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -131,13 +129,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				
-				CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
-				CellRangeAddress cj = new CellRangeAddress(12, 13, 7, 0);
-				CellRangeAddress jd = new CellRangeAddress(12, 13, 8, 0);
 				
-				POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);
-				POIUtils.pullCellRangeAddress(cj, clazzSheet, wb);
-				POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
 				
 				Row r = clazzSheet.getRow(1);
 				if(!StringUtils.isEmpty(r)) {
@@ -160,6 +152,17 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						"任课教师 ：          命题教师：              评分教师：                                                               \n"
 								+ "录分人：             教研室主任：            录分日期：  年  月  日                                 ");
 				POIUtils.copySheet(wb, sheet, clazzSheet, true);
+
+				
+				
+				CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
+				CellRangeAddress jd = new CellRangeAddress(12, 13, 7, 0);
+				CellRangeAddress fz = new CellRangeAddress(12, 13, 8, 0);
+				
+				POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);				
+				POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
+				POIUtils.pullCellRangeAddress(fz, clazzSheet, wb);
+				
 				Row schoolreportRow = clazzSheet.getRow(0);
 				Cell courseNameCell = schoolreportRow.getCell(0);
 
@@ -199,7 +202,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					
 				});
 				int rowIndex = 14;
-				CellStyle style = POIUtils.formatCell(wb);
+				CellStyle style = POIUtils.formatCell(wb,9);
 
 				int yk = list.size();// 应考
 				int sk = 0;// 实考
@@ -225,7 +228,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					String studentNumber = sc.getStudent().getStudentNumber();
 					Student student = studentDao.getStudentByStudentNumber(studentNumber);
 					Row studentRow = clazzSheet.createRow(rowIndex);
-					studentRow.setHeight((short) 290);// 目的是想把行高设置成25px
+					studentRow.setHeight((short) 376);// 目的是想把行高设置成25px
 
 					Cell studentNumberCell = studentRow.createCell(0);
 					studentNumberCell.setCellValue(student.getStudentNumber());
@@ -312,8 +315,21 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				setCell(clazzSheet, 10, 5, p11f);
 				setCell(clazzSheet, 10, 6, p11g);
 				setCell(clazzSheet, 10, 7, p11h);
-				HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();  
+				//重复标题行
+				
+				clazzSheet.setMargin(Sheet.TopMargin, 1);// 页边距（上）   
+
+				clazzSheet.setMargin(Sheet.BottomMargin, 1);// 页边距（下）   
+
+				clazzSheet.setMargin(Sheet.LeftMargin,0.75);// 页边距（左）   
+
+				clazzSheet.setMargin(Sheet.RightMargin, 0);// 页边距（右）
+
+				HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();
 				printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
+				printSetup.setHeaderMargin((double)0.6);  
+				printSetup.setFooterMargin((double)0.6); 
+
 			} else {
 				CourseClass courseClass = new CourseClass();
 				courseClass.setCourse(course);
@@ -333,6 +349,14 @@ public class CourseService extends CrudService<CourseDao, Course> {
 								"任课教师 ：          命题教师：              评分教师：                                                               \n"
 										+ "录分人：             教研室主任：            录分日期：  年  月  日                                 ");
 						POIUtils.copySheet(wb, sheet, clazzSheet, true);
+						
+						CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
+						CellRangeAddress cj = new CellRangeAddress(12, 13, 7, 0);
+						CellRangeAddress jd = new CellRangeAddress(12, 13, 8, 0);
+						
+						POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);
+						POIUtils.pullCellRangeAddress(cj, clazzSheet, wb);
+						POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
 						
 						Row r = clazzSheet.getRow(1);
 						
@@ -380,7 +404,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						List<Student> list = studentDao.findList(entity);
 						
 						int rowIndex = 14;
-						CellStyle style = POIUtils.formatCell(wb);
+						CellStyle style = POIUtils.formatCell(wb,9);
 
 						int yk = list.size();// 应考
 						int sk = 0;// 实考
@@ -415,13 +439,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						for (Student student : list) {
 							Row studentRow = clazzSheet.createRow(rowIndex);
 							
-							CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
-							CellRangeAddress cj = new CellRangeAddress(12, 13, 7, 0);
-							CellRangeAddress jd = new CellRangeAddress(12, 13, 8, 0);
-							
-							POIUtils.pullCellRangeAddress(xf, clazzSheet, wb);
-							POIUtils.pullCellRangeAddress(cj, clazzSheet, wb);
-							POIUtils.pullCellRangeAddress(jd, clazzSheet, wb);
 							
 							studentRow.setHeight((short) 290);// 目的是想把行高设置成25px
 
@@ -530,8 +547,20 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						setCell(clazzSheet, 10, 5, p11f);
 						setCell(clazzSheet, 10, 6, p11g);
 						setCell(clazzSheet, 10, 7, p11h);
-						HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();  
+						
+						
+						clazzSheet.setMargin(Sheet.TopMargin, 1);// 页边距（上）   
+
+						clazzSheet.setMargin(Sheet.BottomMargin, 1);// 页边距（下）   
+
+						clazzSheet.setMargin(Sheet.LeftMargin,0.75);// 页边距（左）   
+
+						clazzSheet.setMargin(Sheet.RightMargin, 0);// 页边距（右）
+
+						HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();
 						printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
+						printSetup.setHeaderMargin((double)0.6);  
+						printSetup.setFooterMargin((double)0.6); 
 					}
 
 				}
@@ -566,6 +595,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 		Row tmpRow = sheet.getRow(row);
 		Cell tempCell = tmpRow.getCell(cell);
 		tempCell.setCellValue(value);
+		CellStyle cellStyle = POIUtils.formatCell((HSSFWorkbook)sheet.getWorkbook(),"黑体",11);
+		tempCell.setCellStyle(cellStyle);
 	}
 
 	public Cell getCell(Row row, CellStyle style, int index) {

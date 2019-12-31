@@ -12,7 +12,7 @@ public class StrategyFactory {
 
     static {
         strategyMap.put(PayType.ALIPAY_APP.value(), new AlipayStrategy());
-        strategyMap.put(PayType.WECHAT_APP.value(), new WeChatStrategy());
+       // strategyMap.put(PayType.WECHAT_APP.value(), new WeChatStrategy());
 
     }
 

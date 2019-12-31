@@ -103,7 +103,7 @@
 	</select>
 	
 	<select id="groupTermYear" resultType="java.lang.String">
-		select term_year from student_course where 1=1
+		select term_year from student_course where 1=1 and term_year is not null
 			<if test="student != null and student.studentNumber!= null and student.studentNumber != ''">
 				and student_number = #{student.studentNumber}
 			</if>

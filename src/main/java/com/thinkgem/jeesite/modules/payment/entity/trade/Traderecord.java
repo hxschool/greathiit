@@ -24,7 +24,7 @@ import com.thinkgem.jeesite.modules.sys.entity.User;
 public class Traderecord extends DataEntity<Traderecord> {
 	
 	private static final long serialVersionUID = 1L;
-	private String payAmount;		// 支付金额
+	private long payAmount;		// 支付金额
 	private Date payTime;		// 支付时间
 	private String errorCode;		// 错误码
 	private String errorMsg;		// 错误描述
@@ -58,11 +58,11 @@ public class Traderecord extends DataEntity<Traderecord> {
 		super(id);
 	}
 
-	public String getPayAmount() {
+	public long getPayAmount() {
 		return payAmount;
 	}
 
-	public void setPayAmount(String payAmount) {
+	public void setPayAmount(long payAmount) {
 		this.payAmount = payAmount;
 	}
 	

@@ -46,7 +46,7 @@ import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
  */
 @Controller
 @RequestMapping(value = "${adminPath}/payment")
-public class PaymentController {
+public class AdminPaymentController {
 	@Autowired
 	private SystemService systemService;
 	@Autowired
@@ -151,7 +151,7 @@ public class PaymentController {
 				orders.add(order);
 				sb.append(payment.getDescription());
 				sb.append(",");
-				BigDecimal paymentAmount=new BigDecimal(payment.getAmount());
+				BigDecimal paymentAmount = new BigDecimal(payment.getAmount());
 				amount = amount.add(paymentAmount);
 			}
 		}
@@ -168,7 +168,7 @@ public class PaymentController {
 		traderecord.setUserIp(IPUtil.getIpAddr(request));
 		traderecord.setOrders(orders);
 		traderecord.setDetail(detail);
-		traderecord.setPayAmount(payAmount);
+		traderecord.setPayAmount(amount.intValue());
 		String subject = sb.toString();
 		if(StringUtils.isEmpty(subject)) {
 			subject="哈尔滨信息工程学院,";
@@ -196,7 +196,7 @@ public class PaymentController {
 	
 	@RequestMapping("msg")
 	@ResponseBody
-	public String msg(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+	public Long msg(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
 		String key = request.getParameter("k");
 		Traderecord traderecord = (Traderecord)JedisUtils.getObject(key);
 		return traderecord.getPayAmount();

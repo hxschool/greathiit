@@ -1,25 +1,27 @@
 package com.thinkgem.jeesite.modules.score.web;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -28,12 +30,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.thinkgem.jeesite.common.utils.DateUtils;
-import com.thinkgem.jeesite.common.utils.IdcardUtils;
+import com.thinkgem.jeesite.common.exception.GITException;
+import com.thinkgem.jeesite.common.utils.DESUtil;
+import com.thinkgem.jeesite.common.utils.IPUtil;
+import com.thinkgem.jeesite.common.utils.JedisUtils;
+import com.thinkgem.jeesite.common.utils.QRCodeKit;
+import com.thinkgem.jeesite.modules.pay.GlobalConstants;
+import com.thinkgem.jeesite.modules.pay.enums.PayType;
+import com.thinkgem.jeesite.modules.pay.strategy.StrategyContext;
+import com.thinkgem.jeesite.modules.payment.entity.SysPayment;
+import com.thinkgem.jeesite.modules.payment.entity.order.Order;
+import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
+import com.thinkgem.jeesite.modules.payment.service.SysPaymentService;
+import com.thinkgem.jeesite.modules.payment.service.trade.TraderecordService;
+import com.thinkgem.jeesite.modules.score.service.ScoreService;
 import com.thinkgem.jeesite.modules.student.entity.Student;
 import com.thinkgem.jeesite.modules.student.entity.StudentCourse;
 import com.thinkgem.jeesite.modules.student.service.StudentCourseService;
-import com.thinkgem.jeesite.modules.sys.entity.Office;
 import com.thinkgem.jeesite.modules.sys.entity.User;
 import com.thinkgem.jeesite.modules.sys.service.SystemService;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
@@ -47,12 +60,141 @@ public class ScoreController {
 	private StudentCourseService studentCourseService;
 	@Autowired
 	private SystemService systemService;
+	@Autowired
+	private ScoreService scoreService;
+	@Autowired
+	private SysPaymentService sysPaymentService;
+	@Autowired
+	private TraderecordService traderecordService;
+	@Value("${payment.qrcode.url}")
+	private String qrCodeUrl;
 
 	@RequestMapping(value = { "login", "" }, method = RequestMethod.GET)
 	public String index(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes,
 			Model model) {
 
 		return "modules/chengji/login";
+	}
+	
+	@RequestMapping(value = "logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttributes,
+			Model model) {
+		request.getSession().setAttribute("user",null);
+		return "redirect:/chengji/logout";
+	}
+	
+	@RequestMapping("get")
+	public void get(HttpServletRequest request, HttpServletResponse response, Model model) throws IOException, ServletException {
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		if(StringUtils.isEmpty(user)) {
+			request.getRequestDispatcher("/chengji").forward(request, response);
+		}
+		String studentNumber = null;
+		try {
+			studentNumber = DESUtil.decrypt(user.getNo(), "A1B2C3D4E5F60708");
+		}catch(Exception e) {
+			throw new GITException("500","加密异常请求参数异常,请重试");
+		}
+		
+		if(StringUtils.isEmpty(studentNumber)) {
+			throw new GITException("404","请求参数异常,请重试");
+		}
+		session.setAttribute("userCode", "0");
+		List<Order> orders = new ArrayList<Order>();
+		String outTradeno = "T".concat(systemService.getSequence("serialNo14"));		
+		SysPayment payment = sysPaymentService.get("3");
+		Order order = new Order();
+		String orderId = "O".concat(systemService.getSequence("serialNo14"));
+		order.setId(orderId);
+		order.setPayId(payment.getId());
+		order.setPayTitle(payment.getTitle());
+		order.setPayRemark(payment.getDescription());
+		order.setPayAmount(payment.getAmount());
+		order.setPayTime(new Date());
+		order.setUser(user);
+		order.setStatus(GlobalConstants.TRADESTATUS_PAY);
+		orders.add(order);
+		BigDecimal paymentAmount = new BigDecimal(payment.getAmount()).multiply(new BigDecimal(100));
+		Traderecord traderecord = new Traderecord();
+		traderecord.setStartTime(new Date());
+		traderecord.setId(outTradeno);
+		traderecord.setUserIp(IPUtil.getIpAddr(request));
+		traderecord.setOrders(orders);
+		traderecord.setDetail(payment.getDescription());
+		traderecord.setPayAmount(paymentAmount.longValue());
+		traderecord.setUser(user);
+		traderecord.setSubject("哈尔滨信息工程学院-成绩单");
+		String key = UUID.randomUUID().toString();
+		JedisUtils.setObject(key, traderecord, 1000*60*30);
+		String data = qrCodeUrl + "scan/check?k="+key;//"http://zhaojunfei.tunnel.qydev.com/
+		BufferedImage image = QRCodeKit.createQRCodeWithLogo(data);
+		ServletOutputStream servletOutputStream = response.getOutputStream();
+		ImageIO.write(image, "png", servletOutputStream);
+	}
+
+	@RequestMapping("msg")
+	@ResponseBody
+	public Map<String,String> msg( HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		String userCode = (String)request.getSession().getAttribute("userCode");
+		if(StringUtils.isEmpty(userCode)) {
+			userCode = "0";
+		}
+		Map<String,String> map = new HashMap<String,String>();
+		map.put("code", "00000000");
+		map.put("msg", "获取成功");
+		map.put("result", userCode);
+		return map;
+	}
+
+	@RequestMapping("check")
+	public String check( HttpServletRequest request, HttpServletResponse response, Model model) throws IOException {
+		
+		request.getSession().setAttribute("userCode","1");
+		
+		Map<String, Object> params = new HashMap<String, Object>();
+		String ua = request.getHeader("User-Agent");
+		
+		String key = request.getParameter("k");
+		if(StringUtils.isEmpty(key)) {
+			throw new GITException("404","请求参数异常,请重试");
+		}
+		Traderecord traderecord = (Traderecord) JedisUtils.getObject(key);
+		if(StringUtils.isEmpty(traderecord)) {
+			throw new GITException("500","请求参数异常,请重试");
+		}
+		PayType payType = null;
+		if (StringUtils.isEmpty(ua)) {
+			throw new GITException("403","非法请求");
+		} else {
+			BigDecimal amount = new BigDecimal(traderecord.getPayAmount()).divide(new BigDecimal(100));
+			if (ua.contains("Alipay")) {
+				payType = PayType.ALIPAY_APP;
+				params.put("outTradeNo", traderecord.getId());
+				params.put("totalAmount", amount);
+				params.put("subject", traderecord.getSubject());
+				
+			} else if (ua.contains("MicroMessenger")) {
+				payType = PayType.WECHAT_APP;
+				
+				params.put("out_trade_no",traderecord.getId());
+				params.put("total_fee", amount);
+				params.put("body", traderecord.getSubject());
+				params.put("spbill_create_ip", IPUtil.getIpAddr(request));
+			}
+		}
+		
+		traderecord.setChannel(String.valueOf(payType.value()));
+		traderecordService.insertTraderecord(traderecord);
+		StrategyContext strategyContext = new StrategyContext();
+		String location = strategyContext.generatePayParams(payType, params);
+		
+		if(!StringUtils.isEmpty(location)) {
+			return "redirect:".concat(location);
+		}
+		
+		return "modules/payment/paymentError";
+		
 	}
 
 	@RequestMapping(value = "view")
@@ -66,11 +208,14 @@ public class ScoreController {
 				return "modules/chengji/login";
 			}
 			user = systemService.getCasByLoginName(idcard);
-			if (StringUtils.isEmpty(user)) {
-				throw new RuntimeException("用户信息不合法,请输入正确的身份证号和姓名");
+			if (StringUtils.isEmpty(user)||!user.getName().equals(com.thinkgem.jeesite.common.utils.StringUtils.trim(username))) {
+				model.addAttribute("message", "用户信息不合法,请输入正确的身份证号和姓名");
+				return "modules/chengji/login";
 			}
 		}
+		request.getSession().setAttribute("user", user);
 		logger.info("获取登录用户信息:{}",user);
+		
 		String studentNumber = user.getNo();
 		String userinfo = request.getSession().getServletContext().getRealPath("userinfo");
 		File file = new File(userinfo, studentNumber);
@@ -117,7 +262,7 @@ public class ScoreController {
 					for (User u : users) {
 						if (!StringUtils.isEmpty(u) && !StringUtils.isEmpty(u.getLoginName())
 								&& u.getLoginName().length() == 18) {
-							write(u, userinfo);
+							scoreService.write(u, userinfo);
 						}
 
 					}
@@ -131,196 +276,14 @@ public class ScoreController {
 		if (!StringUtils.isEmpty(st)) {
 			User u = systemService.getCasByLoginName(st);
 			if (!StringUtils.isEmpty(u)) {
-				write(u, userinfo);
+				scoreService.write(u, userinfo);
 				return "student";
 			}
 		}
 
-		write(user, userinfo);
+		scoreService.write(user, userinfo);
 
 		return "ok";
 	}
 
-	private void write(User user, String userinfo) throws IOException {
-		if (StringUtils.isEmpty(user)) {
-			return;
-		}
-		String studentNumber = user.getNo();
-		File file = new File(userinfo, studentNumber);
-		if (!file.exists()) {
-			file.mkdirs();
-		}
-		StudentCourse studentCourse = new StudentCourse();
-		Student student = new Student();
-		student.setStudentNumber(studentNumber);
-		studentCourse.setStudent(student);
-		List<String> termYears = studentCourseService.groupTermYear(studentCourse);
-		List<String> defaults = new ArrayList<String>();
-		List<String> others = new ArrayList<String>();
-
-		for (int i = 0; i < termYears.size(); i++) {
-			String termYear = termYears.get(i);
-			if (i < 2) {
-				defaults.add(termYear);
-			} else {
-				others.add(termYear);
-			}
-		}
-		BufferedImage image = ImageIO.read(ScoreController.class.getResource("/chengji_default.png"));
-		Color color = Color.BLACK;
-		Font font = new Font("宋体", Font.PLAIN, 12);
-		image = draw(image, color, font, 152, 810, user + "-" + studentNumber);
-
-		// 姓名
-		image = draw(image, color, font, 155, 235, user.getName());
-		// 编号
-		image = draw(image, color, font, 480, 235, user.getNo());
-		// 性别
-		image = draw(image, color, font, 155, 260, IdcardUtils.getGender(user.getLoginName()));
-		// 打印日期
-		image = draw(image, color, font, 480, 260, DateUtils.getDate());
-		// 身份证号
-		image = draw(image, color, font, 155, 285, user.getLoginName());
-		// 报告页码
-		image = draw(image, color, font, 480, 285, "1/2");
-
-		image = draw(image, color, font, 155, 308, "哈尔滨信息工程学院");
-		String xl = "高职/专科";
-		if (studentNumber.length() == 10 || studentNumber.length() == 12) {
-			xl = "本科";
-		}
-		image = draw(image, color, font, 155, 332, xl);
-		String xy = "未设置学院信息";
-		Office company = user.getCompany();
-		if (!org.springframework.util.StringUtils.isEmpty(company)) {
-			xy = company.getName();
-		}
-		String zy = "未设置专业信息";
-		Office office = user.getCompany();
-		if (!org.springframework.util.StringUtils.isEmpty(office)) {
-			zy = office.getName();
-		}
-
-		image = draw(image, color, font, 155, 355, xy + "-" + zy);
-		image = draw(image, color, font, 155, 380, "3.0");
-		int defaultIndex = 0;
-		for (String termYear : defaults) {
-			StudentCourse sc = new StudentCourse();
-			if (defaultIndex == 0) {
-				image = draw(image, color, font, 88, 462, termYear);
-				Student st = new Student();
-				st.setStudentNumber(studentNumber);
-				sc.setStudent(st);
-				sc.setTermYear(termYear);
-				List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
-				int y1 = 482;
-				for (StudentCourse isc : scs) {
-					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
-					image = draw(image, color, font, 88, y1, courseName);
-					image = draw(image, color, font, 252, y1, isc.getEvaValue());
-					image = draw(image, color, font, 292, y1, isc.getCredit());
-					y1 = y1 + 18;
-				}
-			} else {
-				image = draw(image, color, font, 335, 462, termYear);
-				Student st = new Student();
-				st.setStudentNumber(studentNumber);
-				sc.setStudent(st);
-				sc.setTermYear(termYear);
-				List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
-				int y1 = 482;
-				for (StudentCourse isc : scs) {
-					String courseName = ellipsis(isc.getCourse().getCursName(), 10);
-					image = draw(image, color, font, 335, y1, courseName);
-					image = draw(image, color, font, 498, y1, isc.getEvaValue());
-					image = draw(image, color, font, 548, y1, isc.getCredit());
-					y1 = y1 + 18;
-				}
-			}
-			defaultIndex++;
-		}
-
-		FileOutputStream out = new FileOutputStream(new File(file, studentNumber + "_default.jpg"));
-		ImageIO.write(image, "jpg", out);
-		out.flush();
-		out.close();
-
-		if (!CollectionUtils.isEmpty(others)) {
-			BufferedImage img = ImageIO.read(ScoreController.class.getResource("/chengji_other.png"));
-			img = draw(img, color, font, 152, 810, studentNumber);
-			boolean ret = true;
-			int x1 = 210;
-			int x2 = 210;
-			int y1 = 228;
-			int y2 = 228;
-			for (String termYear : others) {
-
-				StudentCourse sc = new StudentCourse();
-				if (ret) {
-					img = draw(img, color, font, 88, x1, termYear);
-					Student st = new Student();
-					st.setStudentNumber(studentNumber);
-					sc.setStudent(st);
-					sc.setTermYear(termYear);
-					List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
-
-					for (StudentCourse isc : scs) {
-						String courseName = ellipsis(isc.getCourse().getCursName(), 10);
-						img = draw(img, color, font, 88, y1, courseName);
-						img = draw(img, color, font, 252, y1, isc.getEvaValue());
-						img = draw(img, color, font, 292, y1, isc.getCredit());
-						y1 = y1 + 18;
-					}
-					y1 = y1 + 18;
-					x1 = y1 - 18;
-				} else {
-					img = draw(img, color, font, 335, x2, termYear);
-					Student st = new Student();
-					st.setStudentNumber(studentNumber);
-					sc.setStudent(st);
-					sc.setTermYear(termYear);
-					List<StudentCourse> scs = studentCourseService.findByParentIdsLike(sc);
-
-					for (StudentCourse isc : scs) {
-						String courseName = ellipsis(isc.getCourse().getCursName(), 10);
-						img = draw(img, color, font, 335, y2, courseName);
-						img = draw(img, color, font, 498, y2, isc.getEvaValue());
-						img = draw(img, color, font, 548, y2, isc.getCredit());
-						y2 = y2 + 18;
-					}
-					y2 = y2 + 18;
-					x2 = y2 - 18;
-				}
-				ret = !ret;
-			}
-			FileOutputStream otherFos = new FileOutputStream(new File(file, studentNumber + "_other.jpg"));
-			ImageIO.write(img, "jpg", otherFos);
-			otherFos.flush();
-			otherFos.close();
-		}
-	}
-
-	private String ellipsis(String str, int len) {
-		if (org.springframework.util.StringUtils.isEmpty(str)) {
-			return "";
-		}
-		if (str.length() > len) {
-			return str.substring(0, len).concat("...");
-		} else {
-			return str;
-		}
-	}
-
-	public static BufferedImage draw(BufferedImage image, Color color, Font font, int w, int h, String content) {
-		int height = image.getHeight();
-		int width = image.getWidth();
-		BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = bufferedImage.createGraphics();
-		g.setColor(color);
-		g.drawImage(image, 0, 0, null);
-		g.setFont(font);
-		g.drawString(content, w, h);
-		g.dispose();
-		return bufferedImage;
-	}
 }

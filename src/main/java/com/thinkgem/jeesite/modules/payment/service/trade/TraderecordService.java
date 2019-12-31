@@ -18,7 +18,7 @@ import com.thinkgem.jeesite.modules.payment.entity.order.Order;
 import com.thinkgem.jeesite.modules.payment.entity.trade.Traderecord;
 
 /**
- * 交易信息Service
+ * 交易信息
  * @author 赵俊飞
  * @version 2018-06-06
  */

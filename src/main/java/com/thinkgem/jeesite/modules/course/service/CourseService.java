@@ -129,8 +129,6 @@ public class CourseService extends CrudService<CourseDao, Course> {
 			if (course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
 				HSSFSheet clazzSheet = wb.createSheet(POIUtils.format(course.getCursName()));
 				
-				
-				
 				Row r = clazzSheet.getRow(1);
 				if(!StringUtils.isEmpty(r)) {
 					r.setHeight((short) 10);// 目的是想把行高设置成25px
@@ -145,16 +143,12 @@ public class CourseService extends CrudService<CourseDao, Course> {
 					r2.setHeight((short) 10);// 目的是想把行高设置成25px
 				}
 				
-				
-				
 				Footer footer = clazzSheet.getFooter();
 				footer.setLeft(
 						"任课教师 ：          命题教师：              评分教师：                                                               \n"
 								+ "录分人：             教研室主任：            录分日期：  年  月  日                                 ");
 				POIUtils.copySheet(wb, sheet, clazzSheet, true);
 
-				
-				
 				CellRangeAddress xf = new CellRangeAddress(12, 13, 6, 0);
 				CellRangeAddress jd = new CellRangeAddress(12, 13, 7, 0);
 				CellRangeAddress fz = new CellRangeAddress(12, 13, 8, 0);
@@ -324,12 +318,13 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				clazzSheet.setMargin(Sheet.LeftMargin,0.75);// 页边距（左）   
 
 				clazzSheet.setMargin(Sheet.RightMargin, 0);// 页边距（右）
-
+				
 				HSSFPrintSetup printSetup = clazzSheet.getPrintSetup();
 				printSetup.setPaperSize(HSSFPrintSetup.B5_PAPERSIZE); 
 				printSetup.setHeaderMargin((double)0.6);  
 				printSetup.setFooterMargin((double)0.6); 
-
+				clazzSheet.setRepeatingRows(new CellRangeAddress(12,13,0,255));
+				clazzSheet.setRepeatingColumns(new CellRangeAddress(12,13,0,255));
 			} else {
 				CourseClass courseClass = new CourseClass();
 				courseClass.setCourse(course);

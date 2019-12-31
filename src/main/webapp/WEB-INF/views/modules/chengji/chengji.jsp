@@ -8,6 +8,7 @@
 	content="width=device-width, initial-scale=1, maximum-scale=1" />
 <meta name="description" content="" />
 <meta name="author" content="" />
+
 <!--[if IE]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <![endif]-->
@@ -79,8 +80,13 @@
 		<div class="container">
 			<div class="row pad-botm">
 				<div class="col-md-12">
-					<h4 class="header-line">哈尔滨信息工程学院-成绩查询系统 <a href="javascript:void(0)" onclick="ajaxPrint('${studentNumber}')"  class="btn btn-primary"><span
-										class="glyphicon glyphicon-print"> </span> 生成电子成绩单</a></h4>
+					<h4 class="header-line">哈尔滨信息工程学院-成绩查询系统 <!-- <a href="javascript:void(0)" onclick="ajaxPrint('${studentNumber}')"  class="btn btn-primary"><span
+										class="glyphicon glyphicon-print"> </span> 生成电子成绩单</a> -->
+										
+										<a href="javascript:void(0)" onclick="payment_qrcode()"  class="btn btn-primary"><span
+										class="glyphicon glyphicon-print"> </span> 打印成绩单</a>
+										
+										</h4>
 				</div>
 
 			</div>
@@ -162,8 +168,6 @@
 										<tr>
 											
 											<th>课程名称</th>
-											<th>平时成绩</th>
-											<th>期末成绩</th>
 											<th>综合成绩</th>
 											<th>学分</th>
 											<th>绩点</th>
@@ -179,8 +183,6 @@
 											<c:forEach items="${entry.value}" var="isc">
 											<tr>
 											<td>${isc.course.cursName}</td>
-											<td>${isc.classEvaValue }</td>
-											<td>${isc.finEvaValue }</td>
 											<td>${isc.evaValue }</td>
 											<td>${isc.credit }</td>
 											<td>${isc.point }</td>
@@ -216,6 +218,7 @@
 	<!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
 	<!-- CORE JQUERY  -->
 	<script src="${ctxStatic}/chengji/assets/js/jquery-1.10.2.js"></script>
+	<script src="${ctxStatic}/layer/layer.js"></script>
 	<!-- BOOTSTRAP SCRIPTS  -->
 	<script src="${ctxStatic}/chengji/assets/js/bootstrap.js"></script>
 	
@@ -226,15 +229,50 @@ function printImg(object){
 	newWindow.document.body.innerHTML = printHtml;
 	newWindow.print();
 }
-function ajaxPrint(st){
-	//var ret = $.ajax({url:"${pageContext.request.contextPath}/chengji/print?st="+st,async:false});
-	//if(!ret){
-	//	window.location.reload();
-	//}
 
-	$.ajax({
+var t1 = null;
+var index = null;
+
+	function timedTefresh() {
+		$.ajax({
 			type : "post",
-			url : "${pageContext.request.contextPath}/chengji/print?st="+st,
+			url : "${pageContext.request.contextPath}/chengji/msg",
+			cache : false,
+			async : false,
+			success : function(message) {
+				if (t1 != null && message.result == 1) {
+					console.log("开始关闭定时器,关闭二维码弹窗");
+					clearTimeout(t1);
+					layer.close(index);
+				}
+			}
+		});
+	}
+
+	function payment_qrcode() {
+		t1 = setInterval(timedTefresh, 3000)
+		var html = "<img style='height: 200px;width: 200px;' src='get?1=1&t="
+				+ Math.random() + "'>";
+		index = layer.open({
+			type : 1,
+			title : false,
+			closeBtn : 1,
+			shade : [ 0.001, '#393D49' ],
+			area : '200px',
+			skin : 'layui-layer-nobg', //沒有背景色
+			shadeClose : true,
+			content : html
+		});
+	}
+	function ajaxPrint(st) {
+		//var ret = $.ajax({url:"${pageContext.request.contextPath}/chengji/print?st="+st,async:false});
+		//if(!ret){
+		//	window.location.reload();
+		//}
+
+		$.ajax({
+			type : "post",
+			url : "${pageContext.request.contextPath}/chengji/print?st=" + st,
 			cache : false,
 			async : false,
 			success : function(message) {

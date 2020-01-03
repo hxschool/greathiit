@@ -180,9 +180,9 @@ public class PaikeCourseController extends BaseController {
 			List<CourseClass> ccs = courseClassService.findByParentIdsLike(courseClass);
 			StringBuffer sb = new StringBuffer();
 			for(CourseClass cs : ccs) {
-				Office cla = cs.getCls();
-				if(!StringUtils.isEmpty(cla)) {
-					sb.append(cla.getId());
+				String classId = cs.getClassId();
+				if(!StringUtils.isEmpty(classId)) {
+					sb.append(classId);
 					sb.append(",");
 				}
 			}

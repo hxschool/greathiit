@@ -384,7 +384,7 @@
 						<div class="controls">
 							 
 							 <c:forEach items="${ccs}" var="cs">
-        							${cs.cls.name }
+        							${cs.className }
    							</c:forEach>
 						</div>
 					</div>

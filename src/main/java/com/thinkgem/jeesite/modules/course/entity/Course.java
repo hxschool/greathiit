@@ -62,7 +62,7 @@ public class Course extends DataEntity<Course> {
 	private String propositioner;//命题人
 	private String rater;//评分人
 	private String category;//成绩类别
-
+	private List<CourseClass> ccs;
 
 	public String getCursFace() {
 		return cursFace;
@@ -350,6 +350,14 @@ public class Course extends DataEntity<Course> {
 
 	public void setCourseCompositionRules(CourseCompositionRules courseCompositionRules) {
 		this.courseCompositionRules = courseCompositionRules;
+	}
+
+	public synchronized List<CourseClass> getCcs() {
+		return ccs;
+	}
+
+	public synchronized void setCcs(List<CourseClass> ccs) {
+		this.ccs = ccs;
 	}
 
 }

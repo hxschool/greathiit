@@ -131,7 +131,7 @@
 				<th>课程类型</th>
 				<th>考核</th>
 
-				<th>课程简介</th>
+				<th>授课班级</th>
 				<shiro:hasPermission name="course:course:edit"><th>操作</th></shiro:hasPermission>
 			</tr>
 		</thead>
@@ -160,15 +160,7 @@
 					${course.cursYearTerm}
 				</td>
 				
-				<!-- <td>
-					${course.cursNote1}
-				</td>
-				<td>
-					${course.cursNote2}
-				</td> 
-				<td>
-					${course.cursPreCourses}
-				</td> -->
+
 				<td>
 		
 					${fns:getDictLabel(course.cursProperty, 'course_property', '')}
@@ -184,8 +176,9 @@
 				</td>
 
 				<td>
-					
-					<a href ="javascript:return false;" onclick="return false;" style="cursor: default;" title="${course.cursIntro}">${fns:abbr(course.cursIntro,10)}</a>
+					<c:forEach items="${course.ccs}" var="courseClass">
+					${courseClass.className }
+					</c:forEach>
 				</td>
 				<td>
 					<shiro:hasPermission name="course:course:oper">

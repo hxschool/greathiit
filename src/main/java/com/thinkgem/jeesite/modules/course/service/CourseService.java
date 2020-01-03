@@ -330,8 +330,8 @@ public class CourseService extends CrudService<CourseDao, Course> {
 				courseClass.setCourse(course);
 				List<CourseClass> ccs = courseClassDao.findList(courseClass);
 				for (CourseClass cc : ccs) {
-					Office cls = cc.getCls();
-					Office clazz = officeDao.get(cls);
+					
+					Office clazz = officeDao.get(cc.getClassId());
 					Office major = officeDao.get(clazz.getParent());
 					Office school = officeDao.get(major.getParent());
 					if (!StringUtils.isEmpty(clazz)) {
@@ -395,7 +395,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						logger.info("根据班级查找相关学生信息");
 						//
 						Student entity = new Student();
-						entity.setClazz(cls);
+						entity.setClazz(clazz);
 						entity.setStatus("1");
 						List<Student> list = studentDao.findList(entity);
 						

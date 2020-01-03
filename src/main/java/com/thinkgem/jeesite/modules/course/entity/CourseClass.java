@@ -18,7 +18,8 @@ public class CourseClass extends DataEntity<CourseClass> {
 	
 	private static final long serialVersionUID = 1L;
 	private Course course;		// course_id
-	private Office cls;		// course_class
+	private String classId;
+	private String className;	// course_class
 	private String tips;		// tips
 	
 	public CourseClass() {
@@ -38,14 +39,26 @@ public class CourseClass extends DataEntity<CourseClass> {
 		this.course = course;
 	}
 	
-	public Office getCls() {
-		return cls;
+	
+	
+	
+
+	public synchronized String getClassId() {
+		return classId;
 	}
 
-	public void setCls(Office cls) {
-		this.cls = cls;
+	public synchronized void setClassId(String classId) {
+		this.classId = classId;
 	}
-	
+
+	public synchronized String getClassName() {
+		return className;
+	}
+
+	public synchronized void setClassName(String className) {
+		this.className = className;
+	}
+
 	public String getTips() {
 		return tips;
 	}

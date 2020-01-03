@@ -244,10 +244,13 @@ public class TimetableService {
 						if(!org.springframework.util.StringUtils.isEmpty(classId)) {
 							CourseClass courseClass = new CourseClass();
 							courseClass.setCourse(course);
-							Office cls = new Office();
-							cls.setId(classId);
-							courseClass.setCls(cls);
-							courseClassService.save(courseClass);
+							Office cls = officeService.get(classId);
+							if(!org.springframework.util.StringUtils.isEmpty(cls)) {
+								courseClass.setClassId(cls.getId());
+								courseClass.setClassName(cls.getName());
+								courseClassService.save(courseClass);
+							}
+							
 						}
 						
 						int line = 5;

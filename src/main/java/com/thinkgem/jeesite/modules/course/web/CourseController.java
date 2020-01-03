@@ -124,10 +124,6 @@ public class CourseController extends BaseController {
 				CourseClass courseClass = new CourseClass();
 				courseClass.setCourse(entity);
 				List<CourseClass> ccs = courseClassService.findByParentIdsLike(courseClass);
-				for(CourseClass cs:ccs) {
-					Office cls = officeService.get(cs.getCls()); 
-					cs.setCls(cls);
-				}
 				model.addAttribute("ccs", ccs);
 			}
 			entity.setCourseTeachingMode(courseTeachingMode);
@@ -162,6 +158,16 @@ public class CourseController extends BaseController {
 		}
 		course.setCursYearTerm(config.getTermYear());
 		Page<Course> page = courseService.findPage(new Page<Course>(request, response), course); 
+		
+		List<Course> list = page.getList();
+		for(Course entity:list) {
+			if(!entity.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+				CourseClass courseClass = new CourseClass();
+				courseClass.setCourse(entity);
+				List<CourseClass> ccs = courseClassService.findByParentIdsLike(courseClass);
+				entity.setCcs(ccs);
+			}
+		}
 		model.addAttribute("page", page);
 		model.addAttribute("config", config);
 		return "modules/course/courseList";
@@ -210,10 +216,12 @@ public class CourseController extends BaseController {
 				if(!org.springframework.util.StringUtils.isEmpty(classId)) {
 					CourseClass courseClass = new CourseClass();
 					courseClass.setCourse(course);
-					Office cls = new Office();
-					cls.setId(classId);
-					courseClass.setCls(cls);
-					courseClassService.save(courseClass);
+					Office cls = officeService.get(classId);
+					if(!org.springframework.util.StringUtils.isEmpty(cls)) {
+						courseClass.setClassId(cls.getId());
+						courseClass.setClassName(cls.getName());
+						courseClassService.save(courseClass);
+					}
 				}
 			}
 		}

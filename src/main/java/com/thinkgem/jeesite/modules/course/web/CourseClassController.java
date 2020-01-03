@@ -95,9 +95,9 @@ public class CourseClassController extends BaseController {
 		List<Office> offices =  Lists.newArrayList();
 		if(!CollectionUtils.isEmpty(ccs)) {
 			for(CourseClass cc:ccs) {
-				Office cls = cc.getCls();
-				if(!org.springframework.util.StringUtils.isEmpty(cls)) {
-					offices.add(officeService.get(cls.getId()));
+				String classId = cc.getClassId();
+				if(!org.springframework.util.StringUtils.isEmpty(classId)) {
+					offices.add(officeService.get(classId));
 				}
 			}
 		}

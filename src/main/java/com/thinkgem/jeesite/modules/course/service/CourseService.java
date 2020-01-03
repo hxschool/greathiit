@@ -396,6 +396,7 @@ public class CourseService extends CrudService<CourseDao, Course> {
 						//
 						Student entity = new Student();
 						entity.setClazz(cls);
+						entity.setStatus("1");
 						List<Student> list = studentDao.findList(entity);
 						
 						int rowIndex = 14;

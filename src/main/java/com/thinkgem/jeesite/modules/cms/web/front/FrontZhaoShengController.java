@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,15 +65,22 @@ public class FrontZhaoShengController extends BaseController{
 	private RecruitStudentService recruitStudentService;
 	@Autowired
 	private SysConfigService sysConfigService;
+	
+	private SysConfig config ;
+	private Site site;
+	 @ModelAttribute 
+	 public void get(Model model) {
+		 site = CmsUtils.getSite(Site.defaultSiteId());
+		 config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
+			model.addAttribute("config", config);
+	 }
+	
 	/**
 	 * 网站首页
 	 */
 	@RequestMapping(value = {"index", ""})
 	public String index(Model model) {
-		Site site = CmsUtils.getSite(Site.defaultSiteId());
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_EXAM);
-		model.addAttribute("config", config);
-		model.addAttribute("site", site);
+		
 		model.addAttribute("isIndex", true);
 		return "modules/cms/front/themes/"+site.getTheme()+"/zhaosheng/index";
 	}
@@ -80,7 +88,7 @@ public class FrontZhaoShengController extends BaseController{
 	
 	@RequestMapping(value = "skip_{module}")
 	public String frontCheckMobile(@PathVariable("module") String module,String hc_form_sfzh,Model model) {
-		Site site = CmsUtils.getSite(Site.defaultSiteId());
+		
 		module = module.substring(0, 1).toUpperCase() + module.substring(1);
 		
 		SystemStudent systemStudent = systemStudentService.getByIdCard(hc_form_sfzh);

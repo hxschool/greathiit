@@ -73,9 +73,9 @@
 
 <body class=" layout-home">
 
-<c:if test="${fns:getDictValue('switch', 'greathiit_zhaosheng', '关')=='no'}">  
+<c:if test="${config.status==1}">  
 <script>
-alert("${fns:getDictDescription('switch', 'greathiit_zhaosheng', '关')}");
+alert("${config.tip}");
 window.close();
 </script>
 </c:if>

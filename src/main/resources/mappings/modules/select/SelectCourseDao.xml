@@ -73,6 +73,7 @@
 		<where>
 			a.del_flag = #{DEL_FLAG_NORMAL}
 			
+			AND s.status=1
 			
 			<if test="courses != null and courses.size()>0" >
 			and a.course_id  IN

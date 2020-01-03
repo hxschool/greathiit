@@ -5,6 +5,7 @@ package com.thinkgem.jeesite.modules.sys.service;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +54,9 @@ public class SysConfigService extends CrudService<SysConfigDao, SysConfig> {
 	
 	@Transactional(readOnly = false)
 	public void save(SysConfig sysConfig) {
+		sysConfig.setDescription(StringEscapeUtils.unescapeHtml4(sysConfig.getDescription()));
+		sysConfig.setTip(StringEscapeUtils.unescapeHtml4(sysConfig.getTip()));
+		sysConfig.setMessage(StringEscapeUtils.unescapeHtml4(sysConfig.getMessage()));
 		super.save(sysConfig);
 	}
 	

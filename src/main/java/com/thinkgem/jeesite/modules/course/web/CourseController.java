@@ -191,9 +191,12 @@ public class CourseController extends BaseController {
 		if (!beanValidator(model, course)){
 			return form(course, model);
 		}
-		String courseId = systemService.getSequence("serialNo10");
+		String courseId = course.getId();
+		if(org.springframework.util.StringUtils.isEmpty(course.getId())) {
+			courseId = systemService.getSequence("serialNo10");
+			course.setIsNewRecord(true);
+		}
 		course.setCursEduNum(course.getCursNum());
-		course.setIsNewRecord(true);
 		course.setId(courseId);
 		if(!isAdmin()) {
 			course.setTeacher(UserUtils.getTeacher());

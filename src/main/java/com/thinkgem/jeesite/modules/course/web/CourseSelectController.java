@@ -134,8 +134,6 @@ public class CourseSelectController extends BaseController {
 
 	@RequestMapping(value = "student")
 	public String student(Course course, HttpServletRequest request, HttpServletResponse response, Model model) {
-		SysConfig config = sysConfigService.getModule(Global.SYSCONFIG_SELECT);
-		course.setCursYearTerm(config.getTermYear());
 		SelectCourse  selectCourse = new  SelectCourse();
 		selectCourse.setCourse(course);
 		model.addAttribute("list", selectCourseService.findByParentIdsLike(selectCourse));

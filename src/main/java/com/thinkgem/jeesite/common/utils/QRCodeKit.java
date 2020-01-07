@@ -147,6 +147,7 @@ public class QRCodeKit {
 	public static BufferedImage createQRCodeWithLogo(String data) {
 		File logoFile = new File(QRCodeKit.class.getResource("/").getFile(), "logo.png");
 		//File logoFile = new File( "logo.png");
+		
 		return createQRCodeWithLogo(data, QRCODE_DEFAULT_WIDTH, QRCODE_DEFAULT_HEIGHT, logoFile);
 	}
 

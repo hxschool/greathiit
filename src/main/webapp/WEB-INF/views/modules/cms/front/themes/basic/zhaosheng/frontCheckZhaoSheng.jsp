@@ -640,7 +640,7 @@ window.close();
 													</div>
 
 
-													<div class="form-group text-s12 " id="fg_hc_form_zy3">
+													<!-- <div class="form-group text-s12 " id="fg_hc_form_zy3">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"
 															for="hc_form_zy3"> 报考专业3: </label>
@@ -693,7 +693,7 @@ window.close();
 															id="error-hc_form_zy5"></p>
 													</div>
 													</div>
-
+													 -->
 													<div class="form-group text-s12 " id="fg_hc_form_zytj">
 														<label
 															class="control-label col-sm-3 col-xs-12 text-right text-left-xs"

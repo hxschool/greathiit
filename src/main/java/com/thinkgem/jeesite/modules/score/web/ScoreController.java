@@ -127,7 +127,7 @@ public class ScoreController {
 		traderecord.setSubject("哈尔滨信息工程学院-成绩单");
 		String key = UUID.randomUUID().toString();
 		JedisUtils.setObject(key, traderecord, 1000*60*30);
-		String data = qrCodeUrl + "scan/check?k="+key;//"http://zhaojunfei.tunnel.qydev.com/
+		String data = qrCodeUrl + "chengji/check?k="+key;//"http://zhaojunfei.tunnel.qydev.com/
 		BufferedImage image = QRCodeKit.createQRCodeWithLogo(data);
 		ServletOutputStream servletOutputStream = response.getOutputStream();
 		ImageIO.write(image, "png", servletOutputStream);

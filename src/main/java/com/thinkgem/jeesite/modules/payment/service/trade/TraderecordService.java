@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
@@ -36,7 +37,11 @@ public class TraderecordService extends CrudService<TraderecordDao, Traderecord>
 	}
 	@Transactional(readOnly = false)
 	public void insertTraderecord(Traderecord traderecord) {
-		traderecord.setIsNewRecord(true);
+		
+		Traderecord entity = get(traderecord);
+		if(StringUtils.isEmpty(entity)) {
+			traderecord.setIsNewRecord(true);
+		}
 		traderecord.setStatus(GlobalConstants.TRADESTATUS_PAY);
 		super.save(traderecord);
 		List<Order> orders = traderecord.getOrders();

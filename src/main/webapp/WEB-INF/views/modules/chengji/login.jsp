@@ -51,10 +51,11 @@
 					<div class="navbar-collapse collapse ">
 						<ul id="menu-top" class="nav navbar-nav navbar-right">
 							<li><a href="index.html" class="menu-top-active">首页</a></li>
-							<li><a href="http://www.hxci.com.cn/">哈尔滨信息工程学院</a></li>
+							<li><a href="http://leave.greathiit.com/">退出</a></li>
+							<!-- <li><a href="http://www.hxci.com.cn/">哈尔滨信息工程学院</a></li>
 							<li><a href="http://ar.greathiit.com/">数字校园</a></li>
 							<li><a href="http://www.greathiit.com/a">信息化中心</a></li>
-							<!-- <li><a href="#" class="dropdown-toggle" id="ddlmenuItem"
+							<li><a href="#" class="dropdown-toggle" id="ddlmenuItem"
 								data-toggle="dropdown">UI ELEMENTS <i
 									class="fa fa-angle-down"></i></a>
 								<ul class="dropdown-menu" role="menu"
@@ -63,9 +64,10 @@
 										href="ui.html">UI ELEMENTS</a></li>
 									<li role="presentation"><a role="menuitem" tabindex="-1"
 										href="#">EXAMPLE LINK</a></li>
-								</ul></li><li><a href="table.html">TABLES</a></li> -->
+								</ul></li><li><a href="table.html">TABLES</a></li>
 							<li><a href="http://paper.greathiit.com/">论文管理</a></li>
 							<li><a href="http://leave.greathiit.com/">自助离校</a></li>
+							 -->
 
 						</ul>
 					</div>
@@ -133,12 +135,12 @@
 								<div class="form-group">
 									<label>姓名</label> <input class="form-control" name="username"
 										type="text" />
-									<p class="help-block">请输入姓名</p>
+									
 								</div>
 								<div class="form-group">
-									<label>身份证号</label> <input class="form-control"
+									<label>密码</label> <input class="form-control"
 										type="password" name="idcard" />
-									<p class="help-block">请输入身份证号</p>
+									
 								</div>
 
 								<button type="submit" class="btn btn-info">点击查询
@@ -156,13 +158,13 @@
 			</div>
 		
 
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-md-4 col-sm-4 col-xs-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">优秀教师</div>
 						<div class="panel-body text-center recent-users-sec">
 系统升级中,敬请期待 
-							<!-- <img class="img-thumbnail" src="assets/img/user.gif" /> <img
+							<img class="img-thumbnail" src="assets/img/user.gif" /> <img
 								class="img-thumbnail" src="assets/img/user2.png" /> <img
 								class="img-thumbnail" src="assets/img/user.gif" /> <img
 								class="img-thumbnail" src="assets/img/user2.png" /> <img
@@ -170,7 +172,7 @@
 								class="img-thumbnail" src="assets/img/user2.png" /> <img
 								class="img-thumbnail" src="assets/img/user.gif" /> <img
 								class="img-thumbnail" src="assets/img/user2.png" /> <img
-								class="img-thumbnail" src="assets/img/user.gif" /> -->
+								class="img-thumbnail" src="assets/img/user.gif" />
 						</div>
 					</div>
 				</div>
@@ -193,13 +195,13 @@
 										<tr>
 											<td colspan="5">系统升级中,敬请期待 </td>
 										</tr>
-										<!-- <tr>
+										 <tr>
 											<td>1</td>
 											<td>Mark</td>
 											<td>Otto</td>
 											<td>@mdo</td>
 											<td>100090</td>
-										</tr> -->
+										</tr> 
 										
 									</tbody>
 								</table>
@@ -208,7 +210,7 @@
 					</div>
 				</div>
 
-			</div>
+			</div> -->
 
 
 		</div>

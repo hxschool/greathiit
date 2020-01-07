@@ -140,7 +140,7 @@ public class AlipayCallbackController {
                                          String bucketName = "greathiit-print-result";
                                          minioTemplate.putObject(bucketName, objectName, stream);
                                          //http://wangwei.com:9000/greathiit-print-result/3.png
-                                         String url = "http://wangwei.com:9000/greathiit-print-result/".concat(objectName);
+                                         String url = "http://img7.it.greathiit.com/greathiit-print-result/".concat(objectName);
                                          imgs.add(url);
                                      }
                                      printResult.setImg(imgs);

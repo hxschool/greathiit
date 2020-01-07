@@ -141,6 +141,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 			}
 			Student student = new Student();
 			student.setClazzNumbers(clazzIds);
+			student.setStatus("1");
 			List<Student> students = studentDao.findList(student);
 			for (Student st : students) {
 				StudentCourse sc = new StudentCourse();

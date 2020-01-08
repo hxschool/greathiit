@@ -6,9 +6,7 @@
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
 	function repairDel() {
-		// 批量删除
-		var id = document.getElementsByName("ids");// 获取全选复选框
-		var ids = "";// 用于拼接所有已选中的id
+		var id = document.getElementsByName("ids");
 		// 拼接所有id
 		for (var i = 0; i < id.length; i++) {
 			if (id[i].checked) {

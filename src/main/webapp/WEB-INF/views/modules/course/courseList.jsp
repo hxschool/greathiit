@@ -5,6 +5,21 @@
 	<title>课程基本信息管理</title>
 	<meta name="decorator" content="default"/>
 	<script type="text/javascript">
+	function repairDel() {
+		// 批量删除
+		var id = document.getElementsByName("ids");// 获取全选复选框
+		var ids = "";// 用于拼接所有已选中的id
+		// 拼接所有id
+		for (var i = 0; i < id.length; i++) {
+			if (id[i].checked) {
+				ids += id[i].value + ",";
+			}
+		}
+		ids = ids.substring(0, ids.length - 1);// 干掉字符串最后一个逗号
+		$("#searchForm").attr("action",
+				"${ctx}/course/course/deleteList?ids=" + ids);
+		$("#searchForm").submit();
+	}
 		$(document).ready(function() {
 			$("#btnExport").click(function() {
 				top.$.jBox.confirm("确认要导出课程数据吗？", "系统提示", function(v, h, f) {
@@ -103,10 +118,10 @@
 					</select>
 			</li>
 		
-			<li class="btns"><input id="btnSubmit" class="btn btn-primary" type="submit" value="查询"/>
+			<li class="btns"><input id="btnSubmit" class="button button-primary button-small" type="submit" value="查询"/>
 			<input
-				id="btnExport" class="btn btn-primary" type="button" value="课程导出" /> <input
-				id="btnImport" class="btn btn-primary" type="button" value="课程导入" />
+				id="btnExport" class="button button-primary button-small" type="button" value="课程导出" /> <input
+				id="btnImport" class="button button-primary button-small" type="button" value="课程导入" />
 				
 			</li>
 			<li class="clearfix"></li>
@@ -116,6 +131,7 @@
 	<table id="contentTable" class="table table-striped table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/> </th>
 				<th>课程编号</th>
 				<th>课程名称</th>
 				<th>任课教师</th>
@@ -138,6 +154,7 @@
 		<tbody>
 		<c:forEach items="${page.list}" var="course">
 			<tr>
+				<td><input type="checkbox" name="ids" value="${course.id}" /></td>
 				<td><a href="${ctx}/course/course/form?id=${course.id}">
 					${course.cursNum}
 				</a></td>
@@ -182,32 +199,23 @@
 				</td>
 				<td>
 					<shiro:hasPermission name="course:course:oper">
-    				<a class="btn btn-primary"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
-    				<!-- <a  class="btn btn-info" href="${ctx}/course/course/teacherCourseModify?id=${course.id}" >教学大纲</a> -->
+    				<a class="button button-primary button-tiny"  href="${ctx}/course/course/form?id=${course.id}">修改</a>
 					
-					</shiro:hasPermission>
-					<shiro:hasPermission name="course:course:del">
-					<a class="btn btn-warning"  href="${ctx}/course/course/delete?id=${course.id}" onclick="return confirmx('确认要删除该课程基本信息吗？', this.href)">删除</a>
-					</shiro:hasPermission>
-					<shiro:hasPermission name="course:course:class">
-					<c:if test="${course!=null&&course.cursProperty!=50}">
-					<a href="javascript:void(0)" onclick="showClass('${course.id}','${course.cursName}')" class="btn btn-warning">查看班级</a>
-					</c:if>
 					</shiro:hasPermission>
 					<shiro:hasPermission name="course:course:select">
 					<c:if test="${course!=null&&course.cursProperty==50}">
-					<a  class="btn btn-success" href="${ctx}/course/select/export?course.id=${course.id}">学生名单</a>
+					<a  class="button button-action button-tiny" href="${ctx}/course/select/export?course.id=${course.id}">学生名单</a>
 					</c:if>
 					</shiro:hasPermission>
 					
-					<a class="btn btn-primary"  href="${ctx}/course/course/submit?id=${course.id}">添加成绩参数</a>
+					<a class="button button-primary button-tiny"  href="${ctx}/course/course/submit?id=${course.id}">成绩参数</a>
 					
 					<shiro:hasPermission name="course:course:studentCourse">
-    					<a  class="btn btn-success" href="${ctx}/student/studentCourse/export/student?id=${course.id}">下载空模板</a>
+    					<a  class="button button-action button-tiny" href="${ctx}/student/studentCourse/export/student?id=${course.id}">下载模板</a>
     				</shiro:hasPermission>
     				<shiro:hasPermission name="course:course:export">
 <div class="btn-group">
-  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:80px;height:24px;margin:0px;padding:0px;">
     成绩单 <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
@@ -221,6 +229,11 @@
 				</td>
 			</tr>
 		</c:forEach>
+		
+		<tfoot><tr>
+			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="11"> <a href="#" onclick="checkdel()" class="button button-caution button-small">批量删除</a></th>
+			</tr>
+		</tfoot>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>

@@ -38,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.common.collect.Lists;
+import com.thinkgem.jeesite.common.annotation.SameUrlData;
 import com.thinkgem.jeesite.common.beanvalidator.BeanValidators;
 import com.thinkgem.jeesite.common.config.Global;
 import com.thinkgem.jeesite.common.exception.GITException;
@@ -77,6 +78,7 @@ import com.thinkgem.jeesite.modules.sys.utils.DictUtils;
 import com.thinkgem.jeesite.modules.sys.utils.UserUtils;
 import com.thinkgem.jeesite.modules.teacher.entity.Teacher;
 import com.thinkgem.jeesite.modules.teacher.service.TeacherService;
+import com.thinkgem.jeesite.modules.uc.student.entity.UcStudent;
 
 /**
  * 课程基本信息Controller
@@ -184,7 +186,7 @@ public class CourseController extends BaseController {
 		model.addAttribute("course", course);
 		return "modules/course/courseForm";
 	}
-
+	@SameUrlData
 	@RequiresPermissions("course:course:edit")
 	@RequestMapping(value = "save")
 	public String save(Course course, Model model,HttpServletRequest request,HttpServletResponse response, RedirectAttributes redirectAttributes) {
@@ -249,6 +251,20 @@ public class CourseController extends BaseController {
 	@RequestMapping(value = "delete")
 	public String delete(Course course, RedirectAttributes redirectAttributes) {
 		courseService.delete(course);
+		addMessage(redirectAttributes, "删除课程基本信息成功");
+		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
+	}
+	
+	@RequestMapping(value = "deleteList")
+	public String deleteList(String ids, RedirectAttributes redirectAttributes) {
+		if(!org.springframework.util.StringUtils.isEmpty(ids)) {
+			String[] arrayIds = ids.split(",");
+			for(String id:arrayIds) {
+				Course course = new Course();
+				course.setId(id);
+				courseService.delete(course);
+			}
+		}
 		addMessage(redirectAttributes, "删除课程基本信息成功");
 		return "redirect:"+Global.getAdminPath()+"/course/course/?repage";
 	}

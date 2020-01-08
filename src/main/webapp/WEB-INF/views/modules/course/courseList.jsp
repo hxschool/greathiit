@@ -8,6 +8,7 @@
 	function repairDel() {
 		var id = document.getElementsByName("ids");
 		// 拼接所有id
+		var ids = "";
 		for (var i = 0; i < id.length; i++) {
 			if (id[i].checked) {
 				ids += id[i].value + ",";

@@ -113,87 +113,93 @@ public class StudentCourseController extends BaseController {
 	@RequiresPermissions("student:studentCourse:view")
 	@RequestMapping(value = {"list", ""})
 	public String list(StudentCourse studentCourse, HttpServletRequest request, HttpServletResponse response, Model model) {
-		String companyId = request.getParameter("companyId");
-		String officeId = request.getParameter("officeId");
-		String clazzId = request.getParameter("clazzId");
-		List<String> item = Lists.newArrayList();
-		User user = new User();
-		List<User> users = null;
-		if (!org.springframework.util.StringUtils.isEmpty(companyId)) {
-			Office company = new Office();
-			company.setId(companyId);
-			user.setCompany(company);
-			users = systemService.findUser(user);
-		}
 		
-		if (!org.springframework.util.StringUtils.isEmpty(officeId)) {
-			item.clear();
-			Office office = new Office();
-			office.setId(officeId);
-			user.setOffice(office);
-			users = systemService.findUser(user);
-		}
+		if (!org.springframework.util.StringUtils.isEmpty(request.getMethod())&&!request.getMethod().equals("GET")) {
+			
 		
-		if (!org.springframework.util.StringUtils.isEmpty(clazzId)) {
-			item.clear();
-			Office clazz = new Office();
-			clazz.setId(clazzId);
-			user.setClazz(clazz);
-			users = systemService.findUser(user);
-		}
-		
-		if(!CollectionUtils.isEmpty(users)) {
-			for(User u :users) {
-				if (!org.springframework.util.StringUtils.isEmpty(u.getNo()) && u.getNo().length() != 4) {
-					item.add(u.getNo());
+				String companyId = request.getParameter("companyId");
+				String officeId = request.getParameter("officeId");
+				String clazzId = request.getParameter("clazzId");
+				List<String> item = Lists.newArrayList();
+				User user = new User();
+				List<User> users = null;
+				if (!org.springframework.util.StringUtils.isEmpty(companyId)) {
+					Office company = new Office();
+					company.setId(companyId);
+					user.setCompany(company);
+					users = systemService.findUser(user);
 				}
-			}
-		}
-
-		//过滤学生数据
-		if(!CollectionUtils.isEmpty(item)) {
-			studentCourse.setItem(item);
-		}
+				
+				if (!org.springframework.util.StringUtils.isEmpty(officeId)) {
+					item.clear();
+					Office office = new Office();
+					office.setId(officeId);
+					user.setOffice(office);
+					users = systemService.findUser(user);
+				}
+				
+				if (!org.springframework.util.StringUtils.isEmpty(clazzId)) {
+					item.clear();
+					Office clazz = new Office();
+					clazz.setId(clazzId);
+					user.setClazz(clazz);
+					users = systemService.findUser(user);
+				}
+				
+				if(!CollectionUtils.isEmpty(users)) {
+					for(User u :users) {
+						if (!org.springframework.util.StringUtils.isEmpty(u.getNo()) && u.getNo().length() != 4) {
+							item.add(u.getNo());
+						}
+					}
+				}
 		
-		Course course = studentCourse.getCourse();
-		if(!isAdmin()) {
-			if(org.springframework.util.StringUtils.isEmpty(course)) {
-				 course = new Course();
-			}
-			course.setTeacher(UserUtils.getTeacher());
-			studentCourse.setCourse(course);
-		}
+				//过滤学生数据
+				if(!CollectionUtils.isEmpty(item)) {
+					studentCourse.setItem(item);
+				}
+				
+				Course course = studentCourse.getCourse();
+				if(!isAdmin()) {
+					if(org.springframework.util.StringUtils.isEmpty(course)) {
+						 course = new Course();
+					}
+					course.setTeacher(UserUtils.getTeacher());
+					studentCourse.setCourse(course);
+				}
+				
+				Page<StudentCourse> page = null;
+				if((!org.springframework.util.StringUtils.isEmpty(companyId)||!org.springframework.util.StringUtils.isEmpty(officeId)||!org.springframework.util.StringUtils.isEmpty(clazzId))&&CollectionUtils.isEmpty(users)) {
+					page = new Page<StudentCourse>();
+				}else {
+					page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
+				}
+				
+				
+				List<StudentCourseExt> ses = Lists.newArrayList();
+				for (StudentCourse sc : page.getList()) {
+					StudentCourseExt se = new StudentCourseExt();
+					BeanUtils.copyProperties(sc, se);
+					String studentNumber = sc.getStudentNumber();
+					User u = systemService.getCasByLoginName(studentNumber);
+					if (!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
+						Office clazz = officeService.get(u.getClazz());
+						se.setClazz(clazz);
+						Office office = officeService.get(u.getOffice());
+						se.setOffice(office);
+						Office company = officeService.get(u.getCompany());
+						se.setCompany(company);
+					}
+					Course entity = courseService.get(sc.getCourse());
+					se.setCourse(entity);
+					ses.add(se);
+				}
+				Page<StudentCourseExt> pp = new Page<StudentCourseExt>();
+				BeanUtils.copyProperties(page, pp);
+				pp.setList(ses);
+				model.addAttribute("page", pp);
 		
-		Page<StudentCourse> page = null;
-		if((!org.springframework.util.StringUtils.isEmpty(companyId)||!org.springframework.util.StringUtils.isEmpty(officeId)||!org.springframework.util.StringUtils.isEmpty(clazzId))&&CollectionUtils.isEmpty(users)) {
-			page = new Page<StudentCourse>();
-		}else {
-			page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
 		}
-		
-		
-		List<StudentCourseExt> ses = Lists.newArrayList();
-		for (StudentCourse sc : page.getList()) {
-			StudentCourseExt se = new StudentCourseExt();
-			BeanUtils.copyProperties(sc, se);
-			String studentNumber = sc.getStudentNumber();
-			User u = systemService.getCasByLoginName(studentNumber);
-			if (!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
-				Office clazz = officeService.get(u.getClazz());
-				se.setClazz(clazz);
-				Office office = officeService.get(u.getOffice());
-				se.setOffice(office);
-				Office company = officeService.get(u.getCompany());
-				se.setCompany(company);
-			}
-			Course entity = courseService.get(sc.getCourse());
-			se.setCourse(entity);
-			ses.add(se);
-		}
-		Page<StudentCourseExt> pp = new Page<StudentCourseExt>();
-		BeanUtils.copyProperties(page, pp);
-		pp.setList(ses);
-		model.addAttribute("page", pp);
 		return "modules/student/studentcourse/studentCourseList";
 	}
 

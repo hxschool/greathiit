@@ -172,7 +172,12 @@ public class StudentCourseController extends BaseController {
 				if((!org.springframework.util.StringUtils.isEmpty(companyId)||!org.springframework.util.StringUtils.isEmpty(officeId)||!org.springframework.util.StringUtils.isEmpty(clazzId))&&CollectionUtils.isEmpty(users)) {
 					page = new Page<StudentCourse>();
 				}else {
-					page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse); 
+					try {
+						page = studentCourseService.findPage(new Page<StudentCourse>(request, response), studentCourse);
+					}catch(Exception e) {
+						e.printStackTrace();
+					}
+					 
 				}
 				
 				
@@ -182,7 +187,7 @@ public class StudentCourseController extends BaseController {
 					BeanUtils.copyProperties(sc, se);
 					String studentNumber = sc.getStudentNumber();
 					User u = systemService.getCasByLoginName(studentNumber);
-					if (!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
+					if (org.springframework.util.StringUtils.isEmpty(u)&&!org.springframework.util.StringUtils.isEmpty(u.getClazz())) {
 						Office clazz = officeService.get(u.getClazz());
 						se.setClazz(clazz);
 						Office office = officeService.get(u.getOffice());

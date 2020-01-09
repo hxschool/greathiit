@@ -31,6 +31,7 @@
 	
 	<sql id="studentCourseJoins">
 		  left join course c on a.course_id=c.id 
+		  left join student s on a.student_number=s.student_number
 	</sql>
     
     <select id="findListByStudentCourseAndCourse" resultType="StudentCourse">
@@ -122,12 +123,35 @@
 		<include refid="studentCourseJoins"/>
 		<where>
 			a.del_flag = 0
+			and s.del_flag= 0
 			<if test="classEvaValue != null and classEvaValue != ''">
 				AND a.class_eva_value = #{classEvaValue}
 			</if>
-			<if test="evaValue != null and evaValue != ''">
-				AND a.eva_value = #{evaValue}
+			<if test='evaValue != null and evaValue != ""'>
+				
+				<choose>
+		                <when test='evaValue=="0" or evaValue=="不及格"'>
+		                    <![CDATA[and (a.eva_value < 60 or a.eva_value='不及格')]]>
+		                </when>
+            			<when test="evaValue.indexOf('优')>-1">
+            				<![CDATA[and (a.eva_value='优秀' or a.eva_value='优') ]]>
+            			</when>
+               			<when test="evaValue.indexOf('良')>-1">
+               				<![CDATA[and (a.eva_value='良好' or a.eva_value='良') ]]>
+               			</when>
+               			<when test="evaValue.indexOf('中')>-1">
+               				<![CDATA[and (a.eva_value='中等' or a.eva_value='中') ]]>
+               			</when>
+		                <otherwise>
+		                    	<![CDATA[and a.eva_value > #{evaValue} ]]>
+		                </otherwise>
+            	</choose>
+				
+            
 			</if>
+			
+			
+			
 			<if test="expEvaValue != null and expEvaValue != ''">
 				AND a.exp_eva_value = #{expEvaValue}
 			</if>
@@ -137,8 +161,12 @@
 			<if test="midEvaValue != null and midEvaValue != ''">
 				AND a.mid_eva_value = #{midEvaValue}
 			</if>
-			<if test="credit != null and credit != ''">
-				AND a.credit = #{credit}
+			<if test="startCredit != null and startCredit != ''">
+				<![CDATA[and a.credit >= #{startCredit} ]]>
+			</if>
+			
+			<if test="endCredit != null and endCredit != ''">
+				<![CDATA[and a.credit <= #{endCredit} ]]>
 			</if>
 			
 			<if test="termYear != null and termYear != ''">
@@ -168,6 +196,10 @@
 			</if>
 			<if test="student!=null and student.name != null and student.name != ''">
 				AND a.student_name = #{student.name}
+			</if>
+			
+			<if test="student!=null and student.edu != null and student.edu != ''">
+				AND s.edu = #{student.edu}
 			</if>
 			<if test="status != null and status != ''">
 				AND a.status = #{status}

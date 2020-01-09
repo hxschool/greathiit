@@ -126,7 +126,35 @@ function repairDel() {
 
 			<li><label>学生姓名：</label> <form:input path="student.name"
 					htmlEscape="false" maxlength="64" class="input-medium" /></li>
-
+			<li class="clearfix"></li>
+			
+			<li><label>学生层次：</label> 
+				
+				<form:select path="student.edu"
+					class="input-medium">
+					<form:option value="" label="请选择" />
+					<form:options items="${fns:getDictList('student_edu')}"
+						itemLabel="label" itemValue="value" htmlEscape="false" />
+				</form:select>
+				
+				</li>
+				
+					<li><label>成绩：</label> 
+					
+					<form:input path="evaValue"
+					htmlEscape="false" maxlength="64" class="input-medium"/>
+				</li>
+				
+					<li><label>学分：</label> 
+					<form:input path="startCredit"
+					htmlEscape="false" maxlength="2" class="input-mini" style="width:40px;"/> - 
+					<form:input path="endCredit"
+					htmlEscape="false" maxlength="2" class="input-mini" style="width:40px;"/>
+				
+				
+				</li>
+			
+			
 			<li class="btns"><input id="btnSubmit" class="btn btn-primary"
 				type="submit" value="查询" /> <shiro:hasPermission
 					name="student:studentCourse:export">

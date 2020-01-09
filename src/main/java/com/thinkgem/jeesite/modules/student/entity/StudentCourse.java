@@ -27,6 +27,8 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	private String finEvaValue;		// 期末成绩
 	private String midEvaValue;		// 期中成绩
 	private String credit;			// 学分
+	private String startCredit;
+	private String endCredit;
 	private String point;			//计数点
 	private String termYear;		// 年份
 	private String workEvaValue;		// 作业成绩
@@ -106,6 +108,11 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 	
 	//@ExcelField(title="综合成绩", type=0, align=2, sort=5)
 	public String getEvaValue() {
+		if(!StringUtils.isEmpty(evaValue)) {
+			if(evaValue.indexOf("优")>-1||evaValue.indexOf("良")>-1||evaValue.indexOf("中")>-1||evaValue.indexOf("不及格")>-1) {
+				return evaValue;
+			}
+		}
 		return StringUtils.zero(evaValue);
 	}
 
@@ -202,6 +209,22 @@ public class StudentCourse extends DataEntity<StudentCourse> implements Comparab
 
 	public void setPoint(String point) {
 		this.point = point;
+	}
+
+	public synchronized String getStartCredit() {
+		return startCredit;
+	}
+
+	public synchronized void setStartCredit(String startCredit) {
+		this.startCredit = startCredit;
+	}
+
+	public synchronized String getEndCredit() {
+		return endCredit;
+	}
+
+	public synchronized void setEndCredit(String endCredit) {
+		this.endCredit = endCredit;
 	}
 
 	@Override

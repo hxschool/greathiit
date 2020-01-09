@@ -130,8 +130,11 @@
 			<if test='evaValue != null and evaValue != ""'>
 				
 				<choose>
-		                <when test='evaValue=="0" or evaValue=="不及格"'>
-		                    <![CDATA[and (a.eva_value < 60 or a.eva_value='不及格')]]>
+		                <when test='evaValue=="0"'>
+		                    <![CDATA[and a.eva_value < 60]]>
+		                </when>
+		                <when test='evaValue=="不及格"'>
+		                	<![CDATA[and a.eva_value='不及格']]>
 		                </when>
             			<when test="evaValue.indexOf('优')>-1">
             				<![CDATA[and (a.eva_value='优秀' or a.eva_value='优') ]]>

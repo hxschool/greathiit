@@ -23,6 +23,7 @@ import com.google.common.collect.Lists;
 import com.thinkgem.jeesite.common.exception.GITException;
 import com.thinkgem.jeesite.common.persistence.Page;
 import com.thinkgem.jeesite.common.service.CrudService;
+import com.thinkgem.jeesite.common.utils.RegexUtils;
 import com.thinkgem.jeesite.common.utils.excel.ImportExcel;
 import com.thinkgem.jeesite.common.utils.excel.ImportResult;
 import com.thinkgem.jeesite.modules.course.dao.CourseClassDao;
@@ -341,31 +342,27 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 						logger.info("当前课程模式:{},{}",course.getCursProperty(),DictUtils.getDictLabel(course.getCursProperty(), "course_property", "未知"));
 						String classEvaValue = studentCourse.getClassEvaValue();// 课堂成绩
 						String finEvaValue = studentCourse.getFinEvaValue();// 期末成绩
-						if(course.getCursProperty().equals(Course.COURSE_PROPERTY_SELECT)) {
+						if (StringUtils.isEmpty(classEvaValue)) {
+							classEvaValue = "0";
+						}
+						if (StringUtils.isEmpty(finEvaValue)) {
+							finEvaValue = "0";
+						}
+						
+						//是否包含中文
+						//判断课程五分制还是百分制
+						if(RegexUtils.isContainChinese(classEvaValue) && RegexUtils.isContainChinese(finEvaValue)) {
 							String evaValue = "不及格";
 							String point = "0";
 							studentCourse.setCredit("0");
-							if(!StringUtils.isEmpty(classEvaValue)&&!StringUtils.isEmpty(finEvaValue)) {
-								if(!StringUtils.isEmpty(fiveMap.get(classEvaValue.concat(finEvaValue)))) {
-									evaValue = fiveMap.get(classEvaValue.concat(finEvaValue));
-									point = fivePointMap.get(evaValue);
-									studentCourse.setCredit(course.getCursCredit());
-								}
-							}
+							evaValue = fiveMap.get(classEvaValue.concat(finEvaValue));
+							point = fivePointMap.get(evaValue);
+							studentCourse.setCredit(course.getCursCredit());
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(evaValue);
 						}else{
-							// 判断课程类型
-							
-							if (StringUtils.isEmpty(classEvaValue)) {
-								classEvaValue = "0";
-							}
-							if (StringUtils.isEmpty(finEvaValue)) {
-								finEvaValue = "0";
-							}
 							studentCourse.setClassEvaValue(String.valueOf(Double.valueOf(classEvaValue).intValue()));
 							studentCourse.setFinEvaValue(String.valueOf(Double.valueOf(finEvaValue).intValue()));
-	
 								
 							Double dd = new BigDecimal(classEvaValue).multiply(new BigDecimal(courseCompositionRules.getClazzPer())).add(new BigDecimal(finEvaValue).multiply(new BigDecimal(courseCompositionRules.getFinalExamper()))).doubleValue();
 							
@@ -383,7 +380,6 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 							studentCourse.setPoint(point);
 							studentCourse.setEvaValue(String.valueOf(retValue));
 						}
-						
 						
 						studentCourse.setTermYear(course.getCursYearTerm());
 						if(StringUtils.isEmpty(status)) {
@@ -464,6 +460,7 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 				failureMsg.insert(0, "，失败 " + failureNum + " 条用户，导入信息如下：");
 			}
 		} catch (Exception e) {
+			logger.error("成绩导入异常,错误信息:" + e.getMessage());
 			throw new GITException("50000404", e.getMessage());
 		}
 		importResult.setSuccessNum(successNum);

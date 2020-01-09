@@ -284,4 +284,9 @@ public class RegexUtils {
 			return null;
 		return Pattern.compile(regex).matcher(input).replaceAll(replacement);
 	}
+	
+	public static void main(String[] args) {
+		boolean ret = isContainChinese("");	
+		System.out.println(ret);
+	}
 }

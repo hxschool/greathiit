@@ -382,9 +382,9 @@ public class StudentCourseService extends CrudService<StudentCourseDao, StudentC
 
 							String point = "0";
 							studentCourse.setCredit("0");
-							if(dd>=60) {
+							if(retValue>=60) {
 								studentCourse.setCredit(course.getCursCredit());
-								if(dd>60) {
+								if(retValue>60) {
 								point = String.format("%.1f",((dd - Double.valueOf(coursePoint.getPercentage()))
 										* Double.valueOf(coursePoint.getPoint())));
 								}

@@ -228,11 +228,12 @@
 				</td>
 			</tr>
 		</c:forEach>
-		
+		<shiro:hasPermission name="course:course:batchDel">
 		<tfoot><tr>
 			<th ><input type=checkbox name="selid" id="checkId" onclick="checkAll(this, 'ids')"/></th><th colspan="11"> <a href="#" onclick="checkdel()" class="button button-caution button-small">批量删除</a></th>
 			</tr>
 		</tfoot>
+		</shiro:hasPermission>
 		</tbody>
 	</table>
 	<div class="pagination">${page}</div>
